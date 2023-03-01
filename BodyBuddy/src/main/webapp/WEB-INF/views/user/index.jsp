@@ -6,6 +6,9 @@
 </head>
 
 <body class="animsition">
+	<!-- top-bar start-->
+	<%@include file="./inc/topbar.jsp" %>
+    <!-- /top-bar end-->
 
     <!-- hero section start -->
     <div class="hero-section">
@@ -27,9 +30,7 @@
     </div>
      <!-- ./hero section end -->
      
-    <!-- top-bar start-->
-	<%@include file="./inc/topbar.jsp" %>
-    <!-- /top-bar end-->
+    <!-- content start -->
     <div class="space-medium">
         <div class="container">
             <div class="row">
@@ -327,8 +328,8 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Enter your emil address">
                                         <span class="input-group-btn">
-        <a href="#" class="btn btn-default"><i class="fa fa-paper-plane-o"></i></a> 
-      </span>
+        									<a href="#" class="btn btn-default"><i class="fa fa-paper-plane-o"></i></a> 
+      									</span>
                                     </div>
                                     <!-- /input-group -->
                                 </div>
@@ -340,7 +341,7 @@
             </div>
         </div>
     </div>
-    
+    <!-- /content end -->
     
 	<!-- black footer_space -->
     <%@include file="./inc/footer_space.jsp" %>

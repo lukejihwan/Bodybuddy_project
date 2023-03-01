@@ -5,7 +5,7 @@
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <meta name="description" content="Fitness - provide the easy responsive free website templates. You can easily customize and make your own website for your startup business.">
 <meta name="keywords" content="bootstrap template, Responsive Template, Website Template, free website templates, free website template download ">
-<title>Fitness-The Gym Club | Bootstrap | Free Responsive Website Templates</title>
+<title>5조 BodyBuddy</title>
 <!-- Bootstrap -->
 <link href="/resources/user/css/bootstrap.min.css" rel="stylesheet">
 <!-- style CSS -->

@@ -2,6 +2,18 @@
     <div class="top-bar">
         <div class="container">
             <div class="row">
+            	<div class="col-md-3 col-sm-4 col-xs-12">
+                    <div class="top-search">
+                        <div class="custom-search-input">
+                            <div class="input-group  ">
+                                <input type="text" class="  search-query form-control" placeholder="Search">
+                                <span class="input-group-btn">
+                        			<button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
+                        		</span>
+                        	</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-3 hidden-sm hidden-xs bdr">
                     <div class="time-info">
                         <p class="time-text">~~님 현재 기록 등등</p>
@@ -16,18 +28,7 @@
                 </div>
                 <div class="col-md-3 col-sm-4 hidden-xs bdr">
                     <div class="mail-info">
-                        <p class="mail-text">이 부분은 위로 올라가도 괜찮을듯?</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-12">
-                    <div class="top-search">
-                        <div class="custom-search-input">
-                            <div class="input-group  ">
-                                <input type="text" class="  search-query form-control" placeholder="Search">
-                                <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
-                        </span> </div>
-                        </div>
+                        <p class="mail-text">로그인 / 회원가입</p>
                     </div>
                 </div>
             </div>
