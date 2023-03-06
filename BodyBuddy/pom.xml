@@ -33,6 +33,15 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 				
+				
+		<!-- 디비  -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.49</version>
+		</dependency>
+				
+				
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
