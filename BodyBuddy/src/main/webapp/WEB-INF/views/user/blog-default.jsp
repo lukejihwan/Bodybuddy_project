@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +6,7 @@
 
 <body class="animsition">
 
-	<!-- 검정 라벨의 top-bar -->
+	<!-- ê²ì  ë¼ë²¨ì top-bar -->
 	<%@include file="./inc/topbar.jsp" %>
 	
     <div class="page-header">
@@ -139,7 +140,7 @@
                         </div>
                         <div class="post-header">
                             <blockquote>
-                                <p>âYour Body is Your Most Priceless Possession. take care Of itâ</p>
+                                <p>Ã¢ÂÂYour Body is Your Most Priceless Possession. take care Of itÃ¢ÂÂ</p>
                             </blockquote>
                             <div class="quote-name">
                                 <p>- Thomas Buntin</p>
