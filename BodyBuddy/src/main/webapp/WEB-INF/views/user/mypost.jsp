@@ -31,10 +31,10 @@
                                     <div class="col-md-7 col-sm-7 col-xs-7">
                                         <div class="side-nav mb30">
                                             <ul class="listnone sidenav">
-                                                <li class="active"> <a href="#"><span class="sidenav-text">내 글</span></a></li>
+                                                <li> <a href="#"><span class="sidenav-text">내 글</span></a></li>
                                                 <li> <a href="#"><span class="sidenav-text">내 댓글</span> </a></li>
                                                 <li> <a href="#"><span class="sidenav-text">내 찜</span> </a></li>
-                                                <li> <a href="#"><span class="sidenav-text">회원정보 수정</span> </a></li>
+                                                <li class="active"> <a href="#"><span class="sidenav-text">회원정보 수정</span> </a></li>
                                                 <li> <a href="#"><span class="sidenav-text">1:1 문의</span> </a></li>
                                                 <li> <a href="#"><span class="sidenav-text">신고내역</span> </a></li>
                                             </ul>
