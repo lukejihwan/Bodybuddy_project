@@ -3,18 +3,18 @@
 <!-- content 부분만 비워둔 기본 템플릿 -->
 <html lang="en">
 <head>
-<%@include file="./inc/header_link.jsp" %>
+<%@include file="../inc/header_link.jsp" %>
 </head>
 
 <body class="animsition">
 	<!-- top-bar start-->
-	<%@include file="./inc/topbar.jsp" %>
+	<%@include file="../inc/topbar.jsp" %>
     <!-- /top-bar end-->
 
     <!-- hero section start -->
     <div class="hero-section">
 		<!-- navigation-->
-	   	<%@include file="./inc/header_navi.jsp" %>
+	   	<%@include file="../inc/header_navi.jsp" %>
 	    <!-- /navigation end -->
    </div>
     <!-- ./hero section end -->
@@ -31,10 +31,10 @@
                                     <div class="col-md-7 col-sm-7 col-xs-7">
                                         <div class="side-nav mb30">
                                             <ul class="listnone sidenav">
-                                                <li> <a href="#"><span class="sidenav-text">내 글</span></a></li>
+                                                <li class="active"> <a href="#"><span class="sidenav-text">내 글</span></a></li>
                                                 <li> <a href="#"><span class="sidenav-text">내 댓글</span> </a></li>
                                                 <li> <a href="#"><span class="sidenav-text">내 찜</span> </a></li>
-                                                <li class="active"> <a href="#"><span class="sidenav-text">회원정보 수정</span> </a></li>
+                                                <li> <a href="#"><span class="sidenav-text">회원정보 수정</span> </a></li>
                                                 <li> <a href="#"><span class="sidenav-text">1:1 문의</span> </a></li>
                                                 <li> <a href="#"><span class="sidenav-text">신고내역</span> </a></li>
                                             </ul>
@@ -52,14 +52,14 @@
     <!-- /content end -->
     
 	<!-- black footer_space -->
-    <%@include file="./inc/footer_space.jsp" %>
+    <%@include file="../inc/footer_space.jsp" %>
     
 
     
     <!-- tiny footer -->
-    <%@include file="./inc/footer_tiny.jsp" %>
+    <%@include file="../inc/footer_tiny.jsp" %>
     
-    <%@include file="./inc/footer_link.jsp" %>
+    <%@include file="../inc/footer_link.jsp" %>
     
 </body>
 
