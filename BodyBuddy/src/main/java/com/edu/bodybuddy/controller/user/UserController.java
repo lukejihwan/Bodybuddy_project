@@ -22,8 +22,8 @@ public class UserController {
 	}
 	
 	
-	@GetMapping("/{addresses}/{page}/")
-	public String getDetailPages(@PathVariable String addresses, @PathVariable String page) {
+	@GetMapping("/{addresses}/{page}")
+	public String getSubPages(@PathVariable String addresses, @PathVariable String page) {
 		log.info("카테고리 = "+addresses+ ", 페이지명 = "+ page);
 		return addresses+"/"+page;
 	}

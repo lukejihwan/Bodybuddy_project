@@ -55,7 +55,7 @@
     
     function init() {
     	$("ul#sidenav li").removeClass();
-    	$($("ul#sidenav li")[MYPOST]).addClass('active');
+    	$($("ul#sidenav li")[REPORT]).addClass('active');
 	}
     
     $(function() {
