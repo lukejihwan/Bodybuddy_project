@@ -27,5 +27,5 @@ public class UserController {
 		log.info("카테고리 = "+addresses+ ", 페이지명 = "+ page);
 		return addresses+"/"+page;
 	}
-
+	
 }
