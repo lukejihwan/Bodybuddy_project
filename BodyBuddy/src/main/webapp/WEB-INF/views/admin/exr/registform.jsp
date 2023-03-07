@@ -74,6 +74,43 @@
 					<div class="row">
 						<div class="col">
 
+
+							<div class="form-group row">
+								<select class="form-control" name="category_idx">
+									<option value="0">카테고리 선택</option>
+									<option value=""></option>
+								</select>
+								
+								<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#myModal" id="bt_category">카테고리 관리하기</button>		
+							
+							</div>
+
+							<!-- 카테고리 입력폼이 될 모달 -->
+							<div class="modal" id="myModal">
+								<div class="modal-dialog">
+									<div class="modal-content">
+
+										<!-- Modal Header -->
+										<div class="modal-header">
+											<h4 class="modal-title">운동 카테고리</h4>
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+										</div>
+
+										<!-- Modal body -->
+										<div class="modal-body">Modal body..</div>
+
+										<!-- Modal footer -->
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger"
+												data-dismiss="modal">Close</button>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<!-- 카테고리 모달./ -->
+
+
 							<div class="form-group row">
 								<div class="col">
 									<input type="text" name="product_name" class="form-control" placeholder="제목">
@@ -202,12 +239,16 @@
 				
 				reader.readAsDataURL(file);
 				console.log("앱 1의 이미지 리스트~~~", app1.imageList);
-				
 			}
-			
 		}
+	}
+	
+	
+	
+	function getCategoryList(){
 		
 	}
+	
 	
 	
 	function checkDuplicate(file){
@@ -226,41 +267,8 @@
 		등록
 	----------------------*/ 
 	function regist(){
-		// 파일 업로드를 커스터 마이징
-		let formData=new FormData();
-									// 명칭 주의!!
-		formData.append("category.category_idx", $("select[name='category_idx']").val());
-		formData.append("product_name", $("input[name='product_name']").val());
-		formData.append("brand", $("input[name='brand']").val());
-		formData.append("price", $("input[name='price']").val());
-		formData.append("discount", $("input[name='discount']").val());
-		formData.append("detail", $("textarea[name='detail']").val());
+
 		
- 		for(let i=0; i<app1.imageList.length; i++){			
-			let json=app1.imageList[i];
-			formData.append("photo", json.file);
-		}
- 		
-		$.ajax({
-			url:"/admin/rest/product",
-			type:"post",
-			contentType:false,
-			processData:false,
-			data:formData,
-			
-			success:function(result, status, xhr){
-				alert(result.msg);
-			},
-			
-			error:function(xhr, status, err){
-				console.log("err ", err);
-				console.log("status ", status);
-				console.log("xhr ", xhr);
-				
-				let json=JSON.parse(xhr.responseText);		// string --> json
-				alert(json.msg);
-			}
-		});
 	}
 	
 	
@@ -272,6 +280,12 @@
 		
 		// 뷰 적용
 		init();
+		
+		
+		// 비동기로 카테고리 가져오기
+		getCategoryList();
+		
+		
 		
 		$("input[name='file']").change(function(){
 			preview(this.files);

@@ -6,6 +6,9 @@
 <configuration>
   <typeAliases>
  	<typeAlias type="com.edu.bodybuddy.domain.Member" alias="Member"/>
+  
+  <!-- Exr Alias -->
+  <typeAlias type="com.edu.bodybuddy.domain.exr.Exr_Category" alias="Exr_Category" />
  	
  	<!-- Mypage Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Report" alias="Report"/>
@@ -15,6 +18,9 @@
   </typeAliases>
   <mappers>
     <mapper resource="com/edu/springshop/mybatis/MemberMapper.xml"/>
+    
+    <!-- Exr Mapper -->
+    <mapper resource="com/edu/bodybuddy/mybatis/exr/Exr_CategoryMapper.xml"/>
     
     <!-- Mypage Mapper -->
     <mapper resource="com/edu/springshop/mybatis/mypage/ReportMapper.xml"/>
