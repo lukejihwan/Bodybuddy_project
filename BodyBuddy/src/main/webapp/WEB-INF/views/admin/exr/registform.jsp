@@ -4,11 +4,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>상품 등록</title>
+<title>운동 정보 관리자 페이지</title>
 <%@ include file="../inc/header_link.jsp"%>
-<%
-	System.out.println("어드민 페이지");
-%>
 <style type="text/css">
 	.box-style{
 		width:90px;
@@ -49,7 +46,7 @@
 				<div class="container-fluid">
 					<div class="row mb-2">
 						<div class="col-sm-6">
-							<h1 class="m-0">상품등록</h1>
+							<h1 class="m-0">운동 정보 관리자 페이지</h1>
 						</div>
 						<!-- /.col -->
 						<div class="col-sm-6">
@@ -85,19 +82,51 @@
 							
 							</div>
 
+
 							<!-- 카테고리 입력폼이 될 모달 -->
+							
 							<div class="modal" id="myModal">
 								<div class="modal-dialog">
 									<div class="modal-content">
 
 										<!-- Modal Header -->
 										<div class="modal-header">
-											<h4 class="modal-title">운동 카테고리</h4>
+											<h4 class="modal-title">운동 카테고리 관리하기</h4>
 											<button type="button" class="close" data-dismiss="modal">&times;</button>
 										</div>
 
+
 										<!-- Modal body -->
-										<div class="modal-body">Modal body..</div>
+										<div class="modal-body">
+										
+											<div class="col">
+												<input type="text" name="exr_category_name">
+												<button class="btn btn-warning" id="bt_category_regist">등록</button>
+											</div>
+											
+											
+											<div>
+												<table class="table">
+													<thead>
+														<tr>
+															<th>카테고리 번호</th>
+															<th>카테고리 이름</th>
+															<th>수정</th>
+															<th>삭제</th>
+														</tr>
+													</thead>
+													<tbody>
+														<template v-for="category in categoryList">
+															<row :category="category"/>
+														</template>
+													</tbody>
+												</table>
+											</div>
+											
+											
+										</div>
+										<!-- Modal body./ -->
+
 
 										<!-- Modal footer -->
 										<div class="modal-footer">
@@ -141,8 +170,8 @@
 
 							<div class="form-group row">
 								<div class="col">
-									<button type="button" class="btn btn-danger btn-md" id="bt_regist">등록</button>							
-									<button type="button" class="btn btn-danger btn-md" id="bt_list">목록</button>									
+									<button class="btn btn-danger btn-md" id="bt_regist">등록</button>							
+									<button class="btn btn-danger btn-md" id="bt_list">목록</button>									
 								</div>
 							</div>							
 							
@@ -169,6 +198,75 @@
 	let app1;
 	let key=0;
 	
+	
+	/*----------------------
+		모달창 등록
+	----------------------*/ 
+	function categoryRegist(){
+		console.log($("input[name='exr_category_name']").val());
+		
+		$.ajax({
+			url:"/admin/rest/exr/notice",
+			type:"POST",
+			data:{
+				exr_category_name:$("input[name='exr_category_name']").val()
+			},
+			success:function(result, status, xhr){
+				alert(result.msg);
+				getCategoryList();
+			}
+		});
+	}
+	
+	
+	
+	
+	/*--------------------------
+		카테고리 목록 테이블 뷰
+ 	 --------------------------*/ 
+	const row={
+			template:`
+				<tr>
+					<td>{{dto.exr_category_idx}}</td>
+					<td>{{dto.exr_category_name}}</td>
+					<td @click="edit(dto.exr_category_idx)"><button class="btn btn-warning" id="bt_category_edit">수정</button></td>
+					<td><button class="btn btn-warning" id="bt_category_del">삭제</button></td>
+				</tr>
+			`,
+			props:["category"],
+			data(){
+				return{
+					dto:this.category
+				}	
+			},
+			methods:{
+				edit:function(exr_category_idx){
+					alert(exr_category_idx);
+					
+				}
+			}
+	}
+	
+	
+	
+	
+	function getCategoryList(){
+		$.ajax({
+			url:"/admin/rest/exr/notice",
+			type:"GET",
+			success:function(result, status, xhr){
+				app1.categoryList=result;
+				console.log("앱의 카테고리 리스트! ", app1.categoryList);
+			}
+		});
+	}
+	
+	
+	
+	
+	/*------------------------
+		이미지 미리보기 뷰
+	------------------------*/ 
 	const imagebox={
 		template:`
 			<div class="box-style">
@@ -189,7 +287,7 @@
 					let json=app1.imageList[i];
 					
 					if(json.key == idx){
-						app1.imageList.splice(i , 1); //요소,개수
+						app1.imageList.splice(i , 1); 	//요소,개수
 					}
 				}
 			}
@@ -202,11 +300,12 @@
 			el:"#app1",
 			data:{
 				count:3,
-				imageList:[]
-				
+				imageList:[],
+				categoryList:[]
 			},
 			components:{
-				imagebox
+				imagebox,
+				row
 			}
 		});
 	}
@@ -243,12 +342,7 @@
 		}
 	}
 	
-	
-	
-	function getCategoryList(){
-		
-	}
-	
+
 	
 	
 	function checkDuplicate(file){
@@ -263,12 +357,12 @@
 	}
 	
 	
+	
 	/*----------------------
 		등록
 	----------------------*/ 
 	function regist(){
-
-		
+	
 	}
 	
 	
@@ -281,23 +375,28 @@
 		// 뷰 적용
 		init();
 		
+		// 모달창에서 카테고리 등록 버튼
+		$("#bt_category_regist").click(function(){
+			categoryRegist();
+		});
 		
-		// 비동기로 카테고리 가져오기
+		
 		getCategoryList();
-		
 		
 		
 		$("input[name='file']").change(function(){
 			preview(this.files);
 		});
 		
-		$("#bt_regist").click(function(){
+/*		$("#bt_regist").click(function(){
 			regist();
 		});
 		
 		$("#bt_list").click(function(){
 			location.href="/admin/product/list";
 		});
+		*/
+		
 		
 	});
 

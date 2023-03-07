@@ -16,15 +16,14 @@
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Ask_img" alias="Ask_img"/>
  	
   </typeAliases>
+  
+  
   <mappers>
-    <mapper resource="com/edu/springshop/mybatis/MemberMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/MemberMapper.xml"/>
     
     <!-- Exr Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/exr/Exr_CategoryMapper.xml"/>
     
     <!-- Mypage Mapper -->
-    <mapper resource="com/edu/springshop/mybatis/mypage/ReportMapper.xml"/>
-    <mapper resource="com/edu/springshop/mybatis/mypage/AskMapper.xml"/>
-    <mapper resource="com/edu/springshop/mybatis/mypage/Ask_imgMapper.xml"/>
   </mappers>
 </configuration>
