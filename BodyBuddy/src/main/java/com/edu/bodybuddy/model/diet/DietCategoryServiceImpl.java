@@ -1,4 +1,4 @@
-package com.edu.bodybuddy.model.diet_category;
+package com.edu.bodybuddy.model.diet;
 
 import java.util.List;
 

@@ -20,7 +20,12 @@
 	
 	<!-- 회원 정보 수정 -->
 	<update id="update" parameterType="Member">
-		update member set email = #{email}, phone =#{phone}
+		update member set email = #{email}, phone =#{phone} where member_idx = #{member_idx}
+	</update>
+	
+	<!-- 회원 비밀번호 수정 -->
+	<update id="updatePass" parameterType="Member">
+		update member set pass = #{pass} where member_idx = #{member_idx}
 	</update>
 	
 	<!-- 회원 탈퇴, 관리자 직권삭제 -->

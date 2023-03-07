@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-public class UserController {
+public class MainController {
 	private Logger log = LoggerFactory.getLogger(getClass());
 	
 	@GetMapping("/")
