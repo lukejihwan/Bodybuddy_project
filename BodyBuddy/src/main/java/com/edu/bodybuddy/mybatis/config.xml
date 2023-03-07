@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+<configuration>
+  <typeAliases>
+ 	<typeAlias type="com.edu.bodybuddy.domain.Member" alias="Member"/>
+ 	
+ 	<!-- Mypage Alias -->
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.Report" alias="Report"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.Ask" alias="Ask"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.Ask_img" alias="Ask_img"/>
+ 	
+  </typeAliases>
+  <mappers>
+    <mapper resource="com/edu/springshop/mybatis/MemberMapper.xml"/>
+    
+    <!-- Mypage Mapper -->
+    <mapper resource="com/edu/springshop/mybatis/mypage/ReportMapper.xml"/>
+    <mapper resource="com/edu/springshop/mybatis/mypage/AskMapper.xml"/>
+    <mapper resource="com/edu/springshop/mybatis/mypage/Ask_imgMapper.xml"/>
+  </mappers>
+</configuration>
