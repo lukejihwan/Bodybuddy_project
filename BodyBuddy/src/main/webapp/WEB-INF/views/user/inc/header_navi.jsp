@@ -48,14 +48,14 @@
                                 <li><a href="/blog-default" title="Blog" class="animsition-link">고민상담(익명)</a></li>
                             </ul>
                         </li>
-                        <li><a href="/mypage" title="Blog" class="animsition-link">마이페이지</a>
+                        <li><a href="/mypage" title="Mypage" class="animsition-link">마이페이지</a>
                             <ul>
-                                <li><a href="/mypost" title="내 글" class="animsition-link">내가 쓴 글</a></li>
-                                <li><a href="/mypage" title="내 댓글" class="animsition-link">내가 쓴 댓글</a></li>
-                                <li><a href="/mypage" title="즐겨찾기" class="animsition-link">내가 찜한 정보</a></li>
-                                <li><a href="/mypage" title="회원정보" class="animsition-link">회원정보 수정</a></li>
-                                <li><a href="/mypage" title="문의" class="animsition-link">1:1 문의</a></li>
-                                <li><a href="/mypage" title="신고내역" class="animsition-link">나의 신고내역</a></li>
+                                <li><a href="/mypage/mypost" title="내 글" class="animsition-link">내가 쓴 글</a></li>
+                                <li><a href="/mypage/mycomments" title="내 댓글" class="animsition-link">내가 쓴 댓글</a></li>
+                                <li><a href="/mypage/interest" title="즐겨찾기" class="animsition-link">내가 찜한 정보</a></li>
+                                <li><a href="/mypage/info" title="회원정보" class="animsition-link">회원정보 수정</a></li>
+                                <li><a href="/mypage/ask" title="문의" class="animsition-link">1:1 문의</a></li>
+                                <li><a href="/mypage/report" title="신고내역" class="animsition-link">나의 신고내역</a></li>
                             </ul>
                         </li>
                         <li><a href="contact.html" title="Contact Us" class="animsition-link">내 주변 정보</a> </li>
