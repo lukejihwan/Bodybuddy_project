@@ -34,10 +34,9 @@
                         </li>
                         <li><a href="/blog-default" title="Blog" class="animsition-link">식단</a>
                             <ul>
-                                <li><a href="/blog-default" title="Blog" class="animsition-link">정보</a></li>
-                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">내 식단 공유</a></li>
-                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">팁</a></li>
-                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">크루</a></li>
+                                <li><a href="/blog-default" title="Blog" class="animsition-link">식단정보</a></li>
+                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">식단 팁</a></li>
+                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">식단공유</a></li>
                                 <li><a href="blog-single.html" title="Blog Single" class="animsition-link">식단계산기</a></li>
                             </ul>
                         </li>

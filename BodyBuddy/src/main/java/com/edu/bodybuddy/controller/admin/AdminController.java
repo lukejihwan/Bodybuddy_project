@@ -22,15 +22,17 @@ public class AdminController {
 		return "admin/login/loginform";
 	}
 	
-	
 
 	@GetMapping("/exr/notice")
 	public ModelAndView getExrNotice() {
 		logger.info("정보 게시판 작동");
 		ModelAndView mv = new ModelAndView("admin/exr/registform");
 		return mv;
+	}	
+	
+	@GetMapping("/diet/info_main")
+	public ModelAndView getInfoMain() {
+		ModelAndView mav=new ModelAndView("admin/diet/registform");
+		return mav;
 	}
-	
-	
-	
 }
