@@ -21,7 +21,7 @@ import com.edu.bodybuddy.model.exr.Exr_CategoryService;
 @RequestMapping("/rest")
 public class RestExcerciseController {
 	private Logger logger=LoggerFactory.getLogger(this.getClass());
-	@Autowired
+	
 	private Exr_CategoryService exr_CategoryService; 
 	
 	@GetMapping("/exr/notice")

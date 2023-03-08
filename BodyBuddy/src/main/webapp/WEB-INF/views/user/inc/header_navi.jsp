@@ -15,11 +15,10 @@
                         
                         <li><a href="classes-list.html" title="Classes" class="animsition-link">나의 기록</a>
                             <ul>
-                                <li><a href="classes-list.html" title="정보">기본정보</a></li>
-                                <li><a href="classes-list.html" title="정보">러닝기록</a></li>
-                                <li><a href="classes-list.html" title="정보">달력</a></li>
-                                <li><a href="classes-list.html" title="정보">식단</a></li>
-                                <li><a href="classes-list.html" title="정보">목표</a></li>
+                                <li><a href="/myrecord/addrecord" title="정보">기록추가</a></li>
+                                <li><a href="/myrecord/physical_record" title="정보">신체기록</a></li>
+                                <li><a href="/myrecord/exr_record" title="정보">운동기록</a></li>
+                                <li><a href="/myrecord/diet_record" title="정보">식단기록</a></li>
                             </ul>
                         </li>
                         <li><a href="classes-list.html" title="Classes" class="animsition-link">운동</a>
