@@ -1,6 +1,6 @@
 package com.edu.bodybuddy.domain.diet;
 
-public class Diet_Share {
+public class DietShare {
 	private int member_idx;
 	private int diet_category_idx;
 	
