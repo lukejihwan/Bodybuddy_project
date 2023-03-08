@@ -15,11 +15,10 @@
                         
                         <li><a href="classes-list.html" title="Classes" class="animsition-link">나의 기록</a>
                             <ul>
-                                <li><a href="classes-list.html" title="정보">기본정보</a></li>
-                                <li><a href="classes-list.html" title="정보">러닝기록</a></li>
-                                <li><a href="classes-list.html" title="정보">달력</a></li>
-                                <li><a href="classes-list.html" title="정보">식단</a></li>
-                                <li><a href="classes-list.html" title="정보">목표</a></li>
+                                <li><a href="/myrecord/addrecord" title="정보">기록추가</a></li>
+                                <li><a href="/myrecord/physical_record" title="정보">신체기록</a></li>
+                                <li><a href="/myrecord/exr_record" title="정보">운동기록</a></li>
+                                <li><a href="/myrecord/diet_record" title="정보">식단기록</a></li>
                             </ul>
                         </li>
                         <li><a href="classes-list.html" title="Classes" class="animsition-link">운동</a>
@@ -34,10 +33,9 @@
                         </li>
                         <li><a href="/blog-default" title="Blog" class="animsition-link">식단</a>
                             <ul>
-                                <li><a href="/blog-default" title="Blog" class="animsition-link">정보</a></li>
-                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">내 식단 공유</a></li>
-                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">팁</a></li>
-                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">크루</a></li>
+                                <li><a href="/blog-default" title="Blog" class="animsition-link">식단정보</a></li>
+                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">식단 팁</a></li>
+                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">식단공유</a></li>
                                 <li><a href="blog-single.html" title="Blog Single" class="animsition-link">식단계산기</a></li>
                             </ul>
                         </li>
@@ -48,14 +46,14 @@
                                 <li><a href="/blog-default" title="Blog" class="animsition-link">고민상담(익명)</a></li>
                             </ul>
                         </li>
-                        <li><a href="/mypage" title="Blog" class="animsition-link">마이페이지</a>
+                        <li><a href="/mypage" title="Mypage" class="animsition-link">마이페이지</a>
                             <ul>
-                                <li><a href="/mypost" title="내 글" class="animsition-link">내가 쓴 글</a></li>
-                                <li><a href="/mypage" title="내 댓글" class="animsition-link">내가 쓴 댓글</a></li>
-                                <li><a href="/mypage" title="즐겨찾기" class="animsition-link">내가 찜한 정보</a></li>
-                                <li><a href="/mypage" title="회원정보" class="animsition-link">회원정보 수정</a></li>
-                                <li><a href="/mypage" title="문의" class="animsition-link">1:1 문의</a></li>
-                                <li><a href="/mypage" title="신고내역" class="animsition-link">나의 신고내역</a></li>
+                                <li><a href="/mypage/mypost" title="내 글" class="animsition-link">내가 쓴 글</a></li>
+                                <li><a href="/mypage/mycomments" title="내 댓글" class="animsition-link">내가 쓴 댓글</a></li>
+                                <li><a href="/mypage/interest" title="즐겨찾기" class="animsition-link">내가 찜한 정보</a></li>
+                                <li><a href="/mypage/info" title="회원정보" class="animsition-link">회원정보 수정</a></li>
+                                <li><a href="/mypage/ask" title="문의" class="animsition-link">1:1 문의</a></li>
+                                <li><a href="/mypage/report" title="신고내역" class="animsition-link">나의 신고내역</a></li>
                             </ul>
                         </li>
                         <li><a href="contact.html" title="Contact Us" class="animsition-link">내 주변 정보</a> </li>

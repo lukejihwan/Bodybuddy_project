@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-md-3 col-sm-4 hidden-xs bdr">
                     <div class="mail-info">
-                        <p class="mail-text">로그인 / 회원가입</p>
+                        <p class="mail-text"><a href="/login">로그인</a>  /  <a href="/join">회원가입</a></p>
                     </div>
                 </div>
             </div>

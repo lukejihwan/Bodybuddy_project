@@ -12,6 +12,8 @@
 <link href="/resources/user/css/style.css" rel="stylesheet">
 <!-- animsition css -->
 <link rel="stylesheet" type="text/css" href="/resources/user/css/animsition.min.css">
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <!-- Font Awesome CSS -->
 <link href="/resources/user/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/resources/user/css/fontello.css">
@@ -26,3 +28,5 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+<!-- vue 2 for develope-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
