@@ -98,11 +98,14 @@
 
 										<!-- Modal body -->
 										<div class="modal-body">
-										
-											<div class="col">
-												<input type="text" name="exr_category_name">
-												<button class="btn btn-warning" id="bt_category_regist">등록</button>
-											</div>
+											<form id="form1">
+												<input type="hidden" name="_method" value="PUT"/>
+											
+												<div class="col">
+													<input type="text" name="exr_category_name">
+													<button class="btn btn-warning" id="bt_category_regist">등록</button>
+												</div>
+											</form>
 											
 											
 											<div>
@@ -228,9 +231,9 @@
 			template:`
 				<tr>
 					<td>{{dto.exr_category_idx}}</td>
-					<td>{{dto.exr_category_name}}</td>
-					<td @click="edit(dto.exr_category_idx)"><button class="btn btn-warning" id="bt_category_edit">수정</button></td>
-					<td><button class="btn btn-warning" id="bt_category_del">삭제</button></td>
+					<td @click="getDetail(dto)"><a href=#>{{dto.exr_category_name}}</a></td>
+					<td><button class="btn btn-warning" id="bt_category_edit" @click="edit(dto)">수정</button></td>
+					<td><button class="btn btn-warning" id="bt_category_del" @click="del(dto.exr_category_idx)">삭제</button></td>
 				</tr>
 			`,
 			props:["category"],
@@ -240,10 +243,38 @@
 				}	
 			},
 			methods:{
-				edit:function(exr_category_idx){
-					alert(exr_category_idx);
+				getDetail:function(category){
+					$("input[name='exr_category_name']").val(category.exr_category_name);
+				},
+				edit:function(category){
+					let json={};
+					json['exr_category_name']=$("#form1 input[name='exr_category_name']").val();
+					console.log(json);
 					
+					$.ajax({
+						url:"/admin/rest/exr/category",
+						type:"put",
+						contentType:"application/json;charset=utf-8",
+						processData:false,
+						data:JSON.stringify(json),						
+						success:function(result, status, xhr){
+							alert(result.msg);
+							getCategoryList();
+						}
+					});
+				},
+				del:function(exr_category_idx){
+					$.ajax({
+						url:"/admin/rest/exr/category/delete",
+						type:"delete",
+					
+						success:function(result, status, xhr){
+							alert(result.msg);
+							getCategoryList();
+						}
+					});
 				}
+				
 			}
 	}
 	
@@ -252,11 +283,11 @@
 	
 	function getCategoryList(){
 		$.ajax({
-			url:"/admin/rest/exr/notice",
+			url:"/admin/rest/exr/category_list",
 			type:"GET",
 			success:function(result, status, xhr){
 				app1.categoryList=result;
-				console.log("앱의 카테고리 리스트! ", app1.categoryList);
+				//console.log("앱의 카테고리 리스트! ", app1.categoryList);
 			}
 		});
 	}
@@ -367,21 +398,18 @@
 	
 	
 	$(function(){
-		// 써머 노트 적용
-		$('#detail').summernote({
-			height:200
-		});
-		
+
 		// 뷰 적용
 		init();
+
+		// 키테고리 목록 가져오는 함수
+		getCategoryList();
 		
 		// 모달창에서 카테고리 등록 버튼
 		$("#bt_category_regist").click(function(){
 			categoryRegist();
 		});
 		
-		
-		getCategoryList();
 		
 		
 		$("input[name='file']").change(function(){
@@ -397,6 +425,10 @@
 		});
 		*/
 		
+		// 써머 노트 적용
+		$('#detail').summernote({
+			height:200
+		});
 		
 	});
 

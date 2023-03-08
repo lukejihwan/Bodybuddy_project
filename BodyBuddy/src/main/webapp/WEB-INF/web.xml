@@ -23,6 +23,18 @@
 	</filter-mapping>
 	
 	
+	<!-- 웹에서 수정시 Put 메서드를 지원하기 위한 필터 -->
+	<filter>
+		<filter-name>httpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>httpMethodFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	
+	
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>

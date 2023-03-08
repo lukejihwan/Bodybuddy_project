@@ -8,7 +8,7 @@
  	<typeAlias type="com.edu.bodybuddy.domain.Member" alias="Member"/>
   
   <!-- Exr Alias -->
-  <typeAlias type="com.edu.bodybuddy.domain.exr.Exr_Category" alias="Exr_Category" />
+  <typeAlias type="com.edu.bodybuddy.domain.exr.ExrCategory" alias="ExrCategory" />
  	
  	<!-- Mypage Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Report" alias="Report"/>
@@ -22,7 +22,7 @@
     <mapper resource="com/edu/bodybuddy/mybatis/MemberMapper.xml"/>
     
     <!-- Exr Mapper -->
-    <mapper resource="com/edu/bodybuddy/mybatis/exr/Exr_CategoryMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrCategoryMapper.xml"/>
     
     <!-- Mypage Mapper -->
   </mappers>

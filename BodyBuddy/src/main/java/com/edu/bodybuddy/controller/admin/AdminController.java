@@ -26,11 +26,9 @@ public class AdminController {
 
 	@GetMapping("/exr/notice")
 	public ModelAndView getExrNotice() {
-		logger.info("정보 게시판 작동");
-		ModelAndView mv = new ModelAndView("admin/exr/registform");
-		return mv;
+		//logger.info("정보 게시판 작동");
+		return new ModelAndView("admin/exr/registform");
 	}
-	
 	
 	
 }
