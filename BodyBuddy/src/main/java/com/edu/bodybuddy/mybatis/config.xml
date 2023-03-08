@@ -17,11 +17,16 @@
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Ask" alias="Ask"/>
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Ask_img" alias="Ask_img"/>
  	
+ 	<!-- Board Alias -->
+ 	<typeAlias type="com.edu.bodybuddy.domain.board.FreeBoard" alias="FreeBoard"/>
+ 	
   </typeAliases>
   <mappers>
+
   	<!-- Member Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/member/MemberMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/member/AddressMapper.xml"/>
+
     
     <!-- Exr Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/exr/Exr_CategoryMapper.xml"/>
@@ -30,5 +35,8 @@
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/ReportMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskimgMapper.xml"/>
+
+    <!-- Board Mapper -->
+    <mapper resource="com/edu/bodybuddy/mybatis/board/FreeBoardMapper.xml"/>
   </mappers>
 </configuration>
