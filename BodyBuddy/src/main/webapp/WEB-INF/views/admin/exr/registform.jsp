@@ -1,4 +1,9 @@
+<%@page import="com.edu.bodybuddy.domain.exr.ExrCategory"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%
+	List<ExrCategory> exrCategoryList=(List)request.getAttribute("exrCategoryList");
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,114 +74,119 @@
 				
 					<!-- Main row -->
 					<div class="row">
+
 						<div class="col">
 
-
-							<div class="form-group row">
-								<select class="form-control" name="category_idx">
-									<option value="0">카테고리 선택</option>
-									<option value=""></option>
-								</select>
-								
-								<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#myModal" id="bt_category">카테고리 관리하기</button>		
+							<form id="form2">
 							
-							</div>
+								<div class="form-group row">
+<!-- 셀렉박스 이사감 -->
+									
+									<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#myModal" id="bt_category">카테고리 관리하기</button>
 
 
-							<!-- 카테고리 입력폼이 될 모달 -->
-							
-							<div class="modal" id="myModal">
-								<div class="modal-dialog">
-									<div class="modal-content">
+									<!-- 카테고리 입력폼이 될 모달 -->
+									<div class="modal" id="myModal">
+										<div class="modal-dialog">
+											<div class="modal-content">
 
-										<!-- Modal Header -->
-										<div class="modal-header">
-											<h4 class="modal-title">운동 카테고리 관리하기</h4>
-											<button type="button" class="close" data-dismiss="modal">&times;</button>
-										</div>
-
-
-										<!-- Modal body -->
-										<div class="modal-body">
-											<form id="form1">
-												<input type="hidden" name="_method" value="PUT"/>
-											
-												<div class="col">
-													<input type="text" name="exr_category_name">
-													<button class="btn btn-warning" id="bt_category_regist">등록</button>
+												<!-- Modal Header -->
+												<div class="modal-header">
+													<h4 class="modal-title">운동 카테고리 관리하기</h4>
+													<button type="button" class="close" data-dismiss="modal">&times;</button>
 												</div>
-											</form>
-											
-											
-											<div>
-												<table class="table">
-													<thead>
-														<tr>
-															<th>카테고리 번호</th>
-															<th>카테고리 이름</th>
-															<th>수정</th>
-															<th>삭제</th>
-														</tr>
-													</thead>
-													<tbody>
-														<template v-for="category in categoryList">
-															<row :category="category"/>
-														</template>
-													</tbody>
-												</table>
+
+												<!-- Modal body -->
+												<div class="modal-body">
+													<form id="form1">
+
+														<div class="col">
+															<input type="text" name="exr_category_name">
+															<button class="btn btn-warning" id="bt_category_regist">등록</button>
+														</div>
+													</form>
+
+													<div>
+														<table class="table">
+															<thead>
+																<tr>
+																	<th>카테고리 번호</th>
+																	<th>카테고리 이름</th>
+																	<th>수정</th>
+																	<th>삭제</th>
+																</tr>
+															</thead>
+															<tbody>
+																<template v-for="category in categoryList">
+																	<row :category="category"
+																		:key="category.exr_category_idx" />
+																</template>
+															</tbody>
+														</table>
+													</div>
+
+												</div>
+												<!-- Modal body./ -->
+
+												<!-- Modal footer -->
+												<div class="modal-footer">
+													<button type="button" class="btn btn-danger"
+														data-dismiss="modal">Close</button>
+												</div>
+
 											</div>
-											
-											
 										</div>
-										<!-- Modal body./ -->
+									</div>
+									<!-- 카테고리 모달./ -->
+								</div>
+
+								<select class="form-control" name="exr_category_idx">
+									<option value="0">카테고리 선택</option>
+									<%
+									for (ExrCategory category : exrCategoryList) {
+									%>
+									<option value="<%=category.getExr_category_idx()%>"><%=category.getExr_category_name()%></option>
+									<%}%>
+
+								</select>
 
 
-										<!-- Modal footer -->
-										<div class="modal-footer">
-											<button type="button" class="btn btn-danger"
-												data-dismiss="modal">Close</button>
-										</div>
-
+								<div class="form-group row">
+									<div class="col">
+										<input type="text" name="title" class="form-control" placeholder="제목">
+									</div>
+								</div>						
+											
+								
+								<div class="form-group row">
+									<div class="col">
+										<input type="file" name="file" class="form-control" multiple>
 									</div>
 								</div>
-							</div>
-							<!-- 카테고리 모달./ -->
-
-
-							<div class="form-group row">
-								<div class="col">
-									<input type="text" name="product_name" class="form-control" placeholder="제목">
+								
+								<div class="form-group row">
+									<div class="col">
+										<template v-for="json in imageList">
+											<imagebox :src="json.src" :key="json.key" :idx="json.key"/>
+										</template>
+									</div>
 								</div>
-							</div>						
-										
+												
+								<div class="form-group row">
+									<div class="col">
+										<textarea name="detail" class="form-control" id="detail">내용</textarea>
+									</div>
+								</div>
+	
+	
+								<div class="form-group row">
+									<div class="col">
+										<button class="btn btn-danger btn-md" id="bt_regist">등록</button>							
+										<button class="btn btn-danger btn-md" id="bt_list">목록</button>									
+									</div>
+								</div>
 							
-							<div class="form-group row">
-								<div class="col">
-									<input type="file" name="file" class="form-control" multiple>
-								</div>
-							</div>
-							
-							<div class="form-group row">
-								<div class="col">
-									<template v-for="json in imageList">
-										<imagebox :src="json.src" :key="json.key" :idx="json.key"/>
-									</template>
-								</div>
-							</div>
-											
-							<div class="form-group row">
-								<div class="col">
-									<textarea name="detail" class="form-control" id="detail">내용</textarea>
-								</div>
-							</div>
-
-
-							<div class="form-group row">
-								<div class="col">
-									<button class="btn btn-danger btn-md" id="bt_regist">등록</button>							
-									<button class="btn btn-danger btn-md" id="bt_list">목록</button>									
-								</div>
-							</div>							
+							</form>							
 							
 						</div>
 					</div>
@@ -200,7 +210,7 @@
 	<script type="text/javascript">
 	let app1;
 	let key=0;
-	
+
 	
 	/*----------------------
 		모달창 등록
@@ -209,7 +219,7 @@
 		console.log($("input[name='exr_category_name']").val());
 		
 		$.ajax({
-			url:"/admin/rest/exr/notice",
+			url:"/admin/rest/exr/category",
 			type:"POST",
 			data:{
 				exr_category_name:$("input[name='exr_category_name']").val()
@@ -264,8 +274,12 @@
 					});
 				},
 				del:function(exr_category_idx){
+					if(!confirm("삭제하시겠습니까?")){
+						return;
+					}
+					
 					$.ajax({
-						url:"/admin/rest/exr/category/delete",
+						url:"/admin/rest/exr/category/"+exr_category_idx,
 						type:"delete",
 					
 						success:function(result, status, xhr){
@@ -393,8 +407,26 @@
 		등록
 	----------------------*/ 
 	function regist(){
-	
+		console.log("작동중?");
+
+		let formData=new FormData();
+		formData.append("title", $("#form2 input[name='title']").val());
+		formData.append("writer", $("#form2 input[name='content']").val());
+		formData.append("exrCategory.exr_category_idx", $("#form2 select[name='exr_category_idx']").val());
+		
+		$.ajax({
+			url:"/admin/rest/exr/notice",
+			type:"POST",
+			contentType:false,
+			processData:false,
+			data:formData,
+			success:function(result, status, xhr){
+				console.log(result);
+			}
+			
+		});
 	}
+	
 	
 	
 	$(function(){
@@ -416,15 +448,11 @@
 			preview(this.files);
 		});
 		
-/*		$("#bt_regist").click(function(){
+		$("#bt_regist").click(function(){
 			regist();
 		});
 		
-		$("#bt_list").click(function(){
-			location.href="/admin/product/list";
-		});
-		*/
-		
+
 		// 써머 노트 적용
 		$('#detail').summernote({
 			height:200

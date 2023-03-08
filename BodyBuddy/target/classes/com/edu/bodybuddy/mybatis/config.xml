@@ -9,6 +9,7 @@
   
   <!-- Exr Alias -->
   <typeAlias type="com.edu.bodybuddy.domain.exr.ExrCategory" alias="ExrCategory" />
+  <typeAlias type="com.edu.bodybuddy.domain.exr.ExrNotice" alias="ExrNotice" />
  	
  	<!-- Mypage Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Report" alias="Report"/>
@@ -23,6 +24,7 @@
     
     <!-- Exr Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrCategoryMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrNoticeMapper.xml"/>
     
     <!-- Mypage Mapper -->
   </mappers>
