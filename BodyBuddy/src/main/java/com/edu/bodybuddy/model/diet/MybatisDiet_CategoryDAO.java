@@ -10,7 +10,7 @@ import com.edu.bodybuddy.domain.diet.Diet_Category;
 import com.edu.bodybuddy.exception.Diet_CategoryException;
 
 @Repository
-public class MybatisDiet_CategoryDAO implements Diet_CategoryDAO{
+public class MybatisDiet_CategoryDAO implements DietCategoryDAO{
 
 	@Autowired
 	SqlSessionTemplate sqlSessionTemplate;

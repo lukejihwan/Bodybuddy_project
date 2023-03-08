@@ -5,10 +5,12 @@
   
 <configuration>
   <typeAliases>
- 	<typeAlias type="com.edu.bodybuddy.domain.Member" alias="Member"/>
+  	<!-- Member Alias -->
+ 	<typeAlias type="com.edu.bodybuddy.domain.member.Member" alias="Member"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.member.Address" alias="Address"/>
   
-  <!-- Exr Alias -->
-  <typeAlias type="com.edu.bodybuddy.domain.exr.Exr_Category" alias="Exr_Category" />
+    <!-- Exr Alias -->
+	<typeAlias type="com.edu.bodybuddy.domain.exr.Exr_Category" alias="Exr_Category" />
  	
  	<!-- Mypage Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Report" alias="Report"/>
@@ -17,7 +19,9 @@
  	
   </typeAliases>
   <mappers>
-    <mapper resource="com/edu/bodybuddy/mybatis/MemberMapper.xml"/>
+  	<!-- Member Mapper -->
+    <mapper resource="com/edu/bodybuddy/mybatis/member/MemberMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/member/AddressMapper.xml"/>
     
     <!-- Exr Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/exr/Exr_CategoryMapper.xml"/>
@@ -25,6 +29,6 @@
     <!-- Mypage Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/ReportMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskMapper.xml"/>
-    <mapper resource="com/edu/bodybuddy/mybatis/mypage/Ask_imgMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskimgMapper.xml"/>
   </mappers>
 </configuration>

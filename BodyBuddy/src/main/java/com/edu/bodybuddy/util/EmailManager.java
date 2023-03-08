@@ -11,7 +11,7 @@ import javax.mail.internet.MimeMessage.RecipientType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import com.edu.bodybuddy.domain.Member;
+import com.edu.bodybuddy.domain.member.Member;
 import com.edu.bodybuddy.exception.EmailException;
 
 
