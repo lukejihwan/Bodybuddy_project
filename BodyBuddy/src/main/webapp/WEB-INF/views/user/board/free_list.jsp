@@ -6,9 +6,14 @@
 <head>
 <%@include file="../inc/header_link.jsp"%>
 <style type="text/css">
-	tr{
-		cursor: pointer
-	}
+tr {
+	cursor: pointer
+}
+.row{
+	margin: 0px 10px 0px 10px
+}
+
+
 </style>
 </head>
 <body class="animsition">
@@ -41,7 +46,7 @@
 	<div class="space-medium">
 		<div class="container">
 			<div class="row">
-				<div class="col">
+				<div class="col table-responsive">
 					<table class="table table-hover">
 						<thead>
 							<tr>
@@ -62,13 +67,33 @@
 							</tr>
 						</tbody>
 					</table>
-				</div> <!-- end of col -->
-			</div> <!-- end of row -->
+				</div>
+				<!-- end of col -->
+			</div>
+			<!-- end of row -->
 			<div class="row">
-				<button type="button" class="btn btn-default" id="bt_regist">글쓰기</button>
-			</div> <!-- end of row -->
-		</div> <!-- end of container -->
-	</div> <!-- end of space-medium -->
+				<button type="button" class="btn btn-default pull-right" id="bt_regist">글쓰기</button>
+			</div>
+			<!-- end of row -->
+			<div class="row text-center">
+				<div class="st-pagination">
+					<!--st-pagination-->
+					<ul class="pagination">
+						<li><a href="#" aria-label="previous"><span
+								aria-hidden="true">previous</span></a></li>
+						<li class="active"><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#" aria-label="Next"><span
+								aria-hidden="true">next</span></a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- end of row -->
+		</div>
+		<!-- end of container -->
+	</div>
+	<!-- end of space-medium -->
 	<!-- /content end -->
 
 	<!-- black footer_space -->
