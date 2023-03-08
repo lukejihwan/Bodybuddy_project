@@ -1,4 +1,4 @@
-package com.edu.bodybuddy.domain;
+package com.edu.bodybuddy.domain.member;
 
 import lombok.Data;
 
@@ -12,4 +12,5 @@ public class Member {
 	private String phone;
 	private String regdate;
 	private int point;
+	private Address address;
 }

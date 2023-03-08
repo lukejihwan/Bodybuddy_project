@@ -1,4 +1,4 @@
-package com.edu.bodybuddy.model.diet_category;
+package com.edu.bodybuddy.model.diet;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import com.edu.bodybuddy.domain.diet.Diet_Category;
 import com.edu.bodybuddy.exception.Diet_CategoryException;
 
 @Repository
-public class MybatisDiet_CategoryDAO implements Diet_CategoryDAO{
+public class MybatisDiet_CategoryDAO implements DietCategoryDAO{
 
 	@Autowired
 	SqlSessionTemplate sqlSessionTemplate;

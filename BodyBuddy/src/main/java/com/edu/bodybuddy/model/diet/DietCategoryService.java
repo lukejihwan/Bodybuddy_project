@@ -1,10 +1,10 @@
-package com.edu.bodybuddy.model.diet_category;
+package com.edu.bodybuddy.model.diet;
 
 import java.util.List;
 
 import com.edu.bodybuddy.domain.diet.Diet_Category;
 
-public interface Diet_CategoryService {
+public interface DietCategoryService {
 	public List selectAll();
 	public Diet_Category select(int diet_category_idx);
 	public void insert(Diet_Category diet_Category);

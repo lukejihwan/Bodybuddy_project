@@ -1,4 +1,4 @@
-package com.edu.bodybuddy.model.diet_category;
+package com.edu.bodybuddy.model.diet;
 
 import java.util.List;
 
@@ -9,34 +9,34 @@ import com.edu.bodybuddy.domain.diet.Diet_Category;
 import com.edu.bodybuddy.exception.Diet_CategoryException;
 
 @Service
-public class DietCategoryServiceImpl implements Diet_CategoryService{
+public class DietCategoryServiceImpl implements DietCategoryService{
 
 	@Autowired
-	private Diet_CategoryDAO diet_CategoryDAO;
+	private DietCategoryDAO dietCategoryDAO;
 	
 	@Override
 	public List selectAll() {
-		return diet_CategoryDAO.selectAll();
+		return dietCategoryDAO.selectAll();
 	}
 
 	@Override
 	public Diet_Category select(int diet_category_idx) {
-		return diet_CategoryDAO.select(diet_category_idx);
+		return dietCategoryDAO.select(diet_category_idx);
 	}
 
 	@Override
 	public void insert(Diet_Category diet_Category) throws Diet_CategoryException{
-		diet_CategoryDAO.insert(diet_Category);
+		dietCategoryDAO.insert(diet_Category);
 	}
 
 	@Override
 	public void update(Diet_Category diet_Category) throws Diet_CategoryException{
-		diet_CategoryDAO.update(diet_Category);
+		dietCategoryDAO.update(diet_Category);
 	}
 
 	@Override
 	public void delete(int diet_category_idx) throws Diet_CategoryException{
-		diet_CategoryDAO.delete(diet_category_idx);
+		dietCategoryDAO.delete(diet_category_idx);
 	}
 
 }
