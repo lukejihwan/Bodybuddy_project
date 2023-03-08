@@ -1,6 +1,7 @@
 package com.edu.bodybuddy.domain.board;
 
-import com.edu.bodybuddy.domain.Member;
+
+import com.edu.bodybuddy.domain.member.Member;
 
 import lombok.Data;
 
