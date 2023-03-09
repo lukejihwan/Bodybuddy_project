@@ -16,6 +16,8 @@
 <link href="/resources/user/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/resources/user/css/fontello.css">
 <!-- font css -->
+<!-- jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i%7cRoboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <!-- owl Carousel Css -->
 <link href="/resources/user/css/owl.carousel.css" rel="stylesheet">
