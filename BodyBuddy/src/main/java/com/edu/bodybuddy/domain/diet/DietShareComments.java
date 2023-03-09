@@ -1,10 +1,10 @@
 package com.edu.bodybuddy.domain.diet;
 
-public class Diet_Tip_Commetns {
-	private int diet_tip_idx;
+public class DietShareComments {
+	private int diet_share_idx;
 	private int member_idx;
 	
-	private int diet_tip_comments_idx;
+	private int diet_share_comments_idx;
 	private String content;
 	private String writer;
 	private String regdate;
