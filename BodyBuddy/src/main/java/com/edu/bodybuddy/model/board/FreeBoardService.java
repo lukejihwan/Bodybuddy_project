@@ -10,6 +10,8 @@ import com.edu.bodybuddy.exception.FreeBoardException;
 
 @Service
 public class FreeBoardService implements BoardService{
+	
+	public static final int PAGE_SIZE = 10;
 
 	@Autowired
 	@Qualifier("mybatisFreeBoardDAO")
@@ -33,6 +35,17 @@ public class FreeBoardService implements BoardService{
 
 	public void delete(int free_board_idx) throws FreeBoardException{
 		boardDAO.delete(free_board_idx);
+	}
+
+	public List selectAllByPage(int page) {
+		
+		page = page - 1;
+		if(page <0) page = 0;
+		return boardDAO.selectAllByPage(page * PAGE_SIZE);
+	}
+
+	public int totalCount() {
+		return boardDAO.totalCount();
 	}
 
 }

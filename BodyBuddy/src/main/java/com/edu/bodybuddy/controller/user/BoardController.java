@@ -1,5 +1,7 @@
 package com.edu.bodybuddy.controller.user;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edu.bodybuddy.domain.board.FreeBoard;
 import com.edu.bodybuddy.exception.FreeBoardException;
 import com.edu.bodybuddy.model.board.BoardService;
+import com.edu.bodybuddy.util.PageManager;
 
 @Controller
 @RequestMapping("/board")
@@ -28,10 +31,22 @@ public class BoardController {
 	public ModelAndView getDetail(@PathVariable int free_board_idx) {
 		return null;
 	}
-	@GetMapping("/free_list/{index}")
-	public ModelAndView getList(@PathVariable int index) {
+	@GetMapping("/free_list/{pg}")
+	public ModelAndView getList(@PathVariable int pg) {
 		
+		logger.info("현재 페이지는 : " + pg);
+		
+		//3단계
+		List freeBoardList = freeBoardService.selectAllByPage(pg);
+		int totalCount = freeBoardService.totalCount();
+		PageManager pageManager = new PageManager();
+		pageManager.init(125, pg);
+		logger.info("manager는 : "+pageManager);
+		
+		//4단계
 		ModelAndView mav = new ModelAndView("/board/free_list");
+		mav.addObject("freeBoardList", freeBoardList);
+		mav.addObject("pageManager", pageManager);
 		return mav;
 	}
 	

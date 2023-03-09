@@ -1,4 +1,21 @@
+<%@page import="com.edu.bodybuddy.util.PageManager"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.edu.bodybuddy.domain.board.FreeBoard"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%
+	List<FreeBoard> freeBoardList = (List)request.getAttribute("freeBoardList");
+	PageManager pageManager = (PageManager)request.getAttribute("pageManager");
+	
+	System.out.println("jsp : " + pageManager);
+	
+	if(freeBoardList == null) {
+		freeBoardList = new ArrayList();
+		pageManager = new PageManager();
+		pageManager.init(freeBoardList.size(), 0);
+	};
+	
+%>
 <!DOCTYPE html>
 <!-- content 부분만 비워둔 기본 템플릿 -->
 <!-- hero섹션이 포함되어있음 -->
@@ -58,13 +75,17 @@ tr {
 							</tr>
 						</thead>
 						<tbody>
+							<% int num = pageManager.getNum(); %>
+							<% for(int i =0;i<freeBoardList.size();i++){ %>
+							<% FreeBoard freeBoard = freeBoardList.get(i); %>
 							<tr>
-								<td>John</td>
-								<td>Doe</td>
-								<td>john@example.com</td>
-								<td>john@example.com</td>
-								<td>john@example.com</td>
+								<td><%= num-- %></td>
+								<td><%= freeBoard.getTitle() %></td>
+								<td><%= freeBoard.getWriter() %></td>
+								<td><%= freeBoard.getRegdate().substring(0, 10) %></td>
+								<td><%= freeBoard.getHit() %></td>
 							</tr>
+							<% } %>
 						</tbody>
 					</table>
 				</div>
@@ -79,11 +100,12 @@ tr {
 				<div class="st-pagination">
 					<!--st-pagination-->
 					<ul class="pagination">
-						<li><a href="#" aria-label="previous"><span
-								aria-hidden="true">previous</span></a></li>
-						<li class="active"><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
+						<li><a href="#" aria-label="previous"><span aria-hidden="false">previous</span></a></li>
+						
+						<% for(int i =pageManager.getFirstPage();i<=pageManager.getLastPage();i++){ %>
+						<% if(i>pageManager.getTotalPage()) break; %>
+						<li class="active"><a href="/board/free_list/<%= i %>">1</a></li>
+						<% } %>
 						<li><a href="#" aria-label="Next"><span
 								aria-hidden="true">next</span></a></li>
 					</ul>
@@ -108,7 +130,7 @@ tr {
 
 </body>
 <script>
-	$(()=>{
+	$(()=>{	
 		$("#bt_regist").click(()=>{
 			regist();
 		});
