@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.edu.bodybuddy.domain.Member;
+import com.edu.bodybuddy.domain.member.Member;
 
 import lombok.Data;
 @Data

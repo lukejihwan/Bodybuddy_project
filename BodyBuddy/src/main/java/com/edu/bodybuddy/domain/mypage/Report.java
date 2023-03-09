@@ -1,6 +1,6 @@
 package com.edu.bodybuddy.domain.mypage;
 
-import com.edu.bodybuddy.domain.Member;
+import com.edu.bodybuddy.domain.member.Member;
 
 public class Report {
 	private int report_idx;
