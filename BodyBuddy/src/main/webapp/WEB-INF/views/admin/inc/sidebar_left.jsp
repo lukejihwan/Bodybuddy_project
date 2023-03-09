@@ -107,19 +107,19 @@
               <li class="nav-item">
                 <a href="/admin/product/registform" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>다이어트</p>
+                  <p>식단정보게시판</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="/admin/product/list" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>벌크업</p>
+                  <p>식단공유게시판</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="/admin/category/main" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>비건</p>
+                  <p>식단팁게시판</p>
                 </a>
               </li>
             </ul>

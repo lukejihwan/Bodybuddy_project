@@ -42,6 +42,12 @@ public class AdminController {
 		ModelAndView mv=new ModelAndView("admin/exr/registform");
 		mv.addObject("exrCategoryList", exrCategoryList);
 		return mv;
+	}	
+	
+	@GetMapping("/diet/info_main")
+	public ModelAndView getInfoMain() {
+		ModelAndView mav=new ModelAndView("admin/diet/registform");
+		return mav;
 	}
 	
 	
