@@ -6,11 +6,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.edu.bodybuddy.domain.diet.Diet_Category;
+import com.edu.bodybuddy.domain.diet.DietCategory;
 import com.edu.bodybuddy.exception.Diet_CategoryException;
 
 @Repository
-public class MybatisDiet_CategoryDAO implements DietCategoryDAO{
+public class MybatisDietCategory implements DietCategoryDAO{
 
 	@Autowired
 	SqlSessionTemplate sqlSessionTemplate;
@@ -22,12 +22,12 @@ public class MybatisDiet_CategoryDAO implements DietCategoryDAO{
 	}
 
 	@Override
-	public Diet_Category select(int diet_category_idx) {
+	public DietCategory select(int diet_category_idx) {
 		return sqlSessionTemplate.selectOne("Diet_Category.select", diet_category_idx);
 	}
 
 	@Override
-	public void insert(Diet_Category diet_Category) throws Diet_CategoryException{
+	public void insert(DietCategory diet_Category) throws Diet_CategoryException{
 		int result=sqlSessionTemplate.insert("Diet_Category.insert", diet_Category);
 		if(result<1) {
 			throw new Diet_CategoryException("카테고리 등록 실패");
@@ -36,7 +36,7 @@ public class MybatisDiet_CategoryDAO implements DietCategoryDAO{
 	}
 
 	@Override
-	public void update(Diet_Category diet_Category) throws Diet_CategoryException{
+	public void update(DietCategory diet_Category) throws Diet_CategoryException{
 		int result=sqlSessionTemplate.update("Diet_Category.update", diet_Category);
 		if(result<1) {
 			throw new Diet_CategoryException("카테고리 수정 실패");
