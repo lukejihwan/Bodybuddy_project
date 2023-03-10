@@ -1,5 +1,7 @@
 package com.edu.bodybuddy.controller.user;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,12 +20,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/rest/user/member")
 public class RestMemberController {
-	
+	private Logger log = LoggerFactory.getLogger(getClass());
 	private final MemberService memberService;
 	
 	@PostMapping
 	public ResponseEntity<Msg> regist(Member member) {
-		memberService.regist(member);
+		log.info("넘어온거"+member);
+		//memberService.regist(member);
 		Msg msg = new Msg();
 		msg.setMsg("회원가입을 축하드립니다");
 		ResponseEntity<Msg> entity = new ResponseEntity<Msg>(msg, HttpStatus.OK);
