@@ -74,13 +74,11 @@
 				
 					<!-- Main row -->
 					<div class="row">
-
 						<div class="col">
 
-							<form id="form2">
 							
 								<div class="form-group row">
-<!-- 셀렉박스 이사감 -->
+									<!-- 셀렉박스 이사감 -->
 									
 									<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#myModal" id="bt_category">카테고리 관리하기</button>
 
@@ -102,7 +100,7 @@
 
 														<div class="col">
 															<input type="text" name="exr_category_name">
-															<button class="btn btn-warning" id="bt_category_regist">등록</button>
+															<button type="button" class="btn btn-warning" id="bt_category_regist">등록</button>
 														</div>
 													</form>
 
@@ -139,12 +137,12 @@
 									</div>
 									<!-- 카테고리 모달./ -->
 								</div>
-
+								
+								
+								<form id="form2">
 								<select class="form-control" name="exr_category_idx">
 									<option value="0">카테고리 선택</option>
-									<%
-									for (ExrCategory category : exrCategoryList) {
-									%>
+									<%for (ExrCategory category : exrCategoryList) {%>
 									<option value="<%=category.getExr_category_idx()%>"><%=category.getExr_category_name()%></option>
 									<%}%>
 
@@ -174,19 +172,24 @@
 												
 								<div class="form-group row">
 									<div class="col">
-										<textarea name="detail" class="form-control" id="detail">내용</textarea>
+										<textarea name="content1" class="form-control">내용1</textarea>
 									</div>
 								</div>
-	
-	
+												
 								<div class="form-group row">
 									<div class="col">
-										<button class="btn btn-danger btn-md" id="bt_regist">등록</button>							
-										<button class="btn btn-danger btn-md" id="bt_list">목록</button>									
+										<textarea name="content2" class="form-control">내용2</textarea>
 									</div>
 								</div>
-							
-							</form>							
+								</form>
+								
+								<div class="form-group row">
+									<div class="col">
+										<button type="button" class="btn btn-outline-danger" id="bt_regist">등록</button>									
+										<button type="button" class="btn btn-outline-danger" id="bt_list">목록</button>									
+									</div>
+								</div>
+								<!-- ./ -->
 							
 						</div>
 					</div>
@@ -213,6 +216,51 @@
 
 	
 	/*----------------------
+		등록
+	----------------------*/ 
+	function regist(){
+	
+		
+		let formData=new FormData();
+		formData.append("exrCategory.exr_category_idx", $("#form2 select[name='exr_category_idx']").val());
+		formData.append("title", $("#form2 input[name='title']").val());
+		formData.append("content1", $("#form2 textarea[name='content1']").val());
+		formData.append("content2", $("#form2 textarea[name='content2']").val());
+		
+
+		for(let i=0; i<app1.imageList.length; i++){
+			let file=app1.imageList[i].file;
+			formData.append("photo", file);
+		}
+
+ 		$.ajax({
+			url:"/admin/rest/exr/notice",
+			type:"post",
+			contentType:false,
+			processData:false,
+			data:formData,
+			
+			success:function(result, status, xhr){
+				alert(result.msg);
+				console.log("성공시 출력 ", result.msg);
+				
+				// 내용 비워주기
+				$("input[name='title']").val("");
+				$("textarea[name='content']").val("");
+			},
+			
+			error:function(xhr, status, err){
+				console.log("err ", err);
+				console.log("status ", status);
+				console.log("xhr ", xhr);
+				console.log("에러시 출력 ", xhr.responseText);
+				
+			}
+		});
+	}
+	
+	
+	/*----------------------
 		모달창 등록
 	----------------------*/ 
 	function categoryRegist(){
@@ -220,15 +268,24 @@
 		
 		$.ajax({
 			url:"/admin/rest/exr/category",
-			type:"POST",
+			type:"post",
 			data:{
 				exr_category_name:$("input[name='exr_category_name']").val()
 			},
 			success:function(result, status, xhr){
-				alert(result.msg);
+				console.log("결과 "+result);
 				getCategoryList();
+			},
+			error:function(xhr, status, err){
+				console.log("err ", err);
+				console.log("status ", status);
+				console.log("xhr ", xhr);
+				
+				let json=JSON.parse(xhr.responseText);		// string --> json
+				console.log("에러 발생시 출력", json.msg);
 			}
 		});
+		
 	}
 	
 	
@@ -242,8 +299,8 @@
 				<tr>
 					<td>{{dto.exr_category_idx}}</td>
 					<td @click="getDetail(dto)"><a href=#>{{dto.exr_category_name}}</a></td>
-					<td><button class="btn btn-warning" id="bt_category_edit" @click="edit(dto)">수정</button></td>
-					<td><button class="btn btn-warning" id="bt_category_del" @click="del(dto.exr_category_idx)">삭제</button></td>
+					<td><button type="button" class="btn btn-warning" id="bt_category_edit" @click="edit(dto)">수정</button></td>
+					<td><button type="button" class="btn btn-warning" id="bt_category_del" @click="del(dto.exr_category_idx)">삭제</button></td>
 				</tr>
 			`,
 			props:["category"],
@@ -270,6 +327,9 @@
 						success:function(result, status, xhr){
 							alert(result.msg);
 							getCategoryList();
+						},
+						error:function(xhr, status, err){
+							console.log(xhr.responseText);
 						}
 					});
 				},
@@ -302,6 +362,9 @@
 			success:function(result, status, xhr){
 				app1.categoryList=result;
 				//console.log("앱의 카테고리 리스트! ", app1.categoryList);
+			},
+			error:function(xhr, status, err){
+				console.log(xhr.responseText);
 			}
 		});
 	}
@@ -402,30 +465,7 @@
 	}
 	
 	
-	
-	/*----------------------
-		등록
-	----------------------*/ 
-	function regist(){
-		console.log("작동중?");
 
-		let formData=new FormData();
-		formData.append("title", $("#form2 input[name='title']").val());
-		formData.append("writer", $("#form2 input[name='content']").val());
-		formData.append("exrCategory.exr_category_idx", $("#form2 select[name='exr_category_idx']").val());
-		
-		$.ajax({
-			url:"/admin/rest/exr/notice",
-			type:"POST",
-			contentType:false,
-			processData:false,
-			data:formData,
-			success:function(result, status, xhr){
-				console.log(result);
-			}
-			
-		});
-	}
 	
 	
 	
@@ -450,6 +490,12 @@
 		
 		$("#bt_regist").click(function(){
 			regist();
+		});
+		
+
+		// 리스트 페이지 이동
+		$("#bt_list").click(function(){
+			location.href="/admin/exr/notice/list";
 		});
 		
 

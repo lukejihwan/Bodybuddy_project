@@ -22,9 +22,9 @@
                                 <li><a href="classes-list.html" title="정보">목표</a></li>
                             </ul>
                         </li>
-                        <li><a href="classes-list.html" title="Classes" class="animsition-link">운동</a>
+                        <li><a href="/exr/notice" title="Classes" class="animsition-link">운동</a>
                             <ul>
-                                <li><a href="classes-list.html" title="정보">정보</a></li>
+                                <li><a href="/exr/notice" title="정보">정보</a></li>
                                 <li><a href="classes-detail.html" title="Classes Detail">루틴 공유</a></li>
                                 <li><a href="classes-detail.html" title="Classes Detail">팁</a></li>
                                 <li><a href="classes-detail.html" title="Classes Detail">크루</a></li>

@@ -10,7 +10,7 @@ import com.edu.bodybuddy.domain.exr.ExrCategory;
 import com.edu.bodybuddy.exception.ExrCategoryException;
 
 @Repository
-public class MybatisExrCategory implements ExrCategoryDAO{
+public class MybatisExrCategoryDAO implements ExrCategoryDAO{
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 	

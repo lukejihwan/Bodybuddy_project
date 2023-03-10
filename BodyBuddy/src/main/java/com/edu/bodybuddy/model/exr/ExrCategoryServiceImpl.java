@@ -24,13 +24,15 @@ public class ExrCategoryServiceImpl implements ExrCategoryService{
 	}
 
 	@Override
-	public void insert(ExrCategory exr_category) throws ExrCategoryException{
-		exrCategoryDAO.insert(exr_category);
+	public void insert(ExrCategory exrCategory) throws ExrCategoryException{
+		
+		
+		exrCategoryDAO.insert(exrCategory);
 	}
 
 	@Override
-	public void update(ExrCategory exr_category) throws ExrCategoryException{
-		exrCategoryDAO.update(exr_category);
+	public void update(ExrCategory exrCategory) throws ExrCategoryException{
+		exrCategoryDAO.update(exrCategory);
 	}
 
 	@Override

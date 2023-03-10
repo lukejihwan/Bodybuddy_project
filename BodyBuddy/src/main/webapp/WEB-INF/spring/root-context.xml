@@ -4,9 +4,11 @@
 	xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd  
 	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd 
-	http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+	http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 	
 	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/mysql" resource-ref="true"/>
 	
@@ -24,5 +26,18 @@
 	</bean>
 	
 	<context:component-scan base-package="com.edu.bodybuddy.model"/>
+	
+	
+	<!-- 트랜잭션 매니저 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	
+	<!-- FileManager 빈 등록 -->
+	<bean id="fileManager" class="com.edu.bodybuddy.util.FileManager"/>
+	
+	<!-- 파일 처리 Resolver -->
+	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver"
+			  p:maxUploadSizePerFile="3145728"/>
+	
 	
 </beans>

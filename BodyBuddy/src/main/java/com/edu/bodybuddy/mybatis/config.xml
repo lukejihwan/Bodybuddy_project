@@ -12,6 +12,7 @@
   	<!-- Exr Alias -->
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrCategory" alias="ExrCategory" />
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrNotice" alias="ExrNotice" />
+  	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrNoticeImg" alias="ExrNoticeImg" />
  	
  	<!-- Diet Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietCategory" alias="DietCategory" />
@@ -44,6 +45,7 @@
     <!-- Exr Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrCategoryMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrNoticeMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrNoticeImgMapper.xml"/>
     
     <!-- Diet Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietCategoryMapper.xml"/>
