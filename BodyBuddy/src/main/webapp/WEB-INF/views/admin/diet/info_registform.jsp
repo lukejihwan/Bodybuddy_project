@@ -1,4 +1,12 @@
+<%@page import="com.edu.bodybuddy.domain.diet.DietCategory"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
+
+<%
+	List<DietCategory> dietCategoryList=(List)request.getAttribute("dietCategoryList");
+	System.out.print(dietCategoryList);
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,6 +72,9 @@
 				<!-- /.container-fluid -->
 			</div>
 			<!-- /.content-header -->
+			
+			<!-- Main content -->
+			<section class="content" id="app1">
 			<!-- 카테고리 추가 폼 디자인-->
 			<div class="modal" id="myModal">
 				<div class="modal-dialog modal-lg">
@@ -83,43 +94,35 @@
 								<button type="button" class="btn btn-success" id="bt_category_regist">등록</button>
 							</div>
 						</form>
-
-						<div>
+							<div>
 							<table class="table table-hover">
 								<thead>
 									<tr>
 										<th>번호</th>
-										<th colspan="2">식단분류</th>
-										<th></th>
+										<th>식단분류</th>
 									</tr>
 								</thead>
 								<tbody>
 									<template v-for="category in categoryList">
-										<row :obj="category" :key="category.diet_category_idx" />
+										<row :category="category" :key="category.diet_category_idx" />
 									</template>
 								</tbody>
 							</table>
-						</div>
+							</div>
 
-						<!-- Modal footer -->
+							<!-- Modal footer -->
 							<div class="modal-footer">
 								<div class="col">
 									<button type="button" class="btn btn-success" id="bt_category_regist">수정</button>
 									<button type="button" class="btn btn-success" id="bt_category_regist">삭제</button>
 								</div>
 							<button type="button" class="btn btn-success" data-dismiss="modal">닫기</button>
-						</div>
-
+							</div>
 					</div>
 				</div>
 			</div>
 			<!-- 모달 끝/ -->
-
-
-
-
-			<!-- Main content -->
-			<section class="content" id="app2">
+			
 				<form id="form2">
 				<div class="container-fluid">
 					<!-- 내용 -->
@@ -129,10 +132,16 @@
 								<div class="form-group row col-sm-3">
 									<button type="button" class="btn  btn-success btn-md" data-toggle="modal" data-target="#myModal" id="bt_category">카테고리설정</button>
 								</div>
+								
 								<select class="form-control" name="category_idx">
 									<option value="0">카테고리 선택</option>
-									<option value=""></option>
+									<%
+									for (DietCategory dietCategory : dietCategoryList) {
+									%>
+									<option value="<%=dietCategory.getDiet_category_idx()%>"><%=dietCategory.getDiet_category_name()%></option>
+									<%}%>
 								</select>
+
 							</div>
 
 							<div class="form-group row">
@@ -192,34 +201,17 @@
 	const row={
 			template:`
 				<tr>
-					<td>{{category.diet_category_idx}}</td>
-					<td @click="getDetail(category)"><a href="#">{{category.diet_category_name}}</a></td>
+					<td>{{obj.diet_category_idx}}</td>
+					<td><a href="#">{{obj.diet_category_name}}</a></td>
 				</tr>
 			`,
-			props:["obj"],
+			props:["category"],
 			data(){
 				return{
-					category:this.obj
-				}
-			},
-			methods:{
-				getDetail:function(category){
-					$("#form1 input[name='diet_category_name']").val(category.diet_category_name);
-					
-					console.log(this);
+					obj:this.category
 				}
 			}
 	};
-	
-	app1=new Vue({
-		el:"#app1",
-		conponents:{
-			row
-		},
-		data:{
-			categoryList:[]
-		}
-	});
 	
 	
 	/*------------------------------------
@@ -247,10 +239,24 @@
 	-------------------------------------*/
 	function categoryList(){
 		$.ajax({
-			url:"/admin/rest/diet/regist",
+			url:"/admin/rest/diet/list",
 			type:"get",
 			success:function(result, status, xhr){
 				app1.categoryList=result;
+				//console.log(app1.categoryList);
+			}
+		});
+	}
+	
+	
+	function init(){
+		app1=new Vue({
+			el:"#app1",
+			data:{
+				categoryList:[]
+			},
+			components:{
+				row
 			}
 		});
 	}
@@ -260,6 +266,12 @@
 					버튼 등록
 	-------------------------------------*/	
 	$(function() {
+		//뷰 적용 
+		init();
+
+		//카테고리 생성
+		categoryList();
+		
 		//모달 카테고리 등록버튼
 		$("#bt_category_regist").click(function(){
 			categoryRegist();
