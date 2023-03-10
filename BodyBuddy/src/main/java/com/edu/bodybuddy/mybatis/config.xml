@@ -8,6 +8,11 @@
   	<!-- Member Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.member.Member" alias="Member"/>
  	<typeAlias type="com.edu.bodybuddy.domain.member.Address" alias="Address"/>
+ 	
+ 	<!-- Myrecord Alias -->
+ 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.PhysicalRecord" alias="PysicalRecord"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrRecord" alias="ExrRecord"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.DietRecord" alias="DietRecord"/>
   
   	<!-- Exr Alias -->
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrCategory" alias="ExrCategory" />
@@ -40,6 +45,11 @@
     <mapper resource="com/edu/bodybuddy/mybatis/member/MemberMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/member/AddressMapper.xml"/>
 
+    <!-- Myrecord Mapper -->
+    <mapper resource="com/edu/bodybuddy/mybatis/myrecord/PhysicalRecordMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/myrecord/ExrRecordMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/myrecord/DietRecordMapper.xml"/>
+
     
     <!-- Exr Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrCategoryMapper.xml"/>
@@ -57,6 +67,8 @@
 
     <!-- Board Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/board/FreeBoardMapper.xml"/>
+    
+
 
   </mappers>
 </configuration>
