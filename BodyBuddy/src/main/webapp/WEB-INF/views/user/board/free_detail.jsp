@@ -1,4 +1,9 @@
+<%@page import="com.edu.bodybuddy.domain.board.FreeBoard"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%
+	FreeBoard board = (FreeBoard)request.getAttribute("board");
+	String listURI = "/board/free_list/";
+%>
 <!DOCTYPE html>
 <!-- content 부분만 비워둔 기본 템플릿 -->
 <!-- hero섹션이 포함되어있음 -->
@@ -38,18 +43,20 @@
 		<div class="container">
 			<div class="row">
 				<form id="form1">
+					<input type="hidden" name="free_board_idx" class="for-send" value="<%= board.getFree_board_idx() %>">
 					<div class="form-group">
-						<input type="text" class="form-control" name="title" placeholder="제목...">
+						<input type="text" class="form-control for-send" name="title" placeholder="제목..." value="<%= board.getTitle() %>">
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" name="writer" placeholder="작성자...">
+						<input type="text" class="form-control for-send" name="writer" placeholder="작성자..." value="<%= board.getWriter() %>">
 					</div>
 					<div class="form-group">
-						<textarea id="summernote" name="content"></textarea>
+						<textarea id="summernote" name="content" class="for-send"><%= board.getContent() %></textarea>
 					</div>
 					<div class="form-group">
-						<button type="button" class="btn btn-default" id="bt_regist">등록</button>
-						<button type="button" class="btn btn-primary">목록</button>
+						<button type="button" class="btn btn-primary" id="bt_list">목록</button>
+						<button type="button" class="btn btn-danger pull-right" id="bt_del">삭제</button>
+						<button type="button" class="btn btn-default pull-right" style="margin-right: 10px" id="bt_edit">수정</button>
 					</div>
 				</form>
 			</div>
@@ -77,7 +84,52 @@
 			minHeight:200
 		});
 		
-		
+		$("#bt_edit").click(()=>{
+			edit();
+		});
+		$("#bt_del").click(()=>{
+			del();
+		});
+		$("#bt_list").click(()=>{
+			location.href="<%= listURI %>" + 1;
+		});
 	});
+	
+	function edit() {
+		if(!confirm("수정하시겠습니까?")) return; 
+		
+		
+		let json = {};
+		$.each($(".for-send"), (i, item)=>{
+		    json[item.name] = item.value;
+		});
+		
+		
+		
+		//writer 언젠가 세션에 사용자 id로 넣어야 함
+		$.ajax({
+			url:"/rest/board/free_board",
+			type:"PUT",
+			contentType:"application/json;charset=utf-8",
+			processData:false,
+			data:JSON.stringify(json),
+			success:(result, status, xhr)=>{
+				console.log(result);
+			}
+		});
+	}
+	
+	function del() {
+		if(!confirm("수정하시겠습니까?")) return; 
+		
+		$("#form1").attr({
+			action:"/board/free_delete?free_board_idx="+$("input[type='hidden']"),
+			method:"DELETE"
+		});
+		
+		$("#form1").submit();
+	}
+	
+
 </script>
 </html>

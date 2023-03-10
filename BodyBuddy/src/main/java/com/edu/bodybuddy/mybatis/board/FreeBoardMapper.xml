@@ -40,6 +40,7 @@
 	</update>
 	<delete id="delete" parameterType="int">
 		delete from free_board
+		where free_board_idx=#{free_board_idx}
 	</delete>
 	
 </mapper>

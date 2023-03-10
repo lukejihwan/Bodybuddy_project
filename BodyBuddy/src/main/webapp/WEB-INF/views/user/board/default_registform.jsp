@@ -48,8 +48,8 @@
 						<textarea id="summernote" name="content"></textarea>
 					</div>
 					<div class="form-group">
-						<button type="button" class="btn btn-default" id="bt_regist">등록</button>
 						<button type="button" class="btn btn-primary" id="bt_list">목록</button>
+						<button type="button" class="btn btn-default pull-right" id="bt_regist">등록</button>
 					</div>
 				</form>
 			</div>

@@ -40,11 +40,11 @@
                                 <li><a href="blog-single.html" title="Blog Single" class="animsition-link">식단계산기</a></li>
                             </ul>
                         </li>
-                        <li><a href="/blog-default" title="Blog" class="animsition-link">게시판</a>
+                        <li><a href="/board/free_list/1" class="animsition-link">게시판</a>
                             <ul>
-                                <li><a href="/blog-default" title="Blog" class="animsition-link">자유게시판</a></li>
-                                <li><a href="/blog-default" title="Blog" class="animsition-link">질문/답변</a></li>
-                                <li><a href="/blog-default" title="Blog" class="animsition-link">고민상담(익명)</a></li>
+                                <li><a href="/board/free_list/1" class="animsition-link">자유게시판</a></li>
+                                <li><a href="/board/counseling_list/1" class="animsition-link">질문/답변</a></li>
+                                <li><a href="/board/qna_list/1" class="animsition-link">고민상담(익명)</a></li>
                             </ul>
                         </li>
                         <li><a href="/mypage" title="Mypage" class="animsition-link">마이페이지</a>
