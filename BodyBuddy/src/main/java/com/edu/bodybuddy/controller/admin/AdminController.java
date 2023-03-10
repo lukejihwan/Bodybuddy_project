@@ -50,14 +50,4 @@ public class AdminController {
 		ModelAndView mv = new ModelAndView("admin/exr/registform");
 		return mv;	
 	}
-	/*------------------------------------------------------------------
-	  								식단게시판
-	-------------------------------------------------------------------*/
-	@GetMapping("/diet/info")
-	public ModelAndView getInfoRegist() {
-		ModelAndView mav=new ModelAndView("admin/diet/registform");
-		return mav;
-	}
-	
-	
 }

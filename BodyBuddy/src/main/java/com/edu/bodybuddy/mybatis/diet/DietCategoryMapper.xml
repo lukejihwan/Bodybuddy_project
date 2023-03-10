@@ -3,7 +3,7 @@
 <mapper namespace="DietCategory">
 
 	<select id="selectAll" resultType="DietCategory">
-		select * from diet_category order by desc
+		select * from diet_category order by diet_category_idx desc
 	</select>
 
 	<select id="select" parameterType="int" resultType="DietCategory">
