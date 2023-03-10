@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.edu.bodybuddy.domain.diet.DietCategory;
 import com.edu.bodybuddy.exception.DietCategoryException;
 
+
 @Repository
 public class MybatisDietCategoryDAO implements DietCategoryDAO{
 
@@ -23,6 +24,7 @@ public class MybatisDietCategoryDAO implements DietCategoryDAO{
 
 	@Override
 	public DietCategory select(int diet_category_idx) {
+
 		return sqlSessionTemplate.selectOne("DietCategory.select", diet_category_idx);
 	}
 
@@ -32,7 +34,6 @@ public class MybatisDietCategoryDAO implements DietCategoryDAO{
 		if(result<1) {
 			throw new DietCategoryException("카테고리 등록 실패");
 		}
-		
 	}
 
 	@Override

@@ -13,38 +13,37 @@
                     <ul>
                         <li class="active"><a href="/" title="Home" class="animsition-link">Home</a></li>
                         
-                        <li><a href="classes-list.html" title="Classes" class="animsition-link">나의 기록</a>
+                        <li><a href="/myrecord" title="record" class="animsition-link">나의 기록</a>
                             <ul>
-                                <li><a href="classes-list.html" title="정보">기본정보</a></li>
-                                <li><a href="classes-list.html" title="정보">러닝기록</a></li>
-                                <li><a href="classes-list.html" title="정보">달력</a></li>
-                                <li><a href="classes-list.html" title="정보">식단</a></li>
-                                <li><a href="classes-list.html" title="정보">목표</a></li>
+                                <li><a href="/myrecord/physical_record" title="정보">신체기록</a></li>
+                                <li><a href="/myrecord/exr_record" title="정보">운동기록</a></li>
+                                <li><a href="/myrecord/diet_record" title="정보">식단기록</a></li>
+                                <li><a href="/myrecord/add_record" title="정보">기록추가</a></li>
                             </ul>
                         </li>
-                        <li><a href="classes-list.html" title="Classes" class="animsition-link">운동</a>
+                        <li><a href="/exr" title="exr" class="animsition-link">운동</a>
                             <ul>
-                                <li><a href="classes-list.html" title="정보">정보</a></li>
-                                <li><a href="classes-detail.html" title="Classes Detail">루틴 공유</a></li>
-                                <li><a href="classes-detail.html" title="Classes Detail">팁</a></li>
-                                <li><a href="classes-detail.html" title="Classes Detail">크루</a></li>
-                                <li><a href="classes-detail.html" title="Classes Detail">챌린지</a></li>
-                                <li><a href="classes-detail.html" title="Classes Detail">칼로리 소모 계산기</a></li>
+                                <li><a href="/exr/notice" title="정보">정보</a></li>
+                                <li><a href="#" title="Classes Detail">루틴 공유</a></li>
+                                <li><a href="#" title="Classes Detail">팁</a></li>
+                                <li><a href="#" title="Classes Detail">크루</a></li>
+                                <li><a href="#" title="Classes Detail">챌린지</a></li>
+                                <li><a href="#" title="Classes Detail">칼로리 소모 계산기</a></li>
                             </ul>
                         </li>
-                        <li><a href="/blog-default" title="Blog" class="animsition-link">식단</a>
+                        <li><a href="/diet" title="diet" class="animsition-link">식단</a>
                             <ul>
-                                <li><a href="/blog-default" title="Blog" class="animsition-link">식단정보</a></li>
-                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">식단 팁</a></li>
-                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">식단공유</a></li>
-                                <li><a href="blog-single.html" title="Blog Single" class="animsition-link">식단계산기</a></li>
+                                <li><a href="/diet/info_main" title="Blog" class="animsition-link">식단정보</a></li>
+                                <li><a href="#" title="Blog Single" class="animsition-link">식단 팁</a></li>
+                                <li><a href="#" title="Blog Single" class="animsition-link">식단공유</a></li>
+                                <li><a href="#" title="Blog Single" class="animsition-link">식단계산기</a></li>
                             </ul>
                         </li>
-                        <li><a href="/blog-default" title="Blog" class="animsition-link">게시판</a>
+                        <li><a href="/board" title="board" class="animsition-link">게시판</a>
                             <ul>
-                                <li><a href="/blog-default" title="Blog" class="animsition-link">자유게시판</a></li>
-                                <li><a href="/blog-default" title="Blog" class="animsition-link">질문/답변</a></li>
-                                <li><a href="/blog-default" title="Blog" class="animsition-link">고민상담(익명)</a></li>
+                                <li><a href="/board/free_list" title="Blog" class="animsition-link">자유게시판</a></li>
+                                <li><a href="#" title="Blog" class="animsition-link">질문/답변</a></li>
+                                <li><a href="#" title="Blog" class="animsition-link">고민상담(익명)</a></li>
                             </ul>
                         </li>
                         <li><a href="/mypage" title="Mypage" class="animsition-link">마이페이지</a>

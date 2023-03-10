@@ -29,7 +29,7 @@ import com.edu.bodybuddy.model.exr.ExrCategoryService;
 public class RestExrNoticeController {
 	private Logger logger=LoggerFactory.getLogger(this.getClass());
 	@Autowired
-	private ExrCategoryService exrCategoryService; 
+	private ExrCategoryService exrCategoryService;
 	
 	/*-----------------------------
 		운동 카테고리와 관련된 메서드!
