@@ -36,5 +36,13 @@ public class MybatisFreeBoardDAO implements BoardDAO{
 		int result = sqlSessionTemplate.delete("FreeBoard.delete", free_board_idx);
 		if(result < 1) throw new FreeBoardException("자유게시판 게시물 삭제 실패");
 	}
+
+	public List selectAllByPage(int page) {
+		return sqlSessionTemplate.selectList("FreeBoard.selectAllByPage", page);
+	}
+
+	public int totalCount() {
+		return sqlSessionTemplate.selectOne("FreeBoard.totalCount");
+	}
 	
 }

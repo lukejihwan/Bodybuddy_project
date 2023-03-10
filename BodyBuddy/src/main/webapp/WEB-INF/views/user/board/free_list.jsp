@@ -1,4 +1,23 @@
+<%@page import="com.edu.bodybuddy.util.PageManager"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.edu.bodybuddy.domain.board.FreeBoard"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%
+	List boardList = (List)request.getAttribute("freeBoardList");
+	PageManager pageManager = (PageManager)request.getAttribute("pageManager");
+	String listURI = "/board/free_list/"; // href 이동 주소 이것만 변경하면 됨. 뒤에 / 붙일 것 ex. /board/free_list/
+	String detailURI = "/board/free_detail/";
+	
+	if(boardList == null) out.print("<script>location.href='"+listURI+"1'</script>");
+	
+	if(boardList == null) {
+		boardList = new ArrayList();
+		pageManager = new PageManager();
+		pageManager.init(boardList.size(), 0);
+	};
+	
+%>
 <!DOCTYPE html>
 <!-- content 부분만 비워둔 기본 템플릿 -->
 <!-- hero섹션이 포함되어있음 -->
@@ -58,13 +77,16 @@ tr {
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>John</td>
-								<td>Doe</td>
-								<td>john@example.com</td>
-								<td>john@example.com</td>
-								<td>john@example.com</td>
+							<% for(int i =0;i<boardList.size();i++){ %>
+							<% FreeBoard board = (FreeBoard)boardList.get(i); %>
+							<tr onclick="getDetail(<%= board.getFree_board_idx() %>)">
+								<td><%= board.getFree_board_idx() %></td>
+								<td><%= board.getTitle() %></td>
+								<td><%= board.getWriter() %></td>
+								<td><%= board.getRegdate().substring(0, 10) %></td>
+								<td><%= board.getHit() %></td>
 							</tr>
+							<% } %>
 						</tbody>
 					</table>
 				</div>
@@ -79,13 +101,18 @@ tr {
 				<div class="st-pagination">
 					<!--st-pagination-->
 					<ul class="pagination">
-						<li><a href="#" aria-label="previous"><span
-								aria-hidden="true">previous</span></a></li>
-						<li class="active"><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#" aria-label="Next"><span
-								aria-hidden="true">next</span></a></li>
+						<% if(pageManager.getFirstPage()!=1){ %>
+						<li><a href="<%= listURI %><%= pageManager.getFirstPage()-1  %>" aria-label="previous"><span aria-hidden="false">이전</span></a></li>
+						<% } %>
+						
+						<% for(int i =pageManager.getFirstPage();i<=pageManager.getLastPage();i++){ %>
+						<% if(i>pageManager.getTotalPage()) break; %>
+						<li <% if(pageManager.getCurrentPage()==i) out.print("class=\"active\""); %>> <a href="<%= listURI %><%= i %>"><%= i %></a></li>
+						<% } %>
+						
+						<% if(pageManager.getLastPage()<pageManager.getTotalPage()){ %>
+						<li><a href="<%= listURI %><%= pageManager.getLastPage()+1 %>" aria-label="Next"><span aria-hidden="true">다음</span></a></li>
+						<% } %>
 					</ul>
 				</div>
 			</div>
@@ -108,7 +135,7 @@ tr {
 
 </body>
 <script>
-	$(()=>{
+	$(()=>{	
 		$("#bt_regist").click(()=>{
 			regist();
 		});
@@ -116,6 +143,10 @@ tr {
 	
 	function regist() {
 		location.href = "/board/free_registform";
+	}
+	
+	function getDetail(idx) {
+		location.href = "<%= detailURI %>" + idx;
 	}
 </script>
 </html>
