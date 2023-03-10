@@ -1,5 +1,8 @@
 package com.edu.bodybuddy.domain.diet;
 
+import lombok.Data;
+
+@Data
 public class DietTip {
 	private int member_idx;
 	private int diet_category_idx;

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edu.bodybuddy.domain.diet.DietCategory;
-import com.edu.bodybuddy.exception.Diet_CategoryException;
+import com.edu.bodybuddy.exception.DietCategoryException;
 
 @Service
 public class DietCategoryServiceImpl implements DietCategoryService{
@@ -25,17 +25,17 @@ public class DietCategoryServiceImpl implements DietCategoryService{
 	}
 
 	@Override
-	public void insert(DietCategory diet_Category) throws Diet_CategoryException{
+	public void insert(DietCategory diet_Category) throws DietCategoryException{
 		diet_CategoryDAO.insert(diet_Category);
 	}
 
 	@Override
-	public void update(DietCategory diet_Category) throws Diet_CategoryException{
+	public void update(DietCategory diet_Category) throws DietCategoryException{
 		diet_CategoryDAO.update(diet_Category);
 	}
 
 	@Override
-	public void delete(int diet_category_idx) throws Diet_CategoryException{
+	public void delete(int diet_category_idx) throws DietCategoryException{
 		diet_CategoryDAO.delete(diet_category_idx);
 	}
 
