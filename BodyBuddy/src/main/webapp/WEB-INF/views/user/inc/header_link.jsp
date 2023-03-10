@@ -7,7 +7,7 @@
 <meta name="keywords" content="bootstrap template, Responsive Template, Website Template, free website templates, free website template download ">
 <title>5조 BodyBuddy</title>
 <!-- Bootstrap -->
-<link href="/resources/user/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <!-- style CSS -->
 <link href="/resources/user/css/style.css" rel="stylesheet">
 <!-- animsition css -->
