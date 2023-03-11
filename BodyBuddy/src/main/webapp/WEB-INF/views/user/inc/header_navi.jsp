@@ -21,14 +21,14 @@
                                 <li><a href="/myrecord/add_record" title="정보">기록추가</a></li>
                             </ul>
                         </li>
-                        <li><a href="/exr" title="exr" class="animsition-link">운동</a>
+                        <li><a href="/exr/notice" title="Classes" class="animsition-link">운동</a>
                             <ul>
                                 <li><a href="/exr/notice" title="정보">정보</a></li>
-                                <li><a href="#" title="Classes Detail">루틴 공유</a></li>
-                                <li><a href="#" title="Classes Detail">팁</a></li>
-                                <li><a href="#" title="Classes Detail">크루</a></li>
-                                <li><a href="#" title="Classes Detail">챌린지</a></li>
-                                <li><a href="#" title="Classes Detail">칼로리 소모 계산기</a></li>
+                                <li><a href="classes-detail.html" title="Classes Detail">루틴 공유</a></li>
+                                <li><a href="classes-detail.html" title="Classes Detail">팁</a></li>
+                                <li><a href="classes-detail.html" title="Classes Detail">크루</a></li>
+                                <li><a href="classes-detail.html" title="Classes Detail">챌린지</a></li>
+                                <li><a href="classes-detail.html" title="Classes Detail">칼로리 소모 계산기</a></li>
                             </ul>
                         </li>
                         <li><a href="/diet" title="diet" class="animsition-link">식단</a>
