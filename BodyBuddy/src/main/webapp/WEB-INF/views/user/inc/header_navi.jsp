@@ -15,17 +15,10 @@
                         
                         <li><a href="/myrecord" title="record" class="animsition-link">나의 기록</a>
                             <ul>
-<<<<<<< HEAD
                                 <li><a href="/myrecord/addrecord" title="정보">기록추가</a></li>
                                 <li><a href="/myrecord/physical_record" title="정보">신체기록</a></li>
                                 <li><a href="/myrecord/exr_record" title="정보">운동기록</a></li>
                                 <li><a href="/myrecord/diet_record" title="정보">식단기록</a></li>
-=======
-                                <li><a href="/myrecord/physical_record" title="정보">신체기록</a></li>
-                                <li><a href="/myrecord/exr_record" title="정보">운동기록</a></li>
-                                <li><a href="/myrecord/diet_record" title="정보">식단기록</a></li>
-                                <li><a href="/myrecord/add_record" title="정보">기록추가</a></li>
->>>>>>> e19983f882336a00c041c23efd9aa0e04d340b88
                             </ul>
                         </li>
                         <li><a href="/exr/notice" title="Classes" class="animsition-link">운동</a>
