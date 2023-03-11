@@ -7,7 +7,7 @@
 List boardList = (List) request.getAttribute("freeBoardList");
 PageManager pageManager = (PageManager) request.getAttribute("pageManager");
 String listURI = "/board/free_list/"; // href 이동 주소 이것만 변경하면 됨. 뒤에 / 붙일 것 ex. /board/free_list/
-String detailURI = "/board/free_detail/";
+String detailURI = "/board/free_detail_view/";
 
 if (boardList == null)
 	out.print("<script>location.href='" + listURI + "1'</script>");
@@ -56,12 +56,20 @@ if (boardList == null) {
 	<div class="space-medium">
 		<div class="container">
 			<div class="row">
+				<div class="col">
+                    <h1><a href="<%= listURI+1 %>">자유게시판</a></h1>
+                    <hr>
+				</div>
+			</div>
+			<!-- end of row -->
+			<div class="row">
 				<div class="col table-responsive">
 					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th>No</th>
 								<th>제목</th>
+								<th></th> <!-- 썸네일 나올 곳 -->
 								<th>작성자</th>
 								<th>등록일</th>
 								<th>조회수</th>
@@ -77,6 +85,7 @@ if (boardList == null) {
 							<tr onclick="getDetail(<%=board.getFree_board_idx()%>)">
 								<td><%=board.getFree_board_idx()%></td>
 								<td><%=board.getTitle()%></td>
+								<td><img src="<%=board.getThumbnail()%>" style="width:50px;height:50px;"/></td>
 								<td><%=board.getWriter()%></td>
 								<td><%=board.getRegdate().substring(0, 10)%></td>
 								<td><%=board.getHit()%></td>

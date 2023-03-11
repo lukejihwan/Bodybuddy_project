@@ -1,4 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%
+	String listURI = "/board/free_list/"; //ex. /board/free_list/
+%>
 <!DOCTYPE html>
 <!-- content 부분만 비워둔 기본 템플릿 -->
 <!-- hero섹션이 포함되어있음 -->
@@ -38,6 +41,13 @@
 		<div class="container">
 			<div class="row">
 				<div class="col">
+                    <h1><a href="<%= listURI+1 %>">자유게시판</a></h1>
+                    <hr>
+				</div>
+			</div>
+			<!-- end of row -->
+			<div class="row">
+				<div class="col">
 					<form id="form1">
 						<div class="form-group">
 							<input type="text" class="form-control" name="title" placeholder="제목...">
@@ -48,6 +58,7 @@
 						<div class="form-group">
 							<textarea id="summernote" name="content"></textarea>
 						</div>
+						<input type="hidden" name="thumbnail">
 						<div class="form-group">
 							<button type="button" class="btn btn-primary" id="bt_list">목록</button>
 							<button type="button" class="btn btn-default pull-right" id="bt_regist">등록</button>
@@ -77,6 +88,12 @@
 	$(()=>{
 		$('#summernote').summernote({
 			minHeight:200,
+			maximumImageFileSize: 64 * 1024, //64kb 제한
+		    callbacks:{
+		        onImageUploadError: function(msg){
+		          	alert("한번에 올릴 수 있는 최대 파일 크기는 64KB 입니다");
+		        }
+		    }
 		});
 		
 		$("#bt_regist").click(()=>{
@@ -89,12 +106,18 @@
 	});
 	
 	function regist() {
+		getThumbnailImg();
 		$("#form1").attr({
 			action:"/board/free_regist",
 			method:"POST"
 		});
 		
 		$("#form1").submit();
+	}
+	function getThumbnailImg() {
+		let domParser = new DOMParser();
+		let doc = domParser.parseFromString($("#form1 *[name='content']").val(), "text/html");
+		if(doc.querySelector("img") != null) $("#form1 *[name='thumbnail']").val(doc.querySelector("img").src);
 	}
 	
 </script>

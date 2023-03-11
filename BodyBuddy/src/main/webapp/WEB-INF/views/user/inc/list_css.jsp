@@ -1,4 +1,4 @@
-<!-- 게시판 목록 위한 css -->
+<!-- ��css for our template's pagination to use bootstrap4 -->
 <style type="text/css">
 tr {
 	cursor: pointer
