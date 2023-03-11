@@ -5,38 +5,38 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.edu.bodybuddy.domain.diet.Diet_Category;
-import com.edu.bodybuddy.exception.Diet_CategoryException;
+import com.edu.bodybuddy.domain.diet.DietCategory;
+import com.edu.bodybuddy.exception.DietCategoryException;
 
 @Service
 public class DietCategoryServiceImpl implements DietCategoryService{
 
 	@Autowired
-	private DietCategoryDAO dietCategoryDAO;
+	private DietCategoryDAO diet_CategoryDAO;
 	
 	@Override
 	public List selectAll() {
-		return dietCategoryDAO.selectAll();
+		return diet_CategoryDAO.selectAll();
 	}
 
 	@Override
-	public Diet_Category select(int diet_category_idx) {
-		return dietCategoryDAO.select(diet_category_idx);
+	public DietCategory select(int diet_category_idx) {
+		return diet_CategoryDAO.select(diet_category_idx);
 	}
 
 	@Override
-	public void insert(Diet_Category diet_Category) throws Diet_CategoryException{
-		dietCategoryDAO.insert(diet_Category);
+	public void insert(DietCategory diet_Category) throws DietCategoryException{
+		diet_CategoryDAO.insert(diet_Category);
 	}
 
 	@Override
-	public void update(Diet_Category diet_Category) throws Diet_CategoryException{
-		dietCategoryDAO.update(diet_Category);
+	public void update(DietCategory diet_Category) throws DietCategoryException{
+		diet_CategoryDAO.update(diet_Category);
 	}
 
 	@Override
-	public void delete(int diet_category_idx) throws Diet_CategoryException{
-		dietCategoryDAO.delete(diet_category_idx);
+	public void delete(int diet_category_idx) throws DietCategoryException{
+		diet_CategoryDAO.delete(diet_category_idx);
 	}
 
 }

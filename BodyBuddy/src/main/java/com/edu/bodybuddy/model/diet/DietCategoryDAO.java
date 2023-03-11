@@ -2,12 +2,12 @@ package com.edu.bodybuddy.model.diet;
 
 import java.util.List;
 
-import com.edu.bodybuddy.domain.diet.Diet_Category;
+import com.edu.bodybuddy.domain.diet.DietCategory;
 
 public interface DietCategoryDAO {
 	public List selectAll();
-	public Diet_Category select(int diet_category_idx);
-	public void insert(Diet_Category diet_Category);
-	public void update(Diet_Category diet_Category);
+	public DietCategory select(int diet_category_idx);
+	public void insert(DietCategory diet_category);
+	public void update(DietCategory diet_category);
 	public void delete(int diet_category_idx);
 }
