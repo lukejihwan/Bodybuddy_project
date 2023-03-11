@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+<configuration>
+  <typeAliases>
+  	<!-- Member Alias -->
+ 	<typeAlias type="com.edu.bodybuddy.domain.member.Member" alias="Member"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.member.Address" alias="Address"/>
+ 	
+ 	<!-- Myrecord Alias -->
+ 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.PhysicalRecord" alias="PysicalRecord"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrRecord" alias="ExrRecord"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.DietRecord" alias="DietRecord"/>
+  
+  	<!-- Exr Alias -->
+  	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrCategory" alias="ExrCategory" />
+  	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrNotice" alias="ExrNotice" />
+  	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrNoticeImg" alias="ExrNoticeImg" />
+ 	
+ 	<!-- Diet Alias -->
+ 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietCategory" alias="DietCategory" />
+ 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietInfoImg" alias="DietInfoImg" />
+ 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietInfo" alias="DietInfo" />
+ 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietShareComments" alias="DietShareComments" />
+ 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietShareImg" alias="DietShareImg" />
+ 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietShare" alias="DietShare" />
+ 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietTipComments" alias="DietTipComments" />
+ 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietTipImg" alias="DietTipImg" />
+ 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietTip" alias="DietTip" />
+ 
+ 	<!-- Mypage Alias -->
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.Report" alias="Report"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.Ask" alias="Ask"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.Ask_img" alias="Ask_img"/>
+ 	
+ 	<!-- Board Alias -->
+ 	<typeAlias type="com.edu.bodybuddy.domain.board.FreeBoard" alias="FreeBoard"/>
+ 	
+  </typeAliases>
+  
+  <mappers>
+    <mapper resource="com/edu/bodybuddy/mybatis/member/MemberMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/member/AddressMapper.xml"/>
+
+    <!-- Myrecord Mapper -->
+    <mapper resource="com/edu/bodybuddy/mybatis/myrecord/PhysicalRecordMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/myrecord/ExrRecordMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/myrecord/DietRecordMapper.xml"/>
+
+    <!-- Exr Mapper -->
+    <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrCategoryMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrNoticeMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrNoticeImgMapper.xml"/>
+    
+    <!-- Diet Mapper -->
+    <mapper resource="com/edu/bodybuddy/mybatis/diet/DietCategoryMapper.xml"/>
+    
+    
+    <!-- Mypage Mapper -->
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/ReportMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskMapper.xml"/>
+
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskimgMapper.xml"/>
+
+    <mapper resource="com/edu/bodybuddy/mybatis/board/FreeBoardMapper.xml"/>
+    
+
+
+  </mappers>
+</configuration>
