@@ -42,23 +42,25 @@
 	<div class="space-medium">
 		<div class="container">
 			<div class="row">
-				<form id="form1">
-					<input type="hidden" name="free_board_idx" class="for-send" value="<%= board.getFree_board_idx() %>">
-					<div class="form-group">
-						<input type="text" class="form-control for-send" name="title" placeholder="제목..." value="<%= board.getTitle() %>">
-					</div>
-					<div class="form-group">
-						<input type="text" class="form-control for-send" name="writer" placeholder="작성자..." value="<%= board.getWriter() %>">
-					</div>
-					<div class="form-group">
-						<textarea id="summernote" name="content" class="for-send"><%= board.getContent() %></textarea>
-					</div>
-					<div class="form-group">
-						<button type="button" class="btn btn-primary" id="bt_list">목록</button>
-						<button type="button" class="btn btn-danger pull-right" id="bt_del">삭제</button>
-						<button type="button" class="btn btn-default pull-right" style="margin-right: 10px" id="bt_edit">수정</button>
-					</div>
-				</form>
+				<div class="col">
+					<form id="form1">
+						<input type="hidden" name="free_board_idx" class="for-send" value="<%= board.getFree_board_idx() %>">
+						<div class="form-group">
+							<input type="text" class="form-control for-send" name="title" placeholder="제목..." value="<%= board.getTitle() %>">
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control for-send" name="writer" placeholder="작성자..." value="<%= board.getWriter() %>">
+						</div>
+						<div class="form-group">
+							<textarea id="summernote" name="content" class="for-send"><%= board.getContent() %></textarea>
+						</div>
+						<div class="form-group">
+							<button type="button" class="btn btn-primary" id="bt_list">목록</button>
+							<button type="button" class="btn btn-danger pull-right" id="bt_del">삭제</button>
+							<button type="button" class="btn btn-default pull-right" style="margin-right: 10px" id="bt_edit">수정</button>
+						</div>
+					</form>
+				</div>
 			</div>
 			<!-- end of row -->
 		</div>

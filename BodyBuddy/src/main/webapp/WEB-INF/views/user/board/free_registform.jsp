@@ -37,21 +37,23 @@
 	<div class="space-medium">
 		<div class="container">
 			<div class="row">
-				<form id="form1">
-					<div class="form-group">
-						<input type="text" class="form-control" name="title" placeholder="제목...">
-					</div>
-					<div class="form-group">
-						<input type="text" class="form-control" name="writer" placeholder="작성자...">
-					</div>
-					<div class="form-group">
-						<textarea id="summernote" name="content"></textarea>
-					</div>
-					<div class="form-group">
-						<button type="button" class="btn btn-primary" id="bt_list">목록</button>
-						<button type="button" class="btn btn-default pull-right" id="bt_regist">등록</button>
-					</div>
-				</form>
+				<div class="col">
+					<form id="form1">
+						<div class="form-group">
+							<input type="text" class="form-control" name="title" placeholder="제목...">
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" name="writer" placeholder="작성자...">
+						</div>
+						<div class="form-group">
+							<textarea id="summernote" name="content"></textarea>
+						</div>
+						<div class="form-group">
+							<button type="button" class="btn btn-primary" id="bt_list">목록</button>
+							<button type="button" class="btn btn-default pull-right" id="bt_regist">등록</button>
+						</div>
+					</form>
+				</div>
 			</div>
 			<!-- end of row -->
 		</div>
