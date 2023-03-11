@@ -21,6 +21,15 @@
 		where free_board_idx=#{free_board_idx}
 	</select>
 	
+	<select id="selectAllByPage" resultMap="resultMap" parameterType="int">
+		select * from free_board
+		order by free_board_idx desc limit 10 offset #{page}
+	</select>
+	
+	<select id="totalCount" resultType="int">
+		select count(*) as totalCount from free_board
+	</select>
+	
 	<insert id="insert" parameterType="FreeBoard">
 		insert into free_board(title, writer, content, member_idx)
 		values (#{title}, #{writer}, #{content}, #{member.member_idx})
@@ -31,6 +40,7 @@
 	</update>
 	<delete id="delete" parameterType="int">
 		delete from free_board
+		where free_board_idx=#{free_board_idx}
 	</delete>
 	
 </mapper>

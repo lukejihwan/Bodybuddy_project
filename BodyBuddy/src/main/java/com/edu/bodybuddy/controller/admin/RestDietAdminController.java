@@ -42,10 +42,11 @@ public class RestDietAdminController {
 	}
 	
 	//목록 요청하기
-	@GetMapping("/diet/regist")
+	@GetMapping("/diet/list")
 	public List<DietCategory> getList(){
 		logger.info("작동");
 		return dietCategoryService.selectAll();
+		
 	}
 	
 

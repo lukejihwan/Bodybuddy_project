@@ -71,12 +71,28 @@
 .btn-group-vertical{
 	position: fixed;
 }
+#right_sector{
+	padding: 20px;
+	position: relative;
+	top: 150px;
+	text-align:center;
+	height: 400px;
+	background-color:#eeeee4;
+}
+#bt_add_record, #bt_regist{
+	border: 1px solid white;
+	position: relative;
+	top: 200px;
+}
+#myModal {
+    background: white;
+}
 </style>
 <script type="text/javascript">
 let currentYear;
 let currentMonth;
 function getDate(){
-	let date = new Date();
+	const date = new Date();
 	let makeCalendar = (date) => {
   	currentYear = new Date(date).getFullYear();
   	currentMonth = new Date(date).getMonth() + 1;
@@ -89,7 +105,7 @@ function getDate(){
     	htmlDummy += "<div class='noColor'></div>";
   	}
   	for (let i = 1; i <= lastDay; i++) {
-    	htmlDummy += "<div onclick='popups("+i+")'>"+i+"</div>";
+    	htmlDummy += "<div onclick='popups(currentYear, currentMonth, "+i+")'>"+i+"</div>";
   	}
   	for (let i = limitDay; i < nextDay; i++) {
     	htmlDummy += "<div class='noColor'></div>";
@@ -99,6 +115,11 @@ function getDate(){
 	}
 	
 	makeCalendar(date);
+	
+	//오늘 날짜 그리기
+	const today=new Date();
+	console.log(today);	
+	
 	// 이전달 이동
 	document.querySelector('.prevDay').onclick = () => {
 		makeCalendar(new Date(date.setMonth(date.getMonth() - 1)));
@@ -108,13 +129,25 @@ function getDate(){
 	document.querySelector('.nextDay').onclick = () => {
 		makeCalendar(new Date(date.setMonth(date.getMonth() + 1)));
 	}
+	
+	document.getElementById("bt_add_record").onclick=function(){
+		
+	};
 }
-function popups(index){
-	console.log(currentYear, currentMonth);
-	alert(index);
+
+function popups(currentYear, currentMonth, currentDay){
+	alert(currentYear+" 년 "+currentMonth+" 월 "+currentDay+"일");
 }
+
 $(function(){
 	getDate();
+	
+	
+});
+</script>
+<script type="text/babel">
+let app1;
+app1=new Vue({
 	
 });
 </script>
@@ -179,7 +212,47 @@ $(function(){
                     </div>
                 -->
                 </div>
-            </div>
+                
+                <!-- 기록추가 화면 나올 곳 -->
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 card" id="right_sector">
+                	<h3 class="">기록 추가</h3>
+                	<h5></h5>
+                	<div class="form-group">
+		            	<button type="button" class="btn btn-default" id="bt_add_record" data-toggle="modal" data-target="#myModal">기록추가</button>
+		            	<button type="button" class="btn btn-default" id="bt_regist">기록 등록</button>
+		            </div>     	
+                </div>
+
+				<!-- 모달 창 나오는 곳 -->
+				<div class="modal" id="myModal">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+
+							<!-- 모달 제목 -->
+							<div class="modal-header">
+								<h4 class="modal-title">기록추가</h4>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+
+							<!-- 모달 내용 -->
+							<div class="modal-body">
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="운동 검색..." name="t_exr_research">
+									<button type="button" class="btn btn-primary btn-sm float-right">세트추가</button>
+								</div>
+							</div>
+
+							<!-- 모달 footer -->
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger"
+									data-dismiss="modal">운동 등록</button>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
         </div>
     </div>
     <!-- /content end -->
