@@ -28,4 +28,9 @@ public class MainController {
 		return addresses+"/"+page;
 	}
 	
+	@GetMapping("chuchu")
+	public String chuchu() {
+		return "board/free_list";
+	}
+	
 }

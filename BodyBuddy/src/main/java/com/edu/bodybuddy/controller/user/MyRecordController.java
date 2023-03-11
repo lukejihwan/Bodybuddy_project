@@ -11,25 +11,25 @@ public class MyRecordController {
 
 	@GetMapping("/addrecord")
 	public ModelAndView getAddPage() {
-		ModelAndView mav=new ModelAndView("user/myrecord/add_record");
+		ModelAndView mav=new ModelAndView("myrecord/add_record");
 		return mav;
 	}
 	
 	@GetMapping("/physical_record")
 	public ModelAndView getphysicalPage() {
-		ModelAndView mav=new ModelAndView("user/myrecord/physical_record");
+		ModelAndView mav=new ModelAndView("myrecord/physical_record");
 		return mav;
 	}
 
 	@GetMapping("/exr_record")
 	public ModelAndView getExrPage() {
-		ModelAndView mav=new ModelAndView("user/myrecord/exr_record");
+		ModelAndView mav=new ModelAndView("myrecord/exr_record");
 		return mav;
 	}
 	
 	@GetMapping("/diet_record")
 	public ModelAndView getDietPage() {
-		ModelAndView mav=new ModelAndView("user/myrecord/diet_record");
+		ModelAndView mav=new ModelAndView("myrecord/diet_record");
 		return mav;
 	}
 	
