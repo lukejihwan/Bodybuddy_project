@@ -6,89 +6,104 @@
 </head>
 <style>
 .dateHead div {
-  background: #e31b20;
-  color: #fff;
-  text-align: center;
-  border-radius: 5px;
+	background: #e31b20;
+	color: #fff;
+	text-align: center;
+	border-radius: 5px;
 }
+
 .grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-gap: 5px;
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	grid-gap: 5px;
 }
+
 .grid div {
-  padding: .6rem;
-  font-size: .9rem;
-  cursor: pointer;
+	padding: .6rem;
+	font-size: .9rem;
+	cursor: pointer;
 }
+
 .dateBoard div {
-  color: #222;
-  font-weight: bold;
-  min-height: 6rem;
-  padding: .6rem .8rem;
-  border-radius: 5px;
-  border: 1px solid #eee;
+	color: #222;
+	font-weight: bold;
+	min-height: 6rem;
+	padding: .6rem .8rem;
+	border-radius: 5px;
+	border: 1px solid #eee;
 }
+
 .noColor {
-  background: #eee;
+	background: #eee;
 }
+
 .header {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 2rem;
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem 2rem;
 }
 /* 좌우 버튼 */
 .btns {
- display: block;
- width: 20px;
- height: 20px;
- border: 3px solid #000;
- border-width: 3px 3px 0 0;
- cursor: pointer;
+	display: block;
+	width: 20px;
+	height: 20px;
+	border: 3px solid #000;
+	border-width: 3px 3px 0 0;
+	cursor: pointer;
 }
+
 .prevDay {
-  transform: rotate(-135deg);
+	transform: rotate(-135deg);
 }
+
 .nextDay {
-  transform: rotate(45deg);
+	transform: rotate(45deg);
 }
 /* ---- */
 * {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  box-sizing: border-box;  
-  font-family: Pretendard;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	box-sizing: border-box;
+	font-family: Pretendard;
 }
+
 .rap {
-  max-width: 820px;
-  padding: 0 1.4rem;
-  margin-top: 1.4rem;
+	max-width: 820px;
+	padding: 0 1.4rem;
+	margin-top: 1.4rem;
 }
+
 .dateHead {
-  margin: .4rem 0;
+	margin: .4rem 0;
 }
-.btn-group-vertical{
+
+.btn-group-vertical {
 	position: fixed;
 }
-#right_sector{
+
+#right_sector {
 	padding: 20px;
 	position: relative;
 	top: 150px;
-	text-align:center;
+	text-align: center;
 	height: 400px;
-	background-color:#eeeee4;
+	background-color: #eeeee4;
 }
-#bt_add_record, #bt_regist{
+
+#bt_add_record, #bt_regist {
 	border: 1px solid white;
 }
+
 #myModal {
-    background: white;
+	background: white;
 }
-#t_kg, #t_ea{
-	width:50px;
+
+#t_kg, #t_ea {
+	width: 50px;
 }
-#t_setgroup{
+
+#t_setgroup {
 	text-align: center;
 }
 </style>
@@ -242,7 +257,9 @@ $(function(){
 	$("#bt_one_exr_regist").click(function(){
 		addexr();
 	});
-	
+	document.getElementsByClassName("grid dateBoard").addEventListener("mouseover", function(){
+		console.log("됨");
+	)};
 });
 </script>
 <body class="animsition">

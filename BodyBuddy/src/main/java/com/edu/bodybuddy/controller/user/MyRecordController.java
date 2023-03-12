@@ -17,6 +17,7 @@ public class MyRecordController {
 	
 	private Logger logger=LoggerFactory.getLogger(this.getClass());
 	
+	
 	@GetMapping("/addrecord")
 	public ModelAndView getAddPage(HttpServletRequest request) {
 		ModelAndView mav=new ModelAndView("myrecord/add_record");
@@ -35,6 +36,13 @@ public class MyRecordController {
 		return mav;
 	}
 	
+	@GetMapping("/diet_record")
+	public ModelAndView getDietPage(HttpServletRequest request) {
+		ModelAndView mav=new ModelAndView("myrecord/diet_record");
+		return mav;
+	}
+	
+	//운동기록 등록하는 곳
 	@PostMapping("/exr_regist")
 	public ModelAndView registRecord(HttpServletRequest request) {
 		//일시키기
@@ -43,12 +51,6 @@ public class MyRecordController {
 		//받아온 값 저장하기
 		
 		ModelAndView mav=new ModelAndView("myrecord/add_record");
-		return mav;
-	}
-	
-	@GetMapping("/diet_record")
-	public ModelAndView getDietPage(HttpServletRequest request) {
-		ModelAndView mav=new ModelAndView("myrecord/diet_record");
 		return mav;
 	}
 	
