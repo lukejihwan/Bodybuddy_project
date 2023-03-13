@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class MyRecordController {
 	
 	private Logger logger=LoggerFactory.getLogger(this.getClass());
+	
 	
 	@GetMapping("/addrecord")
 	public ModelAndView getAddPage(HttpServletRequest request) {
@@ -37,6 +39,18 @@ public class MyRecordController {
 	@GetMapping("/diet_record")
 	public ModelAndView getDietPage(HttpServletRequest request) {
 		ModelAndView mav=new ModelAndView("myrecord/diet_record");
+		return mav;
+	}
+	
+	//운동기록 등록하는 곳
+	@PostMapping("/exr_regist")
+	public ModelAndView registRecord(HttpServletRequest request) {
+		//일시키기
+		
+		
+		//받아온 값 저장하기
+		
+		ModelAndView mav=new ModelAndView("myrecord/add_record");
 		return mav;
 	}
 	
