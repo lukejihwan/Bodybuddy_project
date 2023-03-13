@@ -3,9 +3,6 @@
 <mapper namespace="Member">
 	<resultMap type="Member" id="memberMap">
 		<id 		column="member_idx" 	property="member_idx"/>
-		<result column="name" 				property="name"/>
-		<result column="id" 					property="id"/>
-		<result column="pass" 				property="pass"/>
 		<result column="email" 				property="email"/>
 		<result column="phone" 			property="phone"/>
 		<result column="regdate" 			property="regdate"/>
