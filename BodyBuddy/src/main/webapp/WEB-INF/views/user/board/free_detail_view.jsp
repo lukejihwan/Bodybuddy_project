@@ -18,6 +18,9 @@
 .comment-right button{
 	margin: 0 10px 0 10px;
 }
+.comment-content{
+	cursor: pointer
+}
 </style>
 </head>
 
@@ -76,7 +79,10 @@
 			<button type="button" class="btn btn-danger pull-right" id="bt_del">삭제</button>
 			<button type="button" class="btn btn-default pull-right" style="margin-right: 10px" id="bt_edit">수정</button>
 			<hr>
-
+			<template>
+				<comment_form :idx="<%= idx %>"/>
+			</template>
+			<br/>
 			<template v-for="i in count">
 				<comment :depth="i-1"/>
 			</template>
@@ -113,7 +119,7 @@
 							<div class="col-md-2">
 								<span>아무 작성자 입니다</span>
 							</div>
-							<div class="col-md-7">
+							<div class="col-md-7 comment-content" @click="toggleForm()">
 								<p>내용</p>
 							</div>
 							<div class="col-md-3 comment-right">
@@ -127,7 +133,29 @@
 				</div>
 				<!-- end of row -->
 			`,
-			props:['depth'],
+			props:['depth', "comment"],
+			methods:{
+				toggleForm:function(){
+					
+				}
+			}
+	};
+	
+	const comment_form = {
+		template:`
+			<form id="form-comment">
+				<div class="row">
+					<input type="hidden" name="idx" :value="idx"/>
+					<div class="col-md-10">
+						<textarea rows="5" class="form-control" style="margin-top:10px;" name="comment" placeholder="댓글 작성..."></textarea>
+					</div>
+					<div class="col-md-2 d-flex align-items-center  justify-content-center">
+						<button type="button" class="btn btn-secondary bt_regist_comment" >등록</button>
+					</div>
+				</div>
+			</form>
+		`,	
+		props:["idx"],
 	};
 
 	
@@ -144,6 +172,9 @@
 		$("#bt_list").click(()=>{
 			location.href="<%= listURI+1 %>";
 		});
+		$(".bt_regist_comment").click(()=>{
+			registComment();
+		});
 	});
 	
 	function init() {
@@ -151,6 +182,7 @@
 			el: "#app1",
 	        components:{
 	            comment,
+	            comment_form
 	        },
 	        data:{
 	        	count:3
@@ -165,5 +197,18 @@
 		location.href="<%= deleteURI + idx %>";
 	}
 	
+	function registComment() {
+		$.ajax({
+			url:"/rest/board/free_board/comment",
+			type:"POST",
+			data:$("#form-comment").serialize(),
+			success:(result, status, xhr)=>{
+				console.log(result);				
+			},
+			error:(xhr, status, err)=>{
+				console.log("ajax 실패 ", xhr);
+			}
+		});
+	}
 </script>
 </html>

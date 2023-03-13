@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FreeBoardComment">
+	<resultMap type="FreeBoardComment" id="resultMap">
+		<id column="free_board_comment_idx" property="free_board_comment_idx"/>
+		<result column="comment" property="comment"/>
+		<result column="writer" property="writer"/>
+		<result column="regdate" property="regdate"/>
+		<result column="post" property="post"/>
+		<result column="step" property="step"/>
+		<result column="depth" property="depth"/>
+		<result column="member_idx" property="member.member_idx"/>
+		<result column="free_board_idx" property="freeBoard.free_board_idx"/>
+	</resultMap>
+	
+	<select id="selectAllByBoard" resultMap="resultMap" parameterType="int">
+		select * from free_board_comment
+		where free_board_idx=#{free_board_idx}
+	</select>
+	
+	<select id="selectAllByMember" resultMap="resultMap" parameterType="int">
+		select * from free_board_comment
+		where member_idx=#{member_idx}
+	</select>
+	
+	<insert id="insert" parameterType="FreeBoardComment">
+		insert into free_board_comment(member_idx, free_board_idx, comment, writer)
+		values (#{member.member_idx}, #{freeBoard.free_board_idx} , #{comment}, #{writer})
+		<selectKey
+		keyColumn="free_board_comment_idx"
+		keyProperty="free_board_comment_idx"
+		resultType="int"
+		order="AFTER">
+			select last_insert_id() as free_board_comment_idx from dual
+		</selectKey>
+	</insert>
+	<update id="update" parameterType="FreeBoardComment">
+		update free_board_comment set
+		comment=#{comment}, post=#{post}
+		where free_board_comment_idx=#{free_board_comment_idx}
+	</update>
+	<delete id="delete" parameterType="FreeBoardComment">
+		delete from free_board_comment
+		where free_board_comment_idx=#{free_board_comment_idx}
+	</delete>
+
+	
+</mapper>
