@@ -16,23 +16,14 @@ public class MybatisMemberDAO implements MemberDAO {
 	private final SqlSessionTemplate sqlSessionTemplate;
 	
 	@Override
-	public Member selectByIdPass(Member member) {
-		Member dto = sqlSessionTemplate.selectOne("Member.selectByIdPass", member);
-		if(dto == null) throw new MemberException("로그인 실패, 아이디와 비밀번호를 확인하세요");
-		return dto;
+	public Member selectByNickname(Member member) {
+		return sqlSessionTemplate.selectOne("Member.selectByNickname", member);
 	}
 	
 	@Override
-	//아이디 중복 체크
-	public void selectById(Member member) throws MemberException{
-		Member dto = sqlSessionTemplate.selectOne("Member.selectById", member);
-		if(dto!=null) throw new MemberException("이미 존재하는 아이디입니다");
-	}
-
-	@Override
-	public void selectByEmail(Member member) {
-		Member dto = sqlSessionTemplate.selectOne("Member.selectByEmail", member);
-		if(dto!=null) throw new MemberException("이미 존재하는 이메일입니다");
+	public Member selectByEmail(Member member) {
+		return sqlSessionTemplate.selectOne("Member.selectByEmail", member);
+		//if(dto!=null) throw new MemberException("이미 존재하는 이메일입니다");
 	}
 
 	@Override
