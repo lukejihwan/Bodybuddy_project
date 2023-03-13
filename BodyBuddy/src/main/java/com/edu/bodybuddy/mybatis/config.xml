@@ -8,6 +8,7 @@
   	<!-- Member Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.member.Member" alias="Member"/>
  	<typeAlias type="com.edu.bodybuddy.domain.member.Address" alias="Address"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.member.Password" alias="Password"/>
  	
  	<!-- Myrecord Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.PhysicalRecord" alias="PysicalRecord"/>
@@ -43,6 +44,7 @@
   <mappers>
     <mapper resource="com/edu/bodybuddy/mybatis/member/MemberMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/member/AddressMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/member/PasswordMapper.xml"/>
 
     <!-- Myrecord Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/PhysicalRecordMapper.xml"/>
