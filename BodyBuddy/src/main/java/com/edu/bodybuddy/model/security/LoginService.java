@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.edu.bodybuddy.domain.member.Member;
+import com.edu.bodybuddy.domain.security.MemberDetail;
 import com.edu.bodybuddy.model.member.MemberDAO;
 
 import lombok.RequiredArgsConstructor;

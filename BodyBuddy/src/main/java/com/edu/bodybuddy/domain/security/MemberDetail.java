@@ -1,4 +1,4 @@
-package com.edu.bodybuddy.model.security;
+package com.edu.bodybuddy.domain.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
