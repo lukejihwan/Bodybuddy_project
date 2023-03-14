@@ -106,7 +106,7 @@
 					
 						</div>
 					<div class="text-lg-end">
-						<a href="/exr/routine/regist" class="btn btn-default">글쓰기</a>
+						<a href="/exr/routine/registform" class="btn btn-default">글쓰기</a>
 					</div>
 
 

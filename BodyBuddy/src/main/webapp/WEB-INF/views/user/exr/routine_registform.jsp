@@ -1,4 +1,10 @@
+<%@page import="com.edu.bodybuddy.domain.exr.ExrCategory"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%
+	List<ExrCategory> exrCategoryList=(List<ExrCategory>)request.getAttribute("exrCategoryList");
+	//System.out.println("카테고리 리스트"+exrCategoryList);
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,9 +52,11 @@
 						</div>
 						
 						<div class="form-group">
-							<select class="form-control" name="exr_category_idx">
+							<select class="form-control" name="exrcategory.exr_category_idx">
 								<option value="0">카테고리 선택</option>
-								<option value=""></option>
+								<% for(ExrCategory exrCategory:exrCategoryList){ %>
+									<option value="<%=exrCategory.getExr_category_idx()%>"><%=exrCategory.getExr_category_name() %></option>
+								<% } %>
 							</select>
 						</div>
 						
@@ -82,11 +90,32 @@
 </body>
 <script type="text/javascript">
 
+	function regist(){
+		let formData=$("#form1").serialize();
+		
+		$("#form1").attr({
+			action:"/exr/routine/regist",
+			method:"POST"
+		});
+		
+		$("#form1").submit();
+	}
+	
+
 	/***onLoad***/
 	$(function(){
+		
+		// 목록 페이지 이동
 		$("#bt_list").click(function(){
-			location.href="/exr/routine";
+			location.href="/exr/routine_list";
 		});
+		
+		// 등록
+		$("#bt_regist").click(function(){
+			regist();
+		});
+		
+
 		
 		// 써머 노트 적용
 		$('#summernote').summernote({

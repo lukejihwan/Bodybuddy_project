@@ -2,10 +2,12 @@ package com.edu.bodybuddy.model.exr;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.edu.bodybuddy.domain.exr.ExrRoutine;
 import com.edu.bodybuddy.exception.ExrRoutineException;
 
+@Repository
 public class MybatisExrRoutineDAO implements ExrRoutineDAO{
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
