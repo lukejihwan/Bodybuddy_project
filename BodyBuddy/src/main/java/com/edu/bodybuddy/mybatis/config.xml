@@ -41,6 +41,8 @@
  	<!-- Board Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.board.FreeBoard" alias="FreeBoard"/>
  	
+ 	<typeAlias type="com.edu.bodybuddy.domain.board.FreeBoardComment" alias="FreeBoardComment"/>
+ 	
   </typeAliases>
   
   <mappers>
@@ -70,7 +72,11 @@
 
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskimgMapper.xml"/>
 
+
+	<!-- Board Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/board/FreeBoardMapper.xml"/>
+    
+    <mapper resource="com/edu/bodybuddy/mybatis/board/FreeBoardCommentMapper.xml"/>
     
 
 
