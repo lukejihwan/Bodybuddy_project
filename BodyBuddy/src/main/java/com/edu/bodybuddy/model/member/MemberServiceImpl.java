@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +36,11 @@ public class MemberServiceImpl implements MemberService{
 	public void emailCheck(Member member) throws MemberException {
 		Member byNickname = memberDAO.selectByNickname(member);
 		if(byNickname != null) throw new MemberException("이미 사용중인 닉네임입니다");
+	}
+	
+	@Override
+	public Member selectByEmail(Member member) {
+		return memberDAO.selectByEmail(member);
 	}
 	
 	@Override
@@ -107,5 +111,7 @@ public class MemberServiceImpl implements MemberService{
 	public void delete(int member_idx) throws MemberException {
 		memberDAO.delete(member_idx);
 	}
+
+
 
 }
