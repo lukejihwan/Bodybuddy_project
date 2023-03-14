@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.bodybuddy.domain.member.Member;
+import com.edu.bodybuddy.exception.AddressException;
 import com.edu.bodybuddy.exception.MemberException;
+import com.edu.bodybuddy.exception.PasswordException;
 import com.edu.bodybuddy.model.member.MemberService;
 import com.edu.bodybuddy.util.Msg;
 
@@ -25,16 +27,16 @@ public class RestMemberController {
 	
 	@PostMapping
 	public ResponseEntity<Msg> regist(Member member) {
-		log.info("넘어온거"+member);
-		//memberService.regist(member);
+		log.info("회원가입에 넘어온 멤버"+member);
+		memberService.regist(member);
 		Msg msg = new Msg();
 		msg.setMsg("회원가입을 축하드립니다");
 		ResponseEntity<Msg> entity = new ResponseEntity<Msg>(msg, HttpStatus.OK);
 		return entity;
 	}
 	
-	@ExceptionHandler(MemberException.class)
-	public ResponseEntity<Msg> handle(MemberException e){
+	@ExceptionHandler({MemberException.class, AddressException.class, PasswordException.class})
+	public ResponseEntity<Msg> handle(Exception e){
 		Msg msg = new Msg();
 		msg.setMsg(e.getMessage());
 		ResponseEntity<Msg> entity = new ResponseEntity<Msg>(msg, HttpStatus.INTERNAL_SERVER_ERROR);

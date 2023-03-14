@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Address">
-	<select id="selectByMember">
+	<select id="selectByMember" parameterType="Member" resultType="Address">
 		select * from address where member_idx = #{member_idx}
 	</select>
 	
 	<insert id="insert" parameterType="Address">
-		insert into address(member_idx, address_local, address_detail) 
-		values(#{member_idx}, #{address_local},#{address_detail})
+		insert into address(member_idx, member_address) 
+		values(#{member_idx}, #{member_address})
 	</insert>
 	
 	<update id="update" parameterType="Address">
-		update address set address_local = #{address_local}, address_detail=#{address_detail} where member_idx = #{member_idx}
+		update address set member_address = #{member_address}, where member_idx = #{member_idx}
 	</update>
 	
 	<delete id="delete" parameterType="int">

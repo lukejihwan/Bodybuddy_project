@@ -14,4 +14,6 @@ public class FreeBoard {
 	private String content;
 	private String regdate;
 	private int hit;
+	private int recommend;
+	private String thumbnail;
 }

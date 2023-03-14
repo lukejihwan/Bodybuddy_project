@@ -10,6 +10,8 @@ public class Member {
 	private String phone;
 	private String regdate;
 	private int point;
+	private Role role;
 	private String origin;
 	private Address address;
+	private Password password;
 }

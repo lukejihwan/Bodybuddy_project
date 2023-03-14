@@ -29,8 +29,8 @@
             	<!-- 왼쪽에 나의 기록 목록 나오는 영역 -->
             	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
 				    <div class = "btn-group-vertical">
-				        <button type = "button" class = "btn btn-default">기록 추가</button>
-				        <button type = "button" class = "btn btn-primary">신체기록</button>
+				        <button type = "button" class = "btn btn-primary">기록 추가</button>
+				        <button type = "button" class = "btn btn-default">신체기록</button>
 				        <button type = "button" class = "btn btn-primary">운동기록</button>
 				        <button type = "button" class = "btn btn-primary">식단기록</button>
 				    </div>

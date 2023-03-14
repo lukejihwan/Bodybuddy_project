@@ -15,22 +15,4 @@ public class MainController {
 		return "index";
 	}
 	
-	@GetMapping("/{addresses}")
-	public String getMainPages(@PathVariable String addresses) {
-		log.info(addresses + "카테고리 메인페이지 호출");
-		return addresses;
-	}
-	
-	
-	@GetMapping("/{addresses}/{page}")
-	public String getSubPages(@PathVariable String addresses, @PathVariable String page) {
-		log.info("카테고리 = "+addresses+ ", 페이지명 = "+ page);
-		return addresses+"/"+page;
-	}
-	
-	@GetMapping("chuchu")
-	public String chuchu() {
-		return "board/free_list";
-	}
-	
 }

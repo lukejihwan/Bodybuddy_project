@@ -12,10 +12,14 @@
 <link href="/resources/user/css/style.css" rel="stylesheet">
 <!-- animsition css -->
 <link rel="stylesheet" type="text/css" href="/resources/user/css/animsition.min.css">
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <!-- Font Awesome CSS -->
 <link href="/resources/user/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/resources/user/css/fontello.css">
 <!-- font css -->
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
 <!-- jquery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i%7cRoboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
