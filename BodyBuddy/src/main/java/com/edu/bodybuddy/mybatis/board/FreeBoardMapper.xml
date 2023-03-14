@@ -9,6 +9,8 @@
 		<result column="content" property="content"/>
 		<result column="regdate" property="regdate"/>
 		<result column="hit" property="hit"/>
+		<result column="recommend" property="recommend"/>
+		<result column="thumbnail" property="thumbnail"/>
 		<result column="member_idx" property="member.member_idx"/>
 	</resultMap>
 
@@ -31,11 +33,11 @@
 	</select>
 	
 	<insert id="insert" parameterType="FreeBoard">
-		insert into free_board(title, writer, content, member_idx)
-		values (#{title}, #{writer}, #{content}, #{member.member_idx})
+		insert into free_board(member_idx, title, writer, content, thumbnail)
+		values (#{member.member_idx}, #{title}, #{writer}, #{content}, #{thumbnail})
 	</insert>
 	<update id="update" parameterType="FreeBoard">
-		update free_board set title=#{title}, writer=#{writer}, content=#{content}
+		update free_board set title=#{title}, writer=#{writer}, content=#{content}, thumbnail=#{thumbnail}
 		where free_board_idx=#{free_board_idx}
 	</update>
 	<delete id="delete" parameterType="int">

@@ -30,15 +30,29 @@ public class BoardController {
 	private BoardService freeBoardService;
 	
 	
-	//디테일
-	@GetMapping("/free_detail/{free_board_idx}")
-	public ModelAndView getDetail(HttpServletRequest request ,@PathVariable int free_board_idx) {
+	//디테일 보기 페이지
+	@GetMapping("/free_detail_view/{free_board_idx}")
+	public ModelAndView getDetailView(HttpServletRequest request ,@PathVariable int free_board_idx) {
 		
 		//3단계
 		Object board = freeBoardService.select(free_board_idx);
 		
 		//4단계
-		ModelAndView mav = new ModelAndView("/board/free_detail");
+		ModelAndView mav = new ModelAndView("/board/free_detail_view");
+		mav.addObject("board", board);
+		
+		return mav;
+	}
+	
+	//디테일 수정 페이지
+	@GetMapping("/free_detail_edit/{free_board_idx}")
+	public ModelAndView getDetailEdit(HttpServletRequest request ,@PathVariable int free_board_idx) {
+		
+		//3단계
+		Object board = freeBoardService.select(free_board_idx);
+		
+		//4단계
+		ModelAndView mav = new ModelAndView("/board/free_detail_edit");
 		mav.addObject("board", board);
 		
 		return mav;
@@ -68,25 +82,13 @@ public class BoardController {
 	@PostMapping("/free_regist")
 	public ModelAndView regist(HttpServletRequest request, FreeBoard freeBoard) {
 		
+		
 		//3단계
 		freeBoardService.insert(freeBoard);
 		
 		ModelAndView mav = new ModelAndView("redirect:/board/free_list");
 		return mav;
 	}
-	
-	//수정
-	@PostMapping("/free_update")
-	public ModelAndView update(HttpServletRequest request, FreeBoard freeBoard) {
-		logger.info("update : " + freeBoard);
-		
-		//3단계
-		freeBoardService.update(freeBoard);
-		
-		ModelAndView mav = new ModelAndView("redirect:/board/free_detail/"+freeBoard.getFree_board_idx());
-		return mav;
-	}
-	
 	
 	//삭제
 	@GetMapping("/free_delete")

@@ -6,6 +6,5 @@ import lombok.Data;
 public class Address {
 	private int address_idx;
 	private int member_idx;
-	private String address_local;
-	private String address_detail;
+	private String member_address;
 }

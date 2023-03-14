@@ -8,6 +8,7 @@
   	<!-- Member Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.member.Member" alias="Member"/>
  	<typeAlias type="com.edu.bodybuddy.domain.member.Address" alias="Address"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.member.Password" alias="Password"/>
  	
  	<!-- Myrecord Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.PhysicalRecord" alias="PysicalRecord"/>
@@ -42,17 +43,15 @@
   </typeAliases>
   
   <mappers>
-
-  	<!-- Member Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/member/MemberMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/member/AddressMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/member/PasswordMapper.xml"/>
 
     <!-- Myrecord Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/PhysicalRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/ExrRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/DietRecordMapper.xml"/>
 
-    
     <!-- Exr Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrCategoryMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrNoticeMapper.xml"/>
@@ -69,7 +68,6 @@
 
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskimgMapper.xml"/>
 
-    <!-- Board Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/board/FreeBoardMapper.xml"/>
     
 

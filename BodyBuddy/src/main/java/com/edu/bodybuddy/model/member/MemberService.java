@@ -5,7 +5,8 @@ import java.util.List;
 import com.edu.bodybuddy.domain.member.Member;
 
 public interface MemberService {
-	public Member selectByIdPass(Member member);
+	public void nicknameCheck(Member member);
+	public void emailCheck(Member member);
 	public List<Member> getMemberList();
 	public void regist(Member member);
 	public void update(Member member);
