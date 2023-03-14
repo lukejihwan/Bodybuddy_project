@@ -1,4 +1,4 @@
-package com.edu.bodybuddy.controller.security;
+package com.edu.bodybuddy.model.security;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.edu.bodybuddy.domain.security.MemberDetail;
 import com.edu.bodybuddy.exception.LoginException;
-import com.edu.bodybuddy.model.security.MemberDetail;
 import com.edu.bodybuddy.util.Msg;
 
 /*

@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-md-3 col-sm-4 hidden-xs bdr">
                     <div class="mail-info">
-                        <sec:authorize access="isAnonymous()"><p class="mail-text"><a href="/login">로그인</a>  /  <a href="/join">회원가입</a></p></sec:authorize>
+                        <sec:authorize access="isAnonymous()"><p class="mail-text"><a href="/auth/login">로그인</a>  /  <a href="/auth/join">회원가입</a></p></sec:authorize>
                         <sec:authorize access="isAuthenticated()"><p class="mail-text"><a href="/mypage"><sec:authentication property="principal.member.nickname"/>  님 </a>  /  <a href="/logout">로그아웃</a></p></sec:authorize>
                     </div>
                 </div>

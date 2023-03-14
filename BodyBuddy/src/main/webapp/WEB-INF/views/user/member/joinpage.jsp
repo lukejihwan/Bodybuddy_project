@@ -85,7 +85,7 @@ function regist() {
 	let formData = $("#registform").serialize();
 	$.ajax({
 		type: "POST",
-		url: "/rest/user/member",
+		url: "/auth/member",
 		data: formData,
 		success: function(result) {
 			alert(result.msg);
