@@ -23,7 +23,7 @@
 </div>
     <!-- content start -->
 <div class="container">
-	<form action="/login_check" method="post">
+	<form action="/auth/login_check" method="post">
 	    <div class="form-group">
 	        <label for="email">이메일</label>
 	        <input type="text" name="email" class="form-control" placeholder="이메일을 입력해주세요">
@@ -35,7 +35,9 @@
 	    <button type="submit" class="btn btn-success">로그인</button>
 	    <button type="button" class="btn btn-primary" onClick="location.href='/join'">회원 가입</button>
 	    <p></p>
-	    <button type="button" class="btn btn-warning" id="bt_kakao">카카오로그인</button>
+	    <button type="button" class="btn btn-warning" onclick="socialLogin('kakao')">카카오로그인</button>
+	    <button type="button" class="btn btn-dark" onclick="socialLogin('google')">구글로그인</button>
+	    <button type="button" class="btn btn-success" onclick="socialLogin('naver')">네이버로그인</button>
 	</form>
 </div>
 
@@ -53,5 +55,17 @@
     <%@include file="../inc/footer_link.jsp" %>
     
 </body>
+
+<script type="text/javascript">
+function socialLogin(vendor) {
+	$.ajax({
+		type: "get",
+		url: "/auth/"+vendor,
+		success: function(result) {
+			location.href=result.msg;
+		}
+	})
+}
+</script>
 
 </html>
