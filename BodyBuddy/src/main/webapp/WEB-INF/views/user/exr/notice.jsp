@@ -26,7 +26,7 @@
           <div class="row">
               <div class="col-lg-6 col-md-6 col-sm-12  col-xs-12">
                   <div class="hero-caption pinside50">
-                      <h1 class="hero-title">페이지 제목 올 곳</h1>
+                      <h1 class="hero-title">운동 정보 게시판</h1>
                       <p class="small-caps mb30 text-white">페이지 소제목 올 곳</p>
                       <p class="hero-text">페이지 간단한 설명이 올 곳. 이 탬플릿 페이지마다 써먹어도 괜찮을듯</p>
                       <a href="classes-list.html" class="btn btn-default">링크 필요하면 사용할 버튼</a>

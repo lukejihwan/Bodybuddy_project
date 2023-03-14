@@ -26,6 +26,7 @@
 	</bean>
 	
 	<context:component-scan base-package="com.edu.bodybuddy.model"/>
+	<context:component-scan base-package="com.edu.bodybuddy.controller.security" />
 	
 	<!-- 트랜잭션 매니저 -->
 	<tx:annotation-driven transaction-manager="transactionManager"/>
@@ -52,3 +53,4 @@
 	</bean>
 	
 </beans>
+

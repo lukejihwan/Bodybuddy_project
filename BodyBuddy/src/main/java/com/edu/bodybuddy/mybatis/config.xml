@@ -8,16 +8,19 @@
   	<!-- Member Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.member.Member" alias="Member"/>
  	<typeAlias type="com.edu.bodybuddy.domain.member.Address" alias="Address"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.member.Password" alias="Password"/>
  	
  	<!-- Myrecord Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.PhysicalRecord" alias="PysicalRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrRecord" alias="ExrRecord"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrDetailRecord" alias="ExrDetailRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.DietRecord" alias="DietRecord"/>
   
   	<!-- Exr Alias -->
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrCategory" alias="ExrCategory" />
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrNotice" alias="ExrNotice" />
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrNoticeImg" alias="ExrNoticeImg" />
+  	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrRoutine" alias="ExrRoutine" />
  	
  	<!-- Diet Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietCategory" alias="DietCategory" />
@@ -45,16 +48,19 @@
   <mappers>
     <mapper resource="com/edu/bodybuddy/mybatis/member/MemberMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/member/AddressMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/member/PasswordMapper.xml"/>
 
     <!-- Myrecord Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/PhysicalRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/ExrRecordMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/myrecord/ExrDetailRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/DietRecordMapper.xml"/>
 
     <!-- Exr Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrCategoryMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrNoticeMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrNoticeImgMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrRoutineMapper.xml"/>
     
     <!-- Diet Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietCategoryMapper.xml"/>

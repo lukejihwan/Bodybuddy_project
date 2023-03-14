@@ -74,6 +74,9 @@
 															ullamcorper turpiusce et enim eu elit semper fringtiam
 															faucibus on quamut consectetur gravida tellus sem
 															lobortis miuis consectetur magna lorem vitae lectuone.</p>
+															
+														<p>내용1 : <%=exrNotice.getContent1() %></p>
+														
 														<img src="/resources/data/exr/<%=exrNotice.getExrNoticeImgList().get(1).getFilename() %>"
 															class="alignright img-responsive" alt="">
 														<p>Suscipell entesque efficitur sollicitudin magnaeu
@@ -86,7 +89,9 @@
 															faucibus turpiusce etes.Donec eros turpissemper nenibh
 															velultrices pellentesque ristiam eu odio lionec
 															consectetur.</P>
+															
 														<img src="/resources/data/exr/<%=exrNotice.getExrNoticeImgList().get(2).getFilename() %>"
+														
 															class="alignleft img-responsive" alt="">
 														<p>Suscipell entesque efficitur sollicitudin magnaeu
 															vehicula libero luctus etonec odio velit, viverra ate
@@ -106,6 +111,9 @@
 															sem lobortis miuis consectetur magna lorem vitae
 															lectuone. Nulla lobortis interdum suscipell entesque
 															efficitur sollicitudin magnaeu vehicula libero.</p>
+															
+														<p>내용2 : <%=exrNotice.getContent2() %></p>
+														
 													</div>
 												</div>
 											</div>
@@ -137,6 +145,9 @@
 							</div>
 						</div>
 					</div>
+
+					<a href="/exr/notice" class="btn btn-default">목록</a>	
+					
 				</div>
 
 

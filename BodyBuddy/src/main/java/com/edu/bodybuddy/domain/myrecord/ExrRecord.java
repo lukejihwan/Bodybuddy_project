@@ -1,5 +1,7 @@
 package com.edu.bodybuddy.domain.myrecord;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -12,4 +14,7 @@ public class ExrRecord {
 	private int kg;
 	private int times;
 	private String regdate;
+	
+	//운동기록이 ExrDetailRecord를 여러개 가지고 있는 형태
+	private List<ExrDetailRecord> ExrRecordDetailList;
 }

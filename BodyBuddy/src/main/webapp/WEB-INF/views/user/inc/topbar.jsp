@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
     <div class="top-bar">
         <div class="container">
             <div class="row">
@@ -28,7 +29,8 @@
                 </div>
                 <div class="col-md-3 col-sm-4 hidden-xs bdr">
                     <div class="mail-info">
-                        <p class="mail-text"><a href="/member/loginpage">로그인</a>  /  <a href="/member/joinpage">회원가입</a></p>
+                        <sec:authorize access="isAnonymous()"><p class="mail-text"><a href="/auth/login">로그인</a>  /  <a href="/auth/join">회원가입</a></p></sec:authorize>
+                        <sec:authorize access="isAuthenticated()"><p class="mail-text"><a href="/mypage"><sec:authentication property="principal.member.nickname"/>  님 </a>  /  <a href="/logout">로그아웃</a></p></sec:authorize>
                     </div>
                 </div>
             </div>

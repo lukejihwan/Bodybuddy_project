@@ -32,20 +32,16 @@
 		    <form id="registform">
 		        <div class="card-body">
 		            <div class="form-group">
-		                <label for="id">ID</label>
-		                <input type="text" class="form-control" name="id" required>
+		                <label for="id">닉네임</label>
+		                <input type="text" class="form-control" name="nickname" required>
 		            </div>
 		            <div class="form-group">
 		                <label for="pass">비밀번호</label>
-		                <input type="password" class="form-control" name="pass" required>
+		                <input type="password" class="form-control" name="password.pass" required>
 		            </div>
 		            <div class="form-group">
 		                <label for="passc">비밀번호 확인</label>
 		                <input type="password" class="form-control" id="passc" required>
-		            </div>
-		            <div class="form-group">
-		                <label for="name">이름</label>
-		                <input type="text" class="form-control" name="name" required>
 		            </div>
 		            <div class="form-group">
 		                <label for="email">이메일</label>
@@ -56,16 +52,12 @@
 		                <input type="number" class="form-control" name="phone" required>
 		            </div>
 		            <div class="form-group">
-		                <label for="address">기본주소(선택사항)</label>
-		                <input type="text" class="form-control" name="address_local">
-		            </div>
-		            <div class="form-group">
-		                <label for="address">상세주소(선택사항)</label>
-		                <input type="text" class="form-control" name="address_detail">
+		                <label for="address">주소(선택사항)</label>
+		                <input type="text" class="form-control" name="address.member_address">
 		            </div>
 		        </div>
 		        <!-- /.card-body -->
-		
+				<input type="hidden" name="origin" value="home">
 		        <div class="card-footer">
 		            <button type="button" class="btn btn-primary" id="bt_regist">회원가입</button>
 		        </div>
@@ -93,10 +85,11 @@ function regist() {
 	let formData = $("#registform").serialize();
 	$.ajax({
 		type: "POST",
-		url: "/rest/user/member",
+		url: "/auth/member",
 		data: formData,
 		success: function(result) {
 			alert(result.msg);
+			location.href="/login";
 		},
 		error: function(e) {
 			alert(e.responseJSON.msg);
@@ -134,7 +127,8 @@ function validate(){
 $(function(){
 	//회원가입 버튼 연결
 	$("#bt_regist").click(function(){
-		if(validate()) regist();
+		//if(validate()) regist();
+		regist();
 	})
 })
 </script>
