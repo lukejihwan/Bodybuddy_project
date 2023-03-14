@@ -40,4 +40,10 @@ public class MyRecordController {
 		return mav;
 	}
 	
+	@GetMapping("/googlemap")
+	public ModelAndView getMap() {
+		ModelAndView mav=new ModelAndView("myrecord/googlemap");
+		return mav;
+	}
+	
 }

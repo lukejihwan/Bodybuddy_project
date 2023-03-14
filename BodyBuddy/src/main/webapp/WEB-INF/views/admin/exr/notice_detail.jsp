@@ -73,71 +73,70 @@
 			<!-- Main content -->
 			<section class="content" id="app1">
 				<div class="container-fluid">
-				
-					<!-- Main row -->
+				<!-- Main row -->
 					<div class="row">
 						<div class="col">
-
-								<div class="form-group row">
-									<div class="col">
-										<input type="hidden" name="exr_notice_idx" class="form-control" value="<%=exrNotice.getExr_notice_idx() %>">
-										<input type="text" name="title" class="form-control" value="<%=exrNotice.getTitle() %>">
-									</div>
-								</div>						
-
-								<div class="form-group row">
-									<div class="col">
-										<input type="file" name="file" class="form-control" multiple>
-									</div>
-								</div>
-												
-								<div class="form-group row">
-									<div class="col">
-										<template v-for="json in imageList">
-											<imagebox :src="json.src" :key="json.key" :idx="json.key"/>
-										</template>
-									</div>
-								</div>
 								
+								<!-- 입력 요소들 -->
+									<div class="form-group row">
+										<div class="col">
+											<input type="hidden" name="exr_notice_idx" class="form-control" value="<%=exrNotice.getExr_notice_idx() %>">
+											<input type="text" name="title" class="form-control" value="<%=exrNotice.getTitle() %>">
+										</div>
+									</div>						
+	
+									<div class="form-group row">
+										<div class="col">
+											<input type="file" name="file" class="form-control" multiple>
+										</div>
+									</div>
 								
-								<div class="form-group row">
-									<div class="col">
-										<%List<ExrNoticeImg> exrNoticeImg=exrNotice.getExrNoticeImgList(); %>
-										<%for(ExrNoticeImg noticeImg:exrNoticeImg){ %>
-										<img src="/resources/data/exr/<%=noticeImg.getFilename() %>" class="box-style">
-										<%} %>
+									<div class="form-group row">
+										<div class="col">
+											<template v-for="json in imageList">
+												<imagebox :src="json.src" :key="json.key" :idx="json.key"/>
+											</template>
+										</div>
 									</div>
-								</div>
-							
-
-								<div class="form-group row">
-									<div class="col">
-										<button type="button" class="btn btn-outline-danger" id="bt_delImg">사진 지우기</button>
+									
+									
+									<div class="form-group row">
+										<div class="col">
+											<%List<ExrNoticeImg> exrNoticeImg=exrNotice.getExrNoticeImgList(); %>
+											<%for(ExrNoticeImg noticeImg:exrNoticeImg){ %>
+											<img src="/resources/data/exr/<%=noticeImg.getFilename() %>" class="box-style">
+											<%} %>
+										</div>
 									</div>
-								</div>
-
-
-								<div class="form-group row">
-									<div class="col">
-										<textarea name="content1" class="form-control"><%=exrNotice.getContent1() %></textarea>
-									</div>
-								</div>
-												
-								<div class="form-group row">
-									<div class="col">
-										<textarea name="content2" class="form-control"><%=exrNotice.getContent2() %></textarea>
-									</div>
-								</div>
-								</form>
 								
-								<div class="form-group row">
-									<div class="col">
-										<button type="button" class="btn btn-outline-danger" id="bt_list">목록</button>									
-										<button type="button" class="btn btn-outline-danger" id="bt_edit">수정</button>									
-										<button type="button" class="btn btn-outline-danger" id="bt_del">삭제</button>									
+	
+									<div class="form-group row">
+										<div class="col">
+											<button type="button" class="btn btn-outline-danger" id="bt_delImg">사진 지우기</button>
+										</div>
 									</div>
-								</div>
-								<!-- ./ -->
+	
+	
+									<div class="form-group row">
+										<div class="col">
+											<textarea name="content1" class="form-control"><%=exrNotice.getContent1() %></textarea>
+										</div>
+									</div>
+													
+									<div class="form-group row">
+										<div class="col">
+											<textarea name="content2" class="form-control"><%=exrNotice.getContent2() %></textarea>
+										</div>
+									</div>
+								
+									<div class="form-group row">
+										<div class="col">
+											<button type="button" class="btn btn-outline-danger" id="bt_list">목록</button>									
+											<button type="button" class="btn btn-outline-danger" id="bt_edit">수정</button>									
+											<button type="button" class="btn btn-outline-danger" id="bt_del">삭제</button>									
+										</div>
+									</div>
+								<!-- 입력 요소들./ -->
 							
 						</div>
 					</div>
@@ -250,31 +249,78 @@
 		return count;
 	}
 
+	
+	// 사진 배열 때문에 비동기 전송해야 할 것 같은데..
+	function edit(){
+		
+		let formData=new FormData();
+		formData.append("exrCategory.exr_category_idx", $("input[name='exr_category_idx']").val());
+		formData.append("title", $("input[name='title']").val());
+		formData.append("content1", $("textarea[name='content1']").val());
+		formData.append("content2", $("textarea[name='content2']").val());
+		
 
+		for(let i=0; i<app1.imageList.length; i++){
+			let file=app1.imageList[i].file;
+			formData.append("photo", file);
+		}
+
+ 		$.ajax({
+			url:"/admin/rest/exr/notice/edit",
+			type:"POST",
+			contentType:false,
+			processData:false,
+			data:formData,
+			success:function(result, status, xhr){
+				alert(result.msg);
+				console.log("성공시 출력 ", result.msg);
+				
+			},
+			
+			error:function(xhr, status, err){
+				console.log("에러시 출력 ", xhr.responseText);
+			}
+		});
+		
+ 		
+		//-----------------//
+		
+		
+/* 		$("#form1").attr({
+			action:"/admin/exr/notice/update",
+			method:"POST",
+			enctype:"multipart/form-data"
+		});
+		$("#form1").submit(); */
+		
+	}
+	
+	
+	function delImg(){
+		if(!confirm("등록된 사진을 모두 삭제하시겠습니까?")){
+			return;
+		}
+		
+		$.ajax({
+			url:"/admin/rest/exr/notice_img/"+$("input[name='exr_notice_idx']").val(),
+			type:"delete",
+		
+			success:function(result, status, xhr){
+				alert(result.msg);
+				
+				//redirect
+				location.href="/admin/exr/notice/detail?exr_notice_idx="+$("input[name='exr_notice_idx']").val();
+			}
+		});
+	}
+	
+	
+	
+	/***	onLoad ***/
 	$(function(){
 	
 		// 뷰 적용
 		init();
-		
-		
-		$("#bt_delImg").click(function(){
-			if(!confirm("등록된 사진을 모두 삭제하시겠습니까?")){
-				return;
-			}
-			
-			$.ajax({
-				url:"/admin/rest/exr/notice_img/"+$("input[name='exr_notice_idx']").val(),
-				type:"delete",
-			
-				success:function(result, status, xhr){
-					alert(result.msg);
-					
-					//redirect
-					location.href="/admin/exr/notice/detail?exr_notice_idx="+$("input[name='exr_notice_idx']").val();
-				}
-			});
-		});
-		
 		
 		$("input[name='file']").change(function(){
 			preview(this.files);
@@ -284,8 +330,34 @@
 		$("#bt_list").click(function(){
 			location.href="/admin/exr/notice/list";
 		});
+
 		
-	
+		// 이미지만 삭제
+		$("#bt_delImg").click(function(){
+			if(confirm("등록된 사진을 모두 삭제하시겠습니까?")){
+				delImg();
+			}
+		});
+		
+		
+		// 글 수정
+		$("#bt_edit").click(function(){
+			if(confirm("수정하시겠습니까?")){
+				edit();
+			}
+		});
+		
+		
+		// 글 삭제
+		$("#bt_del").click(function(){
+			if(!confirm("게시글을 삭제하시겠습니까?")){
+				return;
+			}
+			
+			location.href="/admin/exr/notice/delete?exr_notice_idx="+$("input[name='exr_notice_idx']").val();
+		});
+		
+		
 		// 써머 노트 적용
 		$('#detail').summernote({
 			height:200
@@ -296,4 +368,3 @@
 	</script>
 </body>
 </html>
-

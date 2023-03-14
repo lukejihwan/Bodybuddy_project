@@ -2,12 +2,15 @@ package com.edu.bodybuddy.controller.user;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edu.bodybuddy.domain.exr.ExrNotice;
@@ -16,6 +19,7 @@ import com.edu.bodybuddy.model.exr.ExrNoticeService;
 
 // 운동 카테고리 제어 컨트롤러
 @Controller
+@RequestMapping("/exr")
 public class ExcerciseController {
 	private Logger logger=LoggerFactory.getLogger(this.getClass());
 	@Autowired
@@ -25,8 +29,8 @@ public class ExcerciseController {
 	
 	
 	// 메인페이지
-	@GetMapping("/exr")
-	public ModelAndView getMain() {
+	@GetMapping("/notice")
+	public ModelAndView getMain(HttpServletRequest request) {
 		List<ExrNotice> exrNoticeList=exrNoticeService.selectAll();
 		ModelAndView mv= new ModelAndView("exr/notice");
 		mv.addObject("exrNoticeList", exrNoticeList);
@@ -35,8 +39,8 @@ public class ExcerciseController {
 
 	
 	// 상세페이지
-	@GetMapping("/exr/notice/{exr_notice_idx}")
-	public ModelAndView getdetail(@PathVariable("exr_notice_idx") int exr_notice_idx) {
+	@GetMapping("/notice/{exr_notice_idx}")
+	public ModelAndView getdetail(@PathVariable("exr_notice_idx") int exr_notice_idx, HttpServletRequest request) {
 		logger.info("유저 페이지 작동");
 		
 		ExrNotice exrNotice=exrNoticeService.select(exr_notice_idx);
@@ -47,4 +51,25 @@ public class ExcerciseController {
 		mv.addObject("exrCategoryList", exrCategoryList);
 		return mv;
 	}
+	
+	
+	
+	/*----------------------
+	 	루틴 공유 게시판 영역
+	 * ---------------------*/
+	@GetMapping("/routine")
+	public ModelAndView getList(HttpServletRequest request){
+		ModelAndView mv= new ModelAndView("exr/routine_list");
+		return mv;
+	}
+	
+	@GetMapping("/routine/regist")
+	public ModelAndView getRegistForm(HttpServletRequest request){
+		ModelAndView mv= new ModelAndView("exr/routine_regist");
+		return mv;
+	}
+	
+	
+	
+	
 }
