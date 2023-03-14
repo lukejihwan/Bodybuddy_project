@@ -64,7 +64,7 @@ public class LoginController {
 		
 		String code = req.getParameter("code");
 		log.info("받아온 user code : " + code);
-		String url = 
+		String url = "";
 		
 		return null;
 	}
