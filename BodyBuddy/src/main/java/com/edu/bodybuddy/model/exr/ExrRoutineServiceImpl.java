@@ -1,5 +1,7 @@
 package com.edu.bodybuddy.model.exr;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,11 @@ import com.edu.bodybuddy.exception.ExrRoutineException;
 public class ExrRoutineServiceImpl implements ExrRoutineService{
 	@Autowired
 	private ExrRoutineDAO exrRoutineDAO;
-	
+
+	@Override
+	public List selectAll() {
+		return exrRoutineDAO.selectAll();
+	}
 	@Override
 	public ExrRoutine select(int exr_routine_idx) {
 		return exrRoutineDAO.select(exr_routine_idx);
@@ -30,5 +36,6 @@ public class ExrRoutineServiceImpl implements ExrRoutineService{
 	public void delete(int exr_routine_idx) throws ExrRoutineException{
 		exrRoutineDAO.delete(exr_routine_idx);
 	}
+
 
 }

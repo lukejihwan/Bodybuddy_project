@@ -3,7 +3,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
 	List<ExrCategory> exrCategoryList=(List<ExrCategory>)request.getAttribute("exrCategoryList");
-	//System.out.println("카테고리 리스트"+exrCategoryList);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +51,7 @@
 						</div>
 						
 						<div class="form-group">
-							<select class="form-control" name="exrcategory.exr_category_idx">
+							<select class="form-control" name="exr_category_idx">
 								<option value="0">카테고리 선택</option>
 								<% for(ExrCategory exrCategory:exrCategoryList){ %>
 									<option value="<%=exrCategory.getExr_category_idx()%>"><%=exrCategory.getExr_category_name() %></option>
@@ -90,15 +89,35 @@
 </body>
 <script type="text/javascript">
 
-	function regist(){
-		let formData=$("#form1").serialize();
+
+	function registAsync(){
+		let formData=new FormData();
+		formData.append("exrCategory.exr_category_idx", $("#form1 select[name='exr_category_idx']").val());
+		formData.append("title", $("#form1 input[name='title']").val());
+		formData.append("writer", $("#form1 input[name='writer']").val());
+		formData.append("content", $("#form1 textarea[name='content']").val());
 		
-		$("#form1").attr({
-			action:"/exr/routine/regist",
-			method:"POST"
+ 		$.ajax({
+			url:"/rest/exr/routine",
+			type:"post",
+			contentType:false,
+			processData:false,
+			data:formData,
+			
+			success:function(result, status, xhr){
+				alert(result.msg);
+				console.log("성공시 출력 ", result);
+				location.href="/exr/routine_list";
+			},
+			
+			error:function(xhr, status, err){
+				console.log("err ", err);
+				console.log("status ", status);
+				console.log("xhr ", xhr);
+				console.log("에러시 출력 ", xhr.responseText);
+				
+			}
 		});
-		
-		$("#form1").submit();
 	}
 	
 
@@ -112,7 +131,8 @@
 		
 		// 등록
 		$("#bt_regist").click(function(){
-			regist();
+			registAsync();
+			//regist();
 		});
 		
 

@@ -3,14 +3,15 @@
 <mapper namespace="ExrRoutine">
 
 	<resultMap type="ExrRoutine" id="resultMap">
-		<id column="exr_routine_idx" property=""/>
-		<id column="title" property=""/>
-		<id column="content" property=""/>
-		<id column="recommend" property=""/>
-		<id column="hit" property=""/>
-		<id column="regdate" property=""/>
-		<id column="exr_catergory_idx" property="exrCategory.exr_category_idx"/>
+		<id column="exr_routine_idx" property="exr_routine_idx"/>
+		<id column="title" property="title"/>
+		<id column="content" property="content"/>
+		<id column="recommend" property="recommend"/>
+		<id column="hit" property="hit"/>
+		<id column="regdate" property="regdate"/>
 		<id column="member_idx" property="member.member_idx"/>
+		
+		<association property="exrCategory" column="exr_category_idx" javaType="int" select="ExrCategory.select"/>
 	</resultMap>
 	
 	
@@ -20,9 +21,14 @@
 		where exr_routine_idx=#{exr_routine_idx}	
 	</select>
 
+	<select id="selectAll" resultMap="resultMap">
+		select * from exr_routine order by exr_routine_idx desc
+	</select>
+
+	<!-- Member 나중에 추가 예정 -->
 	<insert id="insert" parameterType="ExrRoutine">
-		insert into exr_routine(exr_category_idx, member_idx, title, writer, content)
-		values(#{exrCategory.exr_category_idx}, #{member.member_idx}, #{title}, #{writer} #{content})
+		insert into exr_routine(exr_category_idx, title, writer, content)
+		values(#{exrCategory.exr_category_idx}, #{title}, #{writer}, #{content})
 	</insert>
 
 	<update id="update" parameterType="ExrRoutine">

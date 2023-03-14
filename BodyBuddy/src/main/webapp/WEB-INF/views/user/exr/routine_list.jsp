@@ -1,8 +1,10 @@
+<%@page import="com.edu.bodybuddy.domain.exr.ExrRoutine"%>
 <%@page import="com.edu.bodybuddy.domain.exr.ExrNotice"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
-
+	List<ExrRoutine> exrRoutineList=(List<ExrRoutine>)request.getAttribute("exrRoutineList");
+	//System.out.println("잘 넘어왔나 확인"+exrRoutineList);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -73,14 +75,18 @@
 									</tr>
 								</thead>
 								<tbody>
+									<%int n=0; %>
+									<%for(ExrRoutine exrRoutine:exrRoutineList){ %>
+									<%n++; %>
 									<tr>
-										<td>183</td>
-										<td>John Doe</td>
-										<td>11-7-2014</td>
-										<td><span class="tag tag-success">Approved</span></td>
-										<td>Bacon ipsum dolorr.</td>
-										<td>0</td>
+										<td><%=n %></td>
+										<td><%=exrRoutine.getExrCategory().getExr_category_name() %></td>
+										<td><a href="/exr/routine/<%=exrRoutine.getExr_routine_idx() %>"><%=exrRoutine.getTitle() %></a></td>
+										<td><%=exrRoutine.getWriter() %></td>
+										<td><%=exrRoutine.getRegdate() %></td>
+										<td><%=exrRoutine.getHit() %></td>
 									</tr>
+									<%} %>
 
 								</tbody>
 							</table>

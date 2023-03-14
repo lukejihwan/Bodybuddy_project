@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,37 +61,51 @@ public class ExcerciseController {
 	
 	
 	
-	/*----------------------
-	 	루틴 공유 게시판 영역
-	 * ---------------------*/
+	/*-----------------
+	 *  루틴 공유 게시판
+	 * ----------------*/
+	
 	@GetMapping("/routine_list")
 	public ModelAndView getList(HttpServletRequest request){
+		List<ExrRoutine> exrRoutineList=exrRoutineService.selectAll();
+		
 		ModelAndView mv= new ModelAndView("exr/routine_list");
+		mv.addObject("exrRoutineList", exrRoutineList);
 		return mv;
 	}
+	
 	
 	// 글 등록 폼
 	@GetMapping("/routine/registform")
 	public ModelAndView getRegistForm(HttpServletRequest request){
-		logger.info("등록폼");
 		List<ExrCategory> exrCategoryList=exrCategoryService.selectAll();
-		
 		ModelAndView mv= new ModelAndView("exr/routine_registform");
 		mv.addObject("exrCategoryList", exrCategoryList);
 		return mv;
 	}
 	
 	
-	// 등록
-	@PostMapping("/routine/regist")
-	public ModelAndView regist(ExrRoutine exrRoutine, HttpServletRequest request){
-		logger.info("넘어온 글 "+exrRoutine);
+	// 상세 보기
+	@GetMapping("/routine/{exr_routine_idx}")
+	public ModelAndView getDetail(@PathVariable int exr_routine_idx, HttpServletRequest request){
+		List<ExrCategory> exrCategoryList=exrCategoryService.selectAll();
+		ExrRoutine exrRoutine=exrRoutineService.select(exr_routine_idx);
 		
-		exrRoutineService.insert(exrRoutine);
+		ModelAndView mv= new ModelAndView("exr/routine_detail");
+		mv.addObject("exrCategoryList", exrCategoryList);
+		mv.addObject("exrRoutine", exrRoutine);
+		return mv;
+	}
+	
+	
+	@GetMapping("/routine/delete")
+	public ModelAndView delete(int exr_routine_idx) {
+		exrRoutineService.delete(exr_routine_idx);
 		
 		ModelAndView mv= new ModelAndView("redirect:/exr/routine_list");
 		return mv;
 	}
+	
 	
 	
 	
