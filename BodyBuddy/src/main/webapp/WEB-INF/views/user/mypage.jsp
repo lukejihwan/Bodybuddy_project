@@ -36,7 +36,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                     <div class="service-block outline mb30">
                         <div class="service-icon">
-                            <i class="icon-default icon-2"></i>
+                            <i class="icon-default icon-quote"></i>
                         </div>
                         <div class="service-content pinside40">
                             <h2 class="service-title mb20"><a href="/mypost" class="title">내가 쓴 글</a> </h2>
@@ -47,7 +47,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                     <div class="service-block outline mb30">
                         <div class="service-icon">
-                            <i class="icon-default icon-1"></i>
+                            <i class="icon-default icon-speech-bubble"></i>
                         </div>
                         <div class="service-content pinside40">
                             <h2 class="service-title mb20"><a href="classes-list.html" class="title">내가 쓴 댓글</a></h2>
@@ -58,18 +58,18 @@
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                     <div class="service-block outline mb30">
                         <div class="service-icon">
-                            <i class="icon-default icon-4"></i>
+                            <i class="icon-default icon-favorite"></i>
                         </div>
                         <div class="service-content pinside40">
-                            <h2 class="service-title mb20"><a href="classes-list.html" class="title">찜</a></h2>
-                            <p class="mb60">내가 찜한 글들을 모아 볼 수 있습니다</p>
+                            <h2 class="service-title mb20"><a href="classes-list.html" class="title">즐겨찾기</a></h2>
+                            <p class="mb60">내가 스크랩한 글들을 모아 볼 수 있습니다</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                     <div class="service-block outline mb30">
                         <div class="service-icon">
-                            <i class="icon-default icon-5"></i>
+                            <i class="icon-default icon-user-1"></i>
                         </div>
                         <div class="service-content pinside40">
                             <h2 class="service-title mb20"><a href="classes-list.html" class="title">회원정보 수정</a></h2>
@@ -80,7 +80,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                     <div class="service-block outline mb30">
                         <div class="service-icon">
-                            <i class="icon-default icon-6"></i>
+                            <i class="icon-default icon-envelope-1"></i>
                         </div>
                         <div class="service-content pinside40">
                             <h2 class="service-title mb20"><a href="classes-list.html" class="title">문의/신고내역</a></h2>

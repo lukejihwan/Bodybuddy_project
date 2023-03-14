@@ -13,6 +13,7 @@
     	<intercept-url pattern="/" access="permitAll()"/>
     	<intercept-url pattern="/login" access="permitAll()"/>
     	<intercept-url pattern="/login_check" access="permitAll()"/>
+    	<intercept-url pattern="/member/**" access="permitAll()"/>
     	<intercept-url pattern="/join" access="permitAll()"/>
     	<intercept-url pattern="/rest/user/member" access="permitAll()"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
@@ -24,20 +25,19 @@
         	default-target-url="/"
         	username-parameter="email"
         	password-parameter="pass"
+        	authentication-failure-forward-url="/member/login_error"
         />
         <logout 
         	logout-url="/logout"
         	logout-success-url="/"
         />
-        
     </http>
    	
+   	<beans:bean class="com.edu.bodybuddy.controller.security.MemberAuthenticationProvider" id="authenticationProvider"/>
 	<beans:bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="passwordEncoder"></beans:bean>
  
-    <authentication-manager>
-        <authentication-provider user-service-ref="loginService">
-        	<password-encoder hash="bcrypt" ref="passwordEncoder"/>
-        </authentication-provider>
+    <authentication-manager erase-credentials="true">
+        <authentication-provider ref="authenticationProvider"/>
     </authentication-manager>
 
 </beans:beans>
