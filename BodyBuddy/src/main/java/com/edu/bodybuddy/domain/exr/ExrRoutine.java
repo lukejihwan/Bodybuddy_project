@@ -8,6 +8,7 @@ import lombok.Data;
 public class ExrRoutine {
 	private int exr_routine_idx;
 	private String title;
+	private String writer;
 	private String content;
 	private int recommend;
 	private int hit;
