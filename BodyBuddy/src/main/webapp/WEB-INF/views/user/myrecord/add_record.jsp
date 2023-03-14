@@ -236,7 +236,7 @@ function regist(){
 	console.log(result);
 	if(result===true){
 		$("#form1").attr({
-			action:"",
+			action:"/myrecord/exr_regist",
 			method:"POST"
 		});
 		//$("#form1").submit();
@@ -257,9 +257,11 @@ $(function(){
 	$("#bt_one_exr_regist").click(function(){
 		addexr();
 	});
+	/*
 	document.getElementsByClassName("grid dateBoard").addEventListener("mouseover", function(){
 		console.log("됨");
 	)};
+	*/
 });
 </script>
 <body class="animsition">
@@ -325,6 +327,7 @@ $(function(){
                 
                 <!-- 기록추가 화면 나올 곳 -->
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 card" id="right_sector">
+                	<form id="form1">
                 	<h3 class="">기록 추가</h3>
 					<input type="text" id="exr_day" disabled>
 					
@@ -335,7 +338,8 @@ $(function(){
                 	<div class="form-group">
 		            	<button type="button" class="btn btn-default" id="bt_add_record" data-toggle="modal" data-target="#myModal">기록추가</button>
 		            	<button type="button" class="btn btn-default" id="bt_regist">기록 등록</button>
-		            </div>     	
+		            </div>
+		            </form>     	
                 </div>
 				
 				<!-- ------------------------------------------------------------------------------- -->
