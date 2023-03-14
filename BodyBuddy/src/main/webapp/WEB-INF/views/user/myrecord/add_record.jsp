@@ -6,24 +6,21 @@
 </head>
 <style>
 .dateHead div {
-	background: #e31b20;
+	background: #dc3545;
 	color: #fff;
 	text-align: center;
 	border-radius: 5px;
 }
-
 .grid {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 	grid-gap: 5px;
 }
-
 .grid div {
 	padding: .6rem;
 	font-size: .9rem;
 	cursor: pointer;
 }
-
 .dateBoard div {
 	color: #222;
 	font-weight: bold;
@@ -32,11 +29,9 @@
 	border-radius: 5px;
 	border: 1px solid #eee;
 }
-
 .noColor {
 	background: #eee;
 }
-
 .header {
 	display: flex;
 	justify-content: space-between;
@@ -51,11 +46,9 @@
 	border-width: 3px 3px 0 0;
 	cursor: pointer;
 }
-
 .prevDay {
 	transform: rotate(-135deg);
 }
-
 .nextDay {
 	transform: rotate(45deg);
 }
@@ -67,21 +60,21 @@
 	box-sizing: border-box;
 	font-family: Pretendard;
 }
-
+.bt_days:hover{
+	border : 1px solid #dc3545;
+	transform: scale(1.1);
+}
 .rap {
 	max-width: 820px;
 	padding: 0 1.4rem;
 	margin-top: 1.4rem;
 }
-
 .dateHead {
 	margin: .4rem 0;
 }
-
 .btn-group-vertical {
 	position: fixed;
 }
-
 #right_sector {
 	padding: 20px;
 	position: relative;
@@ -90,19 +83,15 @@
 	height: 400px;
 	background-color: #eeeee4;
 }
-
 #bt_add_record, #bt_regist {
 	border: 1px solid white;
 }
-
 #myModal {
 	background: white;
 }
-
 #t_kg, #t_ea {
 	width: 50px;
 }
-
 #t_setgroup {
 	text-align: center;
 }
@@ -113,39 +102,38 @@
 let currentYear;
 let currentMonth;
 let app1;
-
 const setlist={
 	template:`
 		<div class="form-group" id="t_setgroup">
-			{{p_set}}set
-			<input type="number" id="t_kg" min="1" max="600">kg
-			<input type="number" id="t_ea" min="1" max="100">개
-			<a href="#">X</a>	
+			{{t_set}}set
+			<input type="number" name="t_kg[]" min="1" max="600">kg
+			<input type="number" name="t_ea[]" min="1" max="100">개
+			<a href="#">X</a>
 		</div>
 	`,
 	props:['set'],
 	data(){
 		return{
-			p_set:this.set
+			t_set:this.set
 		}
 	},
 	methods:{
 		
 	}
 }
-
 const exrlist={
 	template:`
 		<div id="exr_ea" class="border border-danger">
-			{{"운동명 :"+a_exr.exr_name}}
+			{{"운동명 :"+oneExr.exr_name}}
 			<br>
-			{{"세트수 :"+a_exr.sets}}
+			{{"세트수 :"+oneExr.sets}}
+			<input type="hidden" name="oneExr">
 		</div>
 	`,
 	props:['exr'],
 	data(){
 		return{
-			a_exr:this.exr
+			oneExr:this.exr
 		}
 	},
 	methods:{
@@ -180,13 +168,13 @@ function getDate(){
     	htmlDummy += "<div class='noColor'></div>";
   	}
   	for (let i = 1; i <= lastDay; i++) {
-    	htmlDummy += "<div onclick='popups(currentYear, currentMonth, "+i+")'>"+i+"</div>";
+    	htmlDummy += "<div class='bt_days' onclick='popups(currentYear, currentMonth, "+i+")'>"+i+"</div>";
   	}
   	for (let i = limitDay; i < nextDay; i++) {
     	htmlDummy += "<div class='noColor'></div>";
   	}
-  		document.querySelector('.dateBoard').innerHTML = htmlDummy;
-  		document.querySelector('.dateTitle').innerText = currentYear+"년 "+currentMonth+"월";
+  		document.querySelector('.dateBoard').insertAdjacentHTML('afterbegin',htmlDummy);
+  		document.querySelector('.dateTitle').insertAdjacentHTML('afterbegin',currentYear+"년 "+currentMonth+"월");
 	}
 	
 	makeCalendar(date);
@@ -196,53 +184,71 @@ function getDate(){
 	
 	// 이전달 이동
 	document.querySelector('.prevDay').onclick = () => {
+		document.querySelector('.dateBoard').innerHTML="";
+		document.querySelector('.dateTitle').innerHTML="";
 		makeCalendar(new Date(date.setMonth(date.getMonth() - 1)));
 	}
 	
 	// 다음달 이동
 	document.querySelector('.nextDay').onclick = () => {
+		document.querySelector('.dateBoard').innerHTML="";
+		document.querySelector('.dateTitle').innerHTML="";
 		makeCalendar(new Date(date.setMonth(date.getMonth() + 1)));
 	}
 	document.getElementById("bt_add_record").onclick=function(){
-
 	};
 }
-
 function popups(currentYear, currentMonth, currentDay){
-	//alert(currentYear+" 년 "+currentMonth+" 월 "+currentDay+"일");
 	$("#exr_day").val(" "+currentYear+" 년 "+currentMonth+" 월 "+currentDay+"일");
 }
-
 //모달창 운동등록 버튼 클릭시, 운동명과, 세트수 가져와서 기록추가 창에 보여주기
 function addexr(){
-	let json=[];
+	let json={};
+	let setContents=[]; //한세트로 구성된 객체 여러개를 담을 Contents
 	//운동명값 가져오기
 	let exr_name=$("input[name='t_exr_research']").val();
 	//세트수 가져오기
 	let sets=app1.count;
+	console.log(sets);
+	//모달창 한운동에 대한 세트가 여러개이므로 하나의 배열에 넣어주자
+	for(let i=0; i<sets ; i++){
+		let setContent=[]; //한 세트에 담을 배열 [kg수, 갯수] 형식
+		let t_kg=$($("input[name='t_kg[]']")[i]).val();
+		let t_ea=$($("input[name='t_ea[]']")[i]).val();
+		setContent.push(t_kg);
+		setContent.push(t_ea);
+		setContents.push(setContent);
+	}
+	
 	//json에 값 넣어주기
 	json['exr_name']=exr_name;
 	json['sets']=sets;
+	json['setContents']=setContents;
+	console.log("등록된 운동수는 : ",app1.exerciseList);
+	console.log("운동기록에 세부내용 : ", setContents);
 	app1.exerciseList.push(json);
-	console.log(app1.exerciseList);
-	
+	console.log("최종적으로 받은 json: ", json);
+	let json2={};
+	json2['data']=json;
+	console.log(JSON.stringify(json2));
 	//모달창 초기화
 	$("input[name='t_exr_research']").val("");
+	$("input[name='t_kg[]']").val("");
+	$("input[name='t_ea[]']").val("");
 	app1.count=1;
 }
-
 function regist(){
 	let result=confirm("운동기록을 등록하시겠어요?");
 	console.log(result);
+	//let val=$("input[name='OneExr']").serialize();
 	if(result===true){
 		$("#form1").attr({
 			action:"/myrecord/exr_regist",
 			method:"POST"
 		});
-		//$("#form1").submit();
+		$("#form1").submit();
 	}
 }
-
 $(function(){
 	init();
 	getDate();
