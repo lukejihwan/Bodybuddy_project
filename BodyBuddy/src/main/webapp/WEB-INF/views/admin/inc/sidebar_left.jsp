@@ -105,7 +105,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/admin/product/registform" class="nav-link">
+                <a href="/admin/diet/info" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>식단정보게시판</p>
                 </a>
