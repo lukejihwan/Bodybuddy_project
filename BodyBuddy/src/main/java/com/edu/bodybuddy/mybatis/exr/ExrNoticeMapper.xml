@@ -38,7 +38,7 @@
 	</update>
 
 	<delete id="delete" parameterType="int">
-		delete from exr_notice_idx
+		delete from exr_notice
 		where exr_notice_idx=#{exr_notice_idx}
 	</delete>
 

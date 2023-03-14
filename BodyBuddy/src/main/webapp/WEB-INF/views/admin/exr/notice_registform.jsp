@@ -220,7 +220,6 @@
 	----------------------*/ 
 	function regist(){
 	
-		
 		let formData=new FormData();
 		formData.append("exrCategory.exr_category_idx", $("#form2 select[name='exr_category_idx']").val());
 		formData.append("title", $("#form2 input[name='title']").val());
