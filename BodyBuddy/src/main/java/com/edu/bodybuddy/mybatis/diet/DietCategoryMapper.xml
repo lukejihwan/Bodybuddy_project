@@ -3,7 +3,7 @@
 <mapper namespace="DietCategory">
 
 	<select id="selectAll" resultType="DietCategory">
-		select * from diet_category order by diet_category_idx desc
+		select * from diet_category order by diet_category_idx asc
 	</select>
 
 	<select id="select" parameterType="int" resultType="DietCategory">
@@ -17,10 +17,10 @@
 	
 	<update id="update" parameterType="DietCategory">
 		update diet_category set diet_category_name=#{diet_category_name}
-		where diet_category_idx=#{diet_category}
+		where diet_category_idx=#{diet_category_idx}
 	</update>
 
 	<delete id="delete" parameterType="int">
-		delete from dietCategory where diet_category_idx=#{diet_category_idx}
+		delete from diet_category where diet_category_idx=#{diet_category_idx}
 	</delete>
 </mapper>

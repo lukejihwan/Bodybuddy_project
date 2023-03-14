@@ -38,6 +38,7 @@
 	    <button type="button" class="btn btn-warning" id="bt_kakao">카카오로그인</button>
 	</form>
 </div>
+
     <!-- /content end -->
     
    	<!-- black footer_space -->

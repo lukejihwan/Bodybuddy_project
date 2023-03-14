@@ -31,12 +31,12 @@
                                 <li><a href="classes-detail.html" title="Classes Detail">칼로리 소모 계산기</a></li>
                             </ul>
                         </li>
-                        <li><a href="/diet" title="diet" class="animsition-link">식단</a>
+                        <li><a href="/diet/info_main" title="diet" class="animsition-link">식단</a>
                             <ul>
                                 <li><a href="/diet/info_main" title="Blog" class="animsition-link">식단정보</a></li>
-                                <li><a href="#" title="Blog Single" class="animsition-link">식단 팁</a></li>
-                                <li><a href="#" title="Blog Single" class="animsition-link">식단공유</a></li>
-                                <li><a href="#" title="Blog Single" class="animsition-link">식단계산기</a></li>
+                                <li><a href="/diet/share_main" title="Blog Single" class="animsition-link">식단공유</a></li>
+                                <li><a href="/diet/tip_main" title="Blog Single" class="animsition-link">식단 팁</a></li>
+                                <li><a href="/diet/kcal_main" title="Blog Single" class="animsition-link">칼로리계산기</a></li>
                             </ul>
                         </li>
                         <li><a href="/board/free_list/1" class="animsition-link">게시판</a>
