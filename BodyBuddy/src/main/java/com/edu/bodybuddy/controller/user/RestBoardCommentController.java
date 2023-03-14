@@ -21,6 +21,8 @@ import com.edu.bodybuddy.domain.board.FreeBoardComment;
 import com.edu.bodybuddy.model.board.BoardCommentService;
 import com.edu.bodybuddy.util.Message;
 
+import lombok.Builder.Default;
+
 @RestController
 @RequestMapping("/rest/board")
 public class RestBoardCommentController {
@@ -42,10 +44,10 @@ public class RestBoardCommentController {
 	public List<FreeBoardComment> getList(HttpServletRequest request, @PathVariable int free_board_idx){		
 		
 		//3단계
-		logger.info("코멘트 : "+free_board_idx);
+		//logger.info("코멘트 : "+free_board_idx);
 		
 		List boardCommentList = freeBoardCommentService.selectAllByBoard(free_board_idx);
-		logger.info("가져온 해당 게시글의 댓글"+boardCommentList);
+		//logger.info("가져온 해당 게시글의 댓글"+boardCommentList);
 		
 		return boardCommentList;
 	}
@@ -58,7 +60,9 @@ public class RestBoardCommentController {
 		freeBoardComment.setFreeBoard(freeBoard);
 		freeBoardComment.setWriter("임시 작성자");
 		//3단계
-		//logger.info("regist comment : " + freeBoardComment);
+//		logger.info("regist freeBoardComment : " + freeBoardComment);
+//		logger.info("regist board_idx : " + freeBoardComment.getFreeBoard().getFree_board_idx());
+//		logger.info("regist board_comment_idx : " + freeBoardComment.getFree_board_comment_idx());
 		freeBoardCommentService.insert(freeBoardComment);
 		
 		Message message = new Message();

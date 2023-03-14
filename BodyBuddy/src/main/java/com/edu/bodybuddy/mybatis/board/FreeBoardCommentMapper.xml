@@ -16,6 +16,7 @@
 	<select id="selectAllByBoard" resultMap="resultMap" parameterType="int">
 		select * from free_board_comment
 		where free_board_idx=#{free_board_idx}
+		order by free_board_comment_idx desc
 	</select>
 	
 	<select id="selectAllByMember" resultMap="resultMap" parameterType="int">
