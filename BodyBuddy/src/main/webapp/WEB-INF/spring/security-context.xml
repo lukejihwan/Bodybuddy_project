@@ -10,34 +10,66 @@
     <http pattern="/resources/**" security="none"/>
     <http auto-config="true" use-expressions="true">
     	<csrf disabled="true"/>
-    	<intercept-url pattern="/" access="permitAll()"/>
-    	<intercept-url pattern="/login" access="permitAll()"/>
+    	<intercept-url pattern="/**" access="permitAll()"/>
+<!--     	<intercept-url pattern="/auth/**" access="permitAll()"/>
     	<intercept-url pattern="/login_check" access="permitAll()"/>
+    	<intercept-url pattern="/member/**" access="permitAll()"/>
     	<intercept-url pattern="/join" access="permitAll()"/>
     	<intercept-url pattern="/rest/user/member" access="permitAll()"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/rest/admin/**" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
+        <intercept-url pattern="/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/> -->
         <form-login
-        	login-page="/login"
-        	login-processing-url="/login_check"
+        	login-page="/auth/login"
+        	login-processing-url="/auth/login_check"
         	default-target-url="/"
         	username-parameter="email"
         	password-parameter="pass"
+        	authentication-failure-forward-url="/auth/login_error"
         />
         <logout 
         	logout-url="/logout"
         	logout-success-url="/"
         />
-        
     </http>
    	
+   	<beans:bean class="com.edu.bodybuddy.model.security.MemberAuthenticationProvider" id="authenticationProvider"/>
 	<beans:bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="passwordEncoder"></beans:bean>
  
-    <authentication-manager>
-        <authentication-provider user-service-ref="loginService">
-        	<password-encoder hash="bcrypt" ref="passwordEncoder"/>
-        </authentication-provider>
+    <authentication-manager erase-credentials="true">
+        <authentication-provider ref="authenticationProvider"/>
     </authentication-manager>
+    
+    <!-- 네이버 로그인 관련 정보 등록  -->
+ 	<beans:bean id="naverLogin" class="com.edu.bodybuddy.sns.NaverLogin">
+ 		<!-- 1) 인증화면 관련 -->
+ 		<!-- 인증화면 링크 URL -->
+ 		<beans:property name="endpoint" value="https://nid.naver.com/oauth2.0/authorize"/>
+ 	
+		<!-- google cloud platform에서 발급받은 client ID-->
+		<beans:property name="client_id" value="FkijXJgslh3lTUKkArPs"/>
+		
+		<!-- google cloud platform에서 발급받은 client Secret--> 		
+		<beans:property name="client_secret" value="lRMZBnnCtL"/> 		
+		
+		<!-- Resource Owner 가 인증할때, 콜백받을 우리 웹사이트 URI -->
+		<beans:property name="redirect_uri" value="http://localhost:8888/auth/callback/naver"/>
+		
+		<!-- 콜백받을때, 구글이 우리에게 전달할 파라미터의 이름 -->
+		<beans:property name="response_type" value="code"/>
+		
+		<beans:property name="state"  value="bodybuddy"/>
+		
+
+		<!-- 2) 토큰 요청 관련 -->
+		<beans:property name="token_request_url"  value="https://nid.naver.com/oauth2.0/token"/>
+		<!-- 모든 SNS 사업자가 같은 변수명을 쓴다 -->
+		<beans:property name="grant_type" value="authorization_code"/>
+		
+		<!--3) 회원정보 요청을 위한  url  -->
+		<beans:property name="userinfo_url"  value="https://openapi.naver.com/v1/nid/me"/>
+		
+		
+ 	</beans:bean>
 
 </beans:beans>
