@@ -60,7 +60,7 @@ public class RestBoardCommentController {
 		freeBoardComment.setFreeBoard(freeBoard);
 		freeBoardComment.setWriter("임시 작성자");
 		//3단계
-//		logger.info("regist freeBoardComment : " + freeBoardComment);
+		logger.info("regist freeBoardComment : " + freeBoardComment);
 //		logger.info("regist board_idx : " + freeBoardComment.getFreeBoard().getFree_board_idx());
 //		logger.info("regist board_comment_idx : " + freeBoardComment.getFree_board_comment_idx());
 		freeBoardCommentService.insert(freeBoardComment);

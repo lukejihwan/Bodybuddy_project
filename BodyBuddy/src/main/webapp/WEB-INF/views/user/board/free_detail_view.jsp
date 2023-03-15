@@ -19,7 +19,11 @@
 	margin: 0 10px 0 10px;
 }
 .comment-content{
-	cursor: pointer
+	cursor: pointer;
+	
+}
+.comment-content:hover>span{
+	background-color: #c5f016;
 }
 </style>
 </head>
@@ -121,7 +125,7 @@
 									<span>{{comment.writer}}</span>
 								</div>
 								<div class="col-md-7 comment-content" @click="toggleForm()">
-									<p>{{comment.comment}}</p>
+									<span>{{comment.comment}}</span>
 								</div>
 								<div class="col-md-3 comment-right">
 									<button type="button" class="btn btn-default btn-sm float-right">
@@ -138,14 +142,17 @@
 						<div :class="'col-md-'+(comment.depth+1)"></div>
 						<div :class="'col-md-'+(12-(comment.depth+1))">
 							<!-- 여기 board_comment_idx 부분 꼭 수정해야 함 -->
-							<form class="row" :id="'form-comment-'+board_comment_idx">
+							<form class="row" :id="'form-comment-'+board_comment_idx" style="display: none;">
 								<input type="hidden" name="free_board_comment_idx" :value="board_comment_idx"/>
 								<input type="hidden" name="idx" :value="comment.freeBoard.free_board_idx"/>
+								<input type="hidden" name="post" :value="comment.post"/>
+								<input type="hidden" name="step" :value="comment.step"/>
+								<input type="hidden" name="depth" :value="comment.depth"/>
 								<div class="col-md-10">
 									<textarea rows="5" class="form-control" style="margin-top:10px;" name="comment" placeholder="댓글 작성..."></textarea>
 								</div>
 								<div class="col-md-2 d-flex align-items-center  justify-content-center">
-									<button type="button" class="btn btn-secondary bt_regist_comment" :value="board_comment_idx">등록</button>
+									<button type="button" class="btn btn-secondary bt_regist_comment" :value="board_comment_idx" @click="registComment">등록</button>
 								</div>
 							</form>
 						</div>
@@ -157,11 +164,18 @@
 			props:['depth', "comment"],
 			methods:{
 				toggleForm:function(){
-					console.log("comment",this.comment);
+					/* console.log("comment",this.comment);
 					console.log("post",this.comment.post);
 					console.log("step",this.comment.step);
-					console.log("depth", this.comment.depth);
-				}
+					console.log("depth", this.comment.depth); */
+					
+					$.each(app1.commentList, (i, item)=>{
+					    $("#form-comment-"+item.free_board_comment_idx).hide();
+					});
+					
+					$("#form-comment-"+this.board_comment_idx).show();
+				},
+				registComment: window.registComment
 			},
 			data(){
 				return {
@@ -179,11 +193,14 @@
 						<textarea rows="5" class="form-control" style="margin-top:10px;" name="comment" placeholder="댓글 작성..."></textarea>
 					</div>
 					<div class="col-md-2 d-flex align-items-center  justify-content-center">
-						<button type="button" class="btn btn-secondary bt_regist_comment" value="0">등록</button>
+						<button type="button" class="btn btn-secondary bt_regist_comment" value="0" @click="registComment">등록</button>
 					</div>
 				</form>
 			`,	
 			props:["idx"],
+			methods:{
+				registComment: window.registComment
+			}
 	};
 	
 	
@@ -213,19 +230,8 @@
 	        },
 	        data:{
 	        	commentList:[],
-	        	event_flag:true
+	        	//event_flag:true
 	        },
-	        updated(){
-	        		
-	      		if(this.event_flag){
-		        	$.each($(".bt_regist_comment"), (i, item)=>{
-		        		$(item).click((e)=>{
-		        			registComment(e.target.value);
-		        		});
-		        	});
-		        	this.event_flag=false;
-	      		}
-	        }
 		});
 	}
 	
@@ -236,13 +242,16 @@
 		location.href="<%= deleteURI + idx %>";
 	}
 	
-	function registComment(index) {
+	function registComment(e){
+		console.log($("#form-comment-"+e.target.value).serialize());
 		$.ajax({
 			url:"/rest/board/free_board/comment",
 			type:"POST",
-			data:$("#form-comment-"+index).serialize(),
+			data:$("#form-comment-"+e.target.value).serialize(),
 			success:(result, status, xhr)=>{
 				console.log(result);
+				$("#form-comment-"+e.target.value+" textarea").val("");
+				$("#form-comment-"+e.target.value).hide();
 				getList();
 			},
 			error:(xhr, status, err)=>{

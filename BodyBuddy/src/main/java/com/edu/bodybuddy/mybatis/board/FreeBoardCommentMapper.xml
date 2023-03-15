@@ -16,17 +16,18 @@
 	<select id="selectAllByBoard" resultMap="resultMap" parameterType="int">
 		select * from free_board_comment
 		where free_board_idx=#{free_board_idx}
-		order by free_board_comment_idx desc
+		order by step asc
 	</select>
 	
 	<select id="selectAllByMember" resultMap="resultMap" parameterType="int">
 		select * from free_board_comment
 		where member_idx=#{member_idx}
+		order by step asc
 	</select>
 	
 	<insert id="insert" parameterType="FreeBoardComment">
-		insert into free_board_comment(member_idx, free_board_idx, comment, writer)
-		values (#{member.member_idx}, #{freeBoard.free_board_idx} , #{comment}, #{writer})
+		insert into free_board_comment(member_idx, free_board_idx, comment, writer, post, step, depth)
+		values (#{member.member_idx}, #{freeBoard.free_board_idx} , #{comment}, #{writer}, #{post}, #{step}, #{depth})
 		<selectKey
 		keyColumn="free_board_comment_idx"
 		keyProperty="free_board_comment_idx"
@@ -45,5 +46,24 @@
 		where free_board_comment_idx=#{free_board_comment_idx}
 	</delete>
 
+	<select id="totalCount" resultType="int" parameterType="int">
+		select count(*) from free_board_comment
+		where free_board_idx=#{free_board_idx}
+	</select>
+	<select id="maxStep" resultType="int" parameterType="int">
+		select max(step) from free_board_comment
+		where free_board_idx=#{free_board_idx}
+	</select>
+	
+	<!-- step 올리기  -->
+	<update id="shiftAboveSteps" parameterType="FreeBoardComment">
+		update free_board_comment set step = step + 1
+		where step>#{step} and free_board_idx=#{freeBoard.free_board_idx}
+	</update>
+	<select id="countAboveSteps" resultType="int" parameterType="FreeBoardComment">
+		select count(step) from free_board_comment
+		where step>#{step} and free_board_idx=#{freeBoard.free_board_idx}
+	</select>
+	
 	
 </mapper>

@@ -33,15 +33,42 @@ public class FreeBoardCommentService implements BoardCommentService{
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void insert(Object object) throws FreeBoardCommentException{
 		 FreeBoardComment freeBoardComment = (FreeBoardComment)object;
+		 int free_board_idx = freeBoardComment.getFreeBoard().getFree_board_idx();
 		 
 		 if(freeBoardComment.getFree_board_comment_idx()==0) {
+			 //만약 해당 게시판의 첫 댓글이라면
+			 //logger.info("totalCount : " + totalCount(freeBoardComment.getFreeBoard().getFree_board_idx()));
+			 if(totalCount(free_board_idx) == 0) {
+				 freeBoardComment.setStep(1);
+			 }else {
+				 int maxStep = boardCommentDAO.maxStep(free_board_idx);
+				 freeBoardComment.setStep(maxStep + 1);
+			 }
 			 //free_board_comment_idx가 0이므로 새 댓글 등록
 			 boardCommentDAO.insert(freeBoardComment);
 			 freeBoardComment.setPost(freeBoardComment.getFree_board_comment_idx());
 			 boardCommentDAO.update(freeBoardComment);
 		 }else {
 			 //Free_board_comment_idx가 0이 아니므로 대댓글 등록
+			 logger.info("comment : " + freeBoardComment.getComment());
+			 logger.info("post : " + freeBoardComment.getPost());
+			 logger.info("step : " + freeBoardComment.getStep());
+			 logger.info("depth : " + freeBoardComment.getDepth());
+			 
+			 
+			 logger.info("maxStep : " + boardCommentDAO.maxStep(free_board_idx));
+			 logger.info("free_board_idx : " + freeBoardComment.getFreeBoard().getFree_board_idx());
+			 
+			 if(!(boardCommentDAO.maxStep(free_board_idx) == freeBoardComment.getStep())) {
+				 boardCommentDAO.shiftAboveSteps(freeBoardComment);
+			 }
+			 
+			 freeBoardComment.setStep(freeBoardComment.getStep() + 1);
+			 freeBoardComment.setDepth(freeBoardComment.getDepth() + 1);
+			 
+			 boardCommentDAO.insert(freeBoardComment);
 		 }
+		 
 	}
 
 	public void update(Object object) {
@@ -50,6 +77,10 @@ public class FreeBoardCommentService implements BoardCommentService{
 
 	public void delete(int object) {
 		
+	}
+
+	public int totalCount(int board_idx) {
+		return boardCommentDAO.totalCount(board_idx);
 	}
 
 	
