@@ -31,7 +31,8 @@
                         <div class="row">
                             <div class="col-md-8 col-sm-12">
                                 <div class="row">
-                                    <div class="col-md-12 col-sm-12"><img src="/resources/user/images/time1.png" class="" alt="time1">
+                                    <div class="col-md-12 col-sm-12">
+                                    <img src="/resources/user/images/time1.png" class="" alt="time1">
                                     <p></p>
                                     <div class="mb30">
                                         <h1>간헐적 단식(Intermittent fasting)</h1>
@@ -60,7 +61,7 @@
 		                            	</div>  
 		                            	<p></p>
 		                            
-                                        <img src="/resources/user/images/time2.png" class="" alt="time2">
+                                        <!-- <img src="/resources/user/images/time2.png" class="" alt="time2">  -->
                                         
                                         <p></p>
                            				<p>간헐적 단식은 칼로리제한을 실천하기 위한 한 방편으로 개발됐으며, 소식을 통해 얻을 수 있는 건강상의 이점을 공유합니다. 즉, 수명연장, 당뇨예방, 인슐린 저항성 개선 등의 효과가 있을 것이라고 여겨지고 있습니다. 또한, 같은 양의 칼로리를 섭취하더라도, 간헐적 단식으로 섭취할 경우 건강이나 체중 감량에 도움이 됩니다.</p> 
