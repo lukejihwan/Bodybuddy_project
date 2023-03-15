@@ -108,6 +108,7 @@ public class RestExrController {
 		String dir=context.getRealPath("/resources/data/exr/");		// 실제 디렉토리 폴더 만드는 것 잊지 말기!
 		logger.info("가진 저장 경로 : "+dir);
 		
+		logger.info("컨트롤러에서 노티스의 카테고리 확인 "+exrNotice);
 		exrNoticeService.regist(exrNotice, dir);
 		
 		ResponseEntity<String> entity=new ResponseEntity<String>("상품 등록 완료", HttpStatus.OK);
