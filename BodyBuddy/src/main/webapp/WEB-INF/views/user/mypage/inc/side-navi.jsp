@@ -14,8 +14,8 @@ const REPORT 			= 5;
         <li> <a href="/mypage/mycomments"><span class="sidenav-text">내 댓글</span> </a></li>
         <li> <a href="/mypage/interest"><span class="sidenav-text">내 찜</span> </a></li>
         <li> <a href="/mypage/info"><span class="sidenav-text">회원정보 수정</span> </a></li>
-        <li> <a href="/mypage/ask"><span class="sidenav-text">1:1 문의</span> </a></li>
-        <li> <a href="/mypage/report"><span class="sidenav-text">신고내역</span> </a></li>
+        <li> <a href="/mypage/ask"><span class="sidenav-text">1:1 문의 / 신고내역</span> </a></li>
+        <!-- <li> <a href="/mypage/report"><span class="sidenav-text">신고내역</span> </a></li> -->
     </ul>
 </div>
 
