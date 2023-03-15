@@ -4,9 +4,9 @@
 	
 	<insert id="insert" parameterType="ExrRecord">
 		insert into exr_record (member_idx, exr_name, regdate)
-		values(16, #{exr_name}, #{regdate})
+		values (24, #{exr_name}, #{regdate})
 		<!-- 운동기록에서 하나의 운동명이 추가된 후, 상세 기록(세트, kg, 갯수)를 기록하기 위한 키 -->
-		<selectKey order="AFTER" keyColumn="exr_record_idx" keyProperty="exr_record_idx">
+		<selectKey order="AFTER" keyColumn="exr_record_idx" keyProperty="exr_record_idx" resultType="int">
 			select last_insert_id() as exr_record_idx
 		</selectKey>
 	</insert>

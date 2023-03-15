@@ -11,10 +11,8 @@ public class ExrRecord {
 	private String exr_category;
 	private String exr_name;
 	private int sets;
-	private int kg;
-	private int times;
 	private String regdate;
 	
 	//운동기록이 ExrDetailRecord를 여러개 가지고 있는 형태
-	private List<ExrDetailRecord> ExrRecordDetailList;
+	private List<ExrDetailRecord> exrRecordDetailList;
 }
