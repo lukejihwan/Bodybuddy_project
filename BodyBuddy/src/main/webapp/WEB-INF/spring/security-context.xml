@@ -2,11 +2,11 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"
     xmlns:beans="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
     https://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/security 
-    http://www.springframework.org/schema/security/spring-security-4.2.xsd">
-    
+    http://www.springframework.org/schema/security/spring-security-4.2.xsd
+    ">
     <http pattern="/resources/**" security="none"/>
     <http auto-config="true" use-expressions="true">
     	<csrf disabled="true"/>
@@ -40,6 +40,7 @@
         <authentication-provider ref="authenticationProvider"/>
     </authentication-manager>
     
+    
     <!-- 네이버 로그인 관련 정보 등록  -->
  	<beans:bean id="naverLogin" class="com.edu.bodybuddy.sns.NaverLogin">
  		<!-- 인증화면 링크 URL -->
@@ -66,5 +67,6 @@
 		<!--3) 회원정보 요청을 위한  url  -->
 		<beans:property name="userinfo_url"  value="https://openapi.naver.com/v1/nid/me"/>
  	</beans:bean>
+ 	
 
 </beans:beans>

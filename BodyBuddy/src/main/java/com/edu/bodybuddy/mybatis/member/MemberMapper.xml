@@ -9,7 +9,7 @@
 		<result column="regdate" 			property="regdate"/>
 		<result column="point" 				property="point"/>
 		<result column="role" 					property="role"/>
-		<result column="origin"				property="origin"/>
+		<result column="provider"				property="provider"/>
 		<collection column="member_idx" property="address" javaType="com.edu.bodybuddy.domain.member.Address" select="Address.selectByMember"/>
 		<collection column="member_idx" property="password" javaType="Password" select="Password.selectByMember"></collection>
 	</resultMap>
@@ -31,8 +31,8 @@
 	
 	<!-- 회원가입 -->
 	<insert id="insert" parameterType="Member">
-		insert into member(nickname, email, phone, role, origin)
-		 values(#{nickname}, #{email}, #{phone}, #{role}, #{origin})
+		insert into member(nickname, email, phone, role, provider)
+		 values(#{nickname}, #{email}, #{phone}, #{role}, #{provider})
 		 <selectKey keyColumn="member_idx" keyProperty="member_idx" order="AFTER" resultType="int">
 		 	select last_insert_id() as member_idx
 		 </selectKey>
