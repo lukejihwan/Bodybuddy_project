@@ -23,7 +23,6 @@ public class MybatisMemberDAO implements MemberDAO {
 	@Override
 	public Member selectByEmail(Member member) {
 		return sqlSessionTemplate.selectOne("Member.selectByEmail", member);
-		//if(dto!=null) throw new MemberException("이미 존재하는 이메일입니다");
 	}
 
 	@Override

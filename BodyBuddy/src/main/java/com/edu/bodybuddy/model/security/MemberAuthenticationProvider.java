@@ -42,8 +42,14 @@ public class MemberAuthenticationProvider implements AuthenticationProvider {
         log.info("로그인 시도한 이메일 : "+email);
         log.info("로그인 시도한 비밀번호 : "+password);
 
-        //DB에서 로그인 정보와 일치하는 사용자 정보를 찾아 DTO에 담아 비교
+        
         MemberDetail userDetails = (MemberDetail) userDetailsService.loadUserByUsername(email);
+        if(userDetails.getMember().getProvider().equals("naver") || userDetails.getMember().getProvider().equals("google") || userDetails.getMember().getProvider().equals("kakao")) {
+        	userDetails.getMember().setPassword(null);
+            return new UsernamePasswordAuthenticationToken(userDetails,password,userDetails.getAuthorities());
+        }
+        
+        //DB에서 로그인 정보와 일치하는 사용자 정보를 찾아 DTO에 담아 비교
         if (!passwordEncoder.matches(password, userDetails.getPassword())){
             log.info("password 불일치 : 입력한 패스워드 = "+password + "// DB 패스워드 = " + userDetails.getPassword());
             throw new LoginException("로그인 실패, 정보를 확인하세요");
