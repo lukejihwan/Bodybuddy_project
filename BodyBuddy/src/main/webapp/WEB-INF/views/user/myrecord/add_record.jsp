@@ -126,7 +126,7 @@ const exrlist={
 		<div id="exr_ea" class="border border-danger">
 			{{"운동명 :"+oneExr.exr_name}}
 			<br>
-			{{"세트수 :"+oneExr.sets}}
+			{{"세트수 :"+oneExr.exrRecordDetailList.length}}
 			<input type="hidden" name="oneExr">
 		</div>
 	`,
@@ -201,14 +201,50 @@ function getDate(){
 function popups(currentYear, currentMonth, currentDay){
 	$("#exr_day").val(" "+currentYear+" 년 "+currentMonth+" 월 "+currentDay+"일");
 }
+
+let exrList=[]; //운동을 담을 배열
 //모달창 운동등록 버튼 클릭시, 운동명과, 세트수 가져와서 기록추가 창에 보여주기
 function addexr(){
-	let json={};
+	let json={}; //JSON을 담을 바구니;
+	let exrObject=new Object(); //하나의 운동(exr_name, setList[])를 담을 객체
+	let setList=[]; //한운동에 해당하는 세트를 담을 배열
+	
+	//세트 수의 크기
+	let setsize=app1.count;
+	console.log("세트 수는 ", setsize);
+	for(let i=0; i<setsize; i++){
+		let data=new Object();
+		let kg=$($("input[name='t_kg[]']")[i]).val();
+		let ea=$($("input[name='t_ea[]']")[i]).val();
+		console.log("kg수는 ",kg);
+		console.log("ea수는 ",ea);
+		data.kg=kg;
+		data.times=ea;
+		setList.push(data);
+	}
+	
+	//운동명
+	let exrname=$("input[name='t_exr_research']").val();
+	let exr_day=$("#exr_day").val();
+	let day=exr_day.slice(12,14); //문자에서 며칠인지만 가져오기..
+	let regdate=currentYear+"-"+currentMonth+"-"+day;
+	console.log(regdate);
+	
+	exrObject.exr_name=exrname;
+	exrObject.regdate=regdate;
+	exrObject.exrRecordDetailList=setList;
+	
+	exrList.push(exrObject);
+	
+	//기록추가 영역에 추가될 미리보기
+	app1.exerciseList.push(exrObject);
+	
+	
+	/*
 	let setContents=[]; //한세트로 구성된 객체 여러개를 담을 Contents
 	//운동명값 가져오기
 	let exr_name=$("input[name='t_exr_research']").val();
 	//세트수 가져오기
-	let sets=app1.count;
 	console.log(sets);
 	//모달창 한운동에 대한 세트가 여러개이므로 하나의 배열에 넣어주자
 	for(let i=0; i<sets ; i++){
@@ -236,17 +272,44 @@ function addexr(){
 	$("input[name='t_kg[]']").val("");
 	$("input[name='t_ea[]']").val("");
 	app1.count=1;
+	*/
 }
 function regist(){
 	let result=confirm("운동기록을 등록하시겠어요?");
-	console.log(result);
-	//let val=$("input[name='OneExr']").serialize();
+	
+	let JsonData=JSON.stringify(exrList);
+	console.log(JsonData);
+	
+	//테스트
+	/*
+	let test="[{'exr_name':'ㅇㄹ','regdate':'2023-03-27','exrRecordDetailList':[{'kgs':'2','times':'2'},{'kgs':'22','times':'22'}]}]"
+	let tst=JSON.stringify(test);
+	console.log(tst);
+	*/
+	
 	if(result===true){
+		$.ajax({
+			url:"/rest/myrecord/exrList",
+			type:"POST",
+			processData:false,
+			contentType:"application/json",
+			data:JsonData,
+			success:function(result, status, xhr){
+				alert("입력되었습니다");
+			},
+			error:function(xhr, status, error){
+				alert("실패");
+			}
+		});
+		
+		/*
 		$("#form1").attr({
 			action:"/myrecord/exr_regist",
-			method:"POST"
+			method:"POST",
+			data:JsonData
 		});
 		$("#form1").submit();
+		*/
 	}
 }
 $(function(){
@@ -263,11 +326,6 @@ $(function(){
 	$("#bt_one_exr_regist").click(function(){
 		addexr();
 	});
-	/*
-	document.getElementsByClassName("grid dateBoard").addEventListener("mouseover", function(){
-		console.log("됨");
-	)};
-	*/
 });
 </script>
 <body class="animsition">
