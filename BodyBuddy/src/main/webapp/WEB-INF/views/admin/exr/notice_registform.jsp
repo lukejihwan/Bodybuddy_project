@@ -216,11 +216,10 @@
 
 	
 	/*----------------------
-		등록
+		글 등록
 	----------------------*/ 
 	function regist(){
 	
-		
 		let formData=new FormData();
 		formData.append("exrCategory.exr_category_idx", $("#form2 select[name='exr_category_idx']").val());
 		formData.append("title", $("#form2 input[name='title']").val());
@@ -371,7 +370,6 @@
 	
 	
 	
-	
 	/*------------------------
 		이미지 미리보기 뷰
 	------------------------*/ 
@@ -450,8 +448,6 @@
 		}
 	}
 	
-
-	
 	
 	function checkDuplicate(file){
 		let count=0;
@@ -463,9 +459,6 @@
 		}
 		return count;
 	}
-	
-	
-
 	
 	
 	

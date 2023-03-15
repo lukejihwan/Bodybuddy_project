@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Member">
 	<resultMap type="Member" id="memberMap">
-		<id 		column="member_idx" 		property="member_idx"/>
-		<result column="nickname"      		property="nickname"/>
+		<id 		column="member_idx" 	property="member_idx"/>
+		<result column="nickname" 		property="nickname"/>
 		<result column="email" 				property="email"/>
 		<result column="phone" 				property="phone"/>
 		<result column="regdate" 			property="regdate"/>

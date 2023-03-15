@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/rest/user/member")
+@RequestMapping("/auth/member")
 public class RestMemberController {
 	private Logger log = LoggerFactory.getLogger(getClass());
 	private final MemberService memberService;

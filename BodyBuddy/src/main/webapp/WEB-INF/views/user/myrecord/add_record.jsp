@@ -11,19 +11,16 @@
 	text-align: center;
 	border-radius: 5px;
 }
-
 .grid {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 	grid-gap: 5px;
 }
-
 .grid div {
 	padding: .6rem;
 	font-size: .9rem;
 	cursor: pointer;
 }
-
 .dateBoard div {
 	color: #222;
 	font-weight: bold;
@@ -32,11 +29,9 @@
 	border-radius: 5px;
 	border: 1px solid #eee;
 }
-
 .noColor {
 	background: #eee;
 }
-
 .header {
 	display: flex;
 	justify-content: space-between;
@@ -51,11 +46,9 @@
 	border-width: 3px 3px 0 0;
 	cursor: pointer;
 }
-
 .prevDay {
 	transform: rotate(-135deg);
 }
-
 .nextDay {
 	transform: rotate(45deg);
 }
@@ -76,15 +69,12 @@
 	padding: 0 1.4rem;
 	margin-top: 1.4rem;
 }
-
 .dateHead {
 	margin: .4rem 0;
 }
-
 .btn-group-vertical {
 	position: fixed;
 }
-
 #right_sector {
 	padding: 20px;
 	position: relative;
@@ -93,19 +83,15 @@
 	height: 400px;
 	background-color: #eeeee4;
 }
-
 #bt_add_record, #bt_regist {
 	border: 1px solid white;
 }
-
 #myModal {
 	background: white;
 }
-
 #t_kg, #t_ea {
 	width: 50px;
 }
-
 #t_setgroup {
 	text-align: center;
 }
@@ -116,7 +102,6 @@
 let currentYear;
 let currentMonth;
 let app1;
-
 const setlist={
 	template:`
 		<div class="form-group" id="t_setgroup">
@@ -136,7 +121,6 @@ const setlist={
 		
 	}
 }
-
 const exrlist={
 	template:`
 		<div id="exr_ea" class="border border-danger">
@@ -212,14 +196,11 @@ function getDate(){
 		makeCalendar(new Date(date.setMonth(date.getMonth() + 1)));
 	}
 	document.getElementById("bt_add_record").onclick=function(){
-
 	};
 }
-
 function popups(currentYear, currentMonth, currentDay){
 	$("#exr_day").val(" "+currentYear+" 년 "+currentMonth+" 월 "+currentDay+"일");
 }
-
 //모달창 운동등록 버튼 클릭시, 운동명과, 세트수 가져와서 기록추가 창에 보여주기
 function addexr(){
 	let json={};
@@ -256,7 +237,6 @@ function addexr(){
 	$("input[name='t_ea[]']").val("");
 	app1.count=1;
 }
-
 function regist(){
 	let result=confirm("운동기록을 등록하시겠어요?");
 	console.log(result);
@@ -269,7 +249,6 @@ function regist(){
 		$("#form1").submit();
 	}
 }
-
 $(function(){
 	init();
 	getDate();

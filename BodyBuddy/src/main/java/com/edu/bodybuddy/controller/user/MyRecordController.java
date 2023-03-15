@@ -53,6 +53,11 @@ public class MyRecordController {
 		return mav;
 	}
 	
+	@GetMapping("/googlemap")
+	public ModelAndView getMap() {
+		ModelAndView mav=new ModelAndView("myrecord/googlemap");
+		return mav;
+	}
 	//운동기록 등록하는 곳
 	@PostMapping("/exr_regist")
 	public ModelAndView registRecord(HttpServletRequest request) {

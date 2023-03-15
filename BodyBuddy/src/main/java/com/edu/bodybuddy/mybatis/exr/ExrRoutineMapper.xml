@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ExrRoutine">
+
+	<resultMap type="ExrRoutine" id="resultMap">
+		<id column="exr_routine_idx" property="exr_routine_idx"/>
+		<id column="title" property="title"/>
+		<id column="content" property="content"/>
+		<id column="recommend" property="recommend"/>
+		<id column="hit" property="hit"/>
+		<id column="regdate" property="regdate"/>
+		<id column="member_idx" property="member.member_idx"/>
+		
+		<association property="exrCategory" column="exr_category_idx" javaType="int" select="ExrCategory.select"/>
+	</resultMap>
+	
+	
+	<!-- 글 상세보기 -->
+	<select id="select" parameterType="int" resultMap="resultMap">
+		select * from exr_routine
+		where exr_routine_idx=#{exr_routine_idx}	
+	</select>
+
+	<select id="selectAll" resultMap="resultMap">
+		select * from exr_routine order by exr_routine_idx desc
+	</select>
+
+	<!-- Member 나중에 추가 예정 -->
+	<insert id="insert" parameterType="ExrRoutine">
+		insert into exr_routine(exr_category_idx, title, writer, content)
+		values(#{exrCategory.exr_category_idx}, #{title}, #{writer}, #{content})
+	</insert>
+
+	<update id="update" parameterType="ExrRoutine">
+		update exr_routine set exr_category_idx=#{exrCategory.exr_category_idx}, title=#{title}, writer=#{writer}, content=#{content}
+		where exr_routine_idx=#{exr_routine_idx}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from exr_routine
+		where exr_routine_idx=#{exr_routine_idx}
+	</delete>
+
+</mapper>
