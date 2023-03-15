@@ -62,7 +62,7 @@ public class MemberServiceImpl implements MemberService{
 		//중복 없을 경우 등록 진행
 		//가입시 유저 권한 부여
 		member.setRole(Role.ROLE_USER); 
-		//비밀번호 암호화
+		//home을 통해 가입한 회원만 비밀번호 암호화
 		String encodedPass = passwordEncoder.encode(member.getPassword().getPass());
         member.getPassword().setPass(encodedPass);
         
@@ -71,11 +71,11 @@ public class MemberServiceImpl implements MemberService{
 		passwordDAO.insert(member);
 		
 		//주소 입력되었을 경우 주소도 기입
-		Address address = member.getAddress();
-		if(!address.getMember_address().equals("")) {
-			address.setMember_idx(member.getMember_idx());
-			addressDAO.insert(address);
-		}
+//		Address address = member.getAddress();
+//		if(!address.getMember_address().equals("") || address!=null) {
+//			address.setMember_idx(member.getMember_idx());
+//			addressDAO.insert(address);
+//		}
 		
 	}
 

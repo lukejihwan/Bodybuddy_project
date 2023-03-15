@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edu.bodybuddy.domain.member.Member;
 import com.edu.bodybuddy.domain.member.Password;
 import com.edu.bodybuddy.domain.member.Role;
+import com.edu.bodybuddy.exception.AddressException;
+import com.edu.bodybuddy.exception.MemberException;
+import com.edu.bodybuddy.exception.PasswordException;
 import com.edu.bodybuddy.model.member.MemberService;
 import com.edu.bodybuddy.sns.NaverLogin;
 import com.edu.bodybuddy.sns.NaverOAuthToken;
@@ -80,7 +84,7 @@ public class LoginController {
 	
 	
 	
-	@PostMapping("/callback/naver")
+	@GetMapping("/callback/naver")
 	public ModelAndView getNaverToken(HttpServletRequest req){
 		
 		String code = req.getParameter("code");
@@ -171,20 +175,39 @@ public class LoginController {
 		
 		Member member = new Member();
 		member.setEmail(email);
-		member.setOrigin("naver");
-		member.setPhone(mobile);
-		member.setRole(Role.ROLE_USER);
+
 		
 		Member exist = memberService.selectByEmail(member); 
-		if(member==null) {
+		ModelAndView mv = new ModelAndView();
+		if(exist==null) {
 			//회원가입을 위해 닉네임 설정 페이지로 보내기
-			
+			//여기서부터는 테스트 코드
+			member.setProvider("naver");
+			member.setPhone(mobile);
+			member.setRole(Role.ROLE_USER);
+			Password password = new Password();
+			password.setPass(id);
+			member.setPassword(password);
+			nickname = member.getProvider() + System.currentTimeMillis();
+			member.setNickname(nickname);
+			memberService.regist(member);
+			mv.addObject("Member", member);
 		}else {
 			//그렇지 않은경우
 			//로그인 처리만 하자 (세션에 담자)
+			exist.getPassword().setPass(id);
+			mv.addObject("Member", exist);
 		}
-		ModelAndView mav = new ModelAndView("/addinfo");
+		mv.setViewName("member/login_ic");
 		
-		return mav;
+		return mv;
 	}
+	
+	@ExceptionHandler({MemberException.class, AddressException.class, PasswordException.class})
+	public ModelAndView handle(Exception e) {
+		ModelAndView mv = new ModelAndView("user/member/error");
+		mv.addObject("e", e);
+		return mv;
+	}
+	
 }

@@ -11,7 +11,7 @@ public class Member {
 	private String regdate;
 	private int point;
 	private Role role;
-	private String origin;
+	private String provider;
 	private Address address;
 	private Password password;
 }
