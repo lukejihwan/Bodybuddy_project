@@ -24,19 +24,19 @@
                         <li><a href="/exr/notice" title="Classes" class="animsition-link">운동</a>
                             <ul>
                                 <li><a href="/exr/notice">정보</a></li>
-                                <li><a href="/exr/routine">루틴 공유</a></li>
+                                <li><a href="/exr/routine_list">루틴 공유</a></li>
                                 <li><a href="classes-detail.html" title="Classes Detail">팁</a></li>
                                 <li><a href="classes-detail.html" title="Classes Detail">크루</a></li>
                                 <li><a href="classes-detail.html" title="Classes Detail">챌린지</a></li>
                                 <li><a href="classes-detail.html" title="Classes Detail">칼로리 소모 계산기</a></li>
                             </ul>
                         </li>
-                        <li><a href="/diet/info_main" title="diet" class="animsition-link">식단</a>
+                        <li><a href="/diet/info" title="diet" class="animsition-link">식단</a>
                             <ul>
-                                <li><a href="/diet/info_main" title="Blog" class="animsition-link">식단정보</a></li>
-                                <li><a href="/diet/share_main" title="Blog Single" class="animsition-link">식단공유</a></li>
-                                <li><a href="/diet/tip_main" title="Blog Single" class="animsition-link">식단 팁</a></li>
-                                <li><a href="/diet/kcal_main" title="Blog Single" class="animsition-link">칼로리계산기</a></li>
+                                <li><a href="/diet/info" title="Blog" class="animsition-link">식단정보</a></li>
+                                <li><a href="/diet/share" title="Blog Single" class="animsition-link">식단공유</a></li>
+                                <li><a href="/diet/tip" title="Blog Single" class="animsition-link">식단 팁</a></li>
+                                <li><a href="/diet/kcal" title="Blog Single" class="animsition-link">칼로리계산기</a></li>
                             </ul>
                         </li>
                         <li><a href="/board/free_list/1" class="animsition-link">게시판</a>

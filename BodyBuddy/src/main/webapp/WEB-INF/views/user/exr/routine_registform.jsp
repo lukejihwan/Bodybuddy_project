@@ -1,4 +1,9 @@
+<%@page import="com.edu.bodybuddy.domain.exr.ExrCategory"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%
+	List<ExrCategory> exrCategoryList=(List<ExrCategory>)request.getAttribute("exrCategoryList");
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +53,9 @@
 						<div class="form-group">
 							<select class="form-control" name="exr_category_idx">
 								<option value="0">카테고리 선택</option>
-								<option value=""></option>
+								<% for(ExrCategory exrCategory:exrCategoryList){ %>
+									<option value="<%=exrCategory.getExr_category_idx()%>"><%=exrCategory.getExr_category_name() %></option>
+								<% } %>
 							</select>
 						</div>
 						
@@ -82,11 +89,53 @@
 </body>
 <script type="text/javascript">
 
+
+	function registAsync(){
+		let formData=new FormData();
+		formData.append("exrCategory.exr_category_idx", $("#form1 select[name='exr_category_idx']").val());
+		formData.append("title", $("#form1 input[name='title']").val());
+		formData.append("writer", $("#form1 input[name='writer']").val());
+		formData.append("content", $("#form1 textarea[name='content']").val());
+		
+ 		$.ajax({
+			url:"/rest/exr/routine",
+			type:"post",
+			contentType:false,
+			processData:false,
+			data:formData,
+			
+			success:function(result, status, xhr){
+				alert(result.msg);
+				console.log("성공시 출력 ", result);
+				location.href="/exr/routine_list";
+			},
+			
+			error:function(xhr, status, err){
+				console.log("err ", err);
+				console.log("status ", status);
+				console.log("xhr ", xhr);
+				console.log("에러시 출력 ", xhr.responseText);
+				
+			}
+		});
+	}
+	
+
 	/***onLoad***/
 	$(function(){
+		
+		// 목록 페이지 이동
 		$("#bt_list").click(function(){
-			location.href="/exr/routine";
+			location.href="/exr/routine_list";
 		});
+		
+		// 등록
+		$("#bt_regist").click(function(){
+			registAsync();
+			//regist();
+		});
+		
+
 		
 		// 써머 노트 적용
 		$('#summernote').summernote({
