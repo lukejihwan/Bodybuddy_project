@@ -57,5 +57,17 @@ public class MybatisFreeBoardCommentDAO implements BoardCommentDAO{
 		}
 	}
 
+	public int maxStepInChild(Object freeBoardComment) {
+		return sqlSessionTemplate.selectOne("FreeBoardComment.maxStepInChild", freeBoardComment);
+	}
+
+	public int maxStepInPost(Object freeBoardComment) {
+		return sqlSessionTemplate.selectOne("FreeBoardComment.maxStepInPost", freeBoardComment);
+	}
+
+	public int maxStepInDepth(Object freeBoardComment) {
+		return sqlSessionTemplate.selectOne("FreeBoardComment.maxStepInDepth", freeBoardComment);
+	}
+
 
 }

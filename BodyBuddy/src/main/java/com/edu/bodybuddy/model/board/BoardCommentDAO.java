@@ -9,6 +9,8 @@ public interface BoardCommentDAO {
 	public void update(Object object);
 	public void delete(int idx);
 	public int totalCount(int board_idx);
-	public int maxStep(int board_idx);
 	public void shiftAboveSteps(Object object);
+	public int maxStepInChild(Object object);
+	public int maxStepInPost(Object object);
+	public int maxStepInDepth(Object object);
 }

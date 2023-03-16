@@ -87,8 +87,8 @@
 				<comment_form :idx="<%= idx %>"/>
 			</template>
 			<br/>
-			<template v-for="(comment, i) in commentList">
-				<comment :key="i" :comment="comment"/>
+			<template v-for="(comment) in commentList">
+				<comment :key="comment.free_board_comment_idx" :comment="comment"/>
 			</template>
 
 			
@@ -124,7 +124,7 @@
 								<div class="col-md-2">
 									<span>{{comment.writer}}</span>
 								</div>
-								<div class="col-md-7 comment-content" @click="toggleForm()">
+								<div :class="'col-md-7 '+(comment.depth < depthLimit ? 'comment-content' : '') " @click="toggleForm()">
 									<span>{{comment.comment}}</span>
 								</div>
 								<div class="col-md-3 comment-right">
@@ -169,11 +169,21 @@
 					console.log("step",this.comment.step);
 					console.log("depth", this.comment.depth); */
 					
+					if(this.comment.depth>=this.depthLimit) return;
+					
+					if(($("#form-comment-"+this.board_comment_idx).is(':visible'))) {
+						this.flag = false;
+					}else{
+						this.flag = true;
+					}
+					
 					$.each(app1.commentList, (i, item)=>{
-					    $("#form-comment-"+item.free_board_comment_idx).hide();
+					    $("#form-comment-"+item.free_board_comment_idx).hide(400);
 					});
 					
-					$("#form-comment-"+this.board_comment_idx).show();
+					if(this.flag){
+						$("#form-comment-"+this.board_comment_idx).show(400);
+					}
 				},
 				registComment: window.registComment
 			},
@@ -181,6 +191,7 @@
 				return {
 					flag:false,
 					board_comment_idx:this.comment.free_board_comment_idx,
+					depthLimit:2,
 				};
 			}
 	};
@@ -230,7 +241,6 @@
 	        },
 	        data:{
 	        	commentList:[],
-	        	//event_flag:true
 	        },
 		});
 	}
@@ -251,7 +261,9 @@
 			success:(result, status, xhr)=>{
 				console.log(result);
 				$("#form-comment-"+e.target.value+" textarea").val("");
-				$("#form-comment-"+e.target.value).hide();
+				if(e.target.value!=0){
+					$("#form-comment-"+e.target.value).hide(400);
+				}
 				getList();
 			},
 			error:(xhr, status, err)=>{

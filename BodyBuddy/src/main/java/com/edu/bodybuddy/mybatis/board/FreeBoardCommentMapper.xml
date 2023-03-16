@@ -50,9 +50,23 @@
 		select count(*) from free_board_comment
 		where free_board_idx=#{free_board_idx}
 	</select>
-	<select id="maxStep" resultType="int" parameterType="int">
+	<select id="maxStepInChild" resultType="int" parameterType="FreeBoardComment">
+		select step-1 from free_board_comment
+		where free_board_idx=#{freeBoard.free_board_idx}
+		and step>#{step} and depth=#{depth}
+		order by step asc limit 1;
+	</select>
+	<select id="maxStepInPost" resultType="int" parameterType="FreeBoardComment">
 		select max(step) from free_board_comment
-		where free_board_idx=#{free_board_idx}
+		where free_board_idx=#{freeBoard.free_board_idx}
+		and post=#{post}
+	</select>
+	<select id="maxStepInDepth" resultType="int" parameterType="FreeBoardComment">
+		select step from free_board_comment
+		where free_board_idx=#{freeBoard.free_board_idx}
+		and depth=#{depth}
+		and post=#{post}
+		order by step desc limit 1;
 	</select>
 	
 	<!-- step 올리기  -->
