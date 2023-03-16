@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.model.exr;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -23,7 +24,26 @@ public class MybatisExrRoutineDAO implements ExrRoutineDAO{
 	public ExrRoutine select(int exr_routine_idx) {
 		return sqlSessionTemplate.selectOne("ExrRoutine.select", exr_routine_idx);
 	}
+	
+	// 검색 기능
+	@Override
+	public List selectBySearch(HashMap<String, String> map) {
+		return sqlSessionTemplate.selectList("ExrRoutine.selectBySearch", map);
+	}
+	
+	// 총 레코드 개수를 반환하는 함수
+	@Override
+	public int totalCount() {
+		return sqlSessionTemplate.selectOne("ExrRoutine.totalCount");
+	}
 
+	// 페이징 처리를 위한 함수
+	@Override
+	public List selectAllByPage(int pg) {
+		return sqlSessionTemplate.selectList("ExrRoutine.selectAllByPage", pg);
+	}
+
+	
 	@Override
 	public void insert(ExrRoutine exrRoutine) throws ExrRoutineException{
 		int result=sqlSessionTemplate.insert("ExrRoutine.insert", exrRoutine);
@@ -51,5 +71,9 @@ public class MybatisExrRoutineDAO implements ExrRoutineDAO{
 			throw new ExrRoutineException("루틴 공유 글 삭제 실패");
 		}
 	}
+
+
+
+
 
 }

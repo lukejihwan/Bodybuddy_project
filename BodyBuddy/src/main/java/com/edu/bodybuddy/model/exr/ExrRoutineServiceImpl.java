@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.model.exr;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,21 @@ public class ExrRoutineServiceImpl implements ExrRoutineService{
 	}
 
 	@Override
+	public List selectBySearch(HashMap<String, String> map) {
+		return exrRoutineDAO.selectBySearch(map);
+	}
+	
+	@Override
+	public List selectAllByPage(int pg) {
+		return exrRoutineDAO.selectAllByPage(pg);
+	}
+	
+	@Override
+	public int totalCount() {
+		return exrRoutineDAO.totalCount();
+	}
+	
+	@Override
 	public void insert(ExrRoutine exrRoutine) throws ExrRoutineException{
 		exrRoutineDAO.insert(exrRoutine);
 	}
@@ -36,6 +52,9 @@ public class ExrRoutineServiceImpl implements ExrRoutineService{
 	public void delete(int exr_routine_idx) throws ExrRoutineException{
 		exrRoutineDAO.delete(exr_routine_idx);
 	}
+
+
+
 
 
 }

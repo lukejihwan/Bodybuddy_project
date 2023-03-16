@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.controller.user;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import com.edu.bodybuddy.domain.exr.ExrRoutine;
 import com.edu.bodybuddy.model.exr.ExrCategoryService;
 import com.edu.bodybuddy.model.exr.ExrNoticeService;
 import com.edu.bodybuddy.model.exr.ExrRoutineService;
+import com.edu.bodybuddy.util.PageManager;
 
 // 운동 카테고리 제어 컨트롤러
 @Controller
@@ -65,12 +67,18 @@ public class ExcerciseController {
 	 *  루틴 공유 게시판
 	 * ----------------*/
 	
-	@GetMapping("/routine_list")
-	public ModelAndView getList(HttpServletRequest request){
-		List<ExrRoutine> exrRoutineList=exrRoutineService.selectAll();
+	@GetMapping("/routine_list/{pg}")
+	public ModelAndView getList(@PathVariable int pg, HttpServletRequest request){
+		int total=exrRoutineService.totalCount();
+		logger.info("토탈 레코드 수는?"+total);
+		logger.info("현제 페이지는? "+pg);
+		
+		
+		PageManager pageManager=new PageManager();
+		pageManager.init(total, pg);
 		
 		ModelAndView mv= new ModelAndView("exr/routine_list");
-		mv.addObject("exrRoutineList", exrRoutineList);
+		mv.addObject("pageManager", pageManager);
 		return mv;
 	}
 	
@@ -98,15 +106,28 @@ public class ExcerciseController {
 	}
 	
 	
+	// 상세 보기
+	@GetMapping("/routine/edit/{exr_routine_idx}")
+	public ModelAndView getEditForm(@PathVariable int exr_routine_idx, HttpServletRequest request){
+		List<ExrCategory> exrCategoryList=exrCategoryService.selectAll();
+		ExrRoutine exrRoutine=exrRoutineService.select(exr_routine_idx);
+		
+		ModelAndView mv= new ModelAndView("exr/routine_edit");
+		mv.addObject("exrCategoryList", exrCategoryList);
+		mv.addObject("exrRoutine", exrRoutine);
+		return mv;
+	}
+	
+	
 	@GetMapping("/routine/delete")
-	public ModelAndView delete(int exr_routine_idx) {
+	public ModelAndView delete(int exr_routine_idx, HttpServletRequest request) {
 		exrRoutineService.delete(exr_routine_idx);
 		
 		ModelAndView mv= new ModelAndView("redirect:/exr/routine_list");
 		return mv;
 	}
 	
-	
+
 	
 	
 	
