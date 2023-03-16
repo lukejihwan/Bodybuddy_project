@@ -60,9 +60,10 @@ public class MyRecordController {
 	}
 	//운동기록 등록하는 곳
 	@PostMapping("/exr_regist")
-	public ModelAndView registRecord(HttpServletRequest request, List<ExrRecord> exrRecordList) {
+	public ModelAndView registRecord(HttpServletRequest request) {
 		//일시키기
-		exrRecordService.regist(exrRecordList);
+		String[] OneExr=request.getParameterValues("OneExr");
+		//exrRecordService.regist(exrRecordList);
 		
 		//받아온 값 저장하기(등록하고 받을게 있나..? 고민해보자)
 		

@@ -5,7 +5,7 @@
 	<!-- 운동기록에서 하나의 운동이 생성될때 같이 생성될 운동 상세 DML -->
 	<insert id="insertByExrRecord" parameterType="ExrDetailRecord">
 		insert into exr_record_detail (exr_record_idx, set_number, kg, times)
-		values (#{exr_record_idx}, #{set_number}, #{kg}, #{times})
+		values (#{exr_record_idx}, 2, #{kg}, #{times})
 	</insert>
 	
 	<!-- 운동기록에서 하나의 운동이 지워질때 수행되어질 DML -->

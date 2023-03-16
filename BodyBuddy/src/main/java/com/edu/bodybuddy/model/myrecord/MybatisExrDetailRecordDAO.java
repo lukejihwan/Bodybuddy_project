@@ -1,6 +1,7 @@
 package com.edu.bodybuddy.model.myrecord;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.edu.bodybuddy.domain.myrecord.ExrDetailRecord;
@@ -8,6 +9,7 @@ import com.edu.bodybuddy.exception.ExrDetailRecordException;
 @Repository
 public class MybatisExrDetailRecordDAO implements ExrDetailRecordDAO{
 
+	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	@Override
