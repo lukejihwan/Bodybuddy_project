@@ -101,6 +101,10 @@
 <script type="text/javascript">
 let currentYear;
 let currentMonth;
+let currentDay;
+let lastDay;
+let divValue;
+
 let app1;
 const setlist={
 	template:`
@@ -154,13 +158,15 @@ function init(){
 	
 	});
 }
+//달력을 누를때, regdate의 day값도 미리 들어가 있어야함(내용을 먼저 선택하고 달력을 누르면 day가 적용안됨)
 function getDate(){
 	const date = new Date();
 	let makeCalendar = (date) => {
   	currentYear = new Date(date).getFullYear();
   	currentMonth = new Date(date).getMonth() + 1;
   	let firstDay = new Date(date.setDate(1)).getDay();
-  	let lastDay = new Date(currentYear, currentMonth, 0).getDate();
+  	lastDay = new Date(currentYear, currentMonth, 0).getDate();
+  	divValue = currentYear+"-"+currentMonth+"-"; //div에 넣어줄 value뭉치
   	let limitDay = firstDay + lastDay;
   	let nextDay = Math.ceil(limitDay / 7) * 7;
   	var htmlDummy ='';
@@ -168,7 +174,7 @@ function getDate(){
     	htmlDummy += "<div class='noColor'></div>";
   	}
   	for (let i = 1; i <= lastDay; i++) {
-    	htmlDummy += "<div class='bt_days' onclick='popups(currentYear, currentMonth, "+i+")'>"+i+"</div>";
+    	htmlDummy += "<div class='bt_days' value='"+divValue+i+"' onclick='popups(currentYear, currentMonth, "+i+")'>"+i+"</div>";
   	}
   	for (let i = limitDay; i < nextDay; i++) {
     	htmlDummy += "<div class='noColor'></div>";
@@ -179,14 +185,15 @@ function getDate(){
 	
 	makeCalendar(date);
 	//오늘 날짜 그리기
-	const today=new Date();
-	console.log(today);	
+	//const today=new Date();
+	//console.log(today);	
 	
 	// 이전달 이동
 	document.querySelector('.prevDay').onclick = () => {
 		document.querySelector('.dateBoard').innerHTML="";
 		document.querySelector('.dateTitle').innerHTML="";
 		makeCalendar(new Date(date.setMonth(date.getMonth() - 1)));
+		getExrRecordForMonth();
 	}
 	
 	// 다음달 이동
@@ -194,127 +201,198 @@ function getDate(){
 		document.querySelector('.dateBoard').innerHTML="";
 		document.querySelector('.dateTitle').innerHTML="";
 		makeCalendar(new Date(date.setMonth(date.getMonth() + 1)));
+		getExrRecordForMonth();
 	}
 	document.getElementById("bt_add_record").onclick=function(){
 	};
 }
-function popups(currentYear, currentMonth, currentDay){
-	$("#exr_day").val(" "+currentYear+" 년 "+currentMonth+" 월 "+currentDay+"일");
+
+function popups(currentYear, currentMonth, today){
+	currentDay=today;
+	$("#exr_day").val(" "+currentYear+" 년 "+currentMonth+" 월 "+today+"일");
 }
 
 let exrList=[]; //운동을 담을 배열
 //모달창 운동등록 버튼 클릭시, 운동명과, 세트수 가져와서 기록추가 창에 보여주기
+//PS: 이부분을 오른쪽영역에 rendering하는 부분과 JSON구성하는 부분을 나누는게 좋을듯
 function addexr(){
-	let json={}; //JSON을 담을 바구니;
-	let exrObject=new Object(); //하나의 운동(exr_name, setList[])를 담을 객체
-	let setList=[]; //한운동에 해당하는 세트를 담을 배열
 	
-	//세트 수의 크기
-	let setsize=app1.count;
-	console.log("세트 수는 ", setsize);
-	for(let i=0; i<setsize; i++){
-		let data=new Object();
-		let kg=$($("input[name='t_kg[]']")[i]).val();
-		let ea=$($("input[name='t_ea[]']")[i]).val();
-		console.log("kg수는 ",kg);
-		console.log("ea수는 ",ea);
-		data.kg=kg;
-		data.times=ea;
-		setList.push(data);
+	if($("input[name='t_exr_research']").val()=="" || $("input[name='t_kg[]']").val()=="" || $("input[name='t_ea[]']").val()==""){
+		alert("운동기록을 적어주세요");
+	}else{
+		let json={}; //JSON을 담을 바구니;
+		let exrObject=new Object(); //하나의 운동(exr_name, setList[])를 담을 객체
+		let setList=[]; //한운동에 해당하는 세트를 담을 배열
+		
+		//세트 수의 크기
+		let setsize=app1.count;
+		console.log("세트 수는 ", setsize);
+		for(let i=0; i<setsize; i++){
+			let data=new Object();
+			let kg=$($("input[name='t_kg[]']")[i]).val();
+			let ea=$($("input[name='t_ea[]']")[i]).val();
+			console.log("kg수는 ",kg);
+			console.log("ea수는 ",ea);
+			data.kg=kg;
+			data.times=ea;
+			setList.push(data);
+		}
+		
+		//운동명
+		let exrname=$("input[name='t_exr_research']").val();
+		let exr_day=$("#exr_day").val();
+		let regdate=currentYear+"-"+currentMonth+"-"+currentDay;
+		console.log(regdate);
+		
+		exrObject.exr_name=exrname;
+		exrObject.regdate=regdate;
+		exrObject.exrRecordDetailList=setList;
+		
+		exrList.push(exrObject);
+		
+		//기록추가 영역에 추가될 미리보기
+		app1.exerciseList.push(exrObject);
 	}
 	
-	//운동명
-	let exrname=$("input[name='t_exr_research']").val();
-	let exr_day=$("#exr_day").val();
-	let day=exr_day.slice(12,14); //문자에서 며칠인지만 가져오기..
-	let regdate=currentYear+"-"+currentMonth+"-"+day;
-	console.log(regdate);
+}
+
+
+function regist(){
+	if($("#exr_day").val()=="" || $("input[name='t_exr_research']").val()==""){
+		alert("날짜또는 운동기록을 추가해주세요");
+		
+	}else{
+		let result=confirm("운동기록을 등록하시겠어요?");
+		
+		let JsonData=JSON.stringify(exrList);
+		console.log(JsonData);
 	
-	exrObject.exr_name=exrname;
-	exrObject.regdate=regdate;
-	exrObject.exrRecordDetailList=setList;
-	
-	exrList.push(exrObject);
-	
-	//기록추가 영역에 추가될 미리보기
-	app1.exerciseList.push(exrObject);
-	
-	
-	/*
-	let setContents=[]; //한세트로 구성된 객체 여러개를 담을 Contents
-	//운동명값 가져오기
-	let exr_name=$("input[name='t_exr_research']").val();
-	//세트수 가져오기
-	console.log(sets);
-	//모달창 한운동에 대한 세트가 여러개이므로 하나의 배열에 넣어주자
-	for(let i=0; i<sets ; i++){
-		let setContent=[]; //한 세트에 담을 배열 [kg수, 갯수] 형식
-		let t_kg=$($("input[name='t_kg[]']")[i]).val();
-		let t_ea=$($("input[name='t_ea[]']")[i]).val();
-		setContent.push(t_kg);
-		setContent.push(t_ea);
-		setContents.push(setContent);
+		if(result===true){
+			$.ajax({
+				url:"/rest/myrecord/exrList",
+				type:"POST",
+				processData:false,
+				contentType:"application/json",
+				data:JsonData,
+				success:function(result, status, xhr){
+					alert("입력되었습니다");
+				},
+				error:function(xhr, status, error){
+					alert("실패");
+				}
+			});
+		}
 	}
-	
-	//json에 값 넣어주기
-	json['exr_name']=exr_name;
-	json['sets']=sets;
-	json['setContents']=setContents;
-	console.log("등록된 운동수는 : ",app1.exerciseList);
-	console.log("운동기록에 세부내용 : ", setContents);
-	app1.exerciseList.push(json);
-	console.log("최종적으로 받은 json: ", json);
-	let json2={};
-	json2['data']=json;
-	console.log(JSON.stringify(json2));
-	//모달창 초기화
+}
+
+//운동등록버튼 활성 비활성화를 감지
+function btchange(){
+	const target=document.getElementById("bt_one_exr_regist"); //JQuery가 안먹음
+	for(let i=0; i<app1.count; i++){
+		if($("#bt_exr_search").val()=="" || $($("input[name='t_kg[]']")[i]).val()=="" || $($("input[name='t_ea[]']")[i]).val()==""){
+			target.disabled=true;
+			console.log("빈칸이 있음");
+		}else{
+			target.disabled=false;
+		}
+	}
+}
+
+//모달을 초기화 하는 함수
+function removeContent(){
 	$("input[name='t_exr_research']").val("");
 	$("input[name='t_kg[]']").val("");
 	$("input[name='t_ea[]']").val("");
 	app1.count=1;
-	*/
 }
-function regist(){
-	let result=confirm("운동기록을 등록하시겠어요?");
+
+//해당 div에 이미지 넣기
+function appendImage(getDay){
+	$($(".bt_days")[getDay-1]).css("backgroundColor","red");
+	//$($(".bt_days")[getDay-1]).attr("src","https://cdn2.iconfinder.com/data/icons/exercise-3/185/exercise-09-512.png");
 	
-	let JsonData=JSON.stringify(exrList);
-	console.log(JsonData);
+}
+
+//운동기록이 있는 날에 이미지 붙이기
+function appendImageDays(registedDataForMonth){
+	let divdays=document.getElementsByClassName("bt_days");
+	let selectedDays=[];
 	
-	//테스트
-	/*
-	let test="[{'exr_name':'ㅇㄹ','regdate':'2023-03-27','exrRecordDetailList':[{'kgs':'2','times':'2'},{'kgs':'22','times':'22'}]}]"
-	let tst=JSON.stringify(test);
-	console.log(tst);
-	*/
-	
-	if(result===true){
-		$.ajax({
-			url:"/rest/myrecord/exrList",
-			type:"POST",
-			processData:false,
-			contentType:"application/json",
-			data:JsonData,
-			success:function(result, status, xhr){
-				alert("입력되었습니다");
-			},
-			error:function(xhr, status, error){
-				alert("실패");
-			}
-		});
-		
-		/*
-		$("#form1").attr({
-			action:"/myrecord/exr_regist",
-			method:"POST",
-			data:JsonData
-		});
-		$("#form1").submit();
-		*/
+	//숫자 변환 작업 01을 1로 11은 11같이
+	for(let i=0; i<registedDataForMonth.length; i++){
+		let registedData=registedDataForMonth[i];
+		let processedData=registedData.regdate.slice(8,10);
+		if(processedData.substr(0,1)==0){
+			let selectedDay=registedData.regdate.slice(9,10); //ex: 11 (일)div와 비교해 이미지 붙이기 위해
+			selectedDays.push(selectedDay);
+		}else{
+			let selectedDay=registedData.regdate.slice(8,10); //ex: 11 (일)div와 비교해 이미지 붙이기 위해
+			selectedDays.push(selectedDay);
+		}
+		//console.log(selectedDays[0]);
 	}
+	
+	//console.log(processedData);
+	for(let a=0; a<selectedDays.length; a++){
+		let getDay=selectedDays[a];
+		appendImage(getDay);
+	}
+	
+	
+// 	for(let a=0; a<divdays.length; a++){
+// 		//$($(".bt_days")[1]).attr("value");
+// 		let daysValue=$($(".bt_days")[a]).attr("value");
+// 		if(a<9){
+// 			let dayslessten=daysValue.slice(0,5)+"0"+daysValue.slice(5,7)+"0"+daysValue.slice(7,9);
+// 			console.log(dayslessten);
+// 		}
+// 		//console.log(daysValue);
+		
+// 		for(let i=0; i<registedDataForMonth.length; i++){
+// 			let registedData=registedDataForMonth[i];
+// 			let processedData=registedData.regdate.slice(0,10); //ex: 2023-03-11
+// 			//console.log(processedData);
+// 			//console.log(daysValue);
+// 			if(daysValue==processedData){
+// 				console.log("일치");
+// 			}
+		
+// 		}
+// 	}
+	
 }
+
+function getExrRecordForMonth(){
+	//해당달의 첫날과 마지막날을 JSON형식으로 만듬
+	let json={};
+	json['firstDay']=currentYear+"-"+currentMonth+"-"+1;
+	json['lastDay']=currentYear+"-"+currentMonth+"-"+lastDay;
+	let dateData=JSON.stringify(json);
+	console.log(dateData);
+	
+	//비동기로 해당달의 첫날과 마지막날을 전송
+	$.ajax({
+		url:"/rest/myrecord/exrListForMonth",
+		type:"POST",
+		processData:false,
+		data:dateData,
+		contentType:"application/json",
+		success:function(result, status, xhr){
+			appendImageDays(result);
+			console.log("받아온 날짜는",result);
+			alert("성공적으로 불러옴");
+		},
+		error:function(xhr, status, error){
+			console.log(error, "기록불러오던 중 에러발생");
+		}
+	});
+}
+
 $(function(){
-	init();
-	getDate();
+	init(); 
+	getDate(); //달력출력
+	getExrRecordForMonth();
+	
 	//모달창 세트추가 버튼 클릭시, 세트 추가
 	$("#bt_add_set").click(function(){
 		app1.count+=1;
@@ -322,6 +400,21 @@ $(function(){
 	$("#bt_regist").click(function(){
 		regist();
 	});
+	$(".close").click(function(){
+		removeContent();
+	})
+	
+	//빈칸이 없을시 버튼이 활성화되는 것을 감지하는 (세트추가시 버튼 활성화되어 있는 것 해결 할 예정)
+	$("#bt_exr_search").on("propertychange change paste input", function(){
+		btchange();
+	});
+	$("input[name='t_kg[]']").on("propertychange change paste input", function(){
+		btchange();
+	});
+	$("input[name='t_ea[]']").on("propertychange change paste input", function(){
+		btchange();
+	});
+
 	//모달창 운동등록 버튼 클릭시, 운동명과, 세트수 가져와서 기록추가 창에 보여주기
 	$("#bt_one_exr_regist").click(function(){
 		addexr();
@@ -391,7 +484,6 @@ $(function(){
                 
                 <!-- 기록추가 화면 나올 곳 -->
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 card" id="right_sector">
-                	<form id="form1">
                 	<h3 class="">기록 추가</h3>
 					<input type="text" id="exr_day" disabled>
 					
@@ -403,7 +495,6 @@ $(function(){
 		            	<button type="button" class="btn btn-default" id="bt_add_record" data-toggle="modal" data-target="#myModal">기록추가</button>
 		            	<button type="button" class="btn btn-default" id="bt_regist">기록 등록</button>
 		            </div>
-		            </form>     	
                 </div>
 				
 				<!-- ------------------------------------------------------------------------------- -->
@@ -422,7 +513,7 @@ $(function(){
 							<!-- 모달 내용 -->
 							<div class="modal-body">
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="운동 검색..." name="t_exr_research">
+									<input type="text" class="form-control" placeholder="운동 검색..." name="t_exr_research" id="bt_exr_search">
 									
 									<template v-for="set in count">
 										<setlist :set="set" />
@@ -434,7 +525,7 @@ $(function(){
 
 							<!-- 모달 footer -->
 							<div class="modal-footer">
-								<button type="button" id="bt_one_exr_regist" class="btn btn-danger" data-dismiss="modal">운동 등록</button>
+								<button type="button" id="bt_one_exr_regist" class="btn btn-danger" data-dismiss="modal" disabled>운동 등록</button>
 							</div>
 
 						</div>

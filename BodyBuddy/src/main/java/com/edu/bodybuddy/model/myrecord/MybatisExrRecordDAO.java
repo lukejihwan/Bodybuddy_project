@@ -1,5 +1,8 @@
 package com.edu.bodybuddy.model.myrecord;
 
+import java.util.List;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +14,20 @@ import com.edu.bodybuddy.exception.ExrRecordException;
 
 @Repository
 public class MybatisExrRecordDAO implements ExrRecordDAO {
+	
 	private Logger logger=LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
+	
+	//한달간의 기록을 가져오는 메서드
+	@Override
+	public List<ExrRecord> seletForMonth(Map<String,String> oneMonthPeriod) throws ExrRecordException{
+		List<ExrRecord> exrRecordListMonth=sqlSessionTemplate.selectList("ExrRecord.selectForMonth", oneMonthPeriod);
+		if(exrRecordListMonth.size()<1) {
+			throw new ExrRecordException("운동기록 검색 실패");
+		}
+		return exrRecordListMonth;
+	}
 	
 	@Override
 	public void insert(ExrRecord exrRecord) throws ExrRecordException{
@@ -32,5 +46,7 @@ public class MybatisExrRecordDAO implements ExrRecordDAO {
 			throw new ExrRecordException("운동기록 삭제 실패");
 		}
 	}
+
+	
 
 }
