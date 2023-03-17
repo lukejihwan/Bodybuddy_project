@@ -35,3 +35,5 @@
 <![endif]-->
 <!-- vue 2 for develope-->
 <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+<!-- fontAwesome CDN -->
+<script src="https://kit.fontawesome.com/cfa2095821.js" crossorigin="anonymous"></script>

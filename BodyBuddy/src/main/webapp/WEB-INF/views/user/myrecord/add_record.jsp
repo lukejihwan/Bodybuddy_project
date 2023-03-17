@@ -81,9 +81,11 @@
 	top: 150px;
 	text-align: center;
 	height: 400px;
+	border-radius:5px;
 	background-color: #eeeee4;
 }
 #bt_add_record, #bt_regist {
+	border-radius:5px;
 	border: 1px solid white;
 }
 #myModal {
@@ -94,6 +96,20 @@
 }
 #t_setgroup {
 	text-align: center;
+}
+
+/*운동아이콘 스타일*/
+.fa-dumbbell {
+	color:#49469c;
+}
+.fa-dumbbell:hover {
+	transform: scale(1.3);
+}
+.bg-gradient-primary {
+    background: #007bff linear-gradient(180deg,#268fff,#007bff);
+    color: #fff;
+    border-radius:6px;
+    width: 70%;
 }
 </style>
 
@@ -306,11 +322,18 @@ function removeContent(){
 	app1.count=1;
 }
 
+//div에 상세버튼 추가하기를 따로 둠(다른 기록 기록할때, 또 생성하게 하지 않기 위해)
+function addButtononRecord(getDay){
+	$($(".bt_days")[getDay-1]).append("<button type='button' class='btn btn-block bg-gradient-primary btn-xs' data-toggle='modal' data-target='#detailModal' onclick='getExrDetail()'>상세</button>");	
+}
+
 //해당 div에 이미지 넣기
 function appendImage(getDay){
-	$($(".bt_days")[getDay-1]).css("backgroundColor","red");
-	//$($(".bt_days")[getDay-1]).attr("src","https://cdn2.iconfinder.com/data/icons/exercise-3/185/exercise-09-512.png");
-	
+	//<br>태그를 임시로 적어두긴 했는데, 나중에 위치조정할 것
+	addButtononRecord(getDay);
+	$($(".bt_days")[getDay-1]).append("<br><br><i class='fa-solid fa-dumbbell fa-lg'></i>");
+	$($(".bt_days")[getDay-1]).css("border", "1px solid #49469c");
+	//상세보기 버튼 주기
 }
 
 //운동기록이 있는 날에 이미지 붙이기
@@ -337,28 +360,6 @@ function appendImageDays(registedDataForMonth){
 		let getDay=selectedDays[a];
 		appendImage(getDay);
 	}
-	
-	
-// 	for(let a=0; a<divdays.length; a++){
-// 		//$($(".bt_days")[1]).attr("value");
-// 		let daysValue=$($(".bt_days")[a]).attr("value");
-// 		if(a<9){
-// 			let dayslessten=daysValue.slice(0,5)+"0"+daysValue.slice(5,7)+"0"+daysValue.slice(7,9);
-// 			console.log(dayslessten);
-// 		}
-// 		//console.log(daysValue);
-		
-// 		for(let i=0; i<registedDataForMonth.length; i++){
-// 			let registedData=registedDataForMonth[i];
-// 			let processedData=registedData.regdate.slice(0,10); //ex: 2023-03-11
-// 			//console.log(processedData);
-// 			//console.log(daysValue);
-// 			if(daysValue==processedData){
-// 				console.log("일치");
-// 			}
-		
-// 		}
-// 	}
 	
 }
 
@@ -388,6 +389,12 @@ function getExrRecordForMonth(){
 	});
 }
 
+function getExrDetail(){
+	//event전파를 막는 메서드..
+	//그런데, 이 event는 어디서 받아오는 거지..?
+	//event.stopPropagation(); 이게 있으면 모달 창이 안뜸...
+}
+
 $(function(){
 	init(); 
 	getDate(); //달력출력
@@ -402,7 +409,7 @@ $(function(){
 	});
 	$(".close").click(function(){
 		removeContent();
-	})
+	});
 	
 	//빈칸이 없을시 버튼이 활성화되는 것을 감지하는 (세트추가시 버튼 활성화되어 있는 것 해결 할 예정)
 	$("#bt_exr_search").on("propertychange change paste input", function(){
@@ -419,9 +426,12 @@ $(function(){
 	$("#bt_one_exr_regist").click(function(){
 		addexr();
 	});
+	$("#bt_getDetailForExr").click(function(){
+		location.href="/myrecord/exr_record";
+	});
 });
 </script>
-<body class="animsition">
+<body>
     <!-- top-bar start-->
 	<%@include file="../inc/topbar.jsp" %>
     <!-- /top-bar end-->
@@ -467,7 +477,7 @@ $(function(){
 							<div>수</div>
 							<div>목</div>
 							<div>금</div>
-							<div onclick="popups(1)">토</div>
+							<div>토</div>
 						</div>
 
 						<div class="grid dateBoard"></div>
@@ -526,6 +536,38 @@ $(function(){
 							<!-- 모달 footer -->
 							<div class="modal-footer">
 								<button type="button" id="bt_one_exr_regist" class="btn btn-danger" data-dismiss="modal" disabled>운동 등록</button>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				
+				
+				<!-- 상세보기 모달 창 나오는 곳 -->
+				<div class="modal" id="detailModal">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+
+							<!-- 모달 제목 -->
+							<div class="modal-header">
+								<h4 class="modal-title">상세보기</h4>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+
+							<!-- 모달 내용 -->
+							<div class="modal-body">
+								<div class="form-group">
+									<input type="text" class="form-control">
+									
+									<button type="button" class="btn btn-primary btn-sm float-right">신체상세</button>
+									<button type="button" id="bt_getDetailForExr" class="btn btn-primary btn-sm float-right">운동상세</button>
+									<button type="button" class="btn btn-primary btn-sm float-right">식단상세</button>
+								</div>
+							</div>
+
+							<!-- 모달 footer -->
+							<div class="modal-footer">
+								<button type="button" id="bt_one_exr_regist" class="btn btn-danger" data-dismiss="modal">운동 등록</button>
 							</div>
 
 						</div>
