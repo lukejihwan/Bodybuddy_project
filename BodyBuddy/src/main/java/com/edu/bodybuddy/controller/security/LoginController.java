@@ -8,11 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -28,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edu.bodybuddy.domain.member.Member;
 import com.edu.bodybuddy.domain.member.Password;
 import com.edu.bodybuddy.domain.member.Role;
+import com.edu.bodybuddy.domain.security.MemberDetail;
 import com.edu.bodybuddy.exception.AddressException;
 import com.edu.bodybuddy.exception.MemberException;
 import com.edu.bodybuddy.exception.PasswordException;
@@ -49,6 +54,7 @@ public class LoginController {
 	
 	private final NaverLogin naverLogin;
 	private final MemberService memberService;
+	@Autowired private UserDetailsService userDetailsService;
 	
 	@GetMapping("/login")
 	public String getLoginPage() {
@@ -67,10 +73,10 @@ public class LoginController {
 		return "member/login_error";
 	}
 	
-	@GetMapping("/{vendor}")
+	@GetMapping("/sns/{vendor}")
 	@ResponseBody
 	public ResponseEntity<Msg> getSocialLoginUrl(@PathVariable String vendor) {
-		log.info("벤더 요청 들어옴");
+		log.info(vendor + " 로그인 요청 들어옴");
 		String url = null;
 		switch(vendor) {
 			case "naver" : { url = naverLogin.getGrantUrl(); break;}
@@ -147,7 +153,7 @@ public class LoginController {
 		
 		HashMap<String, Object> userMap=new HashMap<String, Object>();
 		
-		//사용자 정보 추출하기 
+		//사용자 정보를 추출하여 맵으로 변환한다 
 		ObjectMapper objectMapper2 = new ObjectMapper();
 		try {
 			userMap=objectMapper2.readValue(userBody, HashMap.class);
@@ -159,53 +165,47 @@ public class LoginController {
 			e.printStackTrace();
 		}
 		
+		//추출한 정보에서 필요한 정보 뽑아쓰기
 		Map response = (Map)userMap.get("response");
-		
 		
 		String id=(String)response.get("id");
 		String nickname=(String)response.get("nickname");
 		String email=(String)response.get("email");
 		String mobile=(String)response.get("mobile");
 		
-		
 		log.info("id"+id);
 		log.info("email "+email);
 		log.info("nickname "+nickname);
 		log.info("mobile "+mobile);
 		
-		Member member = new Member();
-		member.setEmail(email);
-
+		MemberDetail existMember = (MemberDetail)userDetailsService.loadUserByUsername(email); 
+		log.info("이메일로 불러온 userDetail 객체는 " + existMember);
 		
-		Member exist = memberService.selectByEmail(member); 
-		ModelAndView mv = new ModelAndView();
-		if(exist==null) {
-			//회원가입을 위해 닉네임 설정 페이지로 보내기
-			//여기서부터는 테스트 코드
+		if(existMember==null) {
+			//어플리케이션을 처음 이용하는 경우 사용자 정보 등록
+			Member member = new Member();
 			member.setProvider("naver");
 			member.setPhone(mobile);
-			member.setRole(Role.ROLE_USER);
 			Password password = new Password();
 			password.setPass(id);
 			member.setPassword(password);
 			nickname = member.getProvider() + System.currentTimeMillis();
 			member.setNickname(nickname);
 			memberService.regist(member);
-			mv.addObject("Member", member);
-		}else {
-			//그렇지 않은경우
-			//로그인 처리만 하자 (세션에 담자)
-			exist.getPassword().setPass(id);
-			mv.addObject("Member", exist);
+			existMember = (MemberDetail)userDetailsService.loadUserByUsername(email);
+			//닉네임 설정 페이지로 보내야한다
 		}
-		mv.setViewName("member/login_ic");
-		
+		//연동된 정보에서 보안을 위해 비밀번호는 제거하고
+		existMember.getMember().getPassword().setPass("");
+		//유저 정보를 session에 담는다 => 로그인 처리
+		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(existMember,existMember.getPassword(),existMember.getAuthorities()));
+		ModelAndView mv = new ModelAndView("redirect:/mypage");
 		return mv;
 	}
 	
 	@ExceptionHandler({MemberException.class, AddressException.class, PasswordException.class})
 	public ModelAndView handle(Exception e) {
-		ModelAndView mv = new ModelAndView("user/member/error");
+		ModelAndView mv = new ModelAndView("error/error");
 		mv.addObject("e", e);
 		return mv;
 	}

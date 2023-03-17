@@ -44,12 +44,14 @@ public class MemberAuthenticationProvider implements AuthenticationProvider {
 
         
         MemberDetail userDetails = (MemberDetail) userDetailsService.loadUserByUsername(email);
-        if(userDetails.getMember().getProvider().equals("naver") || userDetails.getMember().getProvider().equals("google") || userDetails.getMember().getProvider().equals("kakao")) {
-        	userDetails.getMember().setPassword(null);
-            return new UsernamePasswordAuthenticationToken(userDetails,password,userDetails.getAuthorities());
-        }
         
-        //DB에서 로그인 정보와 일치하는 사용자 정보를 찾아 DTO에 담아 비교
+//        //소셜로그인 유저라면 바로 인증해준다
+//        if(!userDetails.getMember().getProvider().equals("home")) {
+//        	userDetails.getMember().setPassword(null);
+//            return new UsernamePasswordAuthenticationToken(userDetails,password,userDetails.getAuthorities());
+//        }
+        
+        //일반가입 유저라면 DB에서 로그인 정보와 일치하는 사용자 정보를 찾아 DTO에 담아 비교
         if (!passwordEncoder.matches(password, userDetails.getPassword())){
             log.info("password 불일치 : 입력한 패스워드 = "+password + "// DB 패스워드 = " + userDetails.getPassword());
             throw new LoginException("로그인 실패, 정보를 확인하세요");
@@ -64,7 +66,7 @@ public class MemberAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        //인증 토큰이 변조되지 않았는지 확인한다
+        //커스텀 프로바이더를 사용할지 여부를 결정한다
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
     

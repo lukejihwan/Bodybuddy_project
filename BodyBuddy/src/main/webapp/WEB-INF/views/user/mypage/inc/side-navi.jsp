@@ -8,8 +8,8 @@ const ASK 				= 4;
 const REPORT 			= 5;
 
 </script>
-<div class="side-nav mb30">
-    <ul class="listnone sidenav" id="sidenav">
+<div class="side-nav mb30" style="z-index: 9999">
+    <ul class="listnone sidenav" id="sidenav" style="position:fixed;">
         <li> <a href="/mypage/mypost"><span class="sidenav-text">내 글</span></a></li>
         <li> <a href="/mypage/mycomments"><span class="sidenav-text">내 댓글</span> </a></li>
         <li> <a href="/mypage/interest"><span class="sidenav-text">내 찜</span> </a></li>
