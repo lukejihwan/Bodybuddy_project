@@ -24,7 +24,7 @@
                         <li><a href="/exr/notice" title="Classes" class="animsition-link">운동</a>
                             <ul>
                                 <li><a href="/exr/notice">정보</a></li>
-                                <li><a href="/exr/routine_list">루틴 공유</a></li>
+                                <li><a href="/exr/routine_list/1">루틴 공유</a></li>
                                 <li><a href="classes-detail.html" title="Classes Detail">팁</a></li>
                                 <li><a href="classes-detail.html" title="Classes Detail">크루</a></li>
                                 <li><a href="classes-detail.html" title="Classes Detail">챌린지</a></li>
@@ -39,11 +39,11 @@
                                 <li><a href="/diet/kcal" title="Blog Single" class="animsition-link">칼로리계산기</a></li>
                             </ul>
                         </li>
-                        <li><a href="/board/free_list/1" class="animsition-link">게시판</a>
+                        <li><a href="/board/free_list" class="animsition-link">게시판</a>
                             <ul>
-                                <li><a href="/board/free_list/1" class="animsition-link">자유게시판</a></li>
-                                <li><a href="/board/counseling_list/1" class="animsition-link">질문/답변</a></li>
-                                <li><a href="/board/qna_list/1" class="animsition-link">고민상담(익명)</a></li>
+                                <li><a href="/board/free_list" class="animsition-link">자유게시판</a></li>
+                                <li><a href="/board/counseling_list" class="animsition-link">질문/답변</a></li>
+                                <li><a href="/board/qna_list" class="animsition-link">고민상담(익명)</a></li>
                             </ul>
                         </li>
                         <li><a href="/mypage" title="Mypage" class="animsition-link">마이페이지</a>

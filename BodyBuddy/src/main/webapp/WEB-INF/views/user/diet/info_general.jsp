@@ -1,4 +1,12 @@
+<%@page import="org.apache.ibatis.reflection.SystemMetaObject"%>
+<%@page import="java.util.List"%>
+<%@page import="com.edu.bodybuddy.domain.diet.DietInfo"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+
+<%
+	List<DietInfo> dietInfoList=(List)request.getAttribute("dietInfoList");
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +40,8 @@
                             <div class="col-md-8 col-sm-12">
                                 <div class="row">
                                 	<!-- 사진 들어갈 곳 -->
-                                    <div class="col-md-12 col-sm-12"><img src="" class="" alt="General Diet">
+                                    <div class="col-md-12 col-sm-12"><img src="/resources/user/images/general1.jpg" class="" alt="General Diet">
+                                    <p></p>
                                     
                                     <!-- 내용 -->
                                     <div class="mb30">
@@ -71,28 +80,31 @@
 								</div>
                                 
                                 <!-- 식단리스트 -->
-                                <div class="comments-area pinside40 outline mb40">   
+                                <div class="comments-area pinside40 outline mb40">
                                         <ul class="comment-list listnone">
                                             <li class="comment">
                                                 <div class="comment-body">
+                                                <%for (DietInfo dietInfo:dietInfoList){%>
                                                     <div class="">
-                                                        <div class="comment-author"><img src="images/user4.jpg" alt="" class=""> </div>
+                                                        <div class="comment-author"><img src="<%=dietInfo.getPreview() %>" alt="" style="width:100px;height:100px";> </div>
                                                         <div class="comment-info">
                                                             <div class="comment-header">
-                                                             <div class="reply"><a href="#" class="title"><i class="fa fa-mail-reply"></i> 글 보기</a></div>
-                                                                <h4 class="user-title mb10">제목</h4>
-                                                                <div class="comment-meta"><span class="comment-meta-date">작성일</span></div>
+                                                                <div class="reply"><a href="/diet/info_detail?diet_info_idx=<%=dietInfo.getDiet_info_idx() %>" class="title"><i class="fa fa-mail-reply"></i> 글 보기</a></div>
+                                                                <h4 class="user-title mb10"><%=dietInfo.getTitle() %></h4>
+                                                                <div class="comment-meta"><span class="comment-meta-date"><%=dietInfo.getRegdate().substring(0,10) %></span></div>
                                                             </div>
                                                             <div class="comment-content">
-                                                                <p>소제목</p>
+                                                                <p><%=dietInfo.getSubtitle() %></p>
                                                             </div>
+                                                            <hr>  
                                                         </div>
                                                     </div>
-                                                </div>
+                                                <%} %>
+                                                </div>    
                                             </li>
-                                        </ul>
-                                        <hr>
+                                        </ul>  
                                     </div>
+                                    <!-- 식단리스트 끝 -->
                           	</div>
 
            <!-- 본문 끝 -->                 

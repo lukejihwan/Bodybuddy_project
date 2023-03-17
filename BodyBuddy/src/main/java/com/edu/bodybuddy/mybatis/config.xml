@@ -21,17 +21,11 @@
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrNotice" alias="ExrNotice" />
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrNoticeImg" alias="ExrNoticeImg" />
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrRoutine" alias="ExrRoutine" />
+  	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrRoutineComment" alias="ExrRoutineComment" />
  	
  	<!-- Diet Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietCategory" alias="DietCategory" />
- 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietInfoImg" alias="DietInfoImg" />
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietInfo" alias="DietInfo" />
- 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietShareComments" alias="DietShareComments" />
- 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietShareImg" alias="DietShareImg" />
- 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietShare" alias="DietShare" />
- 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietTipComments" alias="DietTipComments" />
- 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietTipImg" alias="DietTipImg" />
- 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietTip" alias="DietTip" />
  
  	<!-- Mypage Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Report" alias="Report"/>
@@ -61,10 +55,11 @@
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrNoticeMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrNoticeImgMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrRoutineMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrRoutineCommentMapper.xml"/>
     
     <!-- Diet Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietCategoryMapper.xml"/>
-    
+    <mapper resource="com/edu/bodybuddy/mybatis/diet/DietInfoMapper.xml"/>
     
     <!-- Mypage Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/ReportMapper.xml"/>
