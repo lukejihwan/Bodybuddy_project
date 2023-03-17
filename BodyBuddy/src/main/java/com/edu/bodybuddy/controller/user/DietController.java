@@ -1,13 +1,27 @@
 package com.edu.bodybuddy.controller.user;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edu.bodybuddy.domain.diet.DietInfo;
+import com.edu.bodybuddy.model.diet.DietInfoService;
+
 @Controller
 @RequestMapping("/diet")
 public class DietController {
+	Logger logger=LoggerFactory.getLogger(this.getClass());
+	
+	@Autowired
+	private DietInfoService dietInfoService;
 	
 	/*--------------------------------
 	 			식단정보페이지
@@ -36,7 +50,7 @@ public class DietController {
 	//식단정보_지중해식페이지
 	@GetMapping("/info_fish")
 	public ModelAndView getFish() {
-		ModelAndView mav= new ModelAndView("diet/info_kito");
+		ModelAndView mav= new ModelAndView("diet/info_fish");
 		return mav;
 	}
 	
@@ -51,6 +65,17 @@ public class DietController {
 	@GetMapping("/info_time")
 	public ModelAndView getTime() {
 		ModelAndView mav= new ModelAndView("diet/info_time");
+		return mav;
+	}
+	
+	//상세보기페이지
+	@GetMapping("/info_detail")
+	public ModelAndView getDetail(HttpServletRequest request, int diet_info_idx) {
+		DietInfo dietInfo=dietInfoService.select(diet_info_idx);
+		
+		ModelAndView mav=new ModelAndView("diet/info_detail");
+		mav.addObject("dietInfo", dietInfo);
+		
 		return mav;
 	}
 	

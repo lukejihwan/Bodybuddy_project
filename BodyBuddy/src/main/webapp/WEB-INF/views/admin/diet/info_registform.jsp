@@ -146,20 +146,43 @@
 
 							<div class="form-group row">
 								<div class="col">
-									<input type="text" name="product_name" class="form-control"
-										placeholder="제목">
+									<input type="text" name="title" class="form-control" placeholder="제목을 입력하세요">
 								</div>
 							</div>
-						
 							
-
 							<div class="form-group row">
 								<div class="col">
-									<button type="button" class="btn btn-success btn-md" id="bt_list">목록</button>
-									<button type="button" class="btn btn-success btn-md" id="bt_regist">등록</button>
+									<input type="text" name="subtitle" class="form-control" placeholder="소개설명을 입력하세요">
 								</div>
 							</div>
-
+							
+							<div class="form-group">
+								<input type="hidden" name="preview">
+							</div>
+							
+							<div class="form-group">
+								<textarea id="summernote" name="content"></textarea>
+							</div>
+							
+							<div class="form-group row">
+								<input type="number" name="kcal" class="form-control" placeholder="칼로리정보를 입력하세요">
+							</div>
+							<div class="form-group row">
+								<input type="number" name="carbohydrate" class="form-control" placeholder="탄수화물정보를 입력하세요">
+							</div>
+							<div class="form-group row">
+								<input type="number" name="protein" class="form-control" placeholder="단백질정보를 입력하세요">
+							</div>
+							<div class="form-group row">
+								<input type="number" name="province" class="form-control" placeholder="지방정보를 입력하세요">
+							</div>
+							
+							<div class="form-group row">
+								<div class="col">
+									<button type="button" class="btn btn-light" id="bt_list">취소</button>
+									<button type="button" class="btn btn-success float-right" id="bt_regist">등록</button>
+								</div>
+							</div>
 						</div>
 					</div>
 				
@@ -298,6 +321,55 @@
 		});
 	}
 	
+	
+	/*------------------------------------
+					글 관련 
+	-------------------------------------*/	
+
+	function regist(){
+		//프리뷰 호출
+		getPreview();		
+		
+		let formData=new FormData();
+		
+		formData.append("dietCategory.diet_category_idx", $("#form2 select[name='category_idx']").val());
+		formData.append("title", $("#form2 input[name='title']").val());
+		formData.append("subtitle", $("#form2 input[name='subtitle']").val());
+		formData.append("content", $("#form2 textarea[name='content']").val());
+		formData.append("preview", $("#form2 input[name='preview']").val());
+		formData.append("kcal", $("#form2 input[name='kcal']").val());
+		formData.append("carbohydrate", $("#form2 input[name='carbohydrate']").val());
+		formData.append("protein", $("#form2 input[name='protein']").val());
+		formData.append("province", $("#form2 input[name='province']").val());
+		
+		$.ajax({
+			url:"/admin/rest/diet/info",
+			type:"post",
+			contentType:false,
+			processData:false,
+			data:formData,
+			success:function(result, status, xhr){
+				//console.log(formData);
+				alert("글 등록 완료");
+				location.href="/admin/diet/info_list"
+			}
+		});
+		
+	}
+	
+	/*
+	summer notes 의 val()가 html 이니까 
+	DOMParser 로 dom 객체로 만든 후 querySelector를 써서 img태그를 찾아낸 후(가장 처음꺼 나옴) 
+	해당 img 객체의 src를 input hidden 태그에 넣어서 
+	글쓰기 요청 보낼때 이미지 정보를 같이 보내기
+	*/
+	function getPreview(){
+		let domParser = new DOMParser();
+		let doc = domParser.parseFromString($("#form2 textarea[name='content']").val(), "text/html");
+		if(doc.querySelector("img") != null){
+			$("#form2 input[name='preview']").val(doc.querySelector("img").src);
+		}
+	}
 
 
 	
@@ -309,6 +381,11 @@
 
 		//카테고리 생성
 		categoryList();
+		
+		// 써머 노트 적용
+		$('#summernote').summernote({
+			height:400
+		});
 		
 		//모달 카테고리 등록버튼
 		$("#bt_category_regist").click(function(){
@@ -323,6 +400,16 @@
 		//모달 카테고리 삭제버튼
 		$("#bt_category_del").click(function(){
 			categoryDel();
+		});
+		
+		//글 등록 버튼 
+		$("#bt_regist").click(function(){
+			regist();
+		});
+		
+		//글 목록 버튼 
+		$("#bt_list").click(function(){
+			location.href="/admin/diet/info_list";
 		});
 	});
 </script>
