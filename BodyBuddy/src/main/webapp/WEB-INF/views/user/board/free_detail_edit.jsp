@@ -133,7 +133,6 @@
 			},
 			error:(xhr, status, err)=>{
 				console.log(xhr);
-				
 			}
 		});
 	}

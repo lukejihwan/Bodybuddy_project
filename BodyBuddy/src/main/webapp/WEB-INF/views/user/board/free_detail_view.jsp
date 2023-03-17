@@ -2,10 +2,13 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
 	FreeBoard board = (FreeBoard)request.getAttribute("board");
-	String listURI = "/board/free_list/"; //ex. /board/free_list/
-	String deleteURI = "/board/free_delete?free_board_idx="; //ex. /board/free_delete?free_board_idx=
-	String DetailEditURI = "/board/free_detail_edit/";
-	int idx = board.getFree_board_idx();
+	String listURI = "/board/free_list/"; // 게시글 목록 uri ex. /board/free_list/
+	String deleteURI = "/board/free_delete?free_board_idx="; //게시글 삭제요청 uri ex. /board/free_delete?free_board_idx=
+	String DetailEditURI = "/board/free_detail_edit/"; //게시글 수정페이지 uri
+	int board_idx = board.getFree_board_idx(); // board idx 값
+	String boardIdxName = "free_board_idx"; //board idx 컬럼명
+	String boardCommentIdxName = "free_board_comment_idx"; //board_comment_idx 컬럼명
+	String boardName = "freeBoard"; // 게시판 명
 %>
 <!DOCTYPE html>
 <!-- content 부분만 비워둔 기본 템플릿 -->
@@ -15,8 +18,8 @@
 <%@include file="../inc/header_link.jsp"%>
 <script src="https://kit.fontawesome.com/99ef7b560b.js" crossorigin="anonymous"></script>
 <style type="text/css">
-.comment-right button{
-	margin: 0 10px 0 10px;
+.comment-right button, span{
+	margin-right: 10px;
 }
 .comment-content{
 	cursor: pointer;
@@ -24,6 +27,10 @@
 }
 .comment-content:hover>span{
 	background-color: #c5f016;
+}
+
+@media (min-width: 767.98px){
+	
 }
 </style>
 </head>
@@ -84,11 +91,11 @@
 			<button type="button" class="btn btn-default pull-right" style="margin-right: 10px" id="bt_edit">수정</button>
 			<hr>
 			<template>
-				<comment_form :idx="<%= idx %>"/>
+				<comment_form :idx="<%= board_idx %>"/>
 			</template>
 			<br/>
 			<template v-for="(comment) in commentList">
-				<comment :key="comment.free_board_comment_idx" :comment="comment"/>
+				<comment :key="comment.<%= boardCommentIdxName %>" :comment="comment"/>
 			</template>
 
 			
@@ -114,6 +121,17 @@
 	
 	let app1;
 	
+	const formState = {
+			"reply":{
+				placeholder:"댓글 작성...",
+				buttonText:"등록"
+			},
+			"edit":{
+				placeholder:"댓글 수정...",
+				buttonText:"수정"
+			}
+	}
+	
 	const comment = {
 			template:`
 				<div>
@@ -124,12 +142,14 @@
 								<div class="col-md-2">
 									<span>{{comment.writer}}</span>
 								</div>
-								<div :class="'col-md-7 '+(comment.depth < depthLimit ? 'comment-content' : '') " @click="toggleForm()">
+								<div :class="'col-md-7 '+(comment.depth < depthLimit ? 'comment-content' : '') " @click="toggleForm('reply')">
 									<span>{{comment.comment}}</span>
 								</div>
 								<div class="col-md-3 comment-right">
-									<button type="button" class="btn btn-default btn-sm float-right">
+									<button type="button" class="btn btn-danger btn-sm float-right" @click="deleteComment(board_comment_idx)">
 									<i class="fa-solid fa-xmark"></i></button>
+									<button type="button" class="btn btn-default btn-sm float-right" :value="board_comment_idx" @click="toggleForm('edit')">
+									<i class="fa-solid fa-pen-to-square"></i></button>
 									<span class="float-right">{{comment.regdate.substr(5, 5)}} {{comment.regdate.substr(11, 5)}}</span>
 								</div>
 							</div>
@@ -143,16 +163,16 @@
 						<div :class="'col-md-'+(12-(comment.depth+1))">
 							<!-- 여기 board_comment_idx 부분 꼭 수정해야 함 -->
 							<form class="row" :id="'form-comment-'+board_comment_idx" style="display: none;">
-								<input type="hidden" name="free_board_comment_idx" :value="board_comment_idx"/>
-								<input type="hidden" name="idx" :value="comment.freeBoard.free_board_idx"/>
-								<input type="hidden" name="post" :value="comment.post"/>
-								<input type="hidden" name="step" :value="comment.step"/>
-								<input type="hidden" name="depth" :value="comment.depth"/>
+								<input type="hidden" class="for-send" name="<%= boardCommentIdxName %>" :value="board_comment_idx"/>
+								<input type="hidden" class="for-send" name="<%= boardName+"."+boardIdxName %>" :value="comment.<%= boardName+"."+boardIdxName %>"/>
+								<input type="hidden" class="for-send" name="post" :value="comment.post"/>
+								<input type="hidden" class="for-send" name="step" :value="comment.step"/>
+								<input type="hidden" class="for-send" name="depth" :value="comment.depth"/>
 								<div class="col-md-10">
-									<textarea rows="5" class="form-control" style="margin-top:10px;" name="comment" placeholder="댓글 작성..."></textarea>
+									<textarea rows="5" class="form-control for-send" style="margin-top:10px;" name="comment" placeholder="댓글 작성..." maxlength="500"></textarea>
 								</div>
 								<div class="col-md-2 d-flex align-items-center  justify-content-center">
-									<button type="button" class="btn btn-secondary bt_regist_comment" :value="board_comment_idx" @click="registComment">등록</button>
+									<button type="button" class="btn btn-secondary bt_regist_comment" @click="handleComment(board_comment_idx)">등록</button>
 								</div>
 							</form>
 						</div>
@@ -163,35 +183,69 @@
 			`,
 			props:['depth', "comment"],
 			methods:{
-				toggleForm:function(){
+				toggleForm:function(state){
 					/* console.log("comment",this.comment);
 					console.log("post",this.comment.post);
 					console.log("step",this.comment.step);
 					console.log("depth", this.comment.depth); */
+
 					
-					if(this.comment.depth>=this.depthLimit) return;
+					if(this.comment.depth>=this.depthLimit && state=="reply") return;
 					
 					if(($("#form-comment-"+this.board_comment_idx).is(':visible'))) {
-						this.flag = false;
+						this.toggleFlag = true;
 					}else{
-						this.flag = true;
+						this.toggleFlag = false;
 					}
 					
 					$.each(app1.commentList, (i, item)=>{
-					    $("#form-comment-"+item.free_board_comment_idx).hide(400);
+						let itemCommentIdx = item["<%= boardCommentIdxName %>"];
+						if(itemCommentIdx!=this.board_comment_idx){
+					    	$("#form-comment-"+itemCommentIdx).hide(400);
+						}
 					});
 					
-					if(this.flag){
+					
+					//console.log("stateFlag",this.stateFlag);
+					if(this.toggleFlag){
+						$("#form-comment-"+this.board_comment_idx).hide(400, ()=>{
+							console.log("state",state);
+							if(this.stateFlag!=state){
+								this.setForm(state);
+								$("#form-comment-"+this.board_comment_idx).show(400);
+							}
+							this.stateFlag=state;
+						});
+					}else{
+						this.setForm(state);
 						$("#form-comment-"+this.board_comment_idx).show(400);
+						this.stateFlag=state;
+					}
+					
+					
+				},
+				handleComment: function(value){
+					console.log(this.stateFlag);
+					
+					if(this.stateFlag=="reply"){
+						window.registComment(value);
+					}else if(this.stateFlag=="edit"){
+						window.editComment(value);
 					}
 				},
-				registComment: window.registComment
+				deleteComment: window.deleteComment,
+				setForm:function(state){
+					$("#form-comment-"+this.board_comment_idx+" textarea").val("");
+					$("#form-comment-"+this.board_comment_idx+" textarea").attr("placeholder", formState[state].placeholder);
+					$("#form-comment-"+this.board_comment_idx+" button").text(formState[state].buttonText);
+				}
 			},
 			data(){
 				return {
-					flag:false,
-					board_comment_idx:this.comment.free_board_comment_idx,
+					toggleFlag:false, //form 보여질지 말지 toggle 기능을 결정하는 flag
+					board_comment_idx:this.comment["<%= boardCommentIdxName %>"],
 					depthLimit:2,
+					stateFlag:"", //열린 폼이 답글 달기인지 댓글 수정하기 인지 결정하는 플래그. 기본값 없어도 됨
 				};
 			}
 	};
@@ -199,12 +253,12 @@
 	const comment_form = {
 			template:`
 				<form class="row" id="form-comment-0">
-					<input type="hidden" name="idx" :value="idx"/>
+					<input type="hidden" name="<%= boardName+"."+boardIdxName %>" :value="idx"/>
 					<div class="col-md-10">
-						<textarea rows="5" class="form-control" style="margin-top:10px;" name="comment" placeholder="댓글 작성..."></textarea>
+						<textarea rows="5" class="form-control" style="margin-top:10px;" name="comment" placeholder="댓글 작성..." maxlength="500"></textarea>
 					</div>
 					<div class="col-md-2 d-flex align-items-center  justify-content-center">
-						<button type="button" class="btn btn-secondary bt_regist_comment" value="0" @click="registComment">등록</button>
+						<button type="button" class="btn btn-secondary bt_regist_comment" @click="registComment(0)">등록</button>
 					</div>
 				</form>
 			`,	
@@ -221,7 +275,7 @@
 		getList();	
 		
 		$("#bt_edit").click(()=>{
-			location.href="<%= DetailEditURI + idx %>";
+			location.href="<%= DetailEditURI + board_idx %>";
 		});
 		$("#bt_del").click(()=>{
 			del();
@@ -229,7 +283,6 @@
 		$("#bt_list").click(()=>{
 			location.href="<%= listURI+1 %>";
 		});
-		
 	});
 	
 	function init() {
@@ -249,22 +302,25 @@
 		if(!confirm("삭제하시겠습니까?")) return; 
 		
 
-		location.href="<%= deleteURI + idx %>";
+		location.href="<%= deleteURI + board_idx %>";
 	}
 	
-	function registComment(e){
-		console.log($("#form-comment-"+e.target.value).serialize());
+	function registComment(value){
+		console.log($("#form-comment-"+value).serialize());
 		$.ajax({
-			url:"/rest/board/free_board/comment",
+			url:"/rest/board/<%= boardName %>/comment",
 			type:"POST",
-			data:$("#form-comment-"+e.target.value).serialize(),
+			data:$("#form-comment-"+value).serialize(),
 			success:(result, status, xhr)=>{
 				console.log(result);
-				$("#form-comment-"+e.target.value+" textarea").val("");
-				if(e.target.value!=0){
-					$("#form-comment-"+e.target.value).hide(400);
+				$("#form-comment-"+value+" textarea").val("");
+				if(value!=0){
+					$("#form-comment-"+value).hide(400, ()=>{
+						getList();
+					});
+				}else{
+					getList();
 				}
-				getList();
 			},
 			error:(xhr, status, err)=>{
 				console.log("ajax 실패 ", xhr);
@@ -272,9 +328,48 @@
 		});
 	}
 	
+	function editComment(value) {
+		let json = {};
+		$.each($("#form-comment-"+value+" .for-send"), (i, item)=>{
+		    json[item.name] = item.value;
+		});
+		
+		$.ajax({
+			url:"/rest/board/<%= boardName %>/comment",
+			type:"PUT",
+			contentType:"application/json;charset=utf-8",
+			processData:false,
+			data:JSON.stringify(json),
+			success:(result, status, xhr)=>{
+				console.log(result.msg);
+				getList();
+			},
+			error:(xhr, status, err)=>{
+				console.log(xhr);
+			}
+		});
+	
+		
+	}
+	
+	function deleteComment(value) {
+		
+		$.ajax({
+			url:"/rest/board/<%= boardName %>/comment/"+value,
+			type:"DELETE",
+			success:(result, status, xhr)=>{
+				console.log(result.msg);
+				getList();
+			},
+			error:(xhr, status, err)=>{
+				console.log(xhr);
+			}
+		});
+	}
+	
 	function getList() {
 		$.ajax({
-			url:"/rest/board/free_board/comment/board/<%= idx %>",
+			url:"/rest/board/<%= boardName %>/comment/board/<%= board_idx %>",
 			type:"GET",
 			success:(result, status, xhr)=>{
 				app1.commentList = result;			

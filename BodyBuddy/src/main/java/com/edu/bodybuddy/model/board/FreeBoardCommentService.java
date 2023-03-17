@@ -90,11 +90,11 @@ public class FreeBoardCommentService implements BoardCommentService{
 	}
 
 	public void update(Object object) {
-		
+		boardCommentDAO.update(object);
 	}
 
-	public void delete(int object) {
-		
+	public void delete(int free_board_comment_idx) {
+		boardCommentDAO.delete(free_board_comment_idx);
 	}
 
 	public int totalCount(int board_idx) {
