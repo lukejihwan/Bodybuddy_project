@@ -1,12 +1,12 @@
-package com.edu.bodybuddy.sns;
+package com.edu.bodybuddy.social;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lombok.Data;
-//소셜로그인에 사용할 객체
+//네이버로그인에 사용할 객체
 @Data
-public class KakaoLogin {
+public class NaverLogin implements SocialLogin{
 	private Logger log=LoggerFactory.getLogger(this.getClass());
 	
 	//인증화면 관련
@@ -15,7 +15,6 @@ public class KakaoLogin {
 	private String client_secret;
 	private String redirect_uri;
 	private String response_type;
-	private String scope;
 	private String state;
 	
 	//토큰을 위한 변수 

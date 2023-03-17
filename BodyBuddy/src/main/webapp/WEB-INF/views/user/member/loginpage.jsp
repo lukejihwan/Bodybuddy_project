@@ -65,9 +65,10 @@
 
 <script type="text/javascript">
 function socialLogin(vendor) {
+	console.log(vendor);
 	$.ajax({
 		type: "get",
-		url: "/auth/sns/"+vendor,
+		url: "/auth/social/"+vendor,
 		success: function(result) {
 			location.href=result.msg;
 		}
