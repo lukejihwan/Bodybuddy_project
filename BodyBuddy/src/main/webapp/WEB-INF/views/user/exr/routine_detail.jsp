@@ -6,7 +6,7 @@
 	List<ExrCategory> exrCategoryList=(List<ExrCategory>)request.getAttribute("exrCategoryList");
 	
 	ExrRoutine exrRoutine=(ExrRoutine)request.getAttribute("exrRoutine");
-	System.out.println("확인"+exrRoutine);
+	//System.out.println("확인"+exrRoutine);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,66 +42,41 @@
 	<div class="space-medium">
 		<div class="container">
 			<h3>루틴 공유 입력폼</h3>
-			<h1>Share Your Excercise Routine !</h1>
+			<h1><%=exrRoutine.getTitle() %></h1>
 			<hr>
 			<div class="row">
 				<div class="col-sm-12">
-					<form id="form1">
-						<div class="form-group">
-							<input type="hidden" name="exr_routine_idx" value="<%=exrRoutine.getExr_routine_idx() %>">
-							<input type="text" class="form-control" name="title" value="<%=exrRoutine.getTitle() %>" style="height:100px; font-size:30px">
-						</div>
-						<div class="form-group">
-							<input type="text" class="form-control" name="writer" value="<%=exrRoutine.getWriter() %>">
-						</div>
-						
-						<div class="form-group">
-							<select class="form-control" name="exrCategory" id="exrCategory">
-								<option value="0"><%=exrRoutine.getExrCategory().getExr_category_name() %></option>
-								<% for(ExrCategory exrCategory:exrCategoryList){ %>
-									<option value="<%=exrCategory.getExr_category_idx()%>"><%=exrCategory.getExr_category_name() %></option>
-								<% } %>
-							</select>
-						</div>
-						
-						<div class="form-group">
-							<textarea id="summernote" name="content"><%=exrRoutine.getContent() %></textarea>
-						</div>
-						
-						<div class="form-group">
-							<button type="button" class="btn btn-primary" id="bt_list">목록</button>
-							<button type="button" class="btn btn-outline-success" id="bt_edit">수정</button>
-							<button type="button" class="btn btn-outline-danger" id="bt_delete">삭제</button>
-						</div>
-					</form>
-
-				<hr>
-				
-					<h1 class="reply-title">Leave A Comment</h1>
-					<label class="control-label" for="textarea">Comments</label>
-					<textarea class="form-control" id="textarea" name="textarea"
-						rows="6" placeholder=" "></textarea>
-
-					<div class="form-group">
-						<label class="control-label" for="name">Name</label> <input
-							id="name" name="name" type="text" class="form-control"
-							placeholder=" ">
-					</div>
-
-					<div class=" widget widget-archives">
-						<h2 class="widget-title">댓글</h2>
-						<ul class="listnone bullet bullet-long-arrow">
-							<li>September 2016</li>
-							<li>September 2016</li>
-							<li>September 2016</li>
-							<li>September 2016</li>
-						</ul>
-					</div>
 
 
+				<%=exrRoutine.getContent() %>
+
+				<div class="form-group">
+					<button type="button" class="btn btn-primary" id="bt_list">목록</button>
+					<button type="button" class="btn btn-outline-success" id="bt_edit">수정</button>
 				</div>
 
+				<hr>
+				</div>
+				
+				<div class="col-sm-9">
+					<label class="control-label" for="textarea">Comments</label>
+					<form id="form1">
+						<input type="hidden" name="exr_routine_idx" value="<%=exrRoutine.getExr_routine_idx()%>">
+						<textarea class="form-control" name="content"rows="6" placeholder="댓글 입력 창"></textarea>
+						<input type="text" class="form-control" name="writer" placeholder="작성자"/>
+						<button id="bt_comment" class="btn btn-default" type="button">등록</button>
+					</form>
+				</div>
 
+				<div class="col-sm-9" id="app1">
+					
+					<!-- 템플릿 시작 예정 -->
+					<template v-for="comment in commentList">
+						<row :dto="comment"/>
+					</template>
+					
+					<!-- ./템플릿 -->
+				</div>
 
 
 			</div>
@@ -122,73 +97,162 @@
 
 </body>
 <script type="text/javascript">
-	// 수정
-	function edit() {
-		let json = {};
-		let obj = {
-			exr_category_name : $("#exrCategory option:checked").text(),
-			exr_category_idx : $("#form1 select[name='exrCategory']").val()
-		};
-
-		json['exrCategory'] = obj;
-
-		json['exr_routine_idx'] = $("#form1 input[name='exr_routine_idx']")
-				.val();
-		json['title'] = $("#form1 input[name='title']").val();
-		json['writer'] = $("#form1 input[name='writer']").val();
-		json['content'] = $("#form1 textarea[name='content']").val();
-
-		console.log(JSON.stringify(json));
-
-		$.ajax({
-			url : "/rest/exr/routine",
-			type : "PUT",
-			contentType : "application/json;charset=utf-8",
-			processData : false,
-			data : JSON.stringify(json),
-
-			success : function(result, status, xhr) {
-				alert(result.msg);
-				console.log("성공시 출력 ", result);
+	let app1;
+	
+	const row={
+			template:`
+				<div>
+					<hr>
+					<h4 class="user-title mb10">{{comment.content}}</h4>
+					<div>
+						<button type="button" class="btn btn btn-danger float-right">삭제</button>
+						<button id="bt_comment" class="btn btn-default float-right" type="button" @click="reply()">답글달기</button>
+					</div>
+					<div class="comment-meta">
+						<span class="comment-meta-date">{{comment.regdate}}</span>
+					</div>
+					<div class="comment-content">
+						<p>{{comment.writer}}</p>
+					</div>
+				</div>
+			`,
+			props:["dto"],
+			data(){
+				return{
+					comment:this.dto					
+				}
 			},
-
-			error : function(xhr, status, err) {
-				console.log("에러시 출력 ", xhr.responseText);
+			methods:{
+				reply:function(){
+					if (confirm("답글을 등록하시겠습니까?")) {
+						let formData=new FormData();
+						formData.append("exrRoutine.exr_routine_idx", $("input[name='exr_routine_idx']").val());
+						formData.append("content", $("#form1 textarea[name='content']").val());
+						formData.append("writer", $("#form1 input[name='writer']").val());
+						
+						$.ajax({
+							url:"/rest/exr/routine/reply",
+							type:"POST",
+							contentType:false,
+							processData:false,
+							data:formData,
+							success:function(result, status, xhr){
+								alert(result.msg);
+								
+								getComments();
+								// 내용 비워주기
+								$("#form1 textarea[name='content']").val("");
+								$("#form1 input[name='writer']").val("");
+							},
+						});
+					}
+				}
 			}
+		}
+
+/* 	function reply(){
+		let formData=new FormData();
+		formData.append("exrRoutine.exr_routine_idx", $("input[name='exr_routine_idx']").val());
+		formData.append("content", $("#form1 textarea[name='content']").val());
+		formData.append("writer", $("#form1 input[name='writer']").val());
+		
+		$.ajax({
+			url:"/rest/exr/routine/reply",
+			type:"POST",
+			contentType:false,
+			processData:false,
+			data:formData,
+			success:function(result, status, xhr){
+				alert(result.msg);
+				
+				getComments();
+				// 내용 비워주기
+				$("#form1 textarea[name='content']").val("");
+				$("#form1 input[name='writer']").val("");
+			},
+		});
+	} */
+					
+					
+	function regist(method){
+		let formData=new FormData();
+		formData.append("exrRoutine.exr_routine_idx", $("input[name='exr_routine_idx']").val());
+		formData.append("content", $("#form1 textarea[name='content']").val());
+		formData.append("writer", $("#form1 input[name='writer']").val());
+		
+		$.ajax({
+			url:"/rest/exr/routine/comment/"+method,
+			type:"POST",
+			contentType:false,
+			processData:false,
+			data:formData,
+			success:function(result, status, xhr){
+				alert(result.msg);
+				
+				getComments();
+				// 내용 비워주기
+				$("#form1 textarea[name='content']").val("");
+				$("#form1 input[name='writer']").val("");
+			},
 		});
 	}
 
+	
+	function getComments(){
+		$.ajax({
+			url:"/rest/exr/routine/comment/"+$("input[name='exr_routine_idx']").val(),
+			type:"GET",
+			success:function(result, status, xhr){
+				app1.commentList=result;
+				console.log(app1.exrRoutineList);
+			},
+			error:function(xhr, status, err){
+				console.log(xhr.responseText);
+			}
+		});
+	}
+	
+	
+	function init(){
+		app1=new Vue({
+			el:"#app1",
+			data:{
+				commentList:[]
+			},
+			components:{
+				row
+			}
+		});
+	}
+	
+	
 	/***onLoad***/
 	$(function() {
+		init();
 
 		// 목록 페이지 이동
 		$("#bt_list").click(function() {
-			location.href = "/exr/routine_list";
+			location.href = "/exr/routine_list/1";
 		});
 
 		// 수정
 		$("#bt_edit").click(function() {
 			if (confirm("수정하시겠습니까?")) {
-				//editTest();
-				edit();
+				location.href = "/exr/routine/edit/"+$("input[name='exr_routine_idx']").val();
 			}
 		});
-
-		// 삭제
-		$("#bt_delete").click(
-				function() {
-					if (confirm("삭제하시겠습니까?")) {
-						location.href = "/exr/routine/delete?exr_routine_idx="
-								+ $("#form1 input[name='exr_routine_idx']")
-										.val();
-						alert("삭제되었습니다");
-					}
-				});
-
-		// 써머 노트 적용
-		$('#summernote').summernote({
-			height : 400
+		
+		// 댓글
+		$("#bt_comment").click(function() {
+			if (confirm("댓글을 등록하시겠습니까?")) {
+				regist("comment");
+			}
 		});
+		
+		// 댓글 목록 가져오기
+		getComments();
+		
+
 	});
 </script>
 </html>

@@ -4,12 +4,12 @@
 
 	<resultMap type="ExrRoutine" id="resultMap">
 		<id column="exr_routine_idx" property="exr_routine_idx"/>
-		<id column="title" property="title"/>
-		<id column="content" property="content"/>
-		<id column="recommend" property="recommend"/>
-		<id column="hit" property="hit"/>
-		<id column="regdate" property="regdate"/>
-		<id column="member_idx" property="member.member_idx"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="recommend" property="recommend"/>
+		<result column="hit" property="hit"/>
+		<result column="regdate" property="regdate"/>
+		<result column="member_idx" property="member.member_idx"/>
 		
 		<association property="exrCategory" column="exr_category_idx" javaType="int" select="ExrCategory.select"/>
 	</resultMap>
@@ -20,6 +20,27 @@
 		select * from exr_routine
 		where exr_routine_idx=#{exr_routine_idx}	
 	</select>
+	
+	
+	<!-- 제목을 기준으로 검색 -->
+	<select id="selectBySearch" parameterType="java.util.Map" resultType="ExrRoutine">
+		select * from exr_routine
+		where title like '%${keyword}%'
+	</select>
+	
+	
+	<!-- 페이징 처리를 위한 전체 레코드 수 count -->
+	<select id="totalCount" resultType="int">
+		select count(*) as totalCount from exr_routine
+	</select>
+
+
+	<!-- 페이징 처리를 위한 -->
+	<select id="selectAllByPage" resultMap="resultMap" parameterType="int">
+		select * from exr_routine order by exr_routine_idx desc
+		limit 10 offset #{page}
+	</select>
+
 
 	<select id="selectAll" resultMap="resultMap">
 		select * from exr_routine order by exr_routine_idx desc
