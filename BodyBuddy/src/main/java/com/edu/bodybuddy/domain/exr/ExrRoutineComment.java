@@ -3,18 +3,16 @@ package com.edu.bodybuddy.domain.exr;
 import com.edu.bodybuddy.domain.member.Member;
 
 import lombok.Data;
-
 @Data
-public class ExrRoutine {
-	private int exr_routine_idx;
-	private String title;
+public class ExrRoutineComment {
+	private int exr_routine_comment_idx;
 	private String writer;
 	private String content;
-	private int recommend;
-	private int hit;
 	private String regdate;
+	private int post;
+	private int step;
+	private int depth;
 	
-	// fk
-	private ExrCategory exrCategory;
+	private ExrRoutine exrRoutine;
 	private Member member;
 }

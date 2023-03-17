@@ -3,13 +3,11 @@ package com.edu.bodybuddy.model.exr;
 import java.util.HashMap;
 import java.util.List;
 
-import com.edu.bodybuddy.domain.exr.ExrNotice;
 import com.edu.bodybuddy.domain.exr.ExrRoutine;
 
-public interface ExrRoutineDAO {
+public interface ExrRoutineService {
 	public List selectAll();
 	public ExrRoutine select(int exr_routine_idx);
-
 	// 검색 기능
 	public List selectBySearch(HashMap<String, String> map);
 	// 총 레코드 반환

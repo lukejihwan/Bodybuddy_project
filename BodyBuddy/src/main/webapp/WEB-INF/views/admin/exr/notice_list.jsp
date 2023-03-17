@@ -129,9 +129,6 @@
 							</div>
 
 
-
-
-
 							<div class="form-group row">
 									<div class="col">
 										<button type="button" class="btn btn-outline-danger" id="bt_regist">등록</button>									
