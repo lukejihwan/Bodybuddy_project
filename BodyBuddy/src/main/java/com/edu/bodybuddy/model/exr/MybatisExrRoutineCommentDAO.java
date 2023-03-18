@@ -52,6 +52,11 @@ public class MybatisExrRoutineCommentDAO implements ExrRoutineCommentDAO{
 			throw new ExrRoutineCommentException("댓글 등록 단계 실패");
 		}
 	}
+
+	@Override
+	public int selectMaxStep(ExrRoutineComment exrRoutineComment) {
+		return sqlSessionTemplate.selectOne("ExrRoutineComment.selectMaxStep", exrRoutineComment);
+	}
 	
 
 

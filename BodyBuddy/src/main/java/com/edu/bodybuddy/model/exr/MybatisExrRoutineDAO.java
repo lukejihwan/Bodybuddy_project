@@ -31,6 +31,14 @@ public class MybatisExrRoutineDAO implements ExrRoutineDAO{
 		return sqlSessionTemplate.selectList("ExrRoutine.selectBySearch", map);
 	}
 	
+
+	@Override
+	public List selectByFk(int exr_category_idx) {
+		return sqlSessionTemplate.selectList("ExrRoutine.selectByFk", exr_category_idx);
+	}
+	
+	
+	
 	// 총 레코드 개수를 반환하는 함수
 	@Override
 	public int totalCount() {
@@ -53,7 +61,7 @@ public class MybatisExrRoutineDAO implements ExrRoutineDAO{
 	}
 
 	@Override
-	public void update(ExrRoutine exrRoutine) {
+	public void update(ExrRoutine exrRoutine) throws ExrRoutineException{
 		System.out.println("루틴의 카테고리는? "+exrRoutine.getExrCategory());
 		System.out.println("디에이오에서 확인 "+exrRoutine);
 		int result=sqlSessionTemplate.update("ExrRoutine.update", exrRoutine);
@@ -65,12 +73,29 @@ public class MybatisExrRoutineDAO implements ExrRoutineDAO{
 	}
 
 	@Override
-	public void delete(int exr_routine_idx) {
+	public void delete(int exr_routine_idx) throws ExrRoutineException{
 		int result=sqlSessionTemplate.delete("ExrRoutine.delete", exr_routine_idx);
 		if(result<1) {
 			throw new ExrRoutineException("루틴 공유 글 삭제 실패");
 		}
 	}
+
+	@Override
+	public void plusHit(int exr_routine_idx) throws ExrRoutineException{
+		int result=sqlSessionTemplate.update("ExrRoutine.plusHit", exr_routine_idx);
+		if(result<1) {
+			throw new ExrRoutineException("조회수 추가 실패");
+		}		
+	}
+
+	@Override
+	public void plusRecommend(int exr_routine_idx) throws ExrRoutineException{
+		int result=sqlSessionTemplate.update("ExrRoutine.plusRecommend", exr_routine_idx);
+		if(result<1) {
+			throw new ExrRoutineException("추천수 추가 실패");
+		}			
+	}
+
 
 
 
