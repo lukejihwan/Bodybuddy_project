@@ -25,6 +25,11 @@
 		order by step asc
 	</select>
 	
+	<select id="select" resultMap="resultMap" parameterType="int">
+		select * from free_board_comment
+		where free_board_comment_idx=#{free_board_comment_idx}
+	</select>
+	
 	<insert id="insert" parameterType="FreeBoardComment">
 		insert into free_board_comment(member_idx, free_board_idx, comment, writer, post, step, depth)
 		values (#{member.member_idx}, #{freeBoard.free_board_idx} , #{comment}, #{writer}, #{post}, #{step}, #{depth})
@@ -38,7 +43,7 @@
 	</insert>
 	<update id="update" parameterType="FreeBoardComment">
 		update free_board_comment set
-		comment=#{comment}, post=#{post}
+		comment=#{comment}
 		where free_board_comment_idx=#{free_board_comment_idx}
 	</update>
 	<delete id="delete" parameterType="FreeBoardComment">
@@ -69,9 +74,15 @@
 		order by step desc limit 1;
 	</select>
 	
-	<!-- step 올리기  -->
+	<!-- step 올리기 for insert -->
 	<update id="shiftAboveSteps" parameterType="FreeBoardComment">
 		update free_board_comment set step = step + 1
+		where step>#{step} and free_board_idx=#{freeBoard.free_board_idx}
+	</update>
+	
+	<!-- step 내리기 for delete -->
+	<update id="unshiftAboveSteps" parameterType="FreeBoardComment">
+		update free_board_comment set step = step - 1
 		where step>#{step} and free_board_idx=#{freeBoard.free_board_idx}
 	</update>
 	<select id="countAboveSteps" resultType="int" parameterType="FreeBoardComment">

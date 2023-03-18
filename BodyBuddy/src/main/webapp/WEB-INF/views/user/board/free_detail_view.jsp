@@ -18,7 +18,7 @@
 <%@include file="../inc/header_link.jsp"%>
 <script src="https://kit.fontawesome.com/99ef7b560b.js" crossorigin="anonymous"></script>
 <style type="text/css">
-.comment-right button, span{
+.comment-right button, .comment-right span{
 	margin-right: 10px;
 }
 .comment-content{

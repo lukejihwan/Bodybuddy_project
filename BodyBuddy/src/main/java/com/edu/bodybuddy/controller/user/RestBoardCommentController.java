@@ -91,7 +91,8 @@ public class RestBoardCommentController {
 	public ResponseEntity<Message> update(HttpServletRequest request, @PathVariable int free_board_comment_idx){
 		
 		//3단계
-		freeBoardCommentService.delete(free_board_comment_idx);		
+		//logger.info("comment delete free_board_comment_idx : "+free_board_comment_idx);
+		freeBoardCommentService.delete(free_board_comment_idx);
 		
 		Message message = new Message();
 		message.setCode(200);
