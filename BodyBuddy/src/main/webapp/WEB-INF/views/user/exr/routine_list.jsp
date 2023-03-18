@@ -1,3 +1,4 @@
+<%@page import="com.edu.bodybuddy.domain.exr.ExrCategory"%>
 <%@page import="com.edu.bodybuddy.util.PageManager"%>
 <%@page import="com.edu.bodybuddy.domain.exr.ExrRoutine"%>
 <%@page import="com.edu.bodybuddy.domain.exr.ExrNotice"%>
@@ -5,10 +6,10 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
 	PageManager pageManager=(PageManager)request.getAttribute("pageManager");
-
-	String listURI = "/exr/exr_routine_list/"; // href 이동 주소 이것만 변경하면 됨. 뒤에 / 붙일 것 ex. /board/free_list/
-	String detailURI = "/exr/routine/";
-
+	List<ExrCategory> exrCategoryList=(List<ExrCategory>)request.getAttribute("exrCategoryList");
+	
+//	System.out.println("뷰 페이지에서 카테고리 리스트 확인 : "+exrCategoryList);
+	
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,10 +46,10 @@
     <!-- content start -->
     <div class="space-medium">
         <div class="container" id="app1">
-            <div class="row">
 
-				<div class="col-12">
+				
 					<div class="card">
+					
 						<div class="card-header">
 							<div class="row">
 
@@ -58,6 +59,10 @@
 									<div class="card-tools">
 										<form action="form1">
 											<div class="input-group input-group-sm" style="width: 250px;">
+											
+												<input type="hidden" name="pg" value="<%=pageManager.getCurrentPage()%>">
+												<input type="hidden" name="num" value="<%=pageManager.getNum()%>">
+												
 												<input type="text" name="keyword" placeholder="제목 검색">
 												<div class="input-group-append">
 													<button class="btn btn-default" type="button"
@@ -72,12 +77,17 @@
 								</div>
 								<!-- 검색 태그들이 올 곳 -->
 								<div class="col-6">
-									<a href="#" title="Beginners">Beginners</a>
+								<%for(ExrCategory category:exrCategoryList){	%>
+								<div>
+									<a href="javascript:getCategory(<%=category.getExr_category_idx() %>)" title="Beginners"><%=category.getExr_category_name() %></a>
+								</div>
+								<%} %>
 								</div>
 							</div>
 
 						</div>
 						<!-- /.card-header -->
+						
 						<div class="card-body table-responsive p-0">
 							<table class="table table-hover text-nowrap">
 								<thead>
@@ -91,46 +101,54 @@
 									</tr>
 								</thead>
 								<tbody>
-									<%int num=pageManager.getNum();	//--> 이 수를 템플릿의 데이터로 넘기려면? %>
 									<template v-for="exrRoutine in exrRoutineList">
-										<row :dto="exrRoutine" :key="exrRoutine.exr_routine_idx" :num="<%=num %>"/>
+										<row :dto="exrRoutine" :key="exrRoutine.exr_routine_idx" :num="num"/>
 									</template>
 								</tbody>
 							</table>
 						</div>
 						<!-- /.card-body -->
+						
+		
 					</div>
 					<!-- /.card -->
 					<!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"> -->
-				
+
+
 					<div class="row">
-						<div class="col text-center">
-							<div class="st-pagination">
-								<!--st-pagination-->
-								<ul class="pagination">
-									<% if(pageManager.getFirstPage()!=1){ %>
-									<li><a href="<%= listURI %><%= pageManager.getFirstPage()-1  %>" aria-label="previous"><span aria-hidden="false">이전</span></a></li>
-									<% } %>
+						<div class="card-footer col-12">
+							<div class="st-pagination"style="float:none; margin:100 auto">
+								<ul class="pagination"  >
+								
+								<%if((pageManager.getFirstPage()-1)>0){ %>
+									<li><a href="/exr/routine_list/<%=pageManager.getFirstPage()-1 %>" aria-label="previous"><span aria-hidden="true">previous</span></a></li>
+								<%}else{ %>
+									<li><a href="javascript:alert('첫 페이지 입니다')" aria-label="previous"><span aria-hidden="true">previous</span></a></li>
+								<%} %>
 									
-									<% for(int i =pageManager.getFirstPage();i<=pageManager.getLastPage();i++){ %>
-									<% if(i>pageManager.getTotalPage()) break; %>
-									<li <% if(pageManager.getCurrentPage()==i) out.print("class=\"active\""); %>> <a href="<%= listURI %><%= i %>"><%= i %></a></li>
-									<% } %>
+									<%
+										for(int i=pageManager.getFirstPage(); i<pageManager.getLastPage(); i++){
+											if(i>pageManager.getTotalPage())break;
+									%>
+										<li class="active"><a href="/exr/routine_list/<%=i %>"><%=i %></a></li>
+									<%}%>
 									
-									<% if(pageManager.getLastPage()<pageManager.getTotalPage()){ %>
-									<li><a href="<%= listURI %><%= pageManager.getLastPage()+1 %>" aria-label="Next"><span aria-hidden="true">다음</span></a></li>
-									<% } %>
+									<%if((pageManager.getLastPage()+1)<=pageManager.getTotalPage()){ %>
+										<li><a href="/exr/routine_list/<%=pageManager.getLastPage()+1 %>" aria-label="Next"><span aria-hidden="true">next</span></a></li>
+									<%}else{ %>
+										<li><a href="javascript:alert('마지막 페이지 입니다')" aria-label="Next"><span aria-hidden="true">next</span></a></li>
+									<%} %>
+									
 								</ul>
 							</div>
 						</div>
 					</div>
 
+
 					<div class="text-lg-end">
 						<a href="/exr/routine/registform" class="btn btn-default">글쓰기</a>
 					</div>
-				</div>
 
-			</div>
         </div>
     </div>
 
@@ -147,18 +165,28 @@
 <script type="text/javascript">
 	let app1;
 	
+	
+	// 카테고리별 목록 출력
+	function getCategory(idx){
+		//alert(idx);
+		getExrRoutineList("/rest/exr/routine_category/"+idx);
+	}
+	
+	
 	const row={
 		template:`
 			<tr>
-			    <td>{{exrRoutine.exr_routine_idx}}</td>
+			    <td>{{n}}</td>
 			    <td>{{exrRoutine.exrCategory.exr_category_name}}</td>
-			    <td><a href="#" @click="getDetail(exrRoutine)">{{exrRoutine.title}}</a></td>
+			    <td><a href="#" @click="getDetail(exrRoutine)">{{exrRoutine.title}}
+			    	<span>(0)</span>
+			    </a></td>
 			    <td>{{exrRoutine.writer}}</td>
-			    <td>{{exrRoutine.regdate}}</td>
+			    <td>{{exrRoutine.regdate.substr(0, 10)}}</td>
 			    <td>{{exrRoutine.hit}}</td>
 			</tr>
 		`,
-		props:["dto", "num"],
+		props:["dto", "num", "comment"],
 		data(){
 			return{
 				exrRoutine:this.dto,
@@ -167,15 +195,23 @@
 		},
 		methods:{
 			getDetail:function(exrRoutine){
-				location.href="/exr/routine/"+exrRoutine.exr_routine_idx;
+				location.href="/exr/routine_detail/"+exrRoutine.exr_routine_idx;
+			},
+			
+			setNum:function(){
+				for(let i=0; i<app1.exrRoutineList.length; i++){
+					this.num--;
+				}
+				
 			}
+
 		}
 		
 	}
 
 	
 	// 리스트 조회
-	// url을 매개변수로 받아서 처리!
+	// url을 매개변수로 받아서 재사용한다!
 	function getExrRoutineList(url){
 		$.ajax({
 			url:url,
@@ -183,7 +219,19 @@
 			success:function(result, status, xhr){
 				app1.exrRoutineList=result;
 				console.log(app1.exrRoutineList);
-				app1.num=app1.exrRoutineList.length;
+	
+	/* 			let json={};
+				for(let i=0; i<result.length; i++){
+					let dto=result[i];
+					json['exrRoutine']=dto;
+					
+					app1.exrRoutineList.push(json);
+				} */
+				
+				//console.log("가공된 리스트 확인 ", app1.exrRoutineList);
+				//console.log("안에 뭐 있니 ", app1.exrRoutineList.exrRoutine);
+				
+			
 			},
 			error:function(xhr, status, err){
 				console.log(xhr.responseText);
@@ -197,19 +245,30 @@
 			el:"#app1",
 			data:{
 				exrRoutineList:[],
+				num:$("input[name='num']").val()
 			},
 			components:{
 				row
+			},
+			
+			computed:{
+				setNum(){
+					return this.num--;
+				}
 			}
 		});
 	}
 	
 	
-	
 
 	$(function(){
 		init();
-		getExrRoutineList("/rest/exr/routine_list");
+		
+		// 처음 보여질 때는 동기 방식.. 가능?
+				
+				
+		// 처음 보여질 때는 전체 목록을 조회한다
+		getExrRoutineList("/rest/exr/routine_list?pg="+$("input[name='pg']").val());
 		
 		// 키워드 검색
 		$("#bt_search").click(function(){

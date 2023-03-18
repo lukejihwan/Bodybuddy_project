@@ -34,6 +34,11 @@ public class ExrRoutineServiceImpl implements ExrRoutineService{
 	}
 	
 	@Override
+	public List selectByFk(int exr_category_idx) {
+		return exrRoutineDAO.selectByFk(exr_category_idx);
+	}
+	
+	@Override
 	public int totalCount() {
 		return exrRoutineDAO.totalCount();
 	}
@@ -52,6 +57,18 @@ public class ExrRoutineServiceImpl implements ExrRoutineService{
 	public void delete(int exr_routine_idx) throws ExrRoutineException{
 		exrRoutineDAO.delete(exr_routine_idx);
 	}
+	
+	@Override
+	public void plusHit(int exr_routine_idx) throws ExrRoutineException{
+		exrRoutineDAO.plusHit(exr_routine_idx);
+	}
+	
+	@Override
+	public void plusRecommend(int exr_routine_idx) throws ExrRoutineException{
+		exrRoutineDAO.plusRecommend(exr_routine_idx);
+	}
+
+
 
 
 

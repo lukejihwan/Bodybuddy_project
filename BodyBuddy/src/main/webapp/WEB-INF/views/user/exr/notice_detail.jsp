@@ -56,7 +56,7 @@
 										<div class="col-md-8 col-sm-12">
 											<div class="row">
 												<div class="col-md-12 col-sm-12">
-													<img src="/resources/data/exr/<%=exrNotice.getExrNoticeImgList().get(0).getFilename() %>"
+													<img src="/resources/data/exr/<%//=exrNotice.getExrNoticeImgList().get(0).getFilename() %>"
 														class="img-responsive mb30" alt="Fitness Website Template">
 													<div class="mb30">
 														<h1><%=exrNotice.getTitle() %></h1>
@@ -75,9 +75,9 @@
 															faucibus on quamut consectetur gravida tellus sem
 															lobortis miuis consectetur magna lorem vitae lectuone.</p>
 															
-														<p>내용1 : <%=exrNotice.getContent1() %></p>
+														<p>내용! : <%=exrNotice.getContent() %></p>
 														
-														<img src="/resources/data/exr/<%=exrNotice.getExrNoticeImgList().get(1).getFilename() %>"
+														<img src="/resources/data/exr/<%//=exrNotice.getExrNoticeImgList().get(1).getFilename() %>"
 															class="alignright img-responsive" alt="">
 														<p>Suscipell entesque efficitur sollicitudin magnaeu
 															vehicula libero luctus etonec odio velit, viverra ate
@@ -90,7 +90,7 @@
 															velultrices pellentesque ristiam eu odio lionec
 															consectetur.</P>
 															
-														<img src="/resources/data/exr/<%=exrNotice.getExrNoticeImgList().get(2).getFilename() %>"
+														<img src="/resources/data/exr/<%//=exrNotice.getExrNoticeImgList().get(2).getFilename() %>"
 														
 															class="alignleft img-responsive" alt="">
 														<p>Suscipell entesque efficitur sollicitudin magnaeu
@@ -112,7 +112,7 @@
 															lectuone. Nulla lobortis interdum suscipell entesque
 															efficitur sollicitudin magnaeu vehicula libero.</p>
 															
-														<p>내용2 : <%=exrNotice.getContent2() %></p>
+														<p>내용2 : <%//=exrNotice.getContent() %></p>
 														
 													</div>
 												</div>

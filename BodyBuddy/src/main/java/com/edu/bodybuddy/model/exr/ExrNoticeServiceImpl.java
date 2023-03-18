@@ -33,19 +33,18 @@ public class ExrNoticeServiceImpl  implements ExrNoticeService{
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void regist(ExrNotice exrNotice, String dir) throws ExrNoticeException{
+	public void regist(ExrNotice exrNotice) throws ExrNoticeException{
 		exrNoticeDAO.insert(exrNotice);
 		
 		// 사진 파일 로컬 저장
-		List<String> filenameList=fileManager.save(exrNotice.getPhoto(), dir);
+		//List<String> filenameList=fileManager.save(exrNotice.getPhoto(), dir);
 		
 		// 파일 수만큼 dto 세팅해서 저장하기
-		for(String filename:filenameList) {
-			ExrNoticeImg exrNoticeImg=new ExrNoticeImg();
-			exrNoticeImg.setExrNotice(exrNotice);
-			exrNoticeImg.setFilename(filename);
-			exrNoticeImgDAO.insert(exrNoticeImg);
-		}
+		/*
+		 * for(String filename:filenameList) { ExrNoticeImg exrNoticeImg=new
+		 * ExrNoticeImg(); exrNoticeImg.setExrNotice(exrNotice);
+		 * exrNoticeImg.setFilename(filename); exrNoticeImgDAO.insert(exrNoticeImg); }
+		 */
 	}
 	
 	@Override

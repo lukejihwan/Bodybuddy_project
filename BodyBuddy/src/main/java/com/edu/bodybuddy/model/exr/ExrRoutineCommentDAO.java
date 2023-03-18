@@ -11,6 +11,7 @@ public interface ExrRoutineCommentDAO {
 	public void delete(int exr_routine_comment_idx);
 
 	// 댓글 관련
+	public int selectMaxStep(ExrRoutineComment exrRoutineComment);
 	public void reply(ExrRoutineComment exrRoutineComment);
 	public void updateStep(ExrRoutineComment exrRoutineComment);
 }

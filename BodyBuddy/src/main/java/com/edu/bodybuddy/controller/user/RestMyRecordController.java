@@ -26,11 +26,17 @@ public class RestMyRecordController {
 	@Autowired
 	private ExrRecordService exrRecordService;
 	
-	@GetMapping("/geo")
-	public List getLocation(){
+	
+	@PostMapping("/location")
+	public String getLocation(){
 		
-		return null;
+		logger.info("응답 받음");
+		
+		return "지금 확인 중";
 	}
+	
+	
+	
 	
 	@PostMapping("/exrList") //Rest방식의 이름을 어떻게 하는게 Restful적일까
 	public ResponseEntity<Message> getExrRecords(@RequestBody List<ExrRecord> exrList) { //Post방식으로 보내야 Body가 있기 때문에 RequestBody로 받을 수 있는 것
