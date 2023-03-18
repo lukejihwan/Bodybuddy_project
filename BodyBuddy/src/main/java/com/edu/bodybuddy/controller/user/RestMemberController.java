@@ -28,6 +28,8 @@ public class RestMemberController {
 	@PostMapping
 	public ResponseEntity<Msg> regist(Member member) {
 		log.info("회원가입에 넘어온 멤버"+member);
+		//이 요청으로 가입하는 회원은 일반 가입 회원이므로, 프로바이더를 home으로 정해준다
+		member.setProvider("home");
 		memberService.regist(member);
 		Msg msg = new Msg();
 		msg.setMsg("회원가입을 축하드립니다");

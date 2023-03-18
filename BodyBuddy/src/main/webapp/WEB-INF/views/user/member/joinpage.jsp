@@ -57,7 +57,6 @@
 		            </div>
 		        </div>
 		        <!-- /.card-body -->
-				<input type="hidden" name="origin" value="home">
 		        <div class="card-footer">
 		            <button type="button" class="btn btn-primary" id="bt_regist">회원가입</button>
 		        </div>

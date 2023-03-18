@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ExrRecord">
 	
+	<!-- 한달간 운동 기록을 불러오는 쿼리-->
+	<select id="selectForMonth" resultType="ExrRecord" parameterType="Map">
+		select * 
+		from exr_record 
+		where regdate between #{firstDay} and #{lastDay}
+		order by regdate asc 
+	</select>
+	
+	<!-- 운동기록 등록 -->
 	<insert id="insert" parameterType="ExrRecord">
 		insert into exr_record (member_idx, exr_name, regdate)
 		values (24, #{exr_name}, #{regdate})
@@ -10,5 +19,7 @@
 			select last_insert_id() as exr_record_idx
 		</selectKey>
 	</insert>
+	
+	
 
 </mapper>

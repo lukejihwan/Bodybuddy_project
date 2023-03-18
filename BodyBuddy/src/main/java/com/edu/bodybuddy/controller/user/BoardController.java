@@ -29,6 +29,17 @@ public class BoardController {
 	@Qualifier("freeBoardService")
 	private BoardService freeBoardService;
 	
+	// @자유게시판 영역
+	
+	@GetMapping("/free_list")
+	public ModelAndView getFreeMain(HttpServletRequest request) {
+		return new ModelAndView("redirect:/board/free_list/1");
+	}
+	
+	@GetMapping("/free_registform")
+	public ModelAndView getRegistForm(HttpServletRequest request) {
+		return new ModelAndView("/board/free_registform");
+	}
 	
 	//디테일 보기 페이지
 	@GetMapping("/free_detail_view/{free_board_idx}")

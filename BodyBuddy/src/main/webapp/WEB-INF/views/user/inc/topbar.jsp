@@ -23,7 +23,8 @@
                 <div class="col-md-3 col-sm-4 hidden-xs bdr">
                     <div class="call-info">
                         <!-- call-info -->
-                        <p class="call-no">감량목표까지 몇 남음 등등</p>
+                        <sec:authorize access="isAnonymous()"><p class="call-no">환영합니다</p></sec:authorize>
+                        <sec:authorize access="isAuthenticated()"><p class="call-no"><sec:authentication property="principal.member"/></p></sec:authorize>
                     </div>
                     <!-- /.call-info -->
                 </div>

@@ -39,11 +39,11 @@
                                 <li><a href="/diet/kcal" title="Blog Single" class="animsition-link">칼로리계산기</a></li>
                             </ul>
                         </li>
-                        <li><a href="/board/free_list/1" class="animsition-link">게시판</a>
+                        <li><a href="/board/free_list" class="animsition-link">게시판</a>
                             <ul>
-                                <li><a href="/board/free_list/1" class="animsition-link">자유게시판</a></li>
-                                <li><a href="/board/counseling_list/1" class="animsition-link">질문/답변</a></li>
-                                <li><a href="/board/qna_list/1" class="animsition-link">고민상담(익명)</a></li>
+                                <li><a href="/board/free_list" class="animsition-link">자유게시판</a></li>
+                                <li><a href="/board/counseling_list" class="animsition-link">질문/답변</a></li>
+                                <li><a href="/board/qna_list" class="animsition-link">고민상담(익명)</a></li>
                             </ul>
                         </li>
                         <li><a href="/mypage" title="Mypage" class="animsition-link">마이페이지</a>
