@@ -37,7 +37,7 @@ import com.edu.bodybuddy.util.Msg;
 // 웹에서 접근시 /admin 붙이기
 @RestController
 @RequestMapping("/rest/exr")
-public class RestExrController {
+public class RestExrAdminController {
 	private Logger logger=LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private ExrCategoryService exrCategoryService;
@@ -91,7 +91,6 @@ public class RestExrController {
 	}
 	
 	
-	
 	/*-------------------------------------
 	  운동 정보 (ExrNotice) 와 관련된 메서드들
 	 --------------------------------------*/ 
@@ -99,17 +98,17 @@ public class RestExrController {
 	// 정보글 등록
 	@PostMapping("/notice")
 	public ResponseEntity<String> regsit(ExrNotice exrNotice, HttpServletRequest request){
-		MultipartFile[] photoList=exrNotice.getPhoto();
-		logger.info("사진 배열"+photoList.length);
+		//MultipartFile[] photoList=exrNotice.getPhoto();
+		//logger.info("사진 배열"+photoList.length);
 		
 		
 		// 사진 등록하기
-		ServletContext context=request.getSession().getServletContext();
-		String dir=context.getRealPath("/resources/data/exr/");		// 실제 디렉토리 폴더 만드는 것 잊지 말기!
-		logger.info("가진 저장 경로 : "+dir);
+		//ServletContext context=request.getSession().getServletContext();
+		//String dir=context.getRealPath("/resources/data/exr/");		// 실제 디렉토리 폴더 만드는 것 잊지 말기!
+		//logger.info("가진 저장 경로 : "+dir);
 		
-		logger.info("컨트롤러에서 노티스의 카테고리 확인 "+exrNotice);
-		exrNoticeService.regist(exrNotice, dir);
+		//logger.info("컨트롤러에서 노티스의 카테고리 확인 "+exrNotice);
+		exrNoticeService.regist(exrNotice);
 		
 		ResponseEntity<String> entity=new ResponseEntity<String>("상품 등록 완료", HttpStatus.OK);
 		return entity;
@@ -120,8 +119,8 @@ public class RestExrController {
 	// 정보글 수정
 	@PostMapping("/notice/edit")
 	public ResponseEntity<String> edit(ExrNotice exrNotice, HttpServletRequest request){
-		MultipartFile[] photoList=exrNotice.getPhoto();
-		logger.info("사진 배열"+photoList.length);
+		//MultipartFile[] photoList=exrNotice.getPhoto();
+		//logger.info("사진 배열"+photoList.length);
 		
 		
 		// 사진 등록하기
@@ -134,9 +133,6 @@ public class RestExrController {
 		ResponseEntity<String> entity=new ResponseEntity<String>("수정 완료", HttpStatus.OK);
 		return entity;
 	}
-	
-	
-
 	
 	
 	

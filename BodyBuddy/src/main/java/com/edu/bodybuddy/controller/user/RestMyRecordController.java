@@ -29,10 +29,13 @@ public class RestMyRecordController {
 	@Autowired
 	private ExrRecordService exrRecordService;
 	
-	@GetMapping("/geo")
-	public List getLocation(){
+	
+	@PostMapping("/location")
+	public String getLocation(){
 		
-		return null;
+		logger.info("응답 받음");
+		
+		return "지금 확인 중";
 	}
 	
 	//한달간의 기록을 보여주는 메서드

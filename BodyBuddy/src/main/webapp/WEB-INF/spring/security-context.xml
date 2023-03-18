@@ -37,7 +37,7 @@
         />
     </http>
     
-     <context:property-placeholder location="classpath:./social.properties"/>
+	<context:property-placeholder location="classpath:./social.properties"/>
    	
    	<beans:bean class="com.edu.bodybuddy.model.security.MemberAuthenticationProvider" id="authenticationProvider"/>
 	<beans:bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="passwordEncoder"></beans:bean>

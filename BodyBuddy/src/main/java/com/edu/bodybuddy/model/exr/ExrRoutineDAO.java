@@ -12,11 +12,20 @@ public interface ExrRoutineDAO {
 
 	// 검색 기능
 	public List selectBySearch(HashMap<String, String> map);
-	// 총 레코드 반환
+
+	// 총 레코드 수
 	public int totalCount();
+	// 페이징 처리
 	public List selectAllByPage(int pg);
+	// 카테고리별 조회
+	public List selectByFk(int exr_category_idx);
 	
 	public void insert(ExrRoutine exrRoutine);
 	public void update(ExrRoutine exrRoutine);
 	public void delete(int exr_routine_idx);
+	
+	// 조회수 증가
+	public void plusHit(int exr_routine_idx);
+	// 추천수 증가
+	public void plusRecommend(int exr_routine_idx);
 }

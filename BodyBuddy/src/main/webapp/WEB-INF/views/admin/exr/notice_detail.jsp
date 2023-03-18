@@ -100,15 +100,6 @@
 									</div>
 									
 									
-									<div class="form-group row">
-										<div class="col">
-											<%List<ExrNoticeImg> exrNoticeImg=exrNotice.getExrNoticeImgList(); %>
-											<%for(ExrNoticeImg noticeImg:exrNoticeImg){ %>
-											<img src="/resources/data/exr/<%=noticeImg.getFilename() %>" class="box-style">
-											<%} %>
-										</div>
-									</div>
-								
 	
 									<div class="form-group row">
 										<div class="col">
@@ -116,16 +107,10 @@
 										</div>
 									</div>
 	
-	
-									<div class="form-group row">
-										<div class="col">
-											<textarea name="content1" class="form-control"><%=exrNotice.getContent1() %></textarea>
-										</div>
-									</div>
 													
 									<div class="form-group row">
 										<div class="col">
-											<textarea name="content2" class="form-control"><%=exrNotice.getContent2() %></textarea>
+											<textarea id="content" name="content" class="form-control"><%=exrNotice.getContent() %></textarea>
 										</div>
 									</div>
 								
@@ -359,8 +344,8 @@
 		
 		
 		// 써머 노트 적용
-		$('#detail').summernote({
-			height:200
+		$('#content').summernote({
+			height:500
 		});
 		
 	});
