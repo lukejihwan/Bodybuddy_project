@@ -89,6 +89,4 @@
 		select count(step) from free_board_comment
 		where step>#{step} and free_board_idx=#{freeBoard.free_board_idx}
 	</select>
-	
-	
 </mapper>

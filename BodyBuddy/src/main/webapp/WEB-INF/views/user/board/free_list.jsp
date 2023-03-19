@@ -85,7 +85,7 @@ if (boardList == null) {
 							<tr onclick="getDetail(<%=board.getFree_board_idx()%>)">
 								<td><%=board.getFree_board_idx()%></td>
 								<td><%=board.getTitle()%></td>
-								<td><img src="<%=board.getThumbnail()%>" style="width:50px;height:50px;"/></td>
+								<td><img src="<%=board.getThumbnail()%>" style="width:50px;height:50px;" onerror="this.style.visibility='hidden';"/></td>
 								<td><%=board.getWriter()%></td>
 								<td><%=board.getRegdate().substring(0, 10)%></td>
 								<td><%=board.getHit()%></td>

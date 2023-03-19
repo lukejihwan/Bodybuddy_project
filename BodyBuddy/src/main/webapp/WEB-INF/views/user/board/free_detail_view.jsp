@@ -23,14 +23,22 @@
 }
 .comment-content{
 	cursor: pointer;
-	
 }
 .comment-content:hover>span{
 	background-color: #c5f016;
 }
 
-@media (min-width: 767.98px){
-	
+.rep>:first>:last-child{
+	border-left: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 767.98px){
+	.comment-wrapper-1{
+		padding-left: 30px;
+	}
+	.comment-wrapper-2{
+		padding-left: 60px;
+	}
 }
 </style>
 </head>
@@ -134,7 +142,7 @@
 	
 	const comment = {
 			template:`
-				<div>
+				<div :class="'comment-wrapper-'+comment.depth+(comment.depth==0?'':' rep')">
 					<div class="row">
 						<div :class="'col-md-'+comment.depth"></div>
 						<div :class="'col-md-'+(12-comment.depth)">
@@ -283,6 +291,9 @@
 		$("#bt_list").click(()=>{
 			location.href="<%= listURI+1 %>";
 		});
+		$("#bt_recommend").click(()=>{
+			recommend();
+		});
 	});
 	
 	function init() {
@@ -376,6 +387,25 @@
 			},
 			error:(xhr, status, err)=>{
 				console.log("ajax 실패 ", xhr);
+			}
+		});
+	}
+	
+	function recommend() {
+		let json = {};
+		json["<%= boardIdxName %>"] = "<%= board_idx %>";
+		//json["member.member_idx"] = ?;
+		$.ajax({
+			url:"/rest/board/<%= boardName %>/recommend",
+			type:"PUT",
+			contentType:"application/json;charset=utf-8",
+			processData:false,
+			data:JSON.stringify(json),
+			success:(result, status, xhr)=>{
+				console.log(result.msg);
+			},
+			error:(xhr, status, err)=>{
+				console.log(xhr);
 			}
 		});
 	}

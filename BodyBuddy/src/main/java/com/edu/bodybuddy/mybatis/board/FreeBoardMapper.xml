@@ -45,4 +45,16 @@
 		where free_board_idx=#{free_board_idx}
 	</delete>
 	
+	<!-- 조회수 올리기 -->
+	<update id="addHit" parameterType="int">
+		update free_board
+		set hit=hit+1
+		where free_board_idx=#{free_board_idx}
+	</update>
+	<!-- 추천 올리기 -->
+	<update id="addRecommend">
+		update free_board
+		set recommend=recommend+1
+		where free_board_idx=#{free_board_idx}
+	</update>
 </mapper>

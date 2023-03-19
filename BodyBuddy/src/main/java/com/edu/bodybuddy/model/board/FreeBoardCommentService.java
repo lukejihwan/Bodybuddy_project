@@ -89,7 +89,7 @@ public class FreeBoardCommentService implements BoardCommentService{
 		 
 	}
 
-	public void update(Object object) {
+	public void update(Object object) throws FreeBoardCommentException{
 		boardCommentDAO.update(object);
 	}
 	

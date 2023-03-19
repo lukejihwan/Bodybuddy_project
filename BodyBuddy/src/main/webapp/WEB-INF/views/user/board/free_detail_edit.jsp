@@ -122,7 +122,7 @@
 		
 		//writer 언젠가 세션에 사용자 id로 넣어야 함
 		$.ajax({
-			url:"/rest/board/free_board",
+			url:"/rest/board/freeBoard",
 			type:"PUT",
 			contentType:"application/json;charset=utf-8",
 			processData:false,
