@@ -185,7 +185,7 @@ function getDate(){
   	divValue = currentYear+"-"+currentMonth+"-"; //div에 넣어줄 value뭉치
   	let limitDay = firstDay + lastDay;
   	let nextDay = Math.ceil(limitDay / 7) * 7;
-  	var htmlDummy ='';
+  	let htmlDummy ='';
   	for (let i = 0; i < firstDay; i++) {
     	htmlDummy += "<div class='noColor'></div>";
   	}
@@ -324,7 +324,13 @@ function removeContent(){
 
 //div에 상세버튼 추가하기를 따로 둠(다른 기록 기록할때, 또 생성하게 하지 않기 위해)
 function addButtononRecord(getDay){
-	$($(".bt_days")[getDay-1]).append("<button type='button' class='btn btn-block bg-gradient-primary btn-xs' data-toggle='modal' data-target='#detailModal' onclick='getExrDetail()'>상세</button>");	
+	$($(".bt_days")[getDay-1]).append("<button type='button' class='btn btn-block bg-gradient-primary btn-xs' onclick='putDetail("+getDay+")' data-toggle='modal' data-target='#detailModal'>상세</button>");	
+}
+
+//상세버튼 클릭시 날짜와 세트수가 기록상세 모달의 운동기록에 전달
+//형식: 2022-03-24 운동기록보러가기
+function putDetail(getDay){
+	$("label[for='la_exrDetail']").text(currentYear+"년 "+currentMonth+"월 "+getDay+"일 운동기록 상세보기");
 }
 
 //해당 div에 이미지 넣기
@@ -393,6 +399,17 @@ function getExrDetail(){
 	//event전파를 막는 메서드..
 	//그런데, 이 event는 어디서 받아오는 거지..?
 	//event.stopPropagation(); 이게 있으면 모달 창이 안뜸...
+	//$("#h4_detail_name").val("가자");
+}
+
+//운동기록 페이지로 이동하는 메서드
+function moveToExrDetail(){
+	//운동기록 페이지로 이동할때, 날짜 데이터를 가지고 가서 바로 보여주는 것이 편하기는 하나...전달해서 보여주기가 애매함
+	//location.href 뒤에 ?를 붙여서 가면, detail을 보여줄수 있는데, 그러면 운동기록 페이지에서 각 날짜를 눌러 detail을 볼때,
+	//새로고침이 일어나야하는데, 내가 원했던것은 비동기로 보여주는 것이다. 동기방식으로 보여주는 거랑 비동기랑 섞이면 일관되지 않지 않은가?
+	let detailDate=currentYear+"-"+currentMonth;
+	//alert(detailDate);
+	location.href="/myrecord/exr_record?detailDate="+detailDate;
 }
 
 $(function(){
@@ -427,7 +444,7 @@ $(function(){
 		addexr();
 	});
 	$("#bt_getDetailForExr").click(function(){
-		location.href="/myrecord/exr_record";
+		moveToExrDetail();
 	});
 });
 </script>
@@ -541,8 +558,8 @@ $(function(){
 						</div>
 					</div>
 				</div>
-				
-				
+
+
 				<!-- 상세보기 모달 창 나오는 곳 -->
 				<div class="modal" id="detailModal">
 					<div class="modal-dialog modal-dialog-centered">
@@ -550,24 +567,24 @@ $(function(){
 
 							<!-- 모달 제목 -->
 							<div class="modal-header">
-								<h4 class="modal-title">상세보기</h4>
+								<h4 class="modal-title" id="h4_detail_name">기록상세</h4>
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
 							</div>
 
 							<!-- 모달 내용 -->
 							<div class="modal-body">
 								<div class="form-group">
-									<input type="text" class="form-control">
-									
-									<button type="button" class="btn btn-primary btn-sm float-right">신체상세</button>
-									<button type="button" id="bt_getDetailForExr" class="btn btn-primary btn-sm float-right">운동상세</button>
-									<button type="button" class="btn btn-primary btn-sm float-right">식단상세</button>
+									<label for="la_physicalDetail">2023-03-22 신체기록 상세보기(임시)</label>
+									<button type="button" id="bt_getDetailForPhysic" class="btn btn-primary btn-sm float-right">신체상세</button>
 								</div>
-							</div>
-
-							<!-- 모달 footer -->
-							<div class="modal-footer">
-								<button type="button" id="bt_one_exr_regist" class="btn btn-danger" data-dismiss="modal">운동 등록</button>
+								<div class="form-group">
+									<label for="la_exrDetail">2023-03-22 운동기록</label>
+									<button type="button" id="bt_getDetailForExr" class="btn btn-primary btn-sm float-right">운동상세</button>
+								</div>
+								<div class="form-group">
+									<label for="la_dietDetail">2023-03-22 식단기록 상세보기(임시)</label>
+									<button type="button" id="bt_getDetailForDiet" class="btn btn-primary btn-sm float-right">식단상세</button>
+								</div>
 							</div>
 
 						</div>
