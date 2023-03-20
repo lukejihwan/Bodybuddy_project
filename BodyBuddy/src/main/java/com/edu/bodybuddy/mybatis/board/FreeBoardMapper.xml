@@ -12,6 +12,13 @@
 		<result column="recommend" property="recommend"/>
 		<result column="thumbnail" property="thumbnail"/>
 		<result column="member_idx" property="member.member_idx"/>
+		<collection 
+		property="commentList"
+		column="free_board_idx"
+		javaType="List"
+		ofType="FreeBoardComment"
+		select="FreeBoardComment.selectAllByBoard"
+		></collection>
 	</resultMap>
 
 	<select id="selectAll" resultMap="resultMap">
@@ -45,4 +52,16 @@
 		where free_board_idx=#{free_board_idx}
 	</delete>
 	
+	<!-- 조회수 올리기 -->
+	<update id="addHit" parameterType="int">
+		update free_board
+		set hit=hit+1
+		where free_board_idx=#{free_board_idx}
+	</update>
+	<!-- 추천 올리기 -->
+	<update id="addRecommend">
+		update free_board
+		set recommend=recommend+1
+		where free_board_idx=#{free_board_idx}
+	</update>
 </mapper>
