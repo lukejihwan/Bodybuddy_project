@@ -81,9 +81,11 @@
 	top: 150px;
 	text-align: center;
 	height: 400px;
+	border-radius:5px;
 	background-color: #eeeee4;
 }
 #bt_add_record, #bt_regist {
+	border-radius:5px;
 	border: 1px solid white;
 }
 #myModal {
@@ -94,6 +96,20 @@
 }
 #t_setgroup {
 	text-align: center;
+}
+
+/*운동아이콘 스타일*/
+.fa-dumbbell {
+	color:#49469c;
+}
+.fa-dumbbell:hover {
+	transform: scale(1.3);
+}
+.bg-gradient-primary {
+    background: #007bff linear-gradient(180deg,#268fff,#007bff);
+    color: #fff;
+    border-radius:6px;
+    width: 70%;
 }
 </style>
 
@@ -169,7 +185,7 @@ function getDate(){
   	divValue = currentYear+"-"+currentMonth+"-"; //div에 넣어줄 value뭉치
   	let limitDay = firstDay + lastDay;
   	let nextDay = Math.ceil(limitDay / 7) * 7;
-  	var htmlDummy ='';
+  	let htmlDummy ='';
   	for (let i = 0; i < firstDay; i++) {
     	htmlDummy += "<div class='noColor'></div>";
   	}
@@ -306,11 +322,24 @@ function removeContent(){
 	app1.count=1;
 }
 
+//div에 상세버튼 추가하기를 따로 둠(다른 기록 기록할때, 또 생성하게 하지 않기 위해)
+function addButtononRecord(getDay){
+	$($(".bt_days")[getDay-1]).append("<button type='button' class='btn btn-block bg-gradient-primary btn-xs' onclick='putDetail("+getDay+")' data-toggle='modal' data-target='#detailModal'>상세</button>");	
+}
+
+//상세버튼 클릭시 날짜와 세트수가 기록상세 모달의 운동기록에 전달
+//형식: 2022-03-24 운동기록보러가기
+function putDetail(getDay){
+	$("label[for='la_exrDetail']").text(currentYear+"년 "+currentMonth+"월 "+getDay+"일 운동기록 상세보기");
+}
+
 //해당 div에 이미지 넣기
 function appendImage(getDay){
-	$($(".bt_days")[getDay-1]).css("backgroundColor","red");
-	//$($(".bt_days")[getDay-1]).attr("src","https://cdn2.iconfinder.com/data/icons/exercise-3/185/exercise-09-512.png");
-	
+	//<br>태그를 임시로 적어두긴 했는데, 나중에 위치조정할 것
+	addButtononRecord(getDay);
+	$($(".bt_days")[getDay-1]).append("<br><br><i class='fa-solid fa-dumbbell fa-lg'></i>");
+	$($(".bt_days")[getDay-1]).css("border", "1px solid #49469c");
+	//상세보기 버튼 주기
 }
 
 //운동기록이 있는 날에 이미지 붙이기
@@ -338,28 +367,6 @@ function appendImageDays(registedDataForMonth){
 		appendImage(getDay);
 	}
 	
-	
-// 	for(let a=0; a<divdays.length; a++){
-// 		//$($(".bt_days")[1]).attr("value");
-// 		let daysValue=$($(".bt_days")[a]).attr("value");
-// 		if(a<9){
-// 			let dayslessten=daysValue.slice(0,5)+"0"+daysValue.slice(5,7)+"0"+daysValue.slice(7,9);
-// 			console.log(dayslessten);
-// 		}
-// 		//console.log(daysValue);
-		
-// 		for(let i=0; i<registedDataForMonth.length; i++){
-// 			let registedData=registedDataForMonth[i];
-// 			let processedData=registedData.regdate.slice(0,10); //ex: 2023-03-11
-// 			//console.log(processedData);
-// 			//console.log(daysValue);
-// 			if(daysValue==processedData){
-// 				console.log("일치");
-// 			}
-		
-// 		}
-// 	}
-	
 }
 
 function getExrRecordForMonth(){
@@ -378,6 +385,7 @@ function getExrRecordForMonth(){
 		data:dateData,
 		contentType:"application/json",
 		success:function(result, status, xhr){
+			console.log(typeof result);
 			appendImageDays(result);
 			console.log("받아온 날짜는",result);
 			alert("성공적으로 불러옴");
@@ -386,6 +394,23 @@ function getExrRecordForMonth(){
 			console.log(error, "기록불러오던 중 에러발생");
 		}
 	});
+}
+
+function getExrDetail(){
+	//event전파를 막는 메서드..
+	//그런데, 이 event는 어디서 받아오는 거지..?
+	//event.stopPropagation(); 이게 있으면 모달 창이 안뜸...
+	//$("#h4_detail_name").val("가자");
+}
+
+//운동기록 페이지로 이동하는 메서드
+function moveToExrDetail(){
+	//운동기록 페이지로 이동할때, 날짜 데이터를 가지고 가서 바로 보여주는 것이 편하기는 하나...전달해서 보여주기가 애매함
+	//location.href 뒤에 ?를 붙여서 가면, detail을 보여줄수 있는데, 그러면 운동기록 페이지에서 각 날짜를 눌러 detail을 볼때,
+	//새로고침이 일어나야하는데, 내가 원했던것은 비동기로 보여주는 것이다. 동기방식으로 보여주는 거랑 비동기랑 섞이면 일관되지 않지 않은가?
+	let detailDate=currentYear+"-"+currentMonth;
+	//alert(detailDate);
+	location.href="/myrecord/exr_record?detailDate="+detailDate;
 }
 
 $(function(){
@@ -402,7 +427,7 @@ $(function(){
 	});
 	$(".close").click(function(){
 		removeContent();
-	})
+	});
 	
 	//빈칸이 없을시 버튼이 활성화되는 것을 감지하는 (세트추가시 버튼 활성화되어 있는 것 해결 할 예정)
 	$("#bt_exr_search").on("propertychange change paste input", function(){
@@ -419,9 +444,12 @@ $(function(){
 	$("#bt_one_exr_regist").click(function(){
 		addexr();
 	});
+	$("#bt_getDetailForExr").click(function(){
+		moveToExrDetail();
+	});
 });
 </script>
-<body class="animsition">
+<body>
     <!-- top-bar start-->
 	<%@include file="../inc/topbar.jsp" %>
     <!-- /top-bar end-->
@@ -467,7 +495,7 @@ $(function(){
 							<div>수</div>
 							<div>목</div>
 							<div>금</div>
-							<div onclick="popups(1)">토</div>
+							<div>토</div>
 						</div>
 
 						<div class="grid dateBoard"></div>
@@ -526,6 +554,38 @@ $(function(){
 							<!-- 모달 footer -->
 							<div class="modal-footer">
 								<button type="button" id="bt_one_exr_regist" class="btn btn-danger" data-dismiss="modal" disabled>운동 등록</button>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+
+				<!-- 상세보기 모달 창 나오는 곳 -->
+				<div class="modal" id="detailModal">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+
+							<!-- 모달 제목 -->
+							<div class="modal-header">
+								<h4 class="modal-title" id="h4_detail_name">기록상세</h4>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+
+							<!-- 모달 내용 -->
+							<div class="modal-body">
+								<div class="form-group">
+									<label for="la_physicalDetail">2023-03-22 신체기록 상세보기(임시)</label>
+									<button type="button" id="bt_getDetailForPhysic" class="btn btn-primary btn-sm float-right">신체상세</button>
+								</div>
+								<div class="form-group">
+									<label for="la_exrDetail">2023-03-22 운동기록</label>
+									<button type="button" id="bt_getDetailForExr" class="btn btn-primary btn-sm float-right">운동상세</button>
+								</div>
+								<div class="form-group">
+									<label for="la_dietDetail">2023-03-22 식단기록 상세보기(임시)</label>
+									<button type="button" id="bt_getDetailForDiet" class="btn btn-primary btn-sm float-right">식단상세</button>
+								</div>
 							</div>
 
 						</div>

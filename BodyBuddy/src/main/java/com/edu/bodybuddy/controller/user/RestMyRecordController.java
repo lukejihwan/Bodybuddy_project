@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.bodybuddy.domain.myrecord.ExrRecord;
+import com.edu.bodybuddy.exception.ExrDetailRecordException;
+import com.edu.bodybuddy.exception.ExrRecordException;
 import com.edu.bodybuddy.model.myrecord.ExrRecordService;
 import com.edu.bodybuddy.util.Message;
 import com.edu.bodybuddy.util.Msg;
@@ -65,5 +69,33 @@ public class RestMyRecordController {
 		ResponseEntity<Message> entity=new ResponseEntity<Message>(msg, HttpStatus.OK);
 		return entity;
 	}
+	
+	//해당일의 운동 기록리스트를 가져오는 메서드
+	@GetMapping("/exrRecord/{regdate}")
+	public List<ExrRecord> getExrRecord(@PathVariable("regdate") String regdate){
+		logger.info("받아온 값은"+ regdate);
+		List<ExrRecord> exrList=exrRecordService.selectForDay(regdate);
+		return exrList;
+	}
+	
+	
+	//이 예외처리를 나중에 controllerAdvice로 처리해줄지 아니면 이렇게 처리해줄지는 나중에 보자
+	//예외를 처리하는 전역적 ExceptionHandler
+	@ExceptionHandler({ExrRecordException.class, ExrDetailRecordException.class})
+	public ResponseEntity<Message> handle(RuntimeException e){
+		
+		Message message=new Message();
+		message.setMsg(e.getMessage());
+		
+		//임시로 BAD_REQUEST로 설정해 놓음
+		ResponseEntity<Message> entity=new ResponseEntity<Message>(message, HttpStatus.BAD_REQUEST);
+		
+		return entity;
+	}
 
 }
+
+
+
+
+

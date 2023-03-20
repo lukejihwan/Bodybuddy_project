@@ -24,7 +24,7 @@ public class MybatisExrRecordDAO implements ExrRecordDAO {
 	public List<ExrRecord> seletForMonth(Map<String,String> oneMonthPeriod) throws ExrRecordException{
 		List<ExrRecord> exrRecordListMonth=sqlSessionTemplate.selectList("ExrRecord.selectForMonth", oneMonthPeriod);
 		if(exrRecordListMonth.size()<1) {
-			throw new ExrRecordException("운동기록 검색 실패");
+			throw new ExrRecordException("해당월 운동기록 조회 실패");
 		}
 		return exrRecordListMonth;
 	}
@@ -38,6 +38,8 @@ public class MybatisExrRecordDAO implements ExrRecordDAO {
 			throw new ExrRecordException("운동기록 등록 실패");
 		}
 	}
+	
+	
 
 	@Override
 	public void delete(ExrRecord exrRecord) throws ExrRecordException{
@@ -45,6 +47,17 @@ public class MybatisExrRecordDAO implements ExrRecordDAO {
 		if(result<1) {
 			throw new ExrRecordException("운동기록 삭제 실패");
 		}
+	}
+
+	@Override
+	public List<ExrRecord> selectForDay(String regdate) throws ExrRecordException{
+		logger.info("하루동안의 기록을 조회하기 위해 받아온 regdate :"+regdate);
+		List<ExrRecord> exrList=sqlSessionTemplate.selectList("ExrRecord.selectForDay", regdate);
+		logger.info("ExrRecordMapper에서 반환받은 운동의 갯수는 :"+exrList.size());
+		if(exrList.size()<1) {
+			throw new ExrRecordException("해당일 운동기록 조회 실패");
+		}
+		return exrList;
 	}
 
 	

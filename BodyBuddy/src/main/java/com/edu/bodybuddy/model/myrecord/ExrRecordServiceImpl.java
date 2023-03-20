@@ -60,6 +60,10 @@ public class ExrRecordServiceImpl implements ExrRecordService{
 		
 	}
 
-	
+	@Override
+	public List<ExrRecord> selectForDay(String regdate) throws ExrRecordException{
+		List<ExrRecord> exrList=exrRecordDAO.selectForDay(regdate);
+		return exrList;
+	}
 
 }
