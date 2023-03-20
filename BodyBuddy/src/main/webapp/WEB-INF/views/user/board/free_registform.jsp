@@ -50,7 +50,7 @@
 				<div class="col">
 					<form id="form1">
 						<div class="form-group">
-							<input type="text" class="form-control" name="title" placeholder="제목...">
+							<input type="text" class="form-control" name="title" placeholder="제목..." required>
 						</div>
 						<div class="form-group">
 							<input type="text" class="form-control" name="writer" placeholder="작성자...">

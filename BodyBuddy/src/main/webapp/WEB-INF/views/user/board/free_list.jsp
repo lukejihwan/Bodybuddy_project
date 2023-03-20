@@ -84,7 +84,7 @@ if (boardList == null) {
 							%>
 							<tr onclick="getDetail(<%=board.getFree_board_idx()%>)">
 								<td><%=board.getFree_board_idx()%></td>
-								<td><%=board.getTitle()%></td>
+								<td><%=board.getTitle()%><span class="comment-count"><%= board.getCommentList().size()>0?"&nbsp&nbsp["+board.getCommentList().size()+"]":"" %></span></td>
 								<td><img src="<%=board.getThumbnail()%>" style="width:50px;height:50px;" onerror="this.style.visibility='hidden';"/></td>
 								<td><%=board.getWriter()%></td>
 								<td><%=board.getRegdate().substring(0, 10)%></td>

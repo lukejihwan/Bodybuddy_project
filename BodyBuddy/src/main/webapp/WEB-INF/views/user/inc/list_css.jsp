@@ -1,5 +1,9 @@
 <!-- •œcss for our template's pagination to use bootstrap4 -->
 <style type="text/css">
+.comment-count{
+	color:red;
+}
+
 tr {
 	cursor: pointer
 }

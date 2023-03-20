@@ -12,6 +12,13 @@
 		<result column="recommend" property="recommend"/>
 		<result column="thumbnail" property="thumbnail"/>
 		<result column="member_idx" property="member.member_idx"/>
+		<collection 
+		property="commentList"
+		column="free_board_idx"
+		javaType="List"
+		ofType="FreeBoardComment"
+		select="FreeBoardComment.selectAllByBoard"
+		></collection>
 	</resultMap>
 
 	<select id="selectAll" resultMap="resultMap">

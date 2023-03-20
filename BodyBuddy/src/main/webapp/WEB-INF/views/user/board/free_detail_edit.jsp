@@ -104,37 +104,73 @@
 			edit();
 		});
 		$("#bt_cancle").click(()=>{
-			if(!confirm("취소하시겠습니까?")) return;
-			history.back();
+			cancel();			
 		});
 	});
 	
 	function edit() {
-		if(!confirm("수정하시겠습니까?")) return; 
+		Swal.fire({
+			  title: '게시글을 수정하시겠습니까?',
+			  icon: 'question',
+			  showCancelButton: true,
+			  confirmButtonColor: '#c5f016',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: '네, 수정할래요',
+			  cancelButtonText: '아니요, 수정하지 않겠습니다'
+			}).then((result)=>{
+				if (result.isConfirmed) {
+					getThumbnailImg();
+					let json = {};
+					$.each($(".for-send"), (i, item)=>{
+					    json[item.name] = item.value;
+					});
+					
+					//writer 언젠가 세션에 사용자 id로 넣어야 함
+					$.ajax({
+						url:"/rest/board/freeBoard",
+						type:"PUT",
+						contentType:"application/json;charset=utf-8",
+						processData:false,
+						data:JSON.stringify(json),
+						success:(result, status, xhr)=>{
+							console.log(result.msg);
+							Swal.fire(
+								"수정 성공",
+								"",
+								"success"
+							).then(()=>{
+								location.href="<%= detailViewURI + idx %>";
+							});
+						},
+						error:(xhr, status, err)=>{
+							console.log(xhr);
+							Swal.fire(
+								"수정 실패",
+								"",
+								'error'
+							);
+						}
+					});
+			  	}
+			});
 		
-		getThumbnailImg();
-		let json = {};
-		$.each($(".for-send"), (i, item)=>{
-		    json[item.name] = item.value;
-		});
-		
-		
-		
-		//writer 언젠가 세션에 사용자 id로 넣어야 함
-		$.ajax({
-			url:"/rest/board/freeBoard",
-			type:"PUT",
-			contentType:"application/json;charset=utf-8",
-			processData:false,
-			data:JSON.stringify(json),
-			success:(result, status, xhr)=>{
-				console.log(result.msg);
-				location.href="<%= detailViewURI + idx %>";
-			},
-			error:(xhr, status, err)=>{
-				console.log(xhr);
-			}
-		});
+	}
+	
+	function cancel() {
+		Swal.fire({
+			  title: '게시글을 수정 취소하시겠습니까?',
+			  text:"변경사항은 저장되지 않습니다",
+			  icon: 'question',
+			  showCancelButton: true,
+			  confirmButtonColor: '#c5f016',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: '네, 돌아갈래요',
+			  cancelButtonText: '아니요, 조금 더 수정할래요'
+			}).then((result)=>{
+				if (result.isConfirmed){
+					history.back();
+				}
+			});
 	}
 	
 	

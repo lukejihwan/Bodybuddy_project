@@ -16,7 +16,6 @@
 <html lang="en">
 <head>
 <%@include file="../inc/header_link.jsp"%>
-<script src="https://kit.fontawesome.com/99ef7b560b.js" crossorigin="anonymous"></script>
 <style type="text/css">
 .comment-right button, .comment-right span{
 	margin-right: 10px;
@@ -28,7 +27,7 @@
 	background-color: #c5f016;
 }
 
-.rep>:first>:last-child{
+.rep>:first-child>:last-child{
 	border-left: 2px solid rgba(0, 0, 0, 0.2);
 }
 
@@ -78,7 +77,7 @@
                     <hr>
                     <h3><%= board.getTitle() %></h3><br/>
                     <span><%= board.getWriter() %> | <%= board.getRegdate().substring(0, 10) + " " + board.getRegdate().substring(10, board.getRegdate().length()-2) %></span>
-                    <span class="float-right">조회 <%= board.getHit() %> | 추천 <%= board.getRecommend() %></span>
+                    <span class="float-right">조회 <%= board.getHit() %> | 추천 {{recommend}}</span>
                     <hr>
 				</div>
 			</div>
@@ -89,7 +88,7 @@
 					<%= board.getContent() %>
 				</div>
 				<div class="col-md-12 mt-5 mb-4 text-center">
-					<button class="btn btn-default" id="bt_recommend"><i class="fa-solid fa-thumbs-up"></i> <%= board.getRecommend() %></button>
+					<button class="btn btn-default" id="bt_recommend"><i class="fa-solid fa-thumbs-up"></i> {{recommend}}</button>
 				</div>
 			</div>
 			<hr>
@@ -280,7 +279,8 @@
 	let a;
 	$(()=>{
 		init();
-		getList();	
+		getList();
+		getBoard();
 		
 		$("#bt_edit").click(()=>{
 			location.href="<%= DetailEditURI + board_idx %>";
@@ -294,6 +294,18 @@
 		$("#bt_recommend").click(()=>{
 			recommend();
 		});
+		
+		/* Swal.fire({
+			  title: 'Are you sure?',
+			  text: "You won't be able to revert this!",
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+			  console.log(result);
+			}) */
 	});
 	
 	function init() {
@@ -305,15 +317,25 @@
 	        },
 	        data:{
 	        	commentList:[],
+	        	recommend:5
 	        },
 		});
 	}
 	
 	function del() {
-		if(!confirm("삭제하시겠습니까?")) return; 
-		
-
-		location.href="<%= deleteURI + board_idx %>";
+		Swal.fire({
+		  title: '게시글을 삭제하시겠습니까?',
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#c5f016',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: '네, 삭제할래요',
+		  cancelButtonText: '아니요, 삭제하지 않겠습니다'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				location.href="<%= deleteURI + board_idx %>";
+		  	}
+		})
 	}
 	
 	function registComment(value){
@@ -345,37 +367,89 @@
 		    json[item.name] = item.value;
 		});
 		
-		$.ajax({
-			url:"/rest/board/<%= boardName %>/comment",
-			type:"PUT",
-			contentType:"application/json;charset=utf-8",
-			processData:false,
-			data:JSON.stringify(json),
-			success:(result, status, xhr)=>{
-				console.log(result.msg);
-				getList();
-			},
-			error:(xhr, status, err)=>{
-				console.log(xhr);
-			}
-		});
+		Swal.fire({
+			  title: '댓글을 수정하시겠습니까?',
+			  icon: 'question',
+			  showCancelButton: true,
+			  confirmButtonColor: '#c5f016',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: '네, 수정할래요',
+			  cancelButtonText: '아니요, 수정하지 않겠습니다'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url:"/rest/board/<%= boardName %>/comment",
+						type:"PUT",
+						contentType:"application/json;charset=utf-8",
+						processData:false,
+						data:JSON.stringify(json),
+						success:(result, status, xhr)=>{
+							console.log(result.msg);
+							Swal.fire(
+								"수정 성공",
+								"",
+								"success"
+							).then(()=>{
+								$("#form-comment-"+value+" textarea").val("");
+								getList();
+								$("#form-comment-"+value).hide(400);
+							});
+						},
+						error:(xhr, status, err)=>{
+							console.log(xhr);
+							Swal.fire(
+								"수정 실패",
+								"",
+								'error'
+							);
+						}
+					});
+			  	}
+			})
+		
+		
 	
 		
 	}
 	
 	function deleteComment(value) {
 		
-		$.ajax({
-			url:"/rest/board/<%= boardName %>/comment/"+value,
-			type:"DELETE",
-			success:(result, status, xhr)=>{
-				console.log(result.msg);
-				getList();
-			},
-			error:(xhr, status, err)=>{
-				console.log(xhr);
-			}
-		});
+		Swal.fire({
+			  title: '댓글을 삭제하시겠습니까?',
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#c5f016',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: '네, 삭제할래요',
+			  cancelButtonText: '아니요, 삭제하지 않겠습니다'
+			}).then((result)=>{
+				if (result.isConfirmed) {
+					$.ajax({
+						url:"/rest/board/<%= boardName %>/comment/"+value,
+						type:"DELETE",
+						success:(result, status, xhr)=>{
+							console.log(result.msg);
+							Swal.fire(
+								"삭제 성공",
+								"",
+								"success"
+							).then(()=>{
+								getList();
+							});
+						},
+						error:(xhr, status, err)=>{
+							console.log(xhr);
+							Swal.fire(
+								"삭제 실패",
+								"",
+								'error'
+							);
+						}
+					});
+				}
+			});
+		
+		
 	}
 	
 	function getList() {
@@ -403,6 +477,20 @@
 			data:JSON.stringify(json),
 			success:(result, status, xhr)=>{
 				console.log(result.msg);
+				getBoard();
+			},
+			error:(xhr, status, err)=>{
+				console.log(xhr);
+			}
+		});
+	}
+	
+	function getBoard() {
+		$.ajax({
+			url:"/rest/board/freeBoard/"+<%= board_idx %>,
+			type:"GET",
+			success:(result, status, xhr)=>{
+				app1.recommend=result.recommend;
 			},
 			error:(xhr, status, err)=>{
 				console.log(xhr);

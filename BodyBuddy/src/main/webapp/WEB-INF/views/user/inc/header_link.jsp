@@ -34,3 +34,8 @@
 <![endif]-->
 <!-- vue 2 for develope-->
 <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+<!-- font awsome2 api -->
+<script src="https://kit.fontawesome.com/99ef7b560b.js" crossorigin="anonymous"></script>
+<!-- sweetalert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="/resources/user/css/my-sweetalert2.css" rel="stylesheet">
