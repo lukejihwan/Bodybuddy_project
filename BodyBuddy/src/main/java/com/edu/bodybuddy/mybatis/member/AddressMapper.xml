@@ -5,13 +5,13 @@
 		select * from address where member_idx = #{member_idx}
 	</select>
 	
-	<insert id="insert" parameterType="Address">
+	<insert id="insert" parameterType="Member">
 		insert into address(member_idx, member_address) 
-		values(#{member_idx}, #{member_address})
+		values(#{member_idx}, #{address.member_address})
 	</insert>
 	
-	<update id="update" parameterType="Address">
-		update address set member_address = #{member_address}, where member_idx = #{member_idx}
+	<update id="update" parameterType="Member">
+		update address set member_address = #{address.member_address}, where member_idx = #{member_idx}
 	</update>
 	
 	<delete id="delete" parameterType="int">

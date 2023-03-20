@@ -4,6 +4,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.edu.bodybuddy.domain.member.Address;
+import com.edu.bodybuddy.domain.member.Member;
 import com.edu.bodybuddy.exception.MemberException;
 
 import lombok.RequiredArgsConstructor;
@@ -20,14 +21,14 @@ public class MybatisAddressDAO implements AddressDAO{
 	}
 
 	@Override
-	public void insert(Address address) {
-		int result = sqlSessionTemplate.insert("Address.insert", address);
+	public void insert(Member member) {
+		int result = sqlSessionTemplate.insert("Address.insert", member);
 		if(result<1) throw new MemberException("회원 등록에 실패했습니다");
 	}
 
 	@Override
-	public void update(Address address) {
-		int result = sqlSessionTemplate.update("Address.update", address);
+	public void update(Member member) {
+		int result = sqlSessionTemplate.update("Address.update", member);
 		if(result<1) throw new MemberException("회원 등록에 실패했습니다");
 	}
 

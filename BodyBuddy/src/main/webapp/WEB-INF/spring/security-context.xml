@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     https://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/security 
-    http://www.springframework.org/schema/security/spring-security-4.2.xsd
+    http://www.springframework.org/schema/security/spring-security.xsd
     http://www.springframework.org/schema/context 
     http://www.springframework.org/schema/context/spring-context.xsd
     ">
@@ -37,7 +37,7 @@
         />
     </http>
     
-	<context:property-placeholder location="classpath:./social.properties"/>
+	
    	
    	<beans:bean class="com.edu.bodybuddy.model.security.MemberAuthenticationProvider" id="authenticationProvider"/>
 	<beans:bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="passwordEncoder"></beans:bean>
@@ -97,5 +97,6 @@
 		
  	</beans:bean>
  	
-
+ 	<beans:bean class="org.springframework.web.client.RestTemplate" id="restTemplate"></beans:bean>
+ 	
 </beans:beans>
