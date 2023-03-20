@@ -3,13 +3,15 @@
 <mapper namespace="ExrRoutine">
 
 	<resultMap type="ExrRoutine" id="resultMap">
-		<id column="exr_routine_idx" property=""/>
-		<id column="title" property=""/>
-		<id column="content" property=""/>
-		<id column="recommend" property=""/>
-		<id column="hit" property=""/>
-		<id column="regdate" property=""/>
-		<id column="member_idx" property="member.member_idx"/>
+		<id column="exr_routine_idx" property="exr_routine_idx"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="recommend" property="recommend"/>
+		<result column="hit" property="hit"/>
+		<result column="regdate" property="regdate"/>
+		<result column="member_idx" property="member.member_idx"/>
+		
+		<association property="exrCategory" column="exr_category_idx" javaType="int" select="ExrCategory.select"/>
 	</resultMap>
 	
 	
@@ -18,15 +20,63 @@
 		select * from exr_routine
 		where exr_routine_idx=#{exr_routine_idx}	
 	</select>
+	
+	
+	<!-- 카테고리 불러오기 -->
+	<select id="selectByFk" parameterType="int" resultMap="resultMap">
+		select * from exr_routine
+		where exr_category_idx=#{exrCategory.exr_category_idx}	
+	</select>
+	
+	
+	<!-- 제목을 기준으로 검색 -->
+	<select id="selectBySearch" parameterType="java.util.Map" resultType="ExrRoutine">
+		select * from exr_routine
+		where title like '%${keyword}%'
+	</select>
+	
+	
+	<!-- 페이징 처리를 위한 전체 레코드 수 count -->
+	<select id="totalCount" resultType="int">
+		select count(*) as totalCount from exr_routine
+	</select>
 
+
+	<!-- 페이징 처리
+			10개씩 가져오고 #{page} 부터 가져온다 -->
+	<select id="selectAllByPage" resultMap="resultMap" parameterType="int">
+		select * from exr_routine order by exr_routine_idx desc
+		limit 10 offset #{page}
+	</select>
+
+
+	<select id="selectAll" resultMap="resultMap">
+		select * from exr_routine order by exr_routine_idx desc
+	</select>
+
+	<!-- Member 나중에 추가 예정 -->
 	<insert id="insert" parameterType="ExrRoutine">
-		insert into exr_routine(category_idx, member_idx, title, content)
-		values(#{category.category_idx}, #{member.member_idx}, #{title}, #{content})
+		insert into exr_routine(exr_category_idx, title, writer, content)
+		values(#{exrCategory.exr_category_idx}, #{title}, #{writer}, #{content})
 	</insert>
+	
+	
+	<!-- 조회수 증가 -->
+	<update id="plusHit" parameterType="int">
+		update exr_routine set hit=hit+1
+		where exr_routine_idx=#{exr_routine_idx}
+	</update>
+	
+	<!-- 추천수 증가 -->
+	<update id="plusRecommend" parameterType="int">
+		update exr_routine set recommend=recommend+1
+		where exr_routine_idx=#{exr_routine_idx}
+	</update>
+
 
 	<update id="update" parameterType="ExrRoutine">
-		update exr_routine set category_idx=#{category.category_idx}, title=#{title}, writer=#{writer}, content=#{content}
-		where exr_routine_idx=#{exr_notice_idx}
+		update exr_routine set exr_category_idx=#{exrCategory.exr_category_idx}, title=#{title}, writer=#{writer}, content=#{content}
+		where exr_routine_idx=#{exr_routine_idx}
 	</update>
 
 	<delete id="delete" parameterType="int">

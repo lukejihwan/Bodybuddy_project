@@ -1,9 +1,5 @@
 package com.edu.bodybuddy.util;
 
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-
 import lombok.Data;
 
 @Data

@@ -34,6 +34,7 @@ public class MemberDetail implements UserDetails{
 	    //패스워드 비교를 위해 패스워드 리턴
 	    @Override
 	    public String getPassword() {
+	    	if(!member.getProvider().equals("home")) return "";
 	        return member.getPassword().getPass();
 	    }
 

@@ -99,8 +99,9 @@
 													<form id="form1">
 
 														<div class="col">
+															<input type="hidden" name="exr_category_idx">
 															<input type="text" name="exr_category_name">
-															<button type="button" class="btn btn-warning" id="bt_category_regist">등록</button>
+															<button type="button" class="btn btn-outline-danger" id="bt_category_regist">등록</button>
 														</div>
 													</form>
 
@@ -110,14 +111,11 @@
 																<tr>
 																	<th>카테고리 번호</th>
 																	<th>카테고리 이름</th>
-																	<th>수정</th>
-																	<th>삭제</th>
 																</tr>
 															</thead>
 															<tbody>
 																<template v-for="category in categoryList">
-																	<row :category="category"
-																		:key="category.exr_category_idx" />
+																	<row :category="category" :key="category.exr_category_idx" />
 																</template>
 															</tbody>
 														</table>
@@ -128,8 +126,11 @@
 
 												<!-- Modal footer -->
 												<div class="modal-footer">
-													<button type="button" class="btn btn-danger"
-														data-dismiss="modal">Close</button>
+													<div class="col">
+														<button type="button" class="btn btn-outline-danger" id="bt_category_edit">수정</button>
+														<button type="button" class="btn btn-outline-danger" id="bt_category_del">삭제</button>
+													</div>
+													<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
 												</div>
 
 											</div>
@@ -170,6 +171,12 @@
 									</div>
 								</div>
 												
+								<div class="form-group row">
+									<div class="col">
+										<textarea id="content" name="content" class="form-control">내용입력</textarea>
+									</div>
+								</div>
+
 								<div class="form-group row">
 									<div class="col">
 										<textarea name="content1" class="form-control">내용1</textarea>
@@ -213,18 +220,17 @@
 	<script type="text/javascript">
 	let app1;
 	let key=0;
-
+	let selectRow;
 	
 	/*----------------------
-		등록
+		글 등록
 	----------------------*/ 
 	function regist(){
 	
 		let formData=new FormData();
 		formData.append("exrCategory.exr_category_idx", $("#form2 select[name='exr_category_idx']").val());
 		formData.append("title", $("#form2 input[name='title']").val());
-		formData.append("content1", $("#form2 textarea[name='content1']").val());
-		formData.append("content2", $("#form2 textarea[name='content2']").val());
+		formData.append("content", $("#form2 textarea[name='content']").val());
 		
 
 		for(let i=0; i<app1.imageList.length; i++){
@@ -259,9 +265,48 @@
 	}
 	
 	
-	/*----------------------
-		모달창 등록
+	
+	/*--------------------------
+		카테고리 목록 테이블 뷰
+ 	 --------------------------*/ 
+	const row={
+			template:`
+				<tr>
+					<td>{{dto.exr_category_idx}}</td>
+					<td @click="getDetail(dto)"><a href=#>{{dto.exr_category_name}}</a></td>
+				</tr>
+			`,
+			props:["category"],
+			data(){
+				return{
+					dto:this.category,
+				}	
+			},
+			methods:{
+				getDetail:function(category){
+					$("input[name='exr_category_idx']").val(category.exr_category_idx);
+					$("input[name='exr_category_name']").val(category.exr_category_name);
+					
+					// 1-1)수정을 하기 위해서 특정 줄을 선택한다
+					//console.log("이것의 정체는 > ", this);
+					// 1-2) 그 줄을 저장해놓는다.
+					selectRow=this;
+					console.log("선택한 로우! ", this);
+				},
+				
+				updateData:function(){
+					this.$nextTick(function(){
+						getList();
+					});
+				}
+			}
+	}
+	
+	
+	/*--------------------
+		모달창 관련
 	----------------------*/ 
+	// 카테고리 등록
 	function categoryRegist(){
 		console.log($("input[name='exr_category_name']").val());
 		
@@ -284,73 +329,59 @@
 				console.log("에러 발생시 출력", json.msg);
 			}
 		});
+	}
+	
+	// 카테고리 수정
+	function categoryEdit(){
+		if(!confirm("수정하시겠습니까?")){
+			return;
+		}
 		
-	}
-	
-	
-	
-	
-	/*--------------------------
-		카테고리 목록 테이블 뷰
- 	 --------------------------*/ 
-	const row={
-			template:`
-				<tr>
-					<td>{{dto.exr_category_idx}}</td>
-					<td @click="getDetail(dto)"><a href=#>{{dto.exr_category_name}}</a></td>
-					<td><button type="button" class="btn btn-warning" id="bt_category_edit" @click="edit(dto)">수정</button></td>
-					<td><button type="button" class="btn btn-warning" id="bt_category_del" @click="del(dto.exr_category_idx)">삭제</button></td>
-				</tr>
-			`,
-			props:["category"],
-			data(){
-				return{
-					dto:this.category
-				}	
-			},
-			methods:{
-				getDetail:function(category){
-					$("input[name='exr_category_name']").val(category.exr_category_name);
-				},
-				edit:function(category){
-					let json={};
-					json['exr_category_name']=$("#form1 input[name='exr_category_name']").val();
-					console.log(json);
-					
-					$.ajax({
-						url:"/admin/rest/exr/category",
-						type:"put",
-						contentType:"application/json;charset=utf-8",
-						processData:false,
-						data:JSON.stringify(json),						
-						success:function(result, status, xhr){
-							alert(result.msg);
-							getCategoryList();
-						},
-						error:function(xhr, status, err){
-							console.log(xhr.responseText);
-						}
-					});
-				},
-				del:function(exr_category_idx){
-					if(!confirm("삭제하시겠습니까?")){
-						return;
-					}
-					
-					$.ajax({
-						url:"/admin/rest/exr/category/"+exr_category_idx,
-						type:"delete",
-					
-						success:function(result, status, xhr){
-							alert(result.msg);
-							getCategoryList();
-						}
-					});
-				}
+		let json={};
+		json['exr_category_idx']=$("#form1 input[name='exr_category_idx']").val();
+		json['exr_category_name']=$("#form1 input[name='exr_category_name']").val();
+		console.log(json);
+		
+		$.ajax({
+			url:"/admin/rest/exr/category",
+			type:"put",
+			contentType:"application/json;charset=utf-8",
+			processData:false,
+			data:JSON.stringify(json),						
+			success:function(result, status, xhr){
+				alert(result.msg);
 				
+				console.log("제이슨? ",json);
+				// 수정시 선택된 줄을 반영한다.
+				selectRow.category=json;
+				//selectRow=category.exr_category_name;
+				
+				//getCategoryList();
+			},
+			error:function(xhr, status, err){
+				console.log(xhr.responseText);
 			}
+		});
 	}
 	
+	// 카테고리 삭제
+	function categoryDel(){
+		if(!confirm("삭제하시겠습니까?")){
+			return;
+		}
+		
+		$.ajax({
+			url:"/admin/rest/exr/category/"+$("#form1 input[name='exr_category_idx']").val(),
+			type:"delete",
+			success:function(result, status, xhr){
+				alert(result.msg);
+				getCategoryList();
+			},
+			error:function(xhr, status, err){
+				alert(xhr.responseText);
+			}
+		});
+	}
 	
 	
 	
@@ -367,7 +398,6 @@
 			}
 		});
 	}
-	
 	
 	
 	
@@ -449,8 +479,6 @@
 		}
 	}
 	
-
-	
 	
 	function checkDuplicate(file){
 		let count=0;
@@ -464,21 +492,30 @@
 	}
 	
 	
-
-	
-	
 	
 	$(function(){
-
 		// 뷰 적용
 		init();
 
-		// 키테고리 목록 가져오는 함수
+		// 카테고리 목록 가져오는 함수
 		getCategoryList();
+		
 		
 		// 모달창에서 카테고리 등록 버튼
 		$("#bt_category_regist").click(function(){
 			categoryRegist();
+		});
+		
+		
+		//모달 카테고리 수정버튼
+		$("#bt_category_edit").click(function(){
+			categoryEdit();
+		});
+		
+		
+		//모달 카테고리 삭제버튼
+		$("#bt_category_del").click(function(){
+			categoryDel();
 		});
 		
 		
@@ -499,8 +536,8 @@
 		
 
 		// 써머 노트 적용
-		$('#detail').summernote({
-			height:200
+		$('#content').summernote({
+			height:400
 		});
 		
 	});

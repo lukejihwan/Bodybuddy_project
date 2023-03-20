@@ -34,7 +34,6 @@ public class LoginService implements UserDetailsService{
             throw new UsernameNotFoundException("userEmail" + email + " not found");
         }
         log.info("=================found user===================");
-        log.info("비밀번호 : "+member.getPassword().getPass());
         log.info("email : "+member.getEmail());
 
         return new MemberDetail(member);

@@ -8,7 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +20,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edu.bodybuddy.domain.exr.ExrCategory;
 import com.edu.bodybuddy.domain.exr.ExrNotice;
+import com.edu.bodybuddy.exception.ExrCategoryException;
 import com.edu.bodybuddy.exception.ExrNoticeException;
 import com.edu.bodybuddy.model.exr.ExrCategoryService;
 import com.edu.bodybuddy.model.exr.ExrNoticeImgService;
 import com.edu.bodybuddy.model.exr.ExrNoticeService;
+import com.edu.bodybuddy.util.Msg;
 @Controller
 @RequestMapping("/exr")
-public class ExrController {
+public class ExrAdminController {
 	private Logger logger=LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private ExrCategoryService exrCategoryService;
@@ -102,5 +107,16 @@ public class ExrController {
 	}
 	
 	
+	
+	/*------------------------------------------
+	  예외 객체
+	 --------------------------------------------*/ 
+	@ExceptionHandler(ExrCategoryException.class)
+	public ResponseEntity<Msg> handle(ExrCategoryException e){
+		Msg msg=new Msg();
+		msg.setMsg(e.getMessage());
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.INTERNAL_SERVER_ERROR);
+		return entity;
+	}
 	
 }

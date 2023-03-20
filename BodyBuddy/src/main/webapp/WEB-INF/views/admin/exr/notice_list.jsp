@@ -105,7 +105,6 @@
 													<th>pk</th>
 													<th>카테고리</th>
 													<th>제목</th>
-													<th>이미지 개수</th>
 													<th>등록일</th>
 												</tr>
 											</thead>
@@ -115,7 +114,6 @@
 													<td><%=exrNotice.getExr_notice_idx() %></td>
 													<td><%=exrNotice.getExrCategory().getExr_category_name() %></td>
 													<td><a href="/admin/exr/notice/detail?exr_notice_idx=<%=exrNotice.getExr_notice_idx() %>"><%=exrNotice.getTitle() %></a></td>
-													<td><%=exrNotice.getExrNoticeImgList().size() %></td>
 													<td><%=exrNotice.getRegdate()%></td>
 												</tr>
 											<%} %>
@@ -127,9 +125,6 @@
 								</div>
 								<!-- /.card -->
 							</div>
-
-
-
 
 
 							<div class="form-group row">
@@ -159,9 +154,15 @@
 	</div>
 	<!-- ./wrapper -->
 	<%@ include file="../inc/footer_link.jsp" %>
-	<script type="text/javascript">
-
-	</script>
+<script type="text/javascript">
+	$(function(){
+		
+		$("#bt_regist").click(function(){
+			location.href="/admin/exr/notice";
+		});
+		
+	});
+</script>
 </body>
 </html>
 

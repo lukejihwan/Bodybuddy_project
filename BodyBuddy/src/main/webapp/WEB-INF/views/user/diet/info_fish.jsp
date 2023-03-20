@@ -31,15 +31,17 @@
                         <div class="row">
                             <div class="col-md-8 col-sm-12">
                                 <div class="row">
-                                    <div class="col-md-12 col-sm-12"><img src="" class="" alt="Fitness Website Template">
+                                    <div class="col-md-12 col-sm-12">
+                                    <img src="/resources/user/images/fish1.jpg" class="" alt="fish1">
+                                    <p></p>
                                     <div class="mb30">
-                                        <h1>Begginers Classes</h1>
+                                        <h1>지중해식(Mediterranean Diet)</h1>
                                         <p>Donec eros turpissemper nenibh velultrices pellentesque ristiam eu odio lionec consectetur nisi egetlorem dapibus graviroin posuere eros eget purus cursus dignissim molestie tellus euismtiam vulputate lorem is elementum sollicitudi uspendisse ante turpissollicitudin egeleo sitamet pharetra vehicula dihasellus ipsum efficitur, libero sit amet placerat ullamcorper risusex vehicula quamnec molestie.</p>
                                         <p>Nulla lobortis interdum suscipell entesque efficitur sollicitudin magnaeu vehicula libero luctus etonec odio velit, viverra at scelerisque id efficitur ullamcorper turpiusce et enim eu elit semper fringtiam faucibus on quamut consectetur gravida tellus sem lobortis miuis consectetur magna lorem vitae lectuone.</p>
-                                        <img src="images/right-img.jpg" class="alignright img-responsive" alt="">
+                                        
                                         <p>Suscipell entesque efficitur sollicitudin magnaeu vehicula libero luctus etonec odio velit, viverra ate scelerisque id efficitur ullamcorper turpiusce etes enim eu elit semper fringtiam faucibus.</p>
                                         <p>Entesque efficitur sollicitudin magnaeu vehicula libero luctus etonec odio velit, viverra ate elerisque id efficitur ullamcorper enim eu elit semper ones fringtiam faucibus turpiusce etes.Donec eros turpissemper nenibh velultrices pellentesque ristiam eu odio lionec consectetur.</p>
-                                        <img src="images/left-img.jpg" class="alignleft img-responsive" alt="">
+                                       
                                         <p>Suscipell entesque efficitur sollicitudin magnaeu vehicula libero luctus etonec odio velit, viverra ate scelerisque id efficitur ullamcorper turpiusce etes enim eu elit semper fringtiam faucibus.</p>
                                         <p class="mb30">Entesque efficitur sollicitudin magnaeu vehicula libero luctus etonec odio velit, viverra ate elerisque id efficitur ullamcorper enim eu elit semper ones fringtiam faucibus turpiusce etes. Nulla lobortis interdum suscipell entesque efficitur sollicitudin magnaeu vehicula libero</p>
                                         <p class="mb30">Nulla lobortis interdum suscipell entesque efficitur sollicitudin magnaeu vehicula libero luctus etonec odio velit, viverra at scelerisque id efficitur ullamcorper turpiusce et enim eu elit semper fringtiam faucibus on quamut consectetur gravida tellus sem lobortis miuis consectetur magna lorem vitae lectuone. Nulla lobortis interdum suscipell entesque efficitur sollicitudin magnaeu vehicula libero.</p>
