@@ -48,4 +48,12 @@ public class FreeBoardService implements BoardService{
 		return boardDAO.totalCount();
 	}
 
+	public void addHit(int board_idx) throws FreeBoardException{
+		boardDAO.addHit(board_idx);
+	}
+
+	public void addRecommend(int board_idx) throws FreeBoardException{
+		boardDAO.addRecommend(board_idx);
+	}
+
 }

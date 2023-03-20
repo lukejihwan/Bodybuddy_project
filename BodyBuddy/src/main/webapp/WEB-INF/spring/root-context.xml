@@ -12,9 +12,7 @@
 	
 	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/mysql" resource-ref="true"/>
 	
-	
 	<!-- 마이바티스 설정 -->
-	
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
   				p:dataSource-ref="dataSource"/>
 	
@@ -26,9 +24,7 @@
 	</bean>
 	
 	<context:component-scan base-package="com.edu.bodybuddy.model"/>
-	<!-- 오류 나서 지워둠 
-		<context:component-scan base-package="com.edu.bodybuddy.controller.security" />
-	 -->
+	<context:component-scan base-package="com.edu.bodybuddy.util"/>
 	
 	<!-- 트랜잭션 매니저 -->
 	<tx:annotation-driven transaction-manager="transactionManager"/>
@@ -51,6 +47,26 @@
 	<bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 		<property name="supportedMediaTypes">
 			<value>application/json;charset=utf-8</value>
+		</property>
+	</bean>
+	
+	<!-- 이메일 관련 빈 설정 -->
+	<context:property-placeholder location="classpath:./social.properties"/>
+	
+	<bean class="org.springframework.mail.javamail.JavaMailSenderImpl" id="javaMailSender">
+		<property name="host" value="smtp.gmail.com"/>
+		<property name="port" value="587"/>
+		<property name="username" value="${gmail_id}"/>
+		<property name="password" value="${gmail_pass}"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.trasport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+			</props>
 		</property>
 	</bean>
 	

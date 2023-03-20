@@ -4,6 +4,8 @@
 <head>
 <%@include file="../inc/header_link.jsp" %>
 </head>
+<!-- fontAwesome CDN icon 사용시 필요 -->
+<script src="https://kit.fontawesome.com/cfa2095821.js" crossorigin="anonymous"></script>
 <style>
 .dateHead div {
 	background: #dc3545;

@@ -46,7 +46,9 @@ public class BoardController {
 	public ModelAndView getDetailView(HttpServletRequest request ,@PathVariable int free_board_idx) {
 		
 		//3단계
+		freeBoardService.addHit(free_board_idx);
 		Object board = freeBoardService.select(free_board_idx);
+		
 		
 		//4단계
 		ModelAndView mav = new ModelAndView("/board/free_detail_view");

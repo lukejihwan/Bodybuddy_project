@@ -1,13 +1,11 @@
 package com.edu.bodybuddy.model.member;
 
-import java.util.List;
-
 import com.edu.bodybuddy.domain.member.Address;
-import com.edu.bodybuddy.domain.mypage.Ask;
+import com.edu.bodybuddy.domain.member.Member;
 
 public interface AddressDAO {
 	public Address selectByMember(int member_idx);
-	public void insert(Address address);
-	public void update(Address address);
+	public void insert(Member member);
+	public void update(Member member);
 	public void delete(int member_idx);
 }
