@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd  
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd 
+	http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/mysql" resource-ref="true"/>
+	
+	
+	<!-- 마이바티스 설정 -->
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+  				p:dataSource-ref="dataSource"/>
+	
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean"
+				p:dataSource-ref="dataSource" p:configLocation="classpath:com/edu/bodybuddy/mybatis/config.xml" />
+	
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"/>
+	</bean>
+	
+	<context:component-scan base-package="com.edu.bodybuddy.model"/>
+	<!-- 오류 나서 지워둠 
+		<context:component-scan base-package="com.edu.bodybuddy.controller.security" />
+	 -->
+	
+	<!-- 트랜잭션 매니저 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	
+	<!-- FileManager 빈 등록 -->
+	<bean id="fileManager" class="com.edu.bodybuddy.util.FileManager"/>
+	
+	<!-- 파일 처리 Resolver -->
+	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver"
+			  p:maxUploadSizePerFile="3145728"/>
+	
+	<!-- 잭슨처리 (REST 반환값을 JSON으로 변환하기 위해) -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<ref bean="mappingJackson2HttpMessageConverter"/>
+		</property>
+	</bean>
+	
+	<bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<value>application/json;charset=utf-8</value>
+		</property>
+	</bean>
+	
+</beans>
+

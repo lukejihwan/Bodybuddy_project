@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ExrNotice">
+
+	<resultMap type="ExrNotice" id="exrNoticeMap">
+		<id column="exr_notice_idx" property="exr_notice_idx"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="regdate" property="regdate"/>
+		
+		<association column="exr_category_idx" property="exrCategory" javaType="ExrCategory" select="ExrCategory.select"/>
+	</resultMap>
+	
+
+	<select id="selectAll" resultMap="exrNoticeMap">
+		select * from exr_notice
+	</select>
+
+	<select id="select" parameterType="int" resultMap="exrNoticeMap">
+		select * from exr_notice
+		where exr_notice_idx=#{exr_notice_idx}
+	</select>
+	
+	<insert id="insert" parameterType="ExrNotice">
+		insert into exr_notice(exr_category_idx, title, content)
+		values(#{exrCategory.exr_category_idx}, #{title}, #{content})
+
+	</insert>
+	
+	<update id="update" parameterType="ExrNotice">
+		update exr_notice set title=#{title}, content1=#{content1}, content2=#{content2}
+		where exr_notice_idx=#{exr_notice_idx}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from exr_notice
+		where exr_notice_idx=#{exr_notice_idx}
+	</delete>
+
+
+</mapper>

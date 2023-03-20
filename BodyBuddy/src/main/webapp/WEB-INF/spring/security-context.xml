@@ -1,0 +1,101 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    https://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/security 
+    http://www.springframework.org/schema/security/spring-security-4.2.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context.xsd
+    ">
+    <context:component-scan base-package="com.edu.bodybuddy.social"></context:component-scan>
+    
+    <http pattern="/resources/**" security="none"/>
+    <http auto-config="true" use-expressions="true">
+    	<csrf disabled="true"/>
+    	<intercept-url pattern="/**" access="permitAll()"/>
+<!--     	<intercept-url pattern="/auth/**" access="permitAll()"/>
+    	<intercept-url pattern="/login_check" access="permitAll()"/>
+    	<intercept-url pattern="/member/**" access="permitAll()"/>
+    	<intercept-url pattern="/join" access="permitAll()"/>
+    	<intercept-url pattern="/rest/user/member" access="permitAll()"/>
+        <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/rest/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/> -->
+        <form-login
+        	login-page="/auth/login"
+        	login-processing-url="/auth/login_check"
+        	default-target-url="/mypage"
+        	username-parameter="email"
+        	password-parameter="pass"
+        	authentication-failure-forward-url="/auth/login_error"
+        />
+        <logout 
+        	logout-url="/logout"
+        	logout-success-url="/"
+        />
+    </http>
+    
+	<context:property-placeholder location="classpath:./social.properties"/>
+   	
+   	<beans:bean class="com.edu.bodybuddy.model.security.MemberAuthenticationProvider" id="authenticationProvider"/>
+	<beans:bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="passwordEncoder"></beans:bean>
+ 
+    <authentication-manager erase-credentials="true">
+        <authentication-provider ref="authenticationProvider"/>
+    </authentication-manager>
+    
+    
+    <!-- 네이버 로그인 관련 정보 등록  -->
+ 	<beans:bean id="naverLogin" class="com.edu.bodybuddy.social.NaverLogin">
+ 		<!-- 1) 인증화면 링크 URL -->
+ 		<beans:property name="endpoint" value="https://nid.naver.com/oauth2.0/authorize"/>
+		<!--  네이버에서 발급받은 client ID-->
+		<beans:property name="client_id" value="${naver_client_id}"/>
+		<!-- 네이버에서 발급받은 client Secret--> 		
+		<beans:property name="client_secret" value="${naver_client_secret}"/> 	
+		<!-- Resource Owner 가 인증할때, 콜백받을 우리 웹사이트 URI -->
+		<beans:property name="redirect_uri" value="${bb_server}/auth/callback/naver"/>
+		<!-- 콜백받을때, 네이버가 우리에게 전달할 파라미터의 이름 -->
+		<beans:property name="response_type" value="code"/>
+		<!-- 구분값 -->
+		<beans:property name="state"  value="bodybuddy"/>
+		
+		<!-- 2) 토큰 요청 관련 -->
+		<beans:property name="token_request_url"  value="https://nid.naver.com/oauth2.0/token"/>
+		<!-- 모든 SNS 사업자가 같은 변수명을 쓴다 -->
+		<beans:property name="grant_type" value="authorization_code"/>
+		
+		<!--3) 회원정보 요청을 위한  url  -->
+		<beans:property name="userinfo_url"  value="https://openapi.naver.com/v1/nid/me"/>
+ 	</beans:bean>
+ 	
+ 	<!-- 카카오 로그인 관련 정보 등록  -->
+ 	<beans:bean id="kakaoLogin" class="com.edu.bodybuddy.social.KakaoLogin">
+ 		<beans:property name="endpoint" value="https://kauth.kakao.com/oauth/authorize"/>
+		<beans:property name="client_id" value="${kakao_client_id}"/>
+		<beans:property name="client_secret" value="${kakao_client_secret}"/> 		
+		<beans:property name="redirect_uri" value="http://localhost:8888/auth/callback/kakao"/>
+		<beans:property name="response_type" value="code"/>
+		<beans:property name="token_request_url"  value="https://kauth.kakao.com/oauth/token"/>
+		<beans:property name="grant_type" value="authorization_code"/>
+		<beans:property name="userinfo_url"  value="https://kapi.kakao.com/v2/user/me"/>
+ 	</beans:bean>
+ 	
+ 	<!-- 구글 로그인 관련 정보 등록 -->
+ 	<beans:bean id="googleLogin" class="com.edu.bodybuddy.social.GoogleLogin">
+ 		<beans:property name="endpoint" value="https://accounts.google.com/o/oauth2/v2/auth"/>
+		<beans:property name="client_id" value="${google_client_id}"/>
+		<beans:property name="client_secret" value="${google_client_secret}"/> 		
+		<beans:property name="redirect_uri" value="http://localhost:8888/auth/callback/google"/>
+		<beans:property name="response_type" value="code"/>
+		<beans:property name="scope" value="https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"/>
+		<beans:property name="token_request_url"  value="https://oauth2.googleapis.com/token"/>
+		<beans:property name="grant_type" value="authorization_code"/>
+		<beans:property name="userinfo_url"  value="https://www.googleapis.com/oauth2/v1/userinfo"/>
+		
+ 	</beans:bean>
+ 	
+
+</beans:beans>
