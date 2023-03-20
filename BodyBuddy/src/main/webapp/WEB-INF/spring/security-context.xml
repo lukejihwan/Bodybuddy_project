@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     https://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/security 
-    http://www.springframework.org/schema/security/spring-security-4.2.xsd
+    http://www.springframework.org/schema/security/spring-security.xsd
     http://www.springframework.org/schema/context 
     http://www.springframework.org/schema/context/spring-context.xsd
     ">
@@ -37,7 +37,7 @@
         />
     </http>
     
-	<context:property-placeholder location="classpath:./social.properties"/>
+	
    	
    	<beans:bean class="com.edu.bodybuddy.model.security.MemberAuthenticationProvider" id="authenticationProvider"/>
 	<beans:bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="passwordEncoder"></beans:bean>
@@ -76,7 +76,7 @@
  		<beans:property name="endpoint" value="https://kauth.kakao.com/oauth/authorize"/>
 		<beans:property name="client_id" value="${kakao_client_id}"/>
 		<beans:property name="client_secret" value="${kakao_client_secret}"/> 		
-		<beans:property name="redirect_uri" value="http://localhost:8888/auth/callback/kakao"/>
+		<beans:property name="redirect_uri" value="${bb_server}/auth/callback/kakao"/>
 		<beans:property name="response_type" value="code"/>
 		<beans:property name="token_request_url"  value="https://kauth.kakao.com/oauth/token"/>
 		<beans:property name="grant_type" value="authorization_code"/>
@@ -88,7 +88,7 @@
  		<beans:property name="endpoint" value="https://accounts.google.com/o/oauth2/v2/auth"/>
 		<beans:property name="client_id" value="${google_client_id}"/>
 		<beans:property name="client_secret" value="${google_client_secret}"/> 		
-		<beans:property name="redirect_uri" value="http://localhost:8888/auth/callback/google"/>
+		<beans:property name="redirect_uri" value="${bb_server}/auth/callback/google"/>
 		<beans:property name="response_type" value="code"/>
 		<beans:property name="scope" value="https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"/>
 		<beans:property name="token_request_url"  value="https://oauth2.googleapis.com/token"/>
@@ -97,5 +97,6 @@
 		
  	</beans:bean>
  	
-
+ 	<beans:bean class="org.springframework.web.client.RestTemplate" id="restTemplate"></beans:bean>
+ 	
 </beans:beans>

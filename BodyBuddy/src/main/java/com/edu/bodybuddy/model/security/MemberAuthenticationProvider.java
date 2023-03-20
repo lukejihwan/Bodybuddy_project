@@ -59,9 +59,7 @@ public class MemberAuthenticationProvider implements AuthenticationProvider {
         log.info("password 일치 : 입력한 패스워드 = "+password + "// DB 패스워드 = " + userDetails.getPassword());
         log.info("권한은 : "+userDetails.getAuthorities());
         //일치하는 사용자가 있을 경우 인증 토큰을 발급한다
-        //프론트에서 사용자의 비밀번호가 노출되면 안되기 때문에 초기화해서 발급한다
-        userDetails.getMember().setPassword(null);
-        return new UsernamePasswordAuthenticationToken(userDetails,password,userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails,userDetails.getPassword(),userDetails.getAuthorities());
     }
 
     @Override
