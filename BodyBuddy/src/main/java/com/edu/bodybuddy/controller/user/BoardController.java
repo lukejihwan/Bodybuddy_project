@@ -46,7 +46,6 @@ public class BoardController {
 	public ModelAndView getDetailView(HttpServletRequest request ,@PathVariable int free_board_idx) {
 		
 		//3단계
-		//조회수 올리기 (나중에 회원 본인이 호출할경우는 올라가지 않게 만들어야 함)
 		freeBoardService.addHit(free_board_idx);
 		Object board = freeBoardService.select(free_board_idx);
 		

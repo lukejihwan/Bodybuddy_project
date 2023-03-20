@@ -94,8 +94,8 @@
 			<hr>
 			<!-- end of row -->
 			<button class="btn btn-primary" id="bt_list">목록</button>
-			<button type="button" class="btn btn-danger pull-right" id="bt_del">삭제</button>
-			<button type="button" class="btn btn-default pull-right" style="margin-right: 10px" id="bt_edit">수정</button>
+			<button type="button" class="btn btn-danger pull-right writer-check" id="bt_del">삭제</button>
+			<button type="button" class="btn btn-default pull-right writer-check" style="margin-right: 10px" id="bt_edit">수정</button>
 			<hr>
 			<template>
 				<comment_form :idx="<%= board_idx %>"/>
@@ -153,11 +153,11 @@
 									<span>{{comment.comment}}</span>
 								</div>
 								<div class="col-md-3 comment-right">
-									<button type="button" class="btn btn-danger btn-sm float-right" @click="deleteComment(board_comment_idx)">
+									<button type="button" class="btn btn-danger btn-sm float-right comment-writer-check" :value="comment.member.member_idx" @click="deleteComment(board_comment_idx)">
 									<i class="fa-solid fa-xmark"></i></button>
-									<button type="button" class="btn btn-default btn-sm float-right" :value="board_comment_idx" @click="toggleForm('edit')">
+									<button type="button" class="btn btn-default btn-sm float-right comment-writer-check" :value="comment.member.member_idx" @click="toggleForm('edit')">
 									<i class="fa-solid fa-pen-to-square"></i></button>
-									<span class="float-right">{{comment.regdate.substr(5, 5)}} {{comment.regdate.substr(11, 5)}}</span>
+									<span>{{comment.regdate.substr(5, 5)}} {{comment.regdate.substr(11, 5)}}</span>
 								</div>
 							</div>
 						</div>
@@ -168,10 +168,11 @@
 					<div class="row">
 						<div :class="'col-md-'+(comment.depth+1)"></div>
 						<div :class="'col-md-'+(12-(comment.depth+1))">
-							<!-- 여기 board_comment_idx 부분 꼭 수정해야 함 -->
 							<form class="row" :id="'form-comment-'+board_comment_idx" style="display: none;">
 								<input type="hidden" class="for-send" name="<%= boardCommentIdxName %>" :value="board_comment_idx"/>
 								<input type="hidden" class="for-send" name="<%= boardName+"."+boardIdxName %>" :value="comment.<%= boardName+"."+boardIdxName %>"/>
+								<input type="hidden" class="for-send" name="member.member_idx" value='<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>'/>
+								<input type="hidden" class="for-send" name="writer" value='<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>'/>
 								<input type="hidden" class="for-send" name="post" :value="comment.post"/>
 								<input type="hidden" class="for-send" name="step" :value="comment.step"/>
 								<input type="hidden" class="for-send" name="depth" :value="comment.depth"/>
@@ -261,6 +262,8 @@
 			template:`
 				<form class="row" id="form-comment-0">
 					<input type="hidden" name="<%= boardName+"."+boardIdxName %>" :value="idx"/>
+					<input type="hidden" class="for-send" name="member.member_idx" value='<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>'/>
+					<input type="hidden" class="for-send" name="writer" value='<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>'/>
 					<div class="col-md-10">
 						<textarea rows="5" class="form-control" style="margin-top:10px;" name="comment" placeholder="댓글 작성..." maxlength="500"></textarea>
 					</div>
@@ -281,6 +284,7 @@
 		init();
 		getList();
 		getBoard();
+		writerCheck();
 		
 		$("#bt_edit").click(()=>{
 			location.href="<%= DetailEditURI + board_idx %>";
@@ -295,17 +299,6 @@
 			recommend();
 		});
 		
-		/* Swal.fire({
-			  title: 'Are you sure?',
-			  text: "You won't be able to revert this!",
-			  icon: 'warning',
-			  showCancelButton: true,
-			  confirmButtonColor: '#3085d6',
-			  cancelButtonColor: '#d33',
-			  confirmButtonText: 'Yes, delete it!'
-			}).then((result) => {
-			  console.log(result);
-			}) */
 	});
 	
 	function init() {
@@ -319,6 +312,10 @@
 	        	commentList:[],
 	        	recommend:5
 	        },
+	        updated(){
+	        	//commentList가 렌더링 된 이후에 로그인 한사용자가 작성한 댓글만 수정, 삭제 버튼 보여짐
+	        	commentWriterCheck();
+	        }
 		});
 	}
 	
@@ -339,6 +336,16 @@
 	}
 	
 	function registComment(value){
+		<sec:authorize access="isAnonymous()">
+			Swal.fire({
+				title:"로그인해야 사용할 수 있는 기능입니다",
+				icon:"warning",
+				confirmButtonText:"확인",
+				confirmButtonColor: '#c5f016'
+			});
+			return;
+		</sec:authorize>
+		
 		console.log($("#form-comment-"+value).serialize());
 		$.ajax({
 			url:"/rest/board/<%= boardName %>/comment",
@@ -457,7 +464,7 @@
 			url:"/rest/board/<%= boardName %>/comment/board/<%= board_idx %>",
 			type:"GET",
 			success:(result, status, xhr)=>{
-				app1.commentList = result;			
+				app1.commentList = result;
 			},
 			error:(xhr, status, err)=>{
 				console.log("ajax 실패 ", xhr);
@@ -496,6 +503,32 @@
 				console.log(xhr);
 			}
 		});
+	}
+	
+	function writerCheck() {
+		<sec:authorize access="isAuthenticated()">
+			if('<sec:authentication property="principal.member.member_idx"/>' != <%= board.getMember().getMember_idx() %>){
+				$.each($(".writer-check"), (i, item)=>{
+			    	$(item).hide();
+				});
+			}
+		</sec:authorize>
+	}
+	
+	function commentWriterCheck() {
+		<sec:authorize access="isAuthenticated()">
+			$.each($(".comment-writer-check"), (i, item)=>{
+				if('<sec:authentication property="principal.member.member_idx"/>' != item.value){
+			    	$(item).hide();
+				}
+		    	
+			});
+		</sec:authorize>
+		<sec:authorize access="isAnonymous()">
+			$.each($(".comment-writer-check"), (i, item)=>{
+		    	$(item).hide();
+			});
+		</sec:authorize>
 	}
 </script>
 </html>

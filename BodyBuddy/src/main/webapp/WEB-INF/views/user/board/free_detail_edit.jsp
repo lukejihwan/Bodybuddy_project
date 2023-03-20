@@ -18,6 +18,8 @@
 	<!-- top-bar start-->
 	<%@include file="../inc/topbar.jsp"%>
 	<!-- /top-bar end-->
+	<!-- 로그인체크 -->
+	<%@include file="../inc/loginCheck.jsp"%>
 
 	<!-- hero section start -->
 	<div class="hero-section">
@@ -57,7 +59,7 @@
 							<input type="text" class="form-control for-send" name="title" placeholder="제목..." value="<%= board.getTitle() %>">
 						</div>
 						<div class="form-group">
-							<input type="text" class="form-control for-send" name="writer" placeholder="작성자..." value="<%= board.getWriter() %>">
+							<input type="text" class="form-control for-send" name="writer" placeholder="작성자..." value="<%= board.getWriter() %>" readonly>
 						</div>
 						<div class="form-group">
 							<textarea id="summernote" name="content" class="for-send"><%= board.getContent() %></textarea>
@@ -90,6 +92,8 @@
 </body>
 <script type="text/javascript">
 	$(()=>{
+		userCheck();
+		
 		$('#summernote').summernote({
 			minHeight:200,
 			maximumImageFileSize: 64 * 1024, //64kb 제한
@@ -171,6 +175,21 @@
 					history.back();
 				}
 			});
+	}
+	
+	function userCheck() {
+		<sec:authorize access="isAuthenticated()">
+			if('<sec:authentication property="principal.member.member_idx"/>'!=<%= board.getMember().getMember_idx() %>){
+				Swal.fire({
+					title:"잘못된 접근",
+					icon:"error",
+					confirmButtonText:"확인",
+					confirmButtonColor: '#c5f016'
+				}).then(()=>{
+					location.href="/";
+				});
+			}
+		</sec:authorize>
 	}
 	
 	

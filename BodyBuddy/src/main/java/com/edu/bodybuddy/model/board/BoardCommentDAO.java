@@ -20,15 +20,15 @@ public interface BoardCommentDAO {
 	public Object select(int comment_idx);
 	/**
 	 * 댓글 등록
-	 * 기본댓글 달기위해 필요한 것 : board_idx=0 ,comment, writer.
-	 * 대댓글 달기위해 필요한 것. 부모댓글의 DTO : comment_idx, board_idx, comment, writer, post, step, depth
+	 * 기본댓글 달기위해 필요한 것 : board_idx=0 ,comment, member_idx, writer
+	 * 대댓글 달기위해 필요한 것. 부모댓글의 DTO : comment_idx, board_idx, comment, member_idx, writer, post, step, depth
 	 * (대댓글을 insert할 때 들어오는 파라미터중 comment_idx, board_idx, post, step, depth 는 부모댓글의 것을 받는다)
 	 * @param object 댓글, 대댓글을 하나 등록하기 위해 필요한 DTO
 	 */
 	public void insert(Object object);
 	/**
 	 * 댓글 수정
-	 * 필요한 것 : comment_idx, comment
+	 * 필요한 것 : comment_idx, comment, writer
 	 * @param object 댓글, 대댓글을 하나 수정하기 위해 필요한 DTO
 	 */
 	public void update(Object object);

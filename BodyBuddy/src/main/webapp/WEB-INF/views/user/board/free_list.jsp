@@ -152,7 +152,17 @@ if (boardList == null) {
 	});
 	
 	function regist() {
-		location.href = "/board/free_registform";
+		<sec:authorize access="isAnonymous()">
+			Swal.fire({
+				title:"로그인해야 사용할 수 있는 기능입니다",
+				icon:"warning",
+				confirmButtonText:"확인",
+				confirmButtonColor: '#c5f016'
+			});
+		</sec:authorize>
+		<sec:authorize access="isAuthenticated()">
+			location.href = "/board/free_registform";
+		</sec:authorize>
 	}
 	
 	function getDetail(idx) {

@@ -57,7 +57,6 @@ public class RestBoardCommentController {
 	
 	@PostMapping("/freeBoard/comment")
 	public ResponseEntity<Message> regist(HttpServletRequest request, FreeBoardComment freeBoardComment){
-		freeBoardComment.setWriter("임시 작성자");
 		
 		//3단계
 		logger.info("regist freeBoardComment : " + freeBoardComment);
@@ -72,7 +71,6 @@ public class RestBoardCommentController {
 	
 	@PutMapping("/freeBoard/comment")
 	public ResponseEntity<Message> update(HttpServletRequest request, @RequestBody FreeBoardComment freeBoardComment){
-		freeBoardComment.setWriter("임시 작성자");
 		
 		//3단계
 		//logger.info("update free_board_comment_idx : " + freeBoardComment.getFree_board_comment_idx());
