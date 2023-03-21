@@ -23,7 +23,6 @@ import com.edu.bodybuddy.domain.security.MemberDetail;
 import com.edu.bodybuddy.model.member.MemberService;
 import com.edu.bodybuddy.social.KakaoLogin;
 import com.edu.bodybuddy.social.KakaoOAuthToken;
-import com.edu.bodybuddy.util.EmailManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="logo">
-                    <a href="index.html"><img src="/resources/user/images/logo.png" alt=""></a>
+                    <a href="/"><img src="/resources/user/images/logo.png" alt=""></a>
                 </div>
             </div>
             <div class="col-md-9 col-sm-12">
@@ -34,8 +34,8 @@
                         <li><a href="/diet/info" title="diet" class="animsition-link">식단</a>
                             <ul>
                                 <li><a href="/diet/info" title="Blog" class="animsition-link">식단정보</a></li>
-                                <li><a href="/diet/share" title="Blog Single" class="animsition-link">식단공유</a></li>
-                                <li><a href="/diet/tip" title="Blog Single" class="animsition-link">식단 팁</a></li>
+                                <li><a href="/diet/share_list" title="Blog Single" class="animsition-link">식단공유</a></li>
+                                <li><a href="/diet/tip_list" title="Blog Single" class="animsition-link">식단 팁</a></li>
                                 <li><a href="/diet/kcal" title="Blog Single" class="animsition-link">칼로리계산기</a></li>
                             </ul>
                         </li>

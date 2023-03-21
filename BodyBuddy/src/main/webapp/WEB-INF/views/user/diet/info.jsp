@@ -4,8 +4,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 
 <%
-	List<DietInfo> dietInfoList=(List)request.getAttribute("dietInfoList");
-	DietCategory dietCategory=(DietCategory)request.getAttribute("dietCategory");
+	List<DietCategory> dietCategoryList=(List)request.getAttribute("dietCategoryList");
+	//System.out.println("뭐지뭐지 "+dietCategoryList);
 %>
 
 <!DOCTYPE html>
@@ -46,61 +46,21 @@
     <div class="space-medium">
         <div class="container">
             <div class="row">
+            <%int n=0; %>
+            <%for(DietCategory dietCategory:dietCategoryList) {%>
+            	<%n++; %>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                     <div class="service-block outline mb30">
                         <div class="service-icon">
-                            <i class="icon-default icon-2"></i>
+                            <i class="icon-default icon-<%=n%>"></i>
                         </div>
                         <div class="service-content pinside40">
-                            <h2 class="service-title mb20"><a href="/diet/info_general">일반식</a> </h2>
+                            <h2 class="service-title mb20"><a href="/diet/info_<%=dietCategory.getDiet_category_subname() %>/<%=dietCategory.getDiet_category_idx() %>" class="title"><%=dietCategory.getDiet_category_name() %> </a> </h2>
                             <p class="mb60"></p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                    <div class="service-block outline mb30">
-                        <div class="service-icon">
-                            <i class="icon-default icon-1"></i>
-                        </div>
-                        <div class="service-content pinside40">
-                            <h2 class="service-title mb20"><a href="/diet/info_kito" class="title">키토제닉</a></h2>
-                            <p class="mb60"></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                    <div class="service-block outline mb30">
-                        <div class="service-icon">
-                            <i class="icon-default icon-4"></i>
-                        </div>
-                        <div class="service-content pinside40">
-                            <h2 class="service-title mb20"><a href="/diet/info_fish" class="title">지중해식</a></h2>
-                            <p class="mb60"></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                    <div class="service-block outline mb30">
-                        <div class="service-icon">
-                            <i class="icon-default icon-5"></i>
-                        </div>
-                        <div class="service-content pinside40">
-                            <h2 class="service-title mb20"><a href="/diet/info_vegan" class="title">비건식</a></h2>
-                            <p class="mb60"></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                    <div class="service-block outline mb30">
-                        <div class="service-icon">
-                            <i class="icon-default icon-6"></i>
-                        </div>
-                        <div class="service-content pinside40">
-                            <h2 class="service-title mb20"><a href="/diet/info_time" class="title">간헐적단식</a></h2>
-                            <p class="mb60"></p>
-                        </div>
-                    </div>
-                </div>
+             <%} %>
             </div>
         </div>
     </div>
@@ -116,10 +76,7 @@
 
 </body>
 <script type="text/javascript">
-	//카테고리 선택시 페이지 이동 
-	function getPage(diet_category_idx){
-		location.href="/"
-	}
+	
 </script>
 
 </html>

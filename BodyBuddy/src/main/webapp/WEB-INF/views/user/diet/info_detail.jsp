@@ -12,6 +12,7 @@
 <head>
 <%@include file="../inc/header_link.jsp"%>
 <script src="https://kit.fontawesome.com/99ef7b560b.js" crossorigin="anonymous"></script>
+
 <style type="text/css">
 .comment-right button{
 	margin: 0 10px 0 10px;
@@ -60,7 +61,40 @@
 			<br/>
 			<div class="row">
 				<div class="col-md-12">
-					<%=	dietInfo.getContent() %>
+					<%=	dietInfo.getContent() %>	
+								
+					<!-- 그래프 시작 -->
+					<div class="col-md-12">
+						<div class="progress-group">
+							<span class="progress-text" style="color:#4374D9"><b>열량</b></span>
+							<span class="progress-number" style="margin-left:980px"><b>160</b>/200</span>
+							<div class="progress sm">
+		  						<div class="progress-bar" style="width:60%"></div>
+							</div>
+						</div>
+						<div class="progress-group">
+							<span class="progress-text" style="color:#3c8dbc"><b>탄수화물</b></span>
+							<span class="progress-number" style="margin-left:953px"><b>160</b>/200</span>
+							<div class="progress sm">
+		  						<div class="progress-bar bg-info" style="width:20%"></div>
+							</div>
+						</div>
+						<div class="progress-group">
+							<span class="progress-text" style="color:#CC3D3D"><b>단백질</b></span>
+							<span class="progress-number" style="margin-left:967px"><b>160</b>/200</span>
+							<div class="progress sm">
+		  						<div class="progress-bar bg-danger" style="width:20%"></div>
+							</div>
+						</div>
+						<div class="progress-group">
+							<span class="progress-text" style="color:#f39c12"><b>지방</b></span>
+							<span class="progress-number" style="margin-left:980px"><b>160</b>/200</span>
+							<div class="progress sm">
+		  						<div class="progress-bar bg-warning" style="width:20%"></div>
+							</div>
+						</div>
+					</div>
+					<!-- 그래프 끝 -->
 				</div>	
 			</div>
 			<hr>

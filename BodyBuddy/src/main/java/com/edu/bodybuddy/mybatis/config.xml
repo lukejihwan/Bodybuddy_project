@@ -26,6 +26,8 @@
  	<!-- Diet Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietCategory" alias="DietCategory" />
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietInfo" alias="DietInfo" />
+ 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietTip" alias="DietTip" />
+ 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietTipComments" alias="DietTipComments" />
  
  	<!-- Mypage Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Report" alias="Report"/>
@@ -64,6 +66,8 @@
     <!-- Diet Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietCategoryMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietInfoMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/diet/DietTipMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/diet/DietTipCommentsMapper.xml"/>
     
     <!-- Mypage Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/ReportMapper.xml"/>
