@@ -68,4 +68,9 @@ public interface BoardCommentDAO {
 	 * @return 해당 post의 해당 depth에서 가장 마지막 step을 반환
 	 */
 	public int maxStepInDepth(Object object);
+	/**
+	 * 게시글을 삭제할 때 해당 게시글의 모든 댓글을 delete 하기 위한 메서드
+	 * @param board_idx 삭제할 board의 idx
+	 */
+	public void deleteAllByBoard(int board_idx);
 }

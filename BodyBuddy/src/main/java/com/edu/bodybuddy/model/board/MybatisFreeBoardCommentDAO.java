@@ -83,4 +83,10 @@ public class MybatisFreeBoardCommentDAO implements BoardCommentDAO{
 		return sqlSessionTemplate.selectOne("FreeBoardComment.select", free_board_comment_idx);
 	}
 
+	public void deleteAllByBoard(int free_board_idx) throws FreeBoardCommentException{
+		int totalCount = totalCount(free_board_idx);
+		int result = sqlSessionTemplate.delete("FreeBoardComment.deleteAllByBoard", free_board_idx);
+		if(totalCount != result) throw new FreeBoardCommentException("자유게시판 해당 게시글에서 댓글 전체 삭제 실패");
+	}
+
 }
