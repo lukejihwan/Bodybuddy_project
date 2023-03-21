@@ -15,7 +15,7 @@
     <http auto-config="true" use-expressions="true">
     	<csrf disabled="true"/>
     	<intercept-url pattern="/**" access="permitAll()"/>
-<!--     	<intercept-url pattern="/auth/**" access="permitAll()"/>
+		<!-- <intercept-url pattern="/auth/**" access="permitAll()"/>
     	<intercept-url pattern="/login_check" access="permitAll()"/>
     	<intercept-url pattern="/member/**" access="permitAll()"/>
     	<intercept-url pattern="/join" access="permitAll()"/>
@@ -94,8 +94,22 @@
 		<beans:property name="token_request_url"  value="https://oauth2.googleapis.com/token"/>
 		<beans:property name="grant_type" value="authorization_code"/>
 		<beans:property name="userinfo_url"  value="https://www.googleapis.com/oauth2/v1/userinfo"/>
-		
  	</beans:bean>
+ 	
+ 	
+ 	<!--  네이버 SMS 서비스 관련 정보 등록 -->
+ 	<beans:bean class="com.edu.bodybuddy.social.NaverSMS" id="naverSMS">
+ 		<beans:property name="hostNameUrl" value="https://sens.apigw.ntruss.com"/>
+ 		<beans:property name="requestUrl" value="/sms/v2/services/"/>
+ 		<beans:property name="requestUrlType" value="/messages"/>
+ 		<beans:property name="accessKey" value="${naver.sms.accessKey}"/>
+ 		<beans:property name="secretKey" value="${naver.sms.secretKey}"/>
+ 		<beans:property name="serviceId" value="${naver.sms.serviceId}"/>
+ 		<beans:property name="method" value="GET"/>
+ 		<beans:property name="adminPhone" value="${naver.sms.phone}"/>
+ 	</beans:bean>
+ 	
+ 	<beans:bean class="com.edu.bodybuddy.util.SmsManager" id="smsManager"/>
  	
  	<beans:bean class="org.springframework.web.client.RestTemplate" id="restTemplate"></beans:bean>
  	

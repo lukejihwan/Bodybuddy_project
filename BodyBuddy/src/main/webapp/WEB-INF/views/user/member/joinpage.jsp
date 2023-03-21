@@ -4,6 +4,7 @@
 
 <head>
 <%@include file="../inc/header_link.jsp" %>
+<link rel="stylesheet" href="/resources/user/css/join.css">
 </head>
 
 <body class="animsition">
@@ -14,7 +15,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="page-caption pinside40">
-                        <h1 class="page-title">회원가입 테스트 페이지입니다</h1>
+                        <h1 class="page-title">회원가입</h1>
                         <p>회원이 되어 다양한 혜택을 누려보세요!</p>
                     </div>
                 </div>
@@ -22,50 +23,76 @@
         </div>
     </div>
     <!-- content start -->
-    <div class="container">
-       	<div class="card card-primary">
-		   	 <div class="card-header">
-		        <h3 class="card-title">회원가입</h3>
-		     </div>
-		    <!-- /.card-header -->
-		    <!-- form start -->
-		    <form id="registform">
-		        <div class="card-body">
-		            <div class="form-group">
-		                <label for="id">닉네임</label>
-		                <input type="text" class="form-control" name="nickname" required>
-		            </div>
-		            <div class="form-group">
-		                <label for="pass">비밀번호</label>
-		                <input type="password" class="form-control" name="password.pass" required autocomplete="name">
-		            </div>
-		            <div class="form-group">
-		                <label for="passc">비밀번호 확인</label>
-		                <input type="password" class="form-control" id="passc" required autocomplete="name">
-		            </div>
-		            <div class="form-group">
-		                <label for="email">이메일</label>
-		                <input type="email" class="form-control" name="email" required>
-		                <button type="button" id="bt_sendEmail">이메일 인증</button>
-		                <input type="text" placeholder="인증번호 입력" name="code">
-		                <button type="button" id="bt_verify">인증확인</button>
-		            </div>
-		            <div class="form-group">
-		                <label for="phone">전화번호</label>
-		                <input type="number" class="form-control" name="phone" required>
-		            </div>
-		            <div class="form-group">
-		                <label for="address">주소(선택사항)</label>
-		                <input type="text" class="form-control" name="address.member_address">
-		            </div>
-		        </div>
-		        <!-- /.card-body -->
-		        <div class="card-footer">
-		            <button type="button" class="btn btn-primary" id="bt_regist">회원가입</button>
-		        </div>
-		    </form>
-		</div>
-    </div>
+ 	<!-- wrapper -->
+    <div id="wrapper" style="padding-top: 100px">
+        <!-- content-->
+        <div id="content">
+			<form id="form1">
+				<!-- EMAIL -->
+				<div>
+					<h3 class="join_title"><label for="email">이메일 주소</span></label></h3>
+					<span class="box int_email">
+						<input type="text" id="email" name="email" class="int" maxlength="100" placeholder="이메일 주소 입력">
+						<button type="button" class="btn btn-default btn-sm checkBt" id="bt_check">인증번호받기</button>
+					</span>
+					<span class="error_next_box">이메일 주소를 다시 확인해주세요.</span>
+					<span class="box int_auth">
+						<input type="text" name="code" class="int" maxlength="6" placeholder="인증번호 입력">
+						<button type="button" class="btn btn-default btn-sm verifyBt" id="bt_verify">인증</button>
+					</span>    
+				</div>
+				<!-- PW1 -->
+				<div>
+					<h3 class="join_title"><label for="pswd1">비밀번호</label></h3>
+					<span class="box int_pass">
+						<input type="password" id="pswd1" name="password.pass" class="int" maxlength="20">
+						<span id="alertTxt">사용불가</span>
+						<img src="/resources/user/images/join/m_icon_pass.png" id="pswd1_img1" class="pswdImg">
+					</span>
+					<span class="error_next_box"></span>
+				</div>
+				<!-- PW2 -->
+				<div>
+					<h3 class="join_title"><label for="pswd2">비밀번호 재확인</label></h3>
+					<span class="box int_pass_check">
+						<input type="password" id="pswd2" class="int" maxlength="20">
+						<img src="/resources/user/images/join/m_icon_check_disable.png" id="pswd2_img1" class="pswdImg">
+					</span>
+					<span class="error_next_box"></span>
+				</div>
+				<!-- NICKNAME -->
+				<div>
+					<h3 class="join_title"><label for="name">닉네임</label></h3>
+					<span class="box int_name">
+						<input type="text" id="name" name="nickname" class="int" maxlength="20">
+					</span>
+					<span class="error_next_box"></span>
+				</div>
+				<!-- phone -->
+				<div>
+					<h3 class="join_title"><label for="phoneNo">휴대전화</label></h3>
+					<span class="box int_phone">
+						<input type="tel" id="phone" name="phone" class="int" maxlength="16" placeholder="전화번호 입력">
+						<button type="button" class="btn btn-default btn-sm checkBt" id="bt_checkP">인증번호받기</button>
+					</span>
+					<span class="error_next_box"></span>
+					<span class="box int_auth">
+						<input type="text" name="codeP" class="int" maxlength="6" placeholder="인증번호 입력">
+						<button type="button" class="btn btn-default btn-sm verifyBt" id="bt_verifyP">인증</button>
+					</span>      
+				</div>
+
+				<!-- 가입버튼 -->
+				<div class="form-group pt-3">
+					<button type="button" class="btn btn-default" id="bt_regist">
+						<span>가입하기</span>
+					</button>
+				</div>
+			</form>
+        </div> 
+        <!-- content-->
+    </div> 
+    <!-- wrapper -->
 
     <!-- /content end -->
     
@@ -81,100 +108,5 @@
     <%@include file="../inc/footer_link.jsp" %>
     
 </body>
-<script type="text/javascript">
-
-function sendEmail(){
-	console.log("인증메일 발송절차 실행");
-	$.ajax({
-		type: "get",
-		url: "/auth/member/email?email="+$("input[name='email']").val(),
-		success: function(result) {
-			alert(result.msg);
-		},
-		error: function(e) {
-			console.log(e);
-			alert(e.responseJSON.msg);
-		}
-	})	
-}
-
-function verify() {
-	console.log("인증 확인 절차 실행");
-	let formData = $("#registform").serialize();
-	$.ajax({
-		type: "post",
-		url: "/auth/member/email",
-		data: formData,
-		success: function(result) {
-			alert(result.msg);
-			$("#bt_sendEmail").hide();
-			$("#bt_verify").hide();
-			$("input[name='code']").hide();
-		},
-		error: function(e) {
-			console.log(e);
-			alert(e.responseJSON.msg);
-		}
-	})	
-}
-
-
-function regist() {
-	let formData = $("#registform").serialize();
-	$.ajax({
-		type: "POST",
-		url: "/auth/member",
-		data: formData,
-		success: function(result) {
-			alert(result.msg);
-			location.href="/auth/login";
-		},
-		error: function(e) {
-			console.log(e);
-			alert(e.responseJSON.msg);
-		}
-	})
-}
-
-function validate(){
-	let email = $("input[name='email']");
-	let phone = $("input[name='phone']");
-	let regEmail = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-	let regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
-	
-	if(!email.val()){
-		alert("이메일 주소를 입력해주세요");
-		email.focus();
-		return false;
-	} else if(!regEmail.test(email.val())) {
-		alert("이메일 형식이 올바르지 않습니다");
-		email.focus();
-		return false;
-	} else if(!phone.val()){
-		alert("휴대폰 번호를 입력해주세요");
-		phone.focus();
-		return false;
-	} else if(!regPhone.test(phone.val())){
-		alert("휴대폰 번호 형식이 올바르지 않습니다");
-		phone.focus();
-		return false;
-	} else {
-		return true;
-	}
-}
-
-$(function(){
-	//회원가입 버튼 연결
-	$("#bt_regist").click(function(){
-		//if(validate()) regist();
-		regist();
-	})
-	$("#bt_sendEmail").click(function(){
-		sendEmail();
-	})
-	$("#bt_verify").click(function(){
-		verify();
-	})
-})
-</script>
+<script src="/resources/user/js/join.js"></script>
 </html>
