@@ -1,14 +1,14 @@
 <%@page import="com.edu.bodybuddy.util.PageManager"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.edu.bodybuddy.domain.board.FreeBoard"%>
+<%@page import="com.edu.bodybuddy.domain.board.QnaBoard"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
-List boardList = (List) request.getAttribute("freeBoardList");
+List boardList = (List) request.getAttribute("qnaBoardList");
 PageManager pageManager = (PageManager) request.getAttribute("pageManager");
-String listURI = "/board/free_list/"; // href 이동 주소 이것만 변경하면 됨. 뒤에 / 붙일 것 ex. /board/free_list/
-String detailURI = "/board/free_detail_view/";
-String registformURI="/board/free_registform";
+String listURI = "/board/qna_list/"; // href 이동 주소 이것만 변경하면 됨. 뒤에 / 붙일 것 ex. /board/qna_list/
+String detailURI = "/board/qna_detail_view/";
+String registformURI="/board/qna_registform";
 
 if (boardList == null)
 	out.print("<script>location.href='" + listURI + "1'</script>");
@@ -41,9 +41,9 @@ if (boardList == null) {
 			<div class="row">
 				<div class="col-lg-6 col-md-6 col-sm-12  col-xs-12">
 					<div class="hero-caption pinside50">
-						<h1 class="hero-title">자유게시판</h1>
+						<h1 class="hero-title">QnA게시판</h1>
 						<p class="small-caps mb30 text-white"></p>
-						<p class="hero-text">자유롭게 소통하는 게시판입니다</p>
+						<p class="hero-text">궁금한 사항들을 질문하는 게시판입니다</p>
 						<!-- <a href="classes-list.html" class="btn btn-default">링크 필요하면
 							사용할 버튼</a> -->
 					</div>
@@ -58,7 +58,7 @@ if (boardList == null) {
 		<div class="container">
 			<div class="row">
 				<div class="col">
-                    <h1><a href="<%= listURI+1 %>">자유게시판</a></h1>
+                    <h1><a href="<%= listURI+1 %>">QnA게시판</a></h1>
                     <hr>
 				</div>
 			</div>
@@ -81,10 +81,10 @@ if (boardList == null) {
 							for (int i = 0; i < boardList.size(); i++) {
 							%>
 							<%
-							FreeBoard board = (FreeBoard) boardList.get(i);
+							QnaBoard board = (QnaBoard) boardList.get(i);
 							%>
-							<tr onclick="getDetail(<%=board.getFree_board_idx()%>)">
-								<td><%=board.getFree_board_idx()%></td>
+							<tr onclick="getDetail(<%=board.getQna_board_idx()%>)">
+								<td><%=board.getQna_board_idx()%></td>
 								<td><%=board.getTitle()%><span class="comment-count"><%= board.getCommentList().size()>0?"&nbsp&nbsp["+board.getCommentList().size()+"]":"" %></span></td>
 								<td><img src="<%=board.getThumbnail()%>" style="width:50px;height:50px;" onerror="this.style.visibility='hidden';"/></td>
 								<td><%=board.getWriter()%></td>

@@ -34,8 +34,12 @@
  	
  	<!-- Board Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.board.FreeBoard" alias="FreeBoard"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.board.QnaBoard" alias="QnaBoard"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.board.CounsellingBoard" alias="CounsellingBoard"/>
  	
  	<typeAlias type="com.edu.bodybuddy.domain.board.FreeBoardComment" alias="FreeBoardComment"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.board.QnaBoardComment" alias="QnaBoardComment"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.board.CounsellingBoardComment" alias="CounsellingBoardComment"/>
  	
   </typeAliases>
   
@@ -70,8 +74,12 @@
 
 	<!-- Board Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/board/FreeBoardMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/board/QnaBoardMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/board/CounsellingBoardMapper.xml"/>
     
     <mapper resource="com/edu/bodybuddy/mybatis/board/FreeBoardCommentMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/board/QnaBoardCommentMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/board/CounsellingBoardCommentMapper.xml"/>
     
 
 
