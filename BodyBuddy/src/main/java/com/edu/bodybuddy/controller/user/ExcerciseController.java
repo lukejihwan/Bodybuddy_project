@@ -86,10 +86,8 @@ public class ExcerciseController {
 	
 	// 글 등록 폼
 	@GetMapping("/routine/registform")
-	public ModelAndView getRegistForm(HttpServletRequest request){
-		List<ExrCategory> exrCategoryList=exrCategoryService.selectAll();
-		ModelAndView mv= new ModelAndView("exr/routine_registform");
-		mv.addObject("exrCategoryList", exrCategoryList);
+	public ModelAndView getTipForm(HttpServletRequest request){
+		ModelAndView mv= new ModelAndView("exr/tip_registform");
 		return mv;
 	}
 	
@@ -133,6 +131,26 @@ public class ExcerciseController {
 	}
 	
 
+	
+	/*-----------------------
+	  	팁 게시판
+	 -------------------------*/ 
+	@GetMapping("/tip")
+	public ModelAndView getRegistForm(HttpServletRequest request) {
+		ModelAndView mv= new ModelAndView("/exr/tip_main");
+		return mv;
+	}
+	
+	@GetMapping("/tip/registfrom")
+	public ModelAndView getTipMain(HttpServletRequest request) {
+		List<ExrCategory> exrCategoryList=exrCategoryService.selectAll();
+		
+		ModelAndView mv= new ModelAndView("/exr/tip_registform");
+		mv.addObject("exrCategoryList", exrCategoryList);
+		return mv;
+	}
+	
+	
 	
 	/*------------------------------------------
 	  예외 객체

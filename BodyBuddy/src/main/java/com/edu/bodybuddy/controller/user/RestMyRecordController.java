@@ -30,13 +30,15 @@ public class RestMyRecordController {
 	private ExrRecordService exrRecordService;
 	
 	
-	@PostMapping("/location")
+	@PostMapping("/gps")
 	public String getLocation(){
 		
 		logger.info("응답 받음");
 		
 		return "지금 확인 중";
 	}
+	
+	
 	
 	//한달간의 기록을 보여주는 메서드
 	//ResponseBody 를 붙일 필요없음, RestController로 클래스 선언이 되어있기 때문에
