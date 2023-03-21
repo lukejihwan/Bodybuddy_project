@@ -8,6 +8,7 @@ List boardList = (List) request.getAttribute("freeBoardList");
 PageManager pageManager = (PageManager) request.getAttribute("pageManager");
 String listURI = "/board/free_list/"; // href 이동 주소 이것만 변경하면 됨. 뒤에 / 붙일 것 ex. /board/free_list/
 String detailURI = "/board/free_detail_view/";
+String registformURI="/board/free_registform";
 
 if (boardList == null)
 	out.print("<script>location.href='" + listURI + "1'</script>");
@@ -84,8 +85,8 @@ if (boardList == null) {
 							%>
 							<tr onclick="getDetail(<%=board.getFree_board_idx()%>)">
 								<td><%=board.getFree_board_idx()%></td>
-								<td><%=board.getTitle()%></td>
-								<td><img src="<%=board.getThumbnail()%>" style="width:50px;height:50px;"/></td>
+								<td><%=board.getTitle()%><span class="comment-count"><%= board.getCommentList().size()>0?"&nbsp&nbsp["+board.getCommentList().size()+"]":"" %></span></td>
+								<td><img src="<%=board.getThumbnail()%>" style="width:50px;height:50px;" onerror="this.style.visibility='hidden';"/></td>
 								<td><%=board.getWriter()%></td>
 								<td><%=board.getRegdate().substring(0, 10)%></td>
 								<td><%=board.getHit()%></td>
@@ -152,7 +153,17 @@ if (boardList == null) {
 	});
 	
 	function regist() {
-		location.href = "/board/free_registform";
+		<sec:authorize access="isAnonymous()">
+			Swal.fire({
+				title:"로그인해야 사용할 수 있는 기능입니다",
+				icon:"warning",
+				confirmButtonText:"확인",
+				confirmButtonColor: '#c5f016'
+			});
+		</sec:authorize>
+		<sec:authorize access="isAuthenticated()">
+			location.href = "<%= registformURI %>";
+		</sec:authorize>
 	}
 	
 	function getDetail(idx) {

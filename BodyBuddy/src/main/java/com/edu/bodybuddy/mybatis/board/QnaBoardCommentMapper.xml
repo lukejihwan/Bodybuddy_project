@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QnaBoardComment">
+	<resultMap type="QnaBoardComment" id="resultMap">
+		<id column="qna_board_comment_idx" property="qna_board_comment_idx"/>
+		<result column="comment" property="comment"/>
+		<result column="writer" property="writer"/>
+		<result column="regdate" property="regdate"/>
+		<result column="post" property="post"/>
+		<result column="step" property="step"/>
+		<result column="depth" property="depth"/>
+		<result column="member_idx" property="member.member_idx"/>
+		<result column="qna_board_idx" property="qnaBoard.qna_board_idx"/>
+	</resultMap>
+	
+	<select id="selectAllByBoard" resultMap="resultMap" parameterType="int">
+		select * from qna_board_comment
+		where qna_board_idx=#{qna_board_idx}
+		order by step asc
+	</select>
+	
+	<select id="selectAllByMember" resultMap="resultMap" parameterType="int">
+		select * from qna_board_comment
+		where member_idx=#{member_idx}
+		order by step asc
+	</select>
+	
+	<select id="select" resultMap="resultMap" parameterType="int">
+		select * from qna_board_comment
+		where qna_board_comment_idx=#{qna_board_comment_idx}
+	</select>
+	
+	<insert id="insert" parameterType="QnaBoardComment">
+		insert into qna_board_comment(member_idx, qna_board_idx, comment, writer, post, step, depth)
+		values (#{member.member_idx}, #{qnaBoard.qna_board_idx} , #{comment}, #{writer}, #{post}, #{step}, #{depth})
+		<selectKey
+		keyColumn="qna_board_comment_idx"
+		keyProperty="qna_board_comment_idx"
+		resultType="int"
+		order="AFTER">
+			select last_insert_id() as qna_board_comment_idx from dual
+		</selectKey>
+	</insert>
+	<update id="update" parameterType="QnaBoardComment">
+		update qna_board_comment set
+		comment=#{comment}, post=#{post}
+		where qna_board_comment_idx=#{qna_board_comment_idx}
+	</update>
+	<delete id="delete" parameterType="QnaBoardComment">
+		delete from qna_board_comment
+		where qna_board_comment_idx=#{qna_board_comment_idx}
+	</delete>
+
+	<select id="totalCount" resultType="int" parameterType="int">
+		select count(*) from qna_board_comment
+		where qna_board_idx=#{qna_board_idx}
+	</select>
+	<select id="maxStepInChild" resultType="int" parameterType="QnaBoardComment">
+		select step-1 from qna_board_comment
+		where qna_board_idx=#{qnaBoard.qna_board_idx}
+		and step>#{step} and depth=#{depth}
+		order by step asc limit 1;
+	</select>
+	<select id="maxStepInPost" resultType="int" parameterType="QnaBoardComment">
+		select max(step) from qna_board_comment
+		where qna_board_idx=#{qnaBoard.qna_board_idx}
+		and post=#{post}
+	</select>
+	<select id="maxStepInDepth" resultType="int" parameterType="QnaBoardComment">
+		select step from qna_board_comment
+		where qna_board_idx=#{qnaBoard.qna_board_idx}
+		and depth=#{depth}
+		and post=#{post}
+		order by step desc limit 1;
+	</select>
+	
+	<!-- step 올리기 for insert -->
+	<update id="shiftAboveSteps" parameterType="QnaBoardComment">
+		update qna_board_comment set step = step + 1
+		where step>#{step} and qna_board_idx=#{qnaBoard.qna_board_idx}
+	</update>
+	
+	<!-- step 내리기 for delete -->
+	<update id="unshiftAboveSteps" parameterType="QnaBoardComment">
+		update qna_board_comment set step = step - 1
+		where step>#{step} and qna_board_idx=#{qnaBoard.qna_board_idx}
+	</update>
+	<select id="countAboveSteps" resultType="int" parameterType="QnaBoardComment">
+		select count(step) from qna_board_comment
+		where step>#{step} and qna_board_idx=#{qnaBoard.qna_board_idx}
+	</select>
+	<delete id="deleteAllByBoard" parameterType="QnaBoardComment">
+		delete from qna_board_comment
+		where qna_board_idx=#{qnaBoard.qna_board_idx}
+	</delete>
+</mapper>

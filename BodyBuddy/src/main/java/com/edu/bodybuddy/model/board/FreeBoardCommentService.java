@@ -38,10 +38,10 @@ public class FreeBoardCommentService implements BoardCommentService{
 		 if(freeBoardComment.getFree_board_comment_idx()==0) {
 			 //만약 해당 게시판의 첫 댓글이라면
 			 //logger.info("totalCount : " + totalCount(freeBoardComment.getFreeBoard().getFree_board_idx()));
-			 if(totalCount(free_board_idx) == 0) {
+			 if(boardCommentDAO.totalCount(free_board_idx) == 0) {
 				 freeBoardComment.setStep(1);
 			 }else {
-				 freeBoardComment.setStep(totalCount(free_board_idx) + 1);
+				 freeBoardComment.setStep(boardCommentDAO.totalCount(free_board_idx) + 1);
 			 }
 			 //free_board_comment_idx가 0이므로 새 댓글 등록
 			 boardCommentDAO.insert(freeBoardComment);
@@ -89,16 +89,24 @@ public class FreeBoardCommentService implements BoardCommentService{
 		 
 	}
 
-	public void update(Object object) {
+	public void update(Object object) throws FreeBoardCommentException{
 		boardCommentDAO.update(object);
 	}
-
-	public void delete(int free_board_comment_idx) {
-		boardCommentDAO.delete(free_board_comment_idx);
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(int free_board_comment_idx) throws FreeBoardCommentException{
+		
+		FreeBoardComment freeBoardComment = (FreeBoardComment)boardCommentDAO.select(free_board_comment_idx);
+		boardCommentDAO.delete(freeBoardComment.getFree_board_comment_idx());
+		boardCommentDAO.unshiftAboveSteps(freeBoardComment);
 	}
 
 	public int totalCount(int board_idx) {
 		return boardCommentDAO.totalCount(board_idx);
+	}
+
+	public Object select(int comment_idx) {
+		return boardCommentDAO.select(comment_idx);
 	}
 
 	
