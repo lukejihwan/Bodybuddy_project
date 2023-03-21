@@ -13,7 +13,7 @@
                     <ul>
                         <li class="active"><a href="/" title="Home" class="animsition-link">Home</a></li>
                         
-                        <li><a href="/myrecord" title="record" class="animsition-link">나의 기록</a>
+                        <li><a href="/myrecord/main" title="record" class="animsition-link">나의 기록</a>
                             <ul>
                                 <li><a href="/myrecord/addrecord" title="정보">기록추가</a></li>
                                 <li><a href="/myrecord/physical_record" title="정보">신체기록</a></li>

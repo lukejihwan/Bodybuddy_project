@@ -29,6 +29,12 @@ public class MyRecordController {
 	@Autowired
 	private ExrRecordService exrRecordService;
 	
+	@GetMapping("/main")
+	public ModelAndView getMainPage(HttpServletRequest request) {
+		ModelAndView mav=new ModelAndView("myrecord/myrecord_main");
+		return mav;
+	}
+	
 	@GetMapping("/addrecord")
 	public ModelAndView getAddPage(HttpServletRequest request) {
 		ModelAndView mav=new ModelAndView("myrecord/add_record");
