@@ -23,27 +23,6 @@
      	<div class="container">-</div>
      </div>
 
-    
-    <!-- content start -->
-    <div class="content">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="content-area">
-                        <div class="row">
-		                   <div class="col-md-4 col-sm-12 col-xs-12">
-                                <div class="row">
-                                    <div class="col-md-7 col-sm-7 col-xs-7">
-                                        <%@include file="./side_bar.jsp"%>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- /content end -->
 
     <!-- black footer_space -->

@@ -84,10 +84,10 @@
 
 										<div class="card-tools">
 											<div class="input-group input-group-sm" style="width: 150px;">
-												<input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+												<input type="text" name="keyword" class="form-control float-right" placeholder="Search">
 
 												<div class="input-group-append">
-													<button type="submit" class="btn btn-default">
+													<button type="submit" class="btn btn-default" id="bt_search">
 														<i class="fas fa-search"></i>
 													</button>
 												</div>
@@ -108,7 +108,7 @@
 											</thead>
 											<tbody>
 											<%for (DietInfo dietInfo:dietInfoList){ %>
-												<tr onclick="location.href='/admin/diet/info_detail?diet_info_idx=<%=dietInfo.getDiet_info_idx() %>'">
+												<tr onclick="location.href='/admin/diet/info_detail/<%=dietInfo.getDiet_info_idx() %>'">
 													<td><%=dietInfo.getDiet_info_idx()%></td>
 													<td><%=dietInfo.getDietCategory().getDiet_category_name()%></td>
 													<td><%=dietInfo.getTitle()%></td>
@@ -156,11 +156,15 @@
 	
 	
 	<script type="text/javascript">
+
 		$(function(){
-			
 			//글 쓰기 버튼 
 			$("#bt_regist").click(function(){
 				location.href="/admin/diet/info_registform";
+			});
+			
+			$("#bt_search").click(function(){
+				alert();
 			});
 			
 		});

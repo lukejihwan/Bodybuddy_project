@@ -1,10 +1,13 @@
+<%@page import="com.edu.bodybuddy.domain.diet.DietCategory"%>
 <%@page import="org.apache.ibatis.reflection.SystemMetaObject"%>
 <%@page import="java.util.List"%>
 <%@page import="com.edu.bodybuddy.domain.diet.DietInfo"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 
 <%
+	List<DietCategory> dietCategoryList=(List)request.getAttribute("dietCategoryList");
 	List<DietInfo> dietInfoList=(List)request.getAttribute("dietInfoList");
+	//System.out.println("뷰에서 확인 "+dietInfoList);
 %>
 
 <!DOCTYPE html>
@@ -86,10 +89,10 @@
                                                 <div class="comment-body">
                                                 <%for (DietInfo dietInfo:dietInfoList){%>
                                                     <div class="">
-                                                        <div class="comment-author"><img src="<%=dietInfo.getPreview() %>" alt="" style="width:100px;height:100px";> </div>
+                                                        <div class="comment-author"><img src="<%=dietInfo.getPreview() %>" alt="preview" style="width:100px;height:100px";> </div>
                                                         <div class="comment-info">
                                                             <div class="comment-header">
-                                                                <div class="reply"><a href="/diet/info_detail?diet_info_idx=<%=dietInfo.getDiet_info_idx() %>" class="title"><i class="fa fa-mail-reply"></i> 글 보기</a></div>
+                                                                <div class="reply"><a href="/diet/info_detail/<%=dietInfo.getDiet_info_idx() %>" class="title"><i class="fa fa-mail-reply"></i> 글 보기</a></div>
                                                                 <h4 class="user-title mb10"><%=dietInfo.getTitle() %></h4>
                                                                 <div class="comment-meta"><span class="comment-meta-date"><%=dietInfo.getRegdate().substring(0,10) %></span></div>
                                                             </div>
@@ -108,8 +111,6 @@
                           	</div>
 
            <!-- 본문 끝 -->                 
-                            
-                            
                             <div class="col-md-4 col-sm-12 col-xs-12">
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -117,10 +118,10 @@
                                        	<!-- 오른쪽 사이드 바 -->
                                         <div class="side-nav mb30  ">
                                             <ul class="listnone sidenav">
-                                                <li class="active"><a href="/diet/info_general"><i class="icon-2 service-sidenav-icon "></i><span class="sidenav-text">일반식</span></a></li>
-                                                <li> <a href="/diet/info_kito"><i class="icon-1 service-sidenav-icon"></i><span class="sidenav-text">키토제닉</span> </a></li>
-                                                <li> <a href="/diet/info_fish"><i class="icon-4 service-sidenav-icon"></i><span class="sidenav-text">지중해식</span> </a></li>
-                                                <li> <a href="/diet/info_vegan"><i class="icon-5 service-sidenav-icon"></i><span class="sidenav-text">비건식</span> </a></li>
+                                                <li class="active"><a href="/diet/info_general/1"><i class="icon-2 service-sidenav-icon "></i><span class="sidenav-text">일반식</span></a></li>
+                                                <li> <a href="/diet/info_kito/2"><i class="icon-1 service-sidenav-icon"></i><span class="sidenav-text">키토제닉</span> </a></li>
+                                                <li> <a href="/diet/info_fish/3"><i class="icon-4 service-sidenav-icon"></i><span class="sidenav-text">지중해식</span> </a></li>
+                                                <li> <a href="/diet/info_vegan/4"><i class="icon-5 service-sidenav-icon"></i><span class="sidenav-text">비건식</span> </a></li>
                                                 <li> <a href="/diet/info_time"><i class="icon-6 service-sidenav-icon"></i><span class="sidenav-text">간헐적단식</span> </a></li>
                                             </ul>
                                         </div>
@@ -159,5 +160,10 @@
 	<%@include file="../inc/footer_link.jsp" %>
 
 </body>
+
+<script type="text/javascript">
+	
+
+</script>
 
 </html>

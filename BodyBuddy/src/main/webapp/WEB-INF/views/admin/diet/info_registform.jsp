@@ -90,7 +90,8 @@
 							<div class="col">
 								<input type="hidden" name="_method" />
 								<input type="hidden" name="diet_category_idx" /> 
-							  	<input type="text" class="form-control col-sm-10" placeholder="카테고리 입력" name="diet_category_name">
+							  	<input type="text" class="form-control col-sm-6" placeholder="카테고리 입력" name="diet_category_name">
+							  	<input type="text" class="form-control col-sm-6" placeholder="서브이름 입력" name="diet_category_subname">
 								<button type="button" class="btn btn-success" id="bt_category_regist">등록</button>
 							</div>
 						</form>
@@ -98,8 +99,9 @@
 							<table class="table table-hover">
 								<thead>
 									<tr>
-										<th>번호</th>
+										<th>No</th>
 										<th>식단분류</th>
+										<th>url</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -215,6 +217,7 @@
 				<tr>
 					<td>{{category.diet_category_idx}}</td>
 					<td @click="getDetail(category)"><a href="#">{{category.diet_category_name}}</a></td>
+					<td>{{category.diet_category_subname}}</td>
 				</tr>
 			`,
 			props:["obj"],
@@ -227,7 +230,9 @@
 				getDetail:function(category){
 					$("#form1 input[name='diet_category_idx']").val(category.diet_category_idx);
 					$("#form1 input[name='diet_category_name']").val(category.diet_category_name);
+					$("#form1 input[name='diet_category_subname']").val(category.diet_category_subname);
 					selectRow=this; //수정된 내용 컴포넌트에 반영
+					console.log(this);
 				}
 			}
 	};
@@ -253,13 +258,15 @@
 			url:"/admin/rest/diet/category",
 			type:"post",
 			data:{
-				diet_category_name:$("input[name='diet_category_name']").val()
+				diet_category_name:$("input[name='diet_category_name']").val(),
+				diet_category_subname:$("input[name='diet_category_subname']").val()
 			},
 			success:function(result, status,xhr){
 				categoryList();
 				
 				// 내용 비워주기
 				$("input[name='diet_category_name']").val("");
+				$("input[name='diet_category_subname']").val("");
 			},
 			error:function(xhr, status, err){
 				console.log("오류ㅜㅜ");
@@ -287,6 +294,7 @@
 		let json={};
 		json['diet_category_idx']=$("#form1 input[name='diet_category_idx']").val();
 		json['diet_category_name']=$("#form1 input[name='diet_category_name']").val();
+		json['diet_category_subname']=$("#form1 input[name='diet_category_subname']").val();
 		
 		$.ajax({
 			url:"/admin/rest/diet/category",
@@ -299,6 +307,7 @@
 				
 				// 내용 비워주기
 				$("input[name='diet_category_name']").val("");
+				$("input[name='diet_category_subname']").val("");
 			}
 		});
 	}
@@ -317,6 +326,7 @@
 				
 				// 내용 비워주기
 				$("input[name='diet_category_name']").val("");
+				$("input[name='diet_category_subname']").val("");
 			}
 		});
 	}
@@ -354,7 +364,6 @@
 				location.href="/admin/diet/info_list"
 			}
 		});
-		
 	}
 	
 	/*

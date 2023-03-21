@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DietTip">
+	<resultMap type="DietTip" id="resultMap">
+		<id column="diet_tip_idx" property="diet_tip_idx"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="recommend" property="recommend"/>
+		<result column="regdate" property="regdate"/>
+		<result column="hit" property="hit"/>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="resultMap">
+		select * from diet_tip order by diet_tip_idx desc
+	</select>
+	
+	<select id="select" resultMap="resultMap" parameterType="int">
+		select * from diet_tip where diet_tip_idx=#{diet_tip_idx}
+	</select>
+	
+	<insert id="insert" parameterType="DietTip">
+		insert into diet_tip(title, content)
+		values(#{title}, #{content})
+	</insert>
+	
+	<update id="update" parameterType="DietTip">
+		update diet_tip set title=#{title}, content=#{content} where diet_tip_idx=#{diet_tip_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from diet_tip where diet_tip_idx=#{diet_tip_idx}
+	</delete>
+	
+	<!-- 조회수 증가 -->
+	<update id="addHit" parameterType="int">
+		update diet_tip set hit=hit+1 where diet_tip_idx=#{diet_tip_idx}
+	</update>
+	
+	<!-- 찜하기 증가 -->
+	<update id="addRecommend" parameterType="int">
+		update diet_tip set recommend=recommend+1 where diet_tip_idx=#{diet_tip_idx}
+	</update>
+	
+	<!-- 검색하기 -->
+	<select id="selectBySearch" resultType="DietTip" parameterType="java.util.Map">
+		select * from diet_tip where title like '%${keyword}%'|| content like '%${keyword}%'
+	</select>
+	
+	<!-- 페이징 처리를 위한 전체 레코드 수 -->
+	<select id="totalRecord" resultType="int">
+		select count(*) as totalCount from diet_tip
+	</select>
+	
+	<!-- 페이징 처리 하기(10개씩 #{page}부터) -->
+	<select id="selectAllPage" resultMap="resultMap" parameterType="int">
+		select * from diet_tip order by diet_tip_idx desc limit 1- offset #{page}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>
