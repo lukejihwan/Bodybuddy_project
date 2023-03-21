@@ -37,15 +37,18 @@
 		            </div>
 		            <div class="form-group">
 		                <label for="pass">비밀번호</label>
-		                <input type="password" class="form-control" name="password.pass" required>
+		                <input type="password" class="form-control" name="password.pass" required autocomplete="name">
 		            </div>
 		            <div class="form-group">
 		                <label for="passc">비밀번호 확인</label>
-		                <input type="password" class="form-control" id="passc" required>
+		                <input type="password" class="form-control" id="passc" required autocomplete="name">
 		            </div>
 		            <div class="form-group">
 		                <label for="email">이메일</label>
 		                <input type="email" class="form-control" name="email" required>
+		                <button type="button" id="bt_sendEmail">이메일 인증</button>
+		                <input type="text" placeholder="인증번호 입력" name="code">
+		                <button type="button" id="bt_verify">인증확인</button>
 		            </div>
 		            <div class="form-group">
 		                <label for="phone">전화번호</label>
@@ -57,7 +60,6 @@
 		            </div>
 		        </div>
 		        <!-- /.card-body -->
-				<input type="hidden" name="origin" value="home">
 		        <div class="card-footer">
 		            <button type="button" class="btn btn-primary" id="bt_regist">회원가입</button>
 		        </div>
@@ -81,6 +83,42 @@
 </body>
 <script type="text/javascript">
 
+function sendEmail(){
+	console.log("인증메일 발송절차 실행");
+	$.ajax({
+		type: "get",
+		url: "/auth/member/email?email="+$("input[name='email']").val(),
+		success: function(result) {
+			alert(result.msg);
+		},
+		error: function(e) {
+			console.log(e);
+			alert(e.responseJSON.msg);
+		}
+	})	
+}
+
+function verify() {
+	console.log("인증 확인 절차 실행");
+	let formData = $("#registform").serialize();
+	$.ajax({
+		type: "post",
+		url: "/auth/member/email",
+		data: formData,
+		success: function(result) {
+			alert(result.msg);
+			$("#bt_sendEmail").hide();
+			$("#bt_verify").hide();
+			$("input[name='code']").hide();
+		},
+		error: function(e) {
+			console.log(e);
+			alert(e.responseJSON.msg);
+		}
+	})	
+}
+
+
 function regist() {
 	let formData = $("#registform").serialize();
 	$.ajax({
@@ -89,9 +127,10 @@ function regist() {
 		data: formData,
 		success: function(result) {
 			alert(result.msg);
-			location.href="/login";
+			location.href="/auth/login";
 		},
 		error: function(e) {
+			console.log(e);
 			alert(e.responseJSON.msg);
 		}
 	})
@@ -129,6 +168,12 @@ $(function(){
 	$("#bt_regist").click(function(){
 		//if(validate()) regist();
 		regist();
+	})
+	$("#bt_sendEmail").click(function(){
+		sendEmail();
+	})
+	$("#bt_verify").click(function(){
+		verify();
 	})
 })
 </script>

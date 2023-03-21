@@ -24,6 +24,7 @@ public class ExrRecordServiceImpl implements ExrRecordService{
 	@Autowired
 	private ExrDetailRecordDAO exrDetailRecordDAO;
 	
+	
 	@Override
 	public List seletForMonth(Map<String, String> oneMonthPeriod) throws ExrRecordException{
 		List<ExrRecord> exrRecordListMonth=exrRecordDAO.seletForMonth(oneMonthPeriod);
@@ -52,7 +53,6 @@ public class ExrRecordServiceImpl implements ExrRecordService{
 				exrDetailRecordDAO.insert(exrDetailRecord);
 			}
 		}
-		
 	}
 
 	@Override
@@ -60,6 +60,10 @@ public class ExrRecordServiceImpl implements ExrRecordService{
 		
 	}
 
-	
+	@Override
+	public List<ExrRecord> selectForDay(String regdate) throws ExrRecordException{
+		List<ExrRecord> exrList=exrRecordDAO.selectForDay(regdate);
+		return exrList;
+	}
 
 }

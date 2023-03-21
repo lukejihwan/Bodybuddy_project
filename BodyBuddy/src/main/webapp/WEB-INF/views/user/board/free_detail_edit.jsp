@@ -18,6 +18,8 @@
 	<!-- top-bar start-->
 	<%@include file="../inc/topbar.jsp"%>
 	<!-- /top-bar end-->
+	<!-- 로그인체크 -->
+	<%@include file="../inc/loginCheck.jsp"%>
 
 	<!-- hero section start -->
 	<div class="hero-section">
@@ -57,7 +59,7 @@
 							<input type="text" class="form-control for-send" name="title" placeholder="제목..." value="<%= board.getTitle() %>">
 						</div>
 						<div class="form-group">
-							<input type="text" class="form-control for-send" name="writer" placeholder="작성자..." value="<%= board.getWriter() %>">
+							<input type="text" class="form-control for-send" name="writer" placeholder="작성자..." value="<%= board.getWriter() %>" readonly>
 						</div>
 						<div class="form-group">
 							<textarea id="summernote" name="content" class="for-send"><%= board.getContent() %></textarea>
@@ -90,6 +92,8 @@
 </body>
 <script type="text/javascript">
 	$(()=>{
+		userCheck();
+		
 		$('#summernote').summernote({
 			minHeight:200,
 			maximumImageFileSize: 64 * 1024, //64kb 제한
@@ -104,38 +108,88 @@
 			edit();
 		});
 		$("#bt_cancle").click(()=>{
-			if(!confirm("취소하시겠습니까?")) return;
-			history.back();
+			cancel();			
 		});
 	});
 	
 	function edit() {
-		if(!confirm("수정하시겠습니까?")) return; 
+		Swal.fire({
+			  title: '게시글을 수정하시겠습니까?',
+			  icon: 'question',
+			  showCancelButton: true,
+			  confirmButtonColor: '#c5f016',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: '네, 수정할래요',
+			  cancelButtonText: '아니요, 수정하지 않겠습니다'
+			}).then((result)=>{
+				if (result.isConfirmed) {
+					getThumbnailImg();
+					let json = {};
+					$.each($(".for-send"), (i, item)=>{
+					    json[item.name] = item.value;
+					});
+					
+					//writer 언젠가 세션에 사용자 id로 넣어야 함
+					$.ajax({
+						url:"/rest/board/freeBoard",
+						type:"PUT",
+						contentType:"application/json;charset=utf-8",
+						processData:false,
+						data:JSON.stringify(json),
+						success:(result, status, xhr)=>{
+							console.log(result.msg);
+							Swal.fire(
+								"수정 성공",
+								"",
+								"success"
+							).then(()=>{
+								location.href="<%= detailViewURI + idx %>";
+							});
+						},
+						error:(xhr, status, err)=>{
+							console.log(xhr);
+							Swal.fire(
+								"수정 실패",
+								"",
+								'error'
+							);
+						}
+					});
+			  	}
+			});
 		
-		getThumbnailImg();
-		let json = {};
-		$.each($(".for-send"), (i, item)=>{
-		    json[item.name] = item.value;
-		});
-		
-		
-		
-		//writer 언젠가 세션에 사용자 id로 넣어야 함
-		$.ajax({
-			url:"/rest/board/free_board",
-			type:"PUT",
-			contentType:"application/json;charset=utf-8",
-			processData:false,
-			data:JSON.stringify(json),
-			success:(result, status, xhr)=>{
-				console.log(result.msg);
-				location.href="<%= detailViewURI + idx %>";
-			},
-			error:(xhr, status, err)=>{
-				console.log(xhr);
-				
+	}
+	
+	function cancel() {
+		Swal.fire({
+			  title: '게시글을 수정 취소하시겠습니까?',
+			  text:"변경사항은 저장되지 않습니다",
+			  icon: 'question',
+			  showCancelButton: true,
+			  confirmButtonColor: '#c5f016',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: '네, 돌아갈래요',
+			  cancelButtonText: '아니요, 조금 더 수정할래요'
+			}).then((result)=>{
+				if (result.isConfirmed){
+					history.back();
+				}
+			});
+	}
+	
+	function userCheck() {
+		<sec:authorize access="isAuthenticated()">
+			if('<sec:authentication property="principal.member.member_idx"/>'!=<%= board.getMember().getMember_idx() %>){
+				Swal.fire({
+					title:"잘못된 접근",
+					icon:"error",
+					confirmButtonText:"확인",
+					confirmButtonColor: '#c5f016'
+				}).then(()=>{
+					location.href="/";
+				});
 			}
-		});
+		</sec:authorize>
 	}
 	
 	

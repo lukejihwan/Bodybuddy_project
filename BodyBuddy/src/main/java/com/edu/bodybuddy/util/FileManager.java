@@ -28,8 +28,10 @@ public class FileManager {
 		List<String> filenameList = new ArrayList();
 		try {
 			for(MultipartFile photo : photoList) {
+				
 				String newFilename = createFilename(photo.getOriginalFilename());
 				photo.transferTo(new File(dir+newFilename));
+				
 				filenameList.add(newFilename);
 				Thread.sleep(10);
 			}

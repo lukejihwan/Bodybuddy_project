@@ -5,12 +5,10 @@
 	<resultMap type="ExrNotice" id="exrNoticeMap">
 		<id column="exr_notice_idx" property="exr_notice_idx"/>
 		<result column="title" property="title"/>
-		<result column="content1" property="content1"/>
-		<result column="content2" property="content2"/>
+		<result column="content" property="content"/>
 		<result column="regdate" property="regdate"/>
 		
 		<association column="exr_category_idx" property="exrCategory" javaType="ExrCategory" select="ExrCategory.select"/>
-		<collection column="exr_notice_idx" property="exrNoticeImgList" javaType="java.util.List" ofType="ExrNoticeImg" select="ExrNoticeImg.selectByExrNotice"/>
 	</resultMap>
 	
 
@@ -24,12 +22,9 @@
 	</select>
 	
 	<insert id="insert" parameterType="ExrNotice">
-		insert into exr_notice(exr_category_idx, title, content1, content2)
-		values(#{exrCategory.exr_category_idx}, #{title}, #{content1}, #{content2})
-		
-		<selectKey keyColumn="exr_notice_idx" keyProperty="exr_notice_idx" order="AFTER" resultType="int">
-			select last_insert_id() as exr_notice_idx
-		</selectKey>
+		insert into exr_notice(exr_category_idx, title, content)
+		values(#{exrCategory.exr_category_idx}, #{title}, #{content})
+
 	</insert>
 	
 	<update id="update" parameterType="ExrNotice">

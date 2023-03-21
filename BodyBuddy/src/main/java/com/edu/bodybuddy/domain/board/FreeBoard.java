@@ -1,6 +1,8 @@
 package com.edu.bodybuddy.domain.board;
 
 
+import java.util.List;
+
 import com.edu.bodybuddy.domain.member.Member;
 
 import lombok.Data;
@@ -16,4 +18,5 @@ public class FreeBoard {
 	private int hit;
 	private int recommend;
 	private String thumbnail;
+	private List<FreeBoardComment> commentList;
 }

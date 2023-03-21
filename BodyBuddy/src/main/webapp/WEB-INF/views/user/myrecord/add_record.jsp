@@ -4,6 +4,8 @@
 <head>
 <%@include file="../inc/header_link.jsp" %>
 </head>
+<!-- fontAwesome CDN icon 사용시 필요 -->
+<script src="https://kit.fontawesome.com/cfa2095821.js" crossorigin="anonymous"></script>
 <style>
 .dateHead div {
 	background: #dc3545;
@@ -385,6 +387,7 @@ function getExrRecordForMonth(){
 		data:dateData,
 		contentType:"application/json",
 		success:function(result, status, xhr){
+			console.log(typeof result);
 			appendImageDays(result);
 			console.log("받아온 날짜는",result);
 			alert("성공적으로 불러옴");

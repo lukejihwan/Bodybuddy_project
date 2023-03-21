@@ -4,6 +4,10 @@
 
 <head>
 <%@include file="../inc/header_link.jsp" %>
+<style>
+	.sns{width: 200px; height: 80px}
+	img{width: 100%; height: 100%}
+</style>
 </head>
 
 <body class="animsition">
@@ -22,7 +26,7 @@
     </div>
 </div>
     <!-- content start -->
-<div class="container">
+<div class="container" style="padding: 100px">
 	<form action="/auth/login_check" method="post">
 	    <div class="form-group">
 	        <label for="email">이메일</label>
@@ -32,12 +36,15 @@
 	        <label for="pass">비밀번호</label>
 	        <input type="password" class="form-control" name="pass" placeholder="비밀번호 입력해주세요">
 	    </div>
-	    <button type="submit" class="btn btn-success">로그인</button>
-	    <button type="button" class="btn btn-primary" onClick="location.href='/join'">회원 가입</button>
-	    <p></p>
-	    <button type="button" class="btn btn-warning" onclick="socialLogin('kakao')">카카오로그인</button>
-	    <button type="button" class="btn btn-dark" onclick="socialLogin('google')">구글로그인</button>
-	    <button type="button" class="btn btn-success" onclick="socialLogin('naver')">네이버로그인</button>
+	    <div class="form-group form-group text-center py-3">
+		    <button type="submit" class="btn btn-success mx-1">로그인</button>
+		    <button type="button" class="btn btn-primary mx-1" onClick="location.href='/auth/join'">회원 가입</button>
+	    </div>
+	    <div class="form-group text-center py-3">
+		    <button type="button" class="btn mx-1 sns" onclick="socialLogin('kakao')"><img src="/resources/user/images/kakaologin.png"></button>
+		    <button type="button" class="btn mx-1 sns" onclick="socialLogin('google')"><img src="/resources/user/images/googlelogin.png"></button>
+		    <button type="button" class="btn mx-1 sns" onclick="socialLogin('naver')"><img src="/resources/user/images/naverlogin.png"></button>
+	    </div>
 	</form>
 </div>
 
@@ -58,9 +65,10 @@
 
 <script type="text/javascript">
 function socialLogin(vendor) {
+	console.log(vendor);
 	$.ajax({
 		type: "get",
-		url: "/auth/"+vendor,
+		url: "/auth/social/"+vendor,
 		success: function(result) {
 			location.href=result.msg;
 		}

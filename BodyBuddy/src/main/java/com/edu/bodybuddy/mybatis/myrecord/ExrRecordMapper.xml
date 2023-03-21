@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ExrRecord">
+
+	<!-- 운동하나와 관련된 세부목록을 불러오는 resultMap -->
+	<resultMap type="ExrRecord" id="ExrRecordMap">
+		<id column="exr_record_idx" property="exr_record_idx"/>
+		<result column="exr_name" property="exr_name"/>
+		<result column="sets" property="sets"/>
+		<result column="regdate" property="regdate"/>
+		
+		<!-- 나중에 member_idx와 association해서 가져와야 함 -->
+		
+		<collection
+			column="exr_record_idx"
+			property="exrRecordDetailList"
+			javaType="java.util.List"
+			ofType="ExrDetailRecord"
+			select="ExrDetailRecord.selectByExrRecord"/>
+		
+	</resultMap>
 	
 	<!-- 한달간 운동 기록을 불러오는 쿼리-->
 	<select id="selectForMonth" resultType="ExrRecord" parameterType="Map">
@@ -8,6 +26,12 @@
 		from exr_record 
 		where regdate between #{firstDay} and #{lastDay}
 		order by regdate asc 
+	</select>
+	
+	<select id="selectForDay" parameterType="String" resultMap="ExrRecordMap">
+		select *
+		from exr_record
+		where regdate = #{regdate}
 	</select>
 	
 	<!-- 운동기록 등록 -->

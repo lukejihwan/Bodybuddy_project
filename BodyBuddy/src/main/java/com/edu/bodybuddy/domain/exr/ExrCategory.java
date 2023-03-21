@@ -1,4 +1,6 @@
 package com.edu.bodybuddy.domain.exr;
+import java.util.List;
+
 import lombok.Data;
 
 @Data

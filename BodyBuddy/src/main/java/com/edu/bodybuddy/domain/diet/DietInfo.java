@@ -4,15 +4,17 @@ import lombok.Data;
 
 @Data
 public class DietInfo {
-	private int member_idx;
-	private int diet_category_idx;
-	
+	private DietCategory dietCategory;
+
 	private int diet_info_idx;
 	private String title;
 	private String subtitle;
 	private String content;
 	private String regdate;
-	private int hit;
-	private String kcal;
-	
+	private String preview;
+	private int kcal;	
+	private int carbohydrate;
+	private int protein;
+	private int province;
+
 }

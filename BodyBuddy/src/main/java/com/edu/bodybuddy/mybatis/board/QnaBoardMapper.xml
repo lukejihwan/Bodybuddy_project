@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QnaBoard">
+
+	<resultMap type="QnaBoard" id="resultMap">
+		<id column="qna_board_idx" property="qna_board_idx" />
+		<result column="title" property="title"/>
+		<result column="writer" property="writer"/>
+		<result column="content" property="content"/>
+		<result column="regdate" property="regdate"/>
+		<result column="hit" property="hit"/>
+		<result column="recommend" property="recommend"/>
+		<result column="thumbnail" property="thumbnail"/>
+		<result column="member_idx" property="member.member_idx"/>
+		<collection 
+		property="commentList"
+		column="qna_board_idx"
+		javaType="List"
+		ofType="QnaBoardComment"
+		select="QnaBoardComment.selectAllByBoard"
+		></collection>
+	</resultMap>
+
+	<select id="selectAll" resultMap="resultMap">
+		select * from qna_board order by qna_board_idx desc
+	</select>
+	
+	<select id="select" resultMap="resultMap" parameterType="int">
+		select * from qna_board
+		where qna_board_idx=#{qna_board_idx}
+	</select>
+	
+	<select id="selectAllByPage" resultMap="resultMap" parameterType="int">
+		select * from qna_board
+		order by qna_board_idx desc limit 10 offset #{page}
+	</select>
+	
+	<select id="totalCount" resultType="int">
+		select count(*) as totalCount from qna_board
+	</select>
+	
+	<insert id="insert" parameterType="QnaBoard">
+		insert into qna_board(member_idx, title, writer, content, thumbnail)
+		values (#{member.member_idx}, #{title}, #{writer}, #{content}, #{thumbnail})
+	</insert>
+	<update id="update" parameterType="QnaBoard">
+		update qna_board set title=#{title}, writer=#{writer}, content=#{content}, thumbnail=#{thumbnail}
+		where qna_board_idx=#{qna_board_idx}
+	</update>
+	<delete id="delete" parameterType="int">
+		delete from qna_board
+		where qna_board_idx=#{qna_board_idx}
+	</delete>
+	
+	<!-- 조회수 올리기 -->
+	<update id="addHit" parameterType="int">
+		update qna_board
+		set hit=hit+1
+		where qna_board_idx=#{qna_board_idx}
+	</update>
+	<!-- 추천 올리기 -->
+	<update id="addRecommend">
+		update qna_board
+		set recommend=recommend+1
+		where qna_board_idx=#{qna_board_idx}
+	</update>
+</mapper>

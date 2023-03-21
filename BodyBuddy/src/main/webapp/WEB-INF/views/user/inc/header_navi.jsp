@@ -13,7 +13,7 @@
                     <ul>
                         <li class="active"><a href="/" title="Home" class="animsition-link">Home</a></li>
                         
-                        <li><a href="/myrecord" title="record" class="animsition-link">나의 기록</a>
+                        <li><a href="/myrecord/main" title="record" class="animsition-link">나의 기록</a>
                             <ul>
                                 <li><a href="/myrecord/addrecord" title="정보">기록추가</a></li>
                                 <li><a href="/myrecord/physical_record" title="정보">신체기록</a></li>
@@ -39,11 +39,11 @@
                                 <li><a href="/diet/kcal" title="Blog Single" class="animsition-link">칼로리계산기</a></li>
                             </ul>
                         </li>
-                        <li><a href="/board/free_list/1" class="animsition-link">게시판</a>
+                        <li><a href="/board/free_list" class="animsition-link">게시판</a>
                             <ul>
-                                <li><a href="/board/free_list/1" class="animsition-link">자유게시판</a></li>
-                                <li><a href="/board/counseling_list/1" class="animsition-link">질문/답변</a></li>
-                                <li><a href="/board/qna_list/1" class="animsition-link">고민상담(익명)</a></li>
+                                <li><a href="/board/free_list" class="animsition-link">자유게시판</a></li>
+                                <li><a href="/board/qna_list" class="animsition-link">질문/답변</a></li>
+                                <li><a href="/board/counselling_list" class="animsition-link">고민상담(익명)</a></li>
                             </ul>
                         </li>
                         <li><a href="/mypage" title="Mypage" class="animsition-link">마이페이지</a>

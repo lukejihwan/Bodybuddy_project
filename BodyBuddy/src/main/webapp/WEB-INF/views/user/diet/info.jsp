@@ -1,4 +1,13 @@
+<%@page import="com.edu.bodybuddy.domain.diet.DietInfo"%>
+<%@page import="java.util.List"%>
+<%@page import="com.edu.bodybuddy.domain.diet.DietCategory"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+
+<%
+	List<DietInfo> dietInfoList=(List)request.getAttribute("dietInfoList");
+	DietCategory dietCategory=(DietCategory)request.getAttribute("dietCategory");
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +52,7 @@
                             <i class="icon-default icon-2"></i>
                         </div>
                         <div class="service-content pinside40">
-                            <h2 class="service-title mb20"><a href="/diet/info_general" class="title">일반식</a> </h2>
+                            <h2 class="service-title mb20"><a href="/diet/info_general">일반식</a> </h2>
                             <p class="mb60"></p>
                         </div>
                     </div>
@@ -106,5 +115,11 @@
 	<%@include file="../inc/footer_link.jsp" %>
 
 </body>
+<script type="text/javascript">
+	//카테고리 선택시 페이지 이동 
+	function getPage(diet_category_idx){
+		location.href="/"
+	}
+</script>
 
 </html>
