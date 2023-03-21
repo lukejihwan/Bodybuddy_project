@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.model.diet;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -28,6 +29,11 @@ public class MybatisDietInfoDAO implements DietInfoDAO{
 	@Override
 	public List selectByIdx(int diet_category_idx) {
 		return sqlSessionTemplate.selectList("DietInfo.selectByIdx", diet_category_idx);
+	}
+	
+	@Override
+	public List selectBySearch(HashMap<String, String> map) {
+		return sqlSessionTemplate.selectList("DietInfo.selectBySearch", map);
 	}
 
 	@Override

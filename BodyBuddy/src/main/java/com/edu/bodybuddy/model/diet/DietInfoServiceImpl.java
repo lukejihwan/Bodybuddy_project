@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.model.diet;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,12 @@ public class DietInfoServiceImpl implements DietInfoService{
 	public List selectByIdx(int diet_category_idx) {
 		return dietInfoDAO.selectByIdx(diet_category_idx);
 	}
+	
+	@Override
+	public List selectBySearch(HashMap<String, String> map) {
+		return dietInfoDAO.selectBySearch(map);
+	}
+
 
 	@Override
 	public void insert(DietInfo dietInfo) throws DietInfoException{

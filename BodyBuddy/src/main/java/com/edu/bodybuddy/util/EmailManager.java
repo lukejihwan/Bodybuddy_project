@@ -53,7 +53,7 @@ public class EmailManager {
 	}
 	
 	public String sendAuthCode(Member member) throws EmailException{
-		String code = generateCode();
+		String code = CodeGenerator.generateCode();
 		log.info("생성된 이메일 인증 코드 : "+code);
 		MimeMessage msg = javaMailSender.createMimeMessage();
 		
@@ -66,7 +66,7 @@ public class EmailManager {
 			});
 			
 			//메일 제목
-			msg.setSubject("이메일 인증 코드입니다");
+			msg.setSubject("[BodyBuddy] 이메일 인증 코드입니다");
 			msg.setText("이메일 인증 코드 : "+code, "UTF-8");
 			
 			//메일 전송
@@ -78,16 +78,6 @@ public class EmailManager {
 		} catch (UnsupportedEncodingException e) {
 			throw new EmailException("이메일 인코딩 설정이 잘못되었습니다", e);
 		}
-		return code;
-	}
-	
-	public String generateCode() {
-		double a = 0;
-		while(a<0.1) {
-			a = Math.random();
-		}
-		String code = (int)Math.ceil(a*1000000)+"";
-		
 		return code;
 	}
 }
