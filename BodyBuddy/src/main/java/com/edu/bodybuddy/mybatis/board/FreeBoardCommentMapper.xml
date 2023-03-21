@@ -43,7 +43,7 @@
 	</insert>
 	<update id="update" parameterType="FreeBoardComment">
 		update free_board_comment set
-		comment=#{comment}
+		comment=#{comment}, post=#{post}
 		where free_board_comment_idx=#{free_board_comment_idx}
 	</update>
 	<delete id="delete" parameterType="FreeBoardComment">
@@ -89,4 +89,9 @@
 		select count(step) from free_board_comment
 		where step>#{step} and free_board_idx=#{freeBoard.free_board_idx}
 	</select>
+	
+	<delete id="deleteAllByBoard" parameterType="FreeBoardComment">
+		delete from free_board_comment
+		where free_board_idx=#{freeBoard.free_board_idx}
+	</delete>
 </mapper>
