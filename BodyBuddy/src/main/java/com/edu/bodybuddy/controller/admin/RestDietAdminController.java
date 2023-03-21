@@ -1,6 +1,9 @@
 package com.edu.bodybuddy.controller.admin;
 
+import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edu.bodybuddy.domain.diet.DietCategory;
 import com.edu.bodybuddy.domain.diet.DietInfo;
+import com.edu.bodybuddy.domain.exr.ExrRoutine;
 import com.edu.bodybuddy.exception.DietCategoryException;
 import com.edu.bodybuddy.exception.DietInfoException;
 import com.edu.bodybuddy.model.diet.DietCategoryService;
@@ -113,11 +117,11 @@ public class RestDietAdminController {
 	//글 수정
 	@PutMapping("/diet/edit")
 	public ResponseEntity<Msg> edit(@RequestBody DietInfo dietInfo) throws DietInfoException{
-		logger.info("수정작동 "+dietInfo);
+		//logger.info("수정작동 "+dietInfo);
 		dietInfoService.update(dietInfo);
 			
 		Msg msg=new Msg();
-		msg.setMsg("카테고리 수정 완료");
+		msg.setMsg("글 수정 완료");
 		
 		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg,HttpStatus.OK);	
 		return entity;
@@ -130,10 +134,24 @@ public class RestDietAdminController {
 		dietInfoService.delete(diet_info_idx);
 			
 		Msg msg=new Msg();
-		msg.setMsg("카테고리 삭제 완료");
+		msg.setMsg("글 삭제 완료");
 			
 		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg,HttpStatus.OK);	
 		return entity;	
+	}
+	
+	//글 검색 
+	@GetMapping("/diet/search")
+	public List<DietInfo> getSearch(String keyword) {
+		logger.info("응답 받음");
+
+		HashMap<String, String> map=new HashMap<String, String>();
+		map.put("keyword", keyword);
+		logger.info("맵의 문자열은? "+keyword);
+		
+		List<DietInfo> dietInfoList=dietInfoService.selectBySearch(map);
+		
+		return dietInfoList;
 	}
 	
 
