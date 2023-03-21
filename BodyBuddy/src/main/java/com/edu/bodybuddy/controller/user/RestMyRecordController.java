@@ -21,6 +21,7 @@ import com.edu.bodybuddy.domain.myrecord.ExrRecord;
 import com.edu.bodybuddy.exception.ExrDetailRecordException;
 import com.edu.bodybuddy.exception.ExrRecordException;
 import com.edu.bodybuddy.model.myrecord.ExrRecordService;
+import com.edu.bodybuddy.model.myrecord.MyRecordService;
 import com.edu.bodybuddy.util.Message;
 import com.edu.bodybuddy.util.Msg;
 
@@ -29,6 +30,9 @@ import com.edu.bodybuddy.util.Msg;
 public class RestMyRecordController {
 	
 	private Logger logger=LoggerFactory.getLogger(this.getClass());
+	
+	@Autowired
+	private MyRecordService myRecordService;
 	
 	@Autowired
 	private ExrRecordService exrRecordService;
@@ -40,6 +44,11 @@ public class RestMyRecordController {
 		logger.info("응답 받음");
 		
 		return "지금 확인 중";
+	}
+	
+	@GetMapping("/weatherAPI")
+	public void getWeather() {
+		myRecordService.getWeather();
 	}
 	
 	//한달간의 기록을 보여주는 메서드

@@ -6,7 +6,6 @@ import java.util.Map;
 import com.edu.bodybuddy.domain.myrecord.ExrRecord;
 
 public interface ExrRecordService {
-	
 	//해당월의 첫날과 마지막날을 매개변수로 넣어 해당월의 운동기록을 불러오는 메서드
 	public List<ExrRecord> seletForMonth(Map<String, String> oneMonthPeriod);
 	
