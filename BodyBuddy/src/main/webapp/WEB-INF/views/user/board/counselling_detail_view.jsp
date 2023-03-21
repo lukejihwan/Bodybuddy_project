@@ -1,14 +1,14 @@
-<%@page import="com.edu.bodybuddy.domain.board.FreeBoard"%>
+<%@page import="com.edu.bodybuddy.domain.board.CounsellingBoard"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
-	FreeBoard board = (FreeBoard)request.getAttribute("board");
-	String listURI = "/board/free_list/"; // 게시글 목록 uri ex. /board/free_list/
-	String deleteURI = "/board/free_delete?free_board_idx="; //게시글 삭제요청 uri ex. /board/free_delete?free_board_idx=
-	String DetailEditURI = "/board/free_detail_edit/"; //게시글 수정페이지 uri
-	int board_idx = board.getFree_board_idx(); // board idx 값
-	String boardIdxName = "free_board_idx"; //board idx 컬럼명
-	String boardCommentIdxName = "free_board_comment_idx"; //board_comment_idx 컬럼명
-	String boardName = "freeBoard"; // 게시판 명
+	CounsellingBoard board = (CounsellingBoard)request.getAttribute("board");
+	String listURI = "/board/counselling_list/"; // 게시글 목록 uri ex. /board/counselling_list/
+	String deleteURI = "/board/counselling_delete?counselling_board_idx="; //게시글 삭제요청 uri ex. /board/counselling_delete?counselling_board_idx=
+	String DetailEditURI = "/board/counselling_detail_edit/"; //게시글 수정페이지 uri
+	int board_idx = board.getCounselling_board_idx(); // board idx 값
+	String boardIdxName = "counselling_board_idx"; //board idx 컬럼명
+	String boardCommentIdxName = "counselling_board_comment_idx"; //board_comment_idx 컬럼명
+	String boardName = "counsellingBoard"; // 게시판 명
 %>
 <!DOCTYPE html>
 <!-- content 부분만 비워둔 기본 템플릿 -->
@@ -56,9 +56,9 @@
 			<div class="row">
 				<div class="col-lg-6 col-md-6 col-sm-12  col-xs-12">
 					<div class="hero-caption pinside50">
-						<h1 class="hero-title">자유게시판</h1>
+						<h1 class="hero-title">고민상담게시판</h1>
 						<p class="small-caps mb30 text-white"></p>
-						<p class="hero-text">자유롭게 소통하는 게시판입니다</p>
+						<p class="hero-text">익명으로 고민을 상담할 수 있는 게시판입니다</p>
 						<!-- <a href="classes-list.html" class="btn btn-default">링크 필요하면
 							사용할 버튼</a> -->
 					</div>
@@ -73,7 +73,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col">
-                    <h1><a href="<%= listURI+1 %>">자유게시판</a></h1>
+                    <h1><a href="<%= listURI+1 %>">고민상담게시판</a></h1>
                     <hr>
                     <h3><%= board.getTitle() %></h3><br/>
                     <span><%= board.getWriter() %> | <%= board.getRegdate().substring(0, 10) + " " + board.getRegdate().substring(10, board.getRegdate().length()-2) %></span>

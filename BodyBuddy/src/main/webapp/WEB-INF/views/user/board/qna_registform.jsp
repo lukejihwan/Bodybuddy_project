@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
-	String listURI = "/board/free_list/"; //ex. /board/free_list/
+	String listURI = "/board/qna_list/"; //ex. /board/qna_list/
 %>
 <!DOCTYPE html>
 <!-- content 부분만 비워둔 기본 템플릿 -->
@@ -27,9 +27,9 @@
 			<div class="row">
 				<div class="col-lg-6 col-md-6 col-sm-12  col-xs-12">
 					<div class="hero-caption pinside50">
-						<h1 class="hero-title">자유게시판</h1>
+						<h1 class="hero-title">QnA게시판</h1>
 						<p class="small-caps mb30 text-white"></p>
-						<p class="hero-text">자유롭게 소통하는 게시판입니다</p>
+						<p class="hero-text">궁금한 사항들을 질문하는 게시판입니다</p>
 						<!-- <a href="classes-list.html" class="btn btn-default">링크 필요하면
 							사용할 버튼</a> -->
 					</div>
@@ -44,7 +44,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col">
-                    <h1><a href="<%= listURI+1 %>">자유게시판</a></h1>
+                    <h1><a href="<%= listURI+1 %>">QnA게시판</a></h1>
                     <hr>
 				</div>
 			</div>
@@ -125,7 +125,7 @@
 		
 		getThumbnailImg();
 		$("#form1").attr({
-			action:"/board/free_regist",
+			action:"/board/qna_regist",
 			method:"POST"
 		});
 		

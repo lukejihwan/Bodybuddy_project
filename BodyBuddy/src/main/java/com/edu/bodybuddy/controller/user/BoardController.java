@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edu.bodybuddy.domain.board.CounsellingBoard;
 import com.edu.bodybuddy.domain.board.FreeBoard;
+import com.edu.bodybuddy.domain.board.QnaBoard;
+import com.edu.bodybuddy.exception.CounsellingBoardException;
 import com.edu.bodybuddy.exception.FreeBoardException;
+import com.edu.bodybuddy.exception.QnaBoardException;
 import com.edu.bodybuddy.model.board.BoardService;
 import com.edu.bodybuddy.util.PageManager;
 
@@ -29,6 +33,14 @@ public class BoardController {
 	@Qualifier("freeBoardService")
 	private BoardService freeBoardService;
 	
+	@Autowired
+	@Qualifier("qnaBoardService")
+	private BoardService qnaBoardService;
+	
+	@Autowired
+	@Qualifier("counsellingBoardService")
+	private BoardService counsellingBoardService;
+	
 	// @자유게시판 영역
 	
 	@GetMapping("/free_list")
@@ -37,13 +49,13 @@ public class BoardController {
 	}
 	
 	@GetMapping("/free_registform")
-	public ModelAndView getRegistForm(HttpServletRequest request) {
+	public ModelAndView getFreeRegistForm(HttpServletRequest request) {
 		return new ModelAndView("/board/free_registform");
 	}
 	
 	//디테일 보기 페이지
 	@GetMapping("/free_detail_view/{free_board_idx}")
-	public ModelAndView getDetailView(HttpServletRequest request ,@PathVariable int free_board_idx) {
+	public ModelAndView getFreeDetailView(HttpServletRequest request ,@PathVariable int free_board_idx) {
 		
 		//3단계
 		freeBoardService.addHit(free_board_idx);
@@ -59,7 +71,7 @@ public class BoardController {
 	
 	//디테일 수정 페이지
 	@GetMapping("/free_detail_edit/{free_board_idx}")
-	public ModelAndView getDetailEdit(HttpServletRequest request ,@PathVariable int free_board_idx) {
+	public ModelAndView getFreeDetailEdit(HttpServletRequest request ,@PathVariable int free_board_idx) {
 		
 		//3단계
 		Object board = freeBoardService.select(free_board_idx);
@@ -73,7 +85,7 @@ public class BoardController {
 	
 	//목록
 	@GetMapping("/free_list/{pg}")
-	public ModelAndView getList(HttpServletRequest request, @PathVariable int pg) {
+	public ModelAndView getFreeList(HttpServletRequest request, @PathVariable int pg) {
 		
 		//logger.info("현재 페이지는 : " + pg);
 		
@@ -93,7 +105,7 @@ public class BoardController {
 	
 	//등록
 	@PostMapping("/free_regist")
-	public ModelAndView regist(HttpServletRequest request, FreeBoard freeBoard) {
+	public ModelAndView registFree(HttpServletRequest request, FreeBoard freeBoard) {
 		
 		
 		//3단계
@@ -105,7 +117,7 @@ public class BoardController {
 	
 	//삭제
 	@GetMapping("/free_delete")
-	public ModelAndView delete(HttpServletRequest request, int free_board_idx) {
+	public ModelAndView deleteFree(HttpServletRequest request, int free_board_idx) {
 		
 		//3단계
 		freeBoardService.delete(free_board_idx);
@@ -115,9 +127,199 @@ public class BoardController {
 		return mav;
 	}
 	
+	// @QnA 게시판 영역
+	
+	@GetMapping("/qna_list")
+	public ModelAndView getQnaMain(HttpServletRequest request) {
+		return new ModelAndView("redirect:/board/qna_list/1");
+	}
+	
+	@GetMapping("/qna_registform")
+	public ModelAndView getQnaRegistForm(HttpServletRequest request) {
+		return new ModelAndView("/board/qna_registform");
+	}
+	
+	//디테일 보기 페이지
+	@GetMapping("/qna_detail_view/{qna_board_idx}")
+	public ModelAndView getQnaDetailView(HttpServletRequest request ,@PathVariable int qna_board_idx) {
+		
+		//3단계
+		qnaBoardService.addHit(qna_board_idx);
+		Object board = qnaBoardService.select(qna_board_idx);
+		
+		
+		//4단계
+		ModelAndView mav = new ModelAndView("/board/qna_detail_view");
+		mav.addObject("board", board);
+		
+		return mav;
+	}
+	
+	//디테일 수정 페이지
+	@GetMapping("/qna_detail_edit/{qna_board_idx}")
+	public ModelAndView getQnaDetailEdit(HttpServletRequest request ,@PathVariable int qna_board_idx) {
+		
+		//3단계
+		Object board = qnaBoardService.select(qna_board_idx);
+		
+		//4단계
+		ModelAndView mav = new ModelAndView("/board/qna_detail_edit");
+		mav.addObject("board", board);
+		
+		return mav;
+	}
+	
+	//목록
+	@GetMapping("/qna_list/{pg}")
+	public ModelAndView getQnaList(HttpServletRequest request, @PathVariable int pg) {
+		
+		//logger.info("현재 페이지는 : " + pg);
+		
+		//3단계
+		List qnaBoardList = qnaBoardService.selectAllByPage(pg);
+		int totalCount = qnaBoardService.totalCount();
+		PageManager pageManager = new PageManager();
+		pageManager.init(totalCount, pg);
+		//logger.info("manager는 : "+pageManager);
+		
+		//4단계
+		ModelAndView mav = new ModelAndView("/board/qna_list");
+		mav.addObject("qnaBoardList", qnaBoardList);
+		mav.addObject("pageManager", pageManager);
+		return mav;
+	}
+	
+	//등록
+	@PostMapping("/qna_regist")
+	public ModelAndView registQna(HttpServletRequest request, QnaBoard qnaBoard) {
+		
+		
+		//3단계
+		qnaBoardService.insert(qnaBoard);
+		
+		ModelAndView mav = new ModelAndView("redirect:/board/qna_list");
+		return mav;
+	}
+	
+	//삭제
+	@GetMapping("/qna_delete")
+	public ModelAndView deleteQna(HttpServletRequest request, int qna_board_idx) {
+		
+		//3단계
+		qnaBoardService.delete(qna_board_idx);
+		logger.info("delete 성공");
+		
+		ModelAndView mav = new ModelAndView("redirect:/board/qna_list");
+		return mav;
+	}
+	
+	// @고민상담 게시판 영역
+	
+	@GetMapping("/counselling_list")
+	public ModelAndView getCounsellingMain(HttpServletRequest request) {
+		return new ModelAndView("redirect:/board/counselling_list/1");
+	}
+	
+	@GetMapping("/counselling_registform")
+	public ModelAndView getCounsellingRegistForm(HttpServletRequest request) {
+		return new ModelAndView("/board/counselling_registform");
+	}
+	
+	//디테일 보기 페이지
+	@GetMapping("/counselling_detail_view/{counselling_board_idx}")
+	public ModelAndView getCounsellingDetailView(HttpServletRequest request ,@PathVariable int counselling_board_idx) {
+		
+		//3단계
+		counsellingBoardService.addHit(counselling_board_idx);
+		Object board = counsellingBoardService.select(counselling_board_idx);
+		
+		
+		//4단계
+		ModelAndView mav = new ModelAndView("/board/counselling_detail_view");
+		mav.addObject("board", board);
+		
+		return mav;
+	}
+	
+	//디테일 수정 페이지
+	@GetMapping("/counselling_detail_edit/{counselling_board_idx}")
+	public ModelAndView getCounsellingDetailEdit(HttpServletRequest request ,@PathVariable int counselling_board_idx) {
+		
+		//3단계
+		Object board = counsellingBoardService.select(counselling_board_idx);
+		
+		//4단계
+		ModelAndView mav = new ModelAndView("/board/counselling_detail_edit");
+		mav.addObject("board", board);
+		
+		return mav;
+	}
+	
+	//목록
+	@GetMapping("/counselling_list/{pg}")
+	public ModelAndView getCounsellingList(HttpServletRequest request, @PathVariable int pg) {
+		
+		//logger.info("현재 페이지는 : " + pg);
+		
+		//3단계
+		List counsellingBoardList = counsellingBoardService.selectAllByPage(pg);
+		int totalCount = counsellingBoardService.totalCount();
+		PageManager pageManager = new PageManager();
+		pageManager.init(totalCount, pg);
+		//logger.info("manager는 : "+pageManager);
+		
+		//4단계
+		ModelAndView mav = new ModelAndView("/board/counselling_list");
+		mav.addObject("counsellingBoardList", counsellingBoardList);
+		mav.addObject("pageManager", pageManager);
+		return mav;
+	}
+	
+	//등록
+	@PostMapping("/counselling_regist")
+	public ModelAndView registCounselling(HttpServletRequest request, CounsellingBoard counsellingBoard) {
+		
+		
+		//3단계
+		counsellingBoardService.insert(counsellingBoard);
+		
+		ModelAndView mav = new ModelAndView("redirect:/board/counselling_list");
+		return mav;
+	}
+	
+	//삭제
+	@GetMapping("/counselling_delete")
+	public ModelAndView deleteCounselling(HttpServletRequest request, int counselling_board_idx) {
+		
+		//3단계
+		counsellingBoardService.delete(counselling_board_idx);
+		logger.info("delete 성공");
+		
+		ModelAndView mav = new ModelAndView("redirect:/board/counselling_list");
+		return mav;
+	}
+	
+	
+	
 	@ExceptionHandler(FreeBoardException.class)
 	public ModelAndView handle(RuntimeException e) {
 		logger.info("예외발생 : " + e.getMessage());
-		return null;
+		ModelAndView mav = new ModelAndView("/error/error");
+		mav.addObject("e", e);
+		return mav;
+	}
+	@ExceptionHandler(QnaBoardException.class)
+	public ModelAndView handle2(RuntimeException e) {
+		logger.info("예외발생 : " + e.getMessage());
+		ModelAndView mav = new ModelAndView("/error/error");
+		mav.addObject("e", e);
+		return mav;
+	}
+	@ExceptionHandler(CounsellingBoardException.class)
+	public ModelAndView handle3(RuntimeException e) {
+		logger.info("예외발생 : " + e.getMessage());
+		ModelAndView mav = new ModelAndView("/error/error");
+		mav.addObject("e", e);
+		return mav;
 	}
 }

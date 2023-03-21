@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
-	String listURI = "/board/free_list/"; //ex. /board/free_list/
+	String listURI = "/board/counselling_list/"; //ex. /board/counselling_list/
 %>
 <!DOCTYPE html>
 <!-- content 부분만 비워둔 기본 템플릿 -->
@@ -14,6 +14,9 @@
 	<!-- top-bar start-->
 	<%@include file="../inc/topbar.jsp"%>
 	<!-- /top-bar end-->
+	<!-- 로그인체크 -->
+	<%@include file="../inc/loginCheck.jsp"%>
+	
 
 	<!-- hero section start -->
 	<div class="hero-section">
@@ -24,9 +27,9 @@
 			<div class="row">
 				<div class="col-lg-6 col-md-6 col-sm-12  col-xs-12">
 					<div class="hero-caption pinside50">
-						<h1 class="hero-title">자유게시판</h1>
+						<h1 class="hero-title">고민상담게시판</h1>
 						<p class="small-caps mb30 text-white"></p>
-						<p class="hero-text">자유롭게 소통하는 게시판입니다</p>
+						<p class="hero-text">익명으로 고민을 상담할 수 있는 게시판입니다</p>
 						<!-- <a href="classes-list.html" class="btn btn-default">링크 필요하면
 							사용할 버튼</a> -->
 					</div>
@@ -41,7 +44,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col">
-                    <h1><a href="<%= listURI+1 %>">자유게시판</a></h1>
+                    <h1><a href="<%= listURI+1 %>">고민상담게시판</a></h1>
                     <hr>
 				</div>
 			</div>
@@ -49,11 +52,12 @@
 			<div class="row">
 				<div class="col">
 					<form id="form1">
+						<input type="hidden" name="member.member_idx" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
 						<div class="form-group">
-							<input type="text" class="form-control" name="title" placeholder="제목...">
+							<input type="text" class="form-control" name="title" placeholder="제목..." required>
 						</div>
 						<div class="form-group">
-							<input type="text" class="form-control" name="writer" placeholder="작성자...">
+							<input type="text" class="form-control" name="writer" placeholder="작성자..." value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" readonly>
 						</div>
 						<div class="form-group">
 							<textarea id="summernote" name="content"></textarea>
@@ -86,6 +90,7 @@
 </body>
 <script type="text/javascript">
 	$(()=>{
+		
 		$('#summernote').summernote({
 			minHeight:200,
 			maximumImageFileSize: 64 * 1024, //64kb 제한
@@ -101,14 +106,26 @@
 		});
 		
 		$("#bt_list").click(()=>{
-			location.href = "/board/free_list/1";
+			location.href = "<%= listURI + 1 %>";
 		});
+		
+		
 	});
 	
 	function regist() {
+		
+		if($("#form1 input[name='title']").val().length==0){
+			Swal.fire(
+				"제목을 작성해주세요",
+				"",
+				"error"
+			);
+			return;
+		}
+		
 		getThumbnailImg();
 		$("#form1").attr({
-			action:"/board/free_regist",
+			action:"/board/counselling_regist",
 			method:"POST"
 		});
 		
