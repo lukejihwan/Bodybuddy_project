@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.edu.bodybuddy.domain.member.Address;
 import com.edu.bodybuddy.domain.member.Member;
 import com.edu.bodybuddy.domain.member.Role;
+import com.edu.bodybuddy.domain.security.MemberDetail;
 import com.edu.bodybuddy.exception.AddressException;
 import com.edu.bodybuddy.exception.MemberException;
 import com.edu.bodybuddy.exception.PasswordException;
@@ -82,10 +84,10 @@ public class MemberServiceImpl implements MemberService{
 
 		log.info("회원가입 진입지점 6, 주소객체는 :" + member.getAddress());
 		//주소 입력되었을 경우 주소도 기입
-		if(member.getAddress().getMember_address().equals("")) {
-			member.getAddress().setMember_address("서울시 중구 명동");
-		}
-		addressDAO.insert(member);
+//		if(member.getAddress().getMember_address().equals("")) {
+//			member.getAddress().setMember_address("서울시 중구 명동");
+//		}
+//		addressDAO.insert(member);
 		
 		//회원가입이 모두 완료되었을 경우 축하 메시지 발송
 		emailManager.send(member);
