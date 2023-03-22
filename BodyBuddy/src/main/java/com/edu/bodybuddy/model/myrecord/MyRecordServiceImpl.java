@@ -19,9 +19,9 @@ public class MyRecordServiceImpl implements MyRecordService{
 	private WeatherAPIManager weatherAPIManager;
 	
 	@Override
-	public List getWeather() {
+	public List getWeather(int nx, int ny) {
 		try {
-			weatherAPIManager.getWeatherResponse();
+			weatherAPIManager.getWeatherResponse(nx, ny);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

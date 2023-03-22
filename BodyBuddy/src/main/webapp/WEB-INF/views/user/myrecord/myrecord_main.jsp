@@ -55,9 +55,32 @@
 }
 </style>
 <script type="text/javascript">
-function getWeather(){
+//왼쪽영역의 주소를 바꿔주는 함수
+function changeAddress(rawnx,rawny){
+	console.log("dkdk",rawnx,rawny);
+	switch(rawnx,rawny){
+		case (60,127):$("#t_address").text("서울특별시 중구");break;
+		case (60,120):$("#t_address").text("경기도 수원");break;
+		case (73,134):$("#t_address").text("강원도 춘천");break;
+		case (91,77):$("#t_address").text("경상남도 창원");break;
+		case (89,91):$("#t_address").text("경상북도");break;
+		case (52,38):$("#t_address").text("제주특별자치도");break;
+		case (127,127):$("#t_address").text("울릉군");break;
+		case (63,89):$("#t_address").text("전라북도 전주");break;
+		case (51,67):$("#t_address").text("전라남도 목포");break;
+		case (68,100):$("#t_address").text("충청남도 천안");break;
+		case (69,107):$("#t_address").text("충청북도 청주");break;
+	}
+}
+
+function getWeather(rawnx, rawny){
+	changeAddress(rawnx,rawny);
+	
+	
+	console.log(rawnx, rawny);
+	console.log(typeof rawnx);
 	$.ajax({
-		url:"/rest/myrecord/weatherAPI",
+		url:"/rest/myrecord/weatherAPI/"+rawnx+"/"+rawny,
 		type:"GET",
 		success:function(result, status, xhr){
 			console.log("날씨 api 결과는", result);
@@ -70,7 +93,7 @@ function getWeather(){
 
 $(document).ready(function(){
 	//운동기록 메인 페이지로 들어 올 때 API호출
-	getWeather();
+	getWeather(60,127);
 	
 });
 </script>
@@ -117,7 +140,7 @@ $(document).ready(function(){
                     		<div class="row">
 	                    		<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
 	                    			<img id="gps_icon" alt="이미지 불러오는 중" src="/resources/user/images/gps_icon.png">
-	                    			서울특별시 중구
+	                    			<h5 style="display: inline" id="t_address">서울특별시 중구</h5>
 	                    		</div>
 	                    		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
 	                    			<div class="dropdown dropright">
@@ -125,17 +148,17 @@ $(document).ready(function(){
 		                    				지역별 날씨
 		                    			</button>
 		                    			<div class="dropdown-menu">
-		                    				<a class="dropdown-item" href="#">서울</a>
-		                    				<a class="dropdown-item" href="#">경기도</a>
-		                    				<a class="dropdown-item" href="#">강원도</a>
-		                    				<a class="dropdown-item" href="#">경상북도</a>
-		                    				<a class="dropdown-item" href="#">경상남도</a>
-		                    				<a class="dropdown-item" href="#">전라북도</a>
-		                    				<a class="dropdown-item" href="#">전라남도</a>
-		                    				<a class="dropdown-item" href="#">충청북도</a>
-		                    				<a class="dropdown-item" href="#">충청남도</a>
-		                    				<a class="dropdown-item" href="#">제주특별자치도</a>
-		                    				<a class="dropdown-item" href="#">울릉도</a>
+		                    				<a class="dropdown-item" href="javascript:getWeather(60,27)">서울</a>
+		                    				<a class="dropdown-item" href="javascript:getWeather(60,120)">경기도</a>
+		                    				<a class="dropdown-item" href="javascript:getWeather(73,134)">강원도</a>
+		                    				<a class="dropdown-item" href="javascript:getWeather(89,91)">경상북도</a>
+		                    				<a class="dropdown-item" href="javascript:getWeather(91,77)">경상남도</a>
+		                    				<a class="dropdown-item" href="javascript:getWeather(63,89)">전라북도</a>
+		                    				<a class="dropdown-item" href="javascript:getWeather(51,67)">전라남도</a>
+		                    				<a class="dropdown-item" href="javascript:getWeather(69,107)">충청북도</a>
+		                    				<a class="dropdown-item" href="javascript:getWeather(68,100)">충청남도</a>
+		                    				<a class="dropdown-item" href="javascript:getWeather(52,38)">제주특별자치도</a>
+		                    				<a class="dropdown-item" href="javascript:getWeather(127,127)">울릉도</a>
 		                    			</div>
 	                    			</div>
 	                    		</div>

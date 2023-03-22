@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.bodybuddy.domain.myrecord.ExrRecord;
@@ -23,7 +23,6 @@ import com.edu.bodybuddy.exception.ExrRecordException;
 import com.edu.bodybuddy.model.myrecord.ExrRecordService;
 import com.edu.bodybuddy.model.myrecord.MyRecordService;
 import com.edu.bodybuddy.util.Message;
-import com.edu.bodybuddy.util.Msg;
 
 @RestController
 @RequestMapping("/rest/myrecord")
@@ -46,9 +45,14 @@ public class RestMyRecordController {
 		return "지금 확인 중";
 	}
 	
-	@GetMapping("/weatherAPI")
-	public void getWeather() {
-		myRecordService.getWeather();
+	@GetMapping("/weatherAPI/{nx}/{ny}")
+	public List getWeather(@PathVariable(name="nx") int nx, @PathVariable(name="ny") int ny) {
+		
+		logger.info("받아온 nx값은 : "+nx);
+		logger.info("받아온 ny값은 : "+ny);
+		
+		myRecordService.getWeather(nx, ny);
+		return null;
 	}
 	
 	//한달간의 기록을 보여주는 메서드

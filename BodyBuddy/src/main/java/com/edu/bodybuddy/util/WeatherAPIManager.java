@@ -31,9 +31,11 @@ public class WeatherAPIManager {
 	private String pageNo;
 	private String numOfRows;
 	private String dataType;
+	private String nx;
+	private String ny;
 
 	//예외처리 할것이 많은데, 하나로 IOException처리....이게 맞나? 나중에 세분화할 필요가 있으면 세분화하겠음
-	public void getWeatherResponse() throws IOException {
+	public void getWeatherResponse(int nx,int ny) throws IOException {
 		System.out.println(this.getWeatherServiceKey());
 		//아래부분은 거의 고정값
         StringBuilder urlBuilder = new StringBuilder("https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"); /*URL*/
@@ -42,11 +44,16 @@ public class WeatherAPIManager {
         urlBuilder.append("&" + "numOfRows" + "=" + numOfRows); /*한 페이지 결과 수*/
         urlBuilder.append("&" + "dataType" + "=" + dataType); /*요청자료형식(XML/JSON) Default: XML*/
         
+        //오늘 하루전 날짜의 0200시 데이터를 불러오도록, 그래야 그다음날인
+        //오늘 데이터를 전체 업로드 할 수가 있음
+        LocalDate date=LocalDate.now();
+        String yesterday=date.minusDays(1).toString().replace("-",""); //특정문자제거
+        
         //아래는 변수로 받아주어야 함 (URLEncoder꼭 써야할까?)
-        urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode("20230322", "UTF-8")); /*‘21년 6월 28일 발표*/
-        urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode("0500", "UTF-8")); /*06시 발표(정시단위) */
-        urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode("55", "UTF-8")); /*예보지점의 X 좌표값*/
-        urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode("127", "UTF-8")); /*예보지점의 Y 좌표값*/
+        urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode(yesterday, "UTF-8")); /*‘21년 6월 28일 발표*/
+        urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode("0200", "UTF-8")); /*06시 발표(정시단위) */
+        urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode(Integer.toString(nx), "UTF-8")); /*예보지점의 X 좌표값*/
+        urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode(Integer.toString(ny), "UTF-8")); /*예보지점의 Y 좌표값*/
         System.out.println(urlBuilder.toString());
         
         URL url = new URL(urlBuilder.toString());
