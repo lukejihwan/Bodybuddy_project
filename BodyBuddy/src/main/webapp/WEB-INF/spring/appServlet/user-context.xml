@@ -24,12 +24,5 @@
 	<context:component-scan base-package="com.edu.bodybuddy.controller.user" />
 	<context:component-scan base-package="com.edu.bodybuddy.controller.security" />
 	
-	<!-- 기상청 API를 사용하기 위한 bean등록 -->
-	<beans:bean id="weatherAPIManager"  class="com.edu.bodybuddy.util.WeatherAPIManager">
-		<beans:property name="weatherServiceKey" 	value="5OLMbd4sbXgeeMPa2saChLrICRYMFhGvDm5S3y3XUNG6KoMuumA0OTf1wapCRiAG1n5%2BOQY8xFTUr2gwGLQuWg%3D%3D"/>
-		<beans:property name="pageNo" 				 	value="1"/>
-		<beans:property name="numOfRows" 			value="1000"/>
-		<beans:property name="dataType" 				value="json"/>
-	</beans:bean>
 	
 </beans:beans>

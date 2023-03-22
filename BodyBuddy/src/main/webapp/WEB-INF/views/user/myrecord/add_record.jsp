@@ -130,7 +130,7 @@ const setlist={
 			{{t_set}}set
 			<input type="number" name="t_kg[]" min="1" max="600">kg
 			<input type="number" name="t_ea[]" min="1" max="100">개
-			<a href="#">X</a>
+			<a href="#" @click="del">X</a>
 		</div>
 	`,
 	props:['set'],
@@ -140,7 +140,10 @@ const setlist={
 		}
 	},
 	methods:{
-		
+		del:function(){
+			console.log("먹음");
+			app1.count-=1;
+		}
 	}
 }
 const exrlist={
@@ -225,12 +228,14 @@ function getDate(){
 	};
 }
 
+//날짜 클릭시 오른쪽 기록추가 날짜 영역에 값이 옮겨짐
 function popups(currentYear, currentMonth, today){
 	currentDay=today;
 	$("#exr_day").val(" "+currentYear+" 년 "+currentMonth+" 월 "+today+"일");
 }
 
 let exrList=[]; //운동을 담을 배열
+let exrObject=new Object(); //하나의 운동(exr_name, setList[])를 담을 객체
 //모달창 운동등록 버튼 클릭시, 운동명과, 세트수 가져와서 기록추가 창에 보여주기
 //PS: 이부분을 오른쪽영역에 rendering하는 부분과 JSON구성하는 부분을 나누는게 좋을듯
 function addexr(){
@@ -239,7 +244,6 @@ function addexr(){
 		alert("운동기록을 적어주세요");
 	}else{
 		let json={}; //JSON을 담을 바구니;
-		let exrObject=new Object(); //하나의 운동(exr_name, setList[])를 담을 객체
 		let setList=[]; //한운동에 해당하는 세트를 담을 배열
 		
 		//세트 수의 크기
@@ -258,15 +262,9 @@ function addexr(){
 		
 		//운동명
 		let exrname=$("input[name='t_exr_research']").val();
-		let exr_day=$("#exr_day").val();
-		let regdate=currentYear+"-"+currentMonth+"-"+currentDay;
-		console.log(regdate);
 		
 		exrObject.exr_name=exrname;
-		exrObject.regdate=regdate;
 		exrObject.exrRecordDetailList=setList;
-		
-		exrList.push(exrObject);
 		
 		//기록추가 영역에 추가될 미리보기
 		app1.exerciseList.push(exrObject);
@@ -274,8 +272,18 @@ function addexr(){
 	
 }
 
+//운동기록 날짜를 가져올 함수
+function getDayforRegistExr(){
+	let exr_day=$("#exr_day").val();
+	let regdate=currentYear+"-"+currentMonth+"-"+currentDay;
+	console.log(regdate);
+	exrObject.regdate=regdate;
+}
 
 function regist(){
+	getDayforRegistExr();
+	exrList.push(exrObject);
+	
 	if($("#exr_day").val()=="" || $("input[name='t_exr_research']").val()==""){
 		alert("날짜또는 운동기록을 추가해주세요");
 		
