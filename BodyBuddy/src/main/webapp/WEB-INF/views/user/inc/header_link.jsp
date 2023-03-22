@@ -8,12 +8,15 @@
 <title>5조 BodyBuddy</title>
 <!-- Bootstrap -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<!-- bootstrap 적용위해 아래 링크 두개 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- style CSS -->
 <link href="/resources/user/css/style.css" rel="stylesheet">
 <!-- animsition css -->
 <link rel="stylesheet" type="text/css" href="/resources/user/css/animsition.min.css">
-<!-- jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <!-- Font Awesome CSS -->
 <link href="/resources/user/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/resources/user/css/fontello.css">
@@ -26,7 +29,6 @@
 <!-- owl Carousel Css -->
 <link href="/resources/user/css/owl.carousel.css" rel="stylesheet">
 <link href="/resources/user/css/owl.theme.css" rel="stylesheet">
-<link rel="shortcut icon" href="#">
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -35,3 +37,8 @@
 <![endif]-->
 <!-- vue 2 for develope-->
 <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+<!-- font awsome2 api -->
+<script src="https://kit.fontawesome.com/99ef7b560b.js" crossorigin="anonymous"></script>
+<!-- sweetalert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="/resources/user/css/my-sweetalert2.css" rel="stylesheet">

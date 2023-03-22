@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -57,8 +58,8 @@ public class DietAdminController {
 	}
 	
 	//식단정보 상세보기 페이지
-	@GetMapping("/info_detail")
-	public ModelAndView getDetail(HttpServletRequest request, int diet_info_idx) {
+	@GetMapping("/info_detail/{diet_info_idx}")
+	public ModelAndView getDetail(HttpServletRequest request, @PathVariable int diet_info_idx) {
 		DietInfo dietInfo=dietInfoService.select(diet_info_idx);
 		
 		ModelAndView mav=new ModelAndView("admin/diet/info_detail");

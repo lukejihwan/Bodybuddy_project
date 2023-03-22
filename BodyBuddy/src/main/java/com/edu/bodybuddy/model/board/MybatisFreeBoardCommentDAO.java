@@ -56,6 +56,16 @@ public class MybatisFreeBoardCommentDAO implements BoardCommentDAO{
 			throw new FreeBoardCommentException("대댓글 삽입을 위해 step 올리기 실패");
 		}
 	}
+	public void unshiftAboveSteps(Object object) throws FreeBoardCommentException{
+		FreeBoardComment freeBoardComment = (FreeBoardComment)object; 
+		int countAboveSteps = sqlSessionTemplate.selectOne("FreeBoardComment.countAboveSteps", freeBoardComment);
+		int result = sqlSessionTemplate.update("FreeBoardComment.unshiftAboveSteps", freeBoardComment);
+		if(
+				countAboveSteps < result ||
+				countAboveSteps > result) {
+			throw new FreeBoardCommentException("대댓글 삽입을 위해 step 올리기 실패");
+		}
+	}
 
 	public int maxStepInChild(Object freeBoardComment) {
 		return sqlSessionTemplate.selectOne("FreeBoardComment.maxStepInChild", freeBoardComment);
@@ -69,5 +79,14 @@ public class MybatisFreeBoardCommentDAO implements BoardCommentDAO{
 		return sqlSessionTemplate.selectOne("FreeBoardComment.maxStepInDepth", freeBoardComment);
 	}
 
+	public Object select(int free_board_comment_idx) {
+		return sqlSessionTemplate.selectOne("FreeBoardComment.select", free_board_comment_idx);
+	}
+
+	public void deleteAllByBoard(int free_board_idx) throws FreeBoardCommentException{
+		int totalCount = totalCount(free_board_idx);
+		int result = sqlSessionTemplate.delete("FreeBoardComment.deleteAllByBoard", free_board_idx);
+		if(totalCount != result) throw new FreeBoardCommentException("자유게시판 해당 게시글에서 댓글 전체 삭제 실패");
+	}
 
 }

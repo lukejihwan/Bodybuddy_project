@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.edu.bodybuddy.exception.FreeBoardCommentException;
 import com.edu.bodybuddy.exception.FreeBoardException;
 
 @Service
@@ -16,6 +19,10 @@ public class FreeBoardService implements BoardService{
 	@Autowired
 	@Qualifier("mybatisFreeBoardDAO")
 	private BoardDAO boardDAO;
+	
+	@Autowired
+	@Qualifier("mybatisFreeBoardCommentDAO")
+	private BoardCommentDAO boardCommentDAO;
 	
 	public List selectAll() {
 		return boardDAO.selectAll();
@@ -33,7 +40,13 @@ public class FreeBoardService implements BoardService{
 		boardDAO.update(freeBoard);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void delete(int free_board_idx) throws FreeBoardException{
+		try {
+			boardCommentDAO.deleteAllByBoard(free_board_idx);
+		} catch (FreeBoardCommentException e) {
+			throw new FreeBoardException(e.getMessage(), e);
+		}
 		boardDAO.delete(free_board_idx);
 	}
 
@@ -46,6 +59,14 @@ public class FreeBoardService implements BoardService{
 
 	public int totalCount() {
 		return boardDAO.totalCount();
+	}
+
+	public void addHit(int board_idx) throws FreeBoardException{
+		boardDAO.addHit(board_idx);
+	}
+
+	public void addRecommend(int board_idx) throws FreeBoardException{
+		boardDAO.addRecommend(board_idx);
 	}
 
 }

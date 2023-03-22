@@ -14,6 +14,9 @@
 	<!-- top-bar start-->
 	<%@include file="../inc/topbar.jsp"%>
 	<!-- /top-bar end-->
+	<!-- 로그인체크 -->
+	<%@include file="../inc/loginCheck.jsp"%>
+	
 
 	<!-- hero section start -->
 	<div class="hero-section">
@@ -49,11 +52,12 @@
 			<div class="row">
 				<div class="col">
 					<form id="form1">
+						<input type="hidden" name="member.member_idx" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
 						<div class="form-group">
-							<input type="text" class="form-control" name="title" placeholder="제목...">
+							<input type="text" class="form-control" name="title" placeholder="제목..." required>
 						</div>
 						<div class="form-group">
-							<input type="text" class="form-control" name="writer" placeholder="작성자...">
+							<input type="text" class="form-control" name="writer" placeholder="작성자..." value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" readonly>
 						</div>
 						<div class="form-group">
 							<textarea id="summernote" name="content"></textarea>
@@ -86,6 +90,7 @@
 </body>
 <script type="text/javascript">
 	$(()=>{
+		
 		$('#summernote').summernote({
 			minHeight:200,
 			maximumImageFileSize: 64 * 1024, //64kb 제한
@@ -101,11 +106,23 @@
 		});
 		
 		$("#bt_list").click(()=>{
-			location.href = "/board/free_list/1";
+			location.href = "<%= listURI + 1 %>";
 		});
+		
+		
 	});
 	
 	function regist() {
+		
+		if($("#form1 input[name='title']").val().length==0){
+			Swal.fire(
+				"제목을 작성해주세요",
+				"",
+				"error"
+			);
+			return;
+		}
+		
 		getThumbnailImg();
 		$("#form1").attr({
 			action:"/board/free_regist",

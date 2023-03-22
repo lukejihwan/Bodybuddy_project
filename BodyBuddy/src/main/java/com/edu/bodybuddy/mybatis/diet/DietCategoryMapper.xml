@@ -11,8 +11,8 @@
 	</select>
 	
 	<insert id="insert" parameterType="DietCategory">
-		insert into diet_category(diet_category_idx, diet_category_name)
-		values(#{diet_category_idx}, #{diet_category_name})
+		insert into diet_category(diet_category_idx, diet_category_name, diet_category_subname)
+		values(#{diet_category_idx}, #{diet_category_name}, #{diet_category_subname})
 	</insert>
 	
 	<update id="update" parameterType="DietCategory">

@@ -82,12 +82,13 @@
 						<div class="col">
 							<div class="form-group row">
 								<div class="form-group row col-sm-3">
-									<input type="hidden" name="diet_info_idx" value="<%=dietInfo.getDiet_info_idx() %>">
+									
 								</div>
 							</div>
 
 							<div class="form-group row">
 								<div class="col">
+									<input type="hidden" name="diet_info_idx" class="form-control" value="<%=dietInfo.getDiet_info_idx()%>">
 									<input type="text" name="title" class="form-control" value="<%=dietInfo.getTitle()%>">
 								</div>
 							</div>
