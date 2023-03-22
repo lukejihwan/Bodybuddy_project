@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.model.board;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.edu.bodybuddy.domain.board.CounsellingBoard;
 import com.edu.bodybuddy.domain.board.CounsellingBoardComment;
 import com.edu.bodybuddy.exception.CounsellingBoardCommentException;
 
@@ -24,7 +26,21 @@ public class CounsellingBoardCommentService implements BoardCommentService{
 	private BoardCommentDAO boardCommentDAO;
 
 	public List selectAllByBoard(int counselling_board_idx) {
-		return boardCommentDAO.selectAllByBoard(counselling_board_idx);
+		
+		List<CounsellingBoardComment> counsellingList = boardCommentDAO.selectAllByBoard(counselling_board_idx);
+		
+		HashMap<Integer, String> map = new HashMap<Integer, String>();
+		int count = 1;
+		for(int i =0;i<counsellingList.size();i++) {
+			CounsellingBoardComment board = counsellingList.get(i);
+			if(map.get(board.getMember().getMember_idx()) == null) {
+				map.put(board.getMember().getMember_idx(), "익명"+count++);
+			}
+			
+			board.setWriter(map.get(board.getMember().getMember_idx()));
+		}
+		
+		return counsellingList;
 	}
 
 	public List selectAllByMember(int member_idx) {
