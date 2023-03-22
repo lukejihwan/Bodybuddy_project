@@ -19,16 +19,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.edu.bodybuddy.domain.board.FreeBoard;
 import com.edu.bodybuddy.domain.exr.ExrCategory;
 import com.edu.bodybuddy.domain.exr.ExrNotice;
 import com.edu.bodybuddy.exception.ExrCategoryException;
-import com.edu.bodybuddy.exception.ExrNoticeException;
 import com.edu.bodybuddy.model.exr.ExrCategoryService;
-import com.edu.bodybuddy.model.exr.ExrNoticeImgService;
 import com.edu.bodybuddy.model.exr.ExrNoticeService;
 import com.edu.bodybuddy.util.Message;
 import com.edu.bodybuddy.util.Msg;
@@ -43,8 +38,6 @@ public class RestExrAdminController {
 	private ExrCategoryService exrCategoryService;
 	@Autowired
 	private ExrNoticeService exrNoticeService;
-	@Autowired
-	private ExrNoticeImgService exrNoticeImgService;
 	
 	/*-----------------------------
 		운동 카테고리와 관련된 메서드!
@@ -144,7 +137,6 @@ public class RestExrAdminController {
 	@DeleteMapping("/notice_img/{exr_notice_idx}")
 	public ResponseEntity<Message> delImg(@PathVariable("exr_notice_idx") int exr_notice_idx) throws ExrCategoryException{
 		logger.info("넘어오드나 "+exr_notice_idx);
-		exrNoticeImgService.delete(exr_notice_idx);
 		
 		Message message = new Message("사진 삭제 완료");
 		ResponseEntity<Message> entity = new ResponseEntity<Message>(message, HttpStatus.CREATED);

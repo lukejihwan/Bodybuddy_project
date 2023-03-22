@@ -25,11 +25,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edu.bodybuddy.domain.exr.ExrCategory;
 import com.edu.bodybuddy.domain.exr.ExrRoutine;
 import com.edu.bodybuddy.domain.exr.ExrRoutineComment;
+import com.edu.bodybuddy.domain.exr.ExrTip;
 import com.edu.bodybuddy.exception.ExrCategoryException;
 import com.edu.bodybuddy.exception.ExrRoutineException;
 import com.edu.bodybuddy.model.exr.ExrCategoryService;
 import com.edu.bodybuddy.model.exr.ExrRoutineCommentService;
 import com.edu.bodybuddy.model.exr.ExrRoutineService;
+import com.edu.bodybuddy.model.exr.ExrTipService;
 import com.edu.bodybuddy.util.Msg;
 
 @RestController
@@ -42,6 +44,8 @@ public class RestExrController {
 	private ExrRoutineService exrRoutineService;
 	@Autowired
 	private ExrRoutineCommentService exrRoutineCommentService;
+	@Autowired
+	private ExrTipService exrTipService; 
 	
 	/*---------------------
 	 *  루틴 공유 게시판
@@ -178,6 +182,33 @@ public class RestExrController {
 		msg.setMsg("댓글 삭제 완료");
 		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
 		return entity;
+	}
+	
+	
+	
+	/*------------------------------------
+	  		운동 팁 게시판
+	 --------------------------------------*/
+	
+	// 등록
+	@PostMapping("/tip")
+	public ResponseEntity<Msg> tipInsert(ExrTip exrTip) throws ExrCategoryException{
+		logger.info("등록될 입력 값!"+exrTip);
+		
+		exrTipService.insert(exrTip);
+		
+		Msg msg=new Msg();
+		msg.setMsg("팁글 추가 완료");
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	
+	// 리스트 조회
+	@GetMapping("/tip_list")
+	public List<ExrRoutine> getTipList(HttpServletRequest request){
+		List<ExrRoutine> exrTipList=exrTipService.selectAll();
+		logger.info("문제있니? 확인 "+exrTipList);
+		return exrTipList;
 	}
 	
 	
