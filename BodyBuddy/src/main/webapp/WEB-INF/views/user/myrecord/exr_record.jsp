@@ -15,6 +15,13 @@
 	position: fixed;
 }
 */
+#app1{
+	margin: 10px;
+}
+.wrapper{
+	padding: 10px;
+	font-size: 20px;
+}
 .sec_cal {
     width: 360px;
     margin: 0 auto;
@@ -140,6 +147,58 @@ let currentYear;
 let currentMonth;
 let nextDate;
 let today;
+//vue 컨트롤객체
+let app1;
+
+const rowlist={
+	template:`
+		<div class="card bg-dark text-white wrapper">
+			<div class="row card-body">
+				운동명: 벤치프레스
+			</div>
+			<div div class="row">
+				<div class="col-md-8 card-body">
+					<div class="form-group">
+						<div>1세트 20kg 5개</div>
+						<div>2세트 20kg 5개</div>
+						<div>3세트 20kg 5개</div>
+					</div>
+				</div>
+				<div class="col-md-4 card-body">
+					<div class="form-group">
+						<button type="button" class="btn btn-warning">수정</button>
+					</div>
+					<div class="form-group">
+						<button type="button" class="btn btn-danger">삭제</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		`,
+		props:[],
+		data(){
+			return{
+				
+			};
+		},
+		methods:{
+			
+		}
+}
+
+function init(){
+	app1=new Vue({
+		el:"#app1",
+		data:{
+			exrList:["123"]
+		},
+		components:{
+			rowlist
+		}
+	});
+}
+
+
 /*
     달력 렌더링 할 때 필요한 정보 목록 
 
@@ -246,6 +305,8 @@ function makeDayFormat(clickedDay){
 function showExrRecordsOnCollapse(exrList){
 	for(let i=0; i<exrList.length; i++){
 		console.log("운동명은",exrList[i].exr_name);
+		//하나의 운동명을 아래 영역에 보여줄 함수
+		
 		for(let a=0; a<exrList[i].exrRecordDetailList.length; a++){
 			console.log(exrList[i].exrRecordDetailList.length);
 			console.log("번쨰 세트의 detail_idx는 ", exrList[i].exrRecordDetailList[a].exr_record_detail_idx );
@@ -253,6 +314,7 @@ function showExrRecordsOnCollapse(exrList){
 	}
 }
 
+//각 날짜 클릭시 동작할 함수
 function showExrRecord(clickedDay){
 	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
 	console.log("registedDate", registedDate);
@@ -343,6 +405,8 @@ function getExrRecordForMonth(){
 $(document).ready(function() {
     //달력초기화
 	calendarInit();
+    //초기화
+    init();
     
     //처음 보여주는 달력의 등록된 운동기록 보여주기
     getExrRecordForMonth();
@@ -426,7 +490,12 @@ $(document).ready(function() {
 				</div>
   				
   				<!-- 운동기록 상세보기가 나올 창 -->
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"  id="app1">
+				
+				<template v-for="exr in exrList">
+					<rowlist/>
+				</template>
+					<!-- 
 					<div id="exrCollapse" class="collapse">
 				 		<div class="card bg-success text-white">
 				 			<div class="card-body">
@@ -434,6 +503,7 @@ $(document).ready(function() {
 				 			</div>
 				 		</div>
 					</div>
+					 -->
 				</div>
 				
 			</div>
