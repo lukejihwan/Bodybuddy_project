@@ -2,6 +2,7 @@ package com.edu.bodybuddy.model.myrecord;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +20,16 @@ public class MyRecordServiceImpl implements MyRecordService{
 	private WeatherAPIManager weatherAPIManager;
 	
 	@Override
-	public List getWeather(int nx, int ny) {
+	public Map<String, String> getWeather(int nx, int ny) {
+		Map<String, String> dataForResponseMap=null;
 		try {
-			weatherAPIManager.getWeatherResponse(nx, ny);
+			dataForResponseMap=weatherAPIManager.getWeatherResponse(nx, ny);
+			logger.info("받아온 최종 온도는 "+dataForResponseMap.get("tempData")); 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return dataForResponseMap;
 	}
 
 }

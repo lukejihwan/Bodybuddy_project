@@ -46,13 +46,13 @@ public class RestMyRecordController {
 	}
 	
 	@GetMapping("/weatherAPI/{nx}/{ny}")
-	public List getWeather(@PathVariable(name="nx") int nx, @PathVariable(name="ny") int ny) {
+	public Map<String, String> getWeather(@PathVariable(name="nx") int nx, @PathVariable(name="ny") int ny) {
 		
 		logger.info("받아온 nx값은 : "+nx);
 		logger.info("받아온 ny값은 : "+ny);
 		
-		myRecordService.getWeather(nx, ny);
-		return null;
+		Map<String, String> dataForResponseMap=myRecordService.getWeather(nx, ny);
+		return dataForResponseMap;
 	}
 	
 	//한달간의 기록을 보여주는 메서드
