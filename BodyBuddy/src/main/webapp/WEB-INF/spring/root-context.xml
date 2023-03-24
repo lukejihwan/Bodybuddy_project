@@ -75,5 +75,13 @@
 		</property>
 	</bean>
 	
+	<!-- 기상청 API를 사용하기 위한 bean등록 -->
+	<bean id="weatherAPIManager"  class="com.edu.bodybuddy.util.WeatherAPIManager">
+		<property name="weatherServiceKey" 	value="5OLMbd4sbXgeeMPa2saChLrICRYMFhGvDm5S3y3XUNG6KoMuumA0OTf1wapCRiAG1n5%2BOQY8xFTUr2gwGLQuWg%3D%3D"/>
+		<property name="pageNo" 				 	value="1"/>
+		<property name="numOfRows" 			value="1000"/>
+		<property name="dataType" 				value="json"/>
+	</bean>
+	
 </beans>
 
