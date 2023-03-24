@@ -22,13 +22,28 @@ public class MybatisExrRoutineCommentDAO implements ExrRoutineCommentDAO{
 	}
 
 	@Override
+	public int totalCount(int exr_routine_idx) {
+		return sqlSessionTemplate.selectOne("ExrRoutineComment.totalCount", exr_routine_idx);
+	}
+
+	@Override
 	public void insert(ExrRoutineComment exrRoutineComment) throws ExrRoutineCommentException{
 		int result=sqlSessionTemplate.insert("ExrRoutineComment.insert", exrRoutineComment);
 		if(result<1) {
 			throw new ExrRoutineCommentException("댓글 등록 실패");
 		}
 	}
-
+	
+	
+	@Override
+	public void update(ExrRoutineComment exrRoutineComment) throws ExrRoutineCommentException{
+		int result=sqlSessionTemplate.update("ExrRoutineComment.update", exrRoutineComment);
+		if(result<1) {
+			throw new ExrRoutineCommentException("댓글수정 실패");
+		}		
+	}
+	
+	
 	@Override
 	public void delete(int exr_routine_comment_idx) throws ExrRoutineCommentException{
 		int result=sqlSessionTemplate.delete("ExrRoutineComment.delete", exr_routine_comment_idx);
@@ -44,7 +59,9 @@ public class MybatisExrRoutineCommentDAO implements ExrRoutineCommentDAO{
 			throw new ExrRoutineCommentException("댓글 등록 실패");
 		}
 	}
+	
 
+	
 	@Override
 	public void updateStep(ExrRoutineComment exrRoutineComment) throws ExrRoutineCommentException{
 		int result=sqlSessionTemplate.update("ExrRoutineComment.updateStep", exrRoutineComment);
@@ -53,10 +70,15 @@ public class MybatisExrRoutineCommentDAO implements ExrRoutineCommentDAO{
 		}
 	}
 
+	
 	@Override
 	public int selectMaxStep(ExrRoutineComment exrRoutineComment) {
 		return sqlSessionTemplate.selectOne("ExrRoutineComment.selectMaxStep", exrRoutineComment);
 	}
+
+
+
+
 	
 
 

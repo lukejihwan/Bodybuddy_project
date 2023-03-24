@@ -12,6 +12,10 @@
 		<result column="member_idx" property="member.member_idx"/>
 		
 		<association property="exrCategory" column="exr_category_idx" javaType="int" select="ExrCategory.select"/>
+		
+		<collection property="commentList" column="exr_routine_idx" 
+		javaType="java.util.List" ofType="ExrRoutineComment"
+		select="ExrRoutineComment.selectByFk"/>
 	</resultMap>
 	
 	

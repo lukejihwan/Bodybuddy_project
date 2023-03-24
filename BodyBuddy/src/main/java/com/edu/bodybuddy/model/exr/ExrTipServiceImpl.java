@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edu.bodybuddy.domain.exr.ExrTip;
+import com.edu.bodybuddy.exception.ExrRoutineException;
 import com.edu.bodybuddy.exception.ExrTipException;
 
 @Service
@@ -42,5 +43,11 @@ public class ExrTipServiceImpl implements ExrTipService{
 	public void plusHit(int exr_tip_idx) throws ExrTipException{
 		exrTipDAO.plusHit(exr_tip_idx);
 	}
+
+	@Override
+	public void plusRecommend(int exr_tip_idx) throws ExrTipException{
+		exrTipDAO.plusRecommend(exr_tip_idx);
+	}
+
 
 }

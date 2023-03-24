@@ -15,4 +15,6 @@ public class ExrRecord {
 	
 	//운동기록이 ExrDetailRecord를 여러개 가지고 있는 형태
 	private List<ExrDetailRecord> exrRecordDetailList;
+
+	private List<GpsData> gpsDataList;
 }

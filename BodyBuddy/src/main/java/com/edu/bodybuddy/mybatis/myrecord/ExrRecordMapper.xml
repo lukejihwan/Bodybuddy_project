@@ -17,6 +17,13 @@
 			javaType="java.util.List"
 			ofType="ExrDetailRecord"
 			select="ExrDetailRecord.selectByExrRecord"/>
+
+		<collection
+			column="exr_record_idx"
+			property="gpsDataList"
+			javaType="java.util.List"
+			ofType="GPSData"
+			select="GpsData.selectByFk"/>
 		
 	</resultMap>
 	
