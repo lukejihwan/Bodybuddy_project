@@ -105,7 +105,7 @@
 			success:function(result, status, xhr){
 				alert(result.msg);
 				console.log("성공시 출력 ", result);
-				location.href="/exr/tip";
+				location.href="/exr/tip_list";
 			},
 			
 			error:function(xhr, status, err){
@@ -120,7 +120,7 @@
 		
 		// 목록 페이지 이동
 		$("#bt_list").click(function(){
-			location.href="/exr/routine_list";
+			location.href="/exr/tip_list";
 		});
 		
 		// 등록

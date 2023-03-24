@@ -21,25 +21,34 @@ public class ExrRoutineCommentServiceImpl implements ExrRoutineCommentService{
 		return exrRoutineCommentDAO.selectByFk(exr_routine_idx);
 	}
 
+
 	@Override
 	public void insert(ExrRoutineComment exrRoutineComment) throws ExrRoutineCommentException{
-		/*
-		 * logger.info("서비스에서 확인"); logger.info(""+exrRoutineComment.getPost());
-		 * logger.info(""+exrRoutineComment.getStep());
-		 * logger.info(""+exrRoutineComment.getDepth());
-		 */
 		
-		// 부모의 fk를 팀으로 세팅하기
-		exrRoutineComment.setPost(exrRoutineComment.getExrRoutine().getExr_routine_idx());
+		// 댓글이 최초 입력이라면 그대로 넣고
+		// 최초입력이 아니라면 스텝을 증가시킨다. (뎁스는 유지)
+		// 그러기 위해선? 해당 글에 대한 댓글이 있는지 "조사" 	--> 그 수가 0이 아니라면,,,
+		int idx=exrRoutineComment.getExrRoutine().getExr_routine_idx();	// 해당 글에 대한 번호
+		int count=exrRoutineCommentDAO.totalCount(idx);
 		
-		// 같은 팀 내에서 스템 수 구해오기
-		/*
-		 * int maxStep=exrRoutineCommentDAO.selectMaxStep(exrRoutineComment);
-		 * logger.info(""+maxStep); // 스텝이 1보다 크면 증가 시킨 후 등록한다 if(maxStep!=0) {
-		 * exrRoutineCommentDAO.updateStep(exrRoutineComment); }
-		 */
 		
+		// 스텝 증가 여부 따지기
+		if(count==0) {
+			// 해당 글에 대한 댓글의 개수가 없다면 최초로 들어간
+			exrRoutineComment.setStep(0);
+		}else {
+			
+			// 해당 원본 글에 댓글이 이미 있다면, 스텝을 마지막 댓글의 수로 세팅한다!
+			exrRoutineComment.setStep(count);
+			// 고정된 어떤 기준이 되는 숫자가 필요함!
+		}
+		
+		// 수정된 스텝을 최종적으로 넣어주기!
 		exrRoutineCommentDAO.insert(exrRoutineComment);
+		// 고유 idx를 post로 지정하기
+		exrRoutineComment.setPost(exrRoutineComment.getExr_routine_comment_idx());
+		exrRoutineCommentDAO.update(exrRoutineComment);
+		
 	}
 
 	@Override
@@ -48,21 +57,26 @@ public class ExrRoutineCommentServiceImpl implements ExrRoutineCommentService{
 	}
 
 
+	
 	// 3단계를 여기서 모두 거칠 예정!  -- 트랜잭션!
 	@Override
 	public void registReply(ExrRoutineComment exrRoutineComment) throws ExrRoutineCommentException{
 		
-		//1 마지막 스텝 구하기
-		int maxStep=exrRoutineCommentDAO.selectMaxStep(exrRoutineComment);
-		logger.info("마지막 스텝은?"+maxStep);
-		// 자리 마련
-		/*
-		 * if(exrRoutineComment.getStep()!=0) {
-		 * exrRoutineCommentDAO.updateStep(exrRoutineComment); }
-		 */
+		int post=exrRoutineComment.getPost();
+		exrRoutineComment.setPost(post);
 		
-		// 답글 등록
-		//exrRoutineCommentDAO.reply(exrRoutineComment);
+		// 조사 들어가기
+		int maxStep=exrRoutineCommentDAO.selectMaxStep(exrRoutineComment);
+		logger.info("조조조"+maxStep);
+		
+		exrRoutineComment.setStep(maxStep);
+		exrRoutineComment.setDepth(exrRoutineComment.getDepth()+1);
+		//exrRoutineCommentDAO.updateStep(exrRoutineComment);
+		
+		// 최종적으로 인서트
+		exrRoutineCommentDAO.insert(exrRoutineComment);
+		
+		
 	}
 
 }

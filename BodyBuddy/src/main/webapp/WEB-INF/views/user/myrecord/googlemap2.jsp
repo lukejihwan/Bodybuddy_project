@@ -22,13 +22,22 @@
 </head>
 <body>
 구글맵 출력 예정
+<div class="container top">
 		<div class="row mt-2 top">
+			<div div class="col-md-3 border top">
+				좌		
+				<div class="form-group mt-2">
+					<button id="bt_geo" type="button" class="btn btn-danger">Geo</button>
+				</div>		
+			</div>
+		
 			<div class="col-md-9 border top">
 				<div id="map">
 			
 				</div>
 			</div>
 		</div>
+	</div>
 <script type="text/javascript">
 	//let map=new google.maps.Map(document.getElementById("map"), mapProp);
 	

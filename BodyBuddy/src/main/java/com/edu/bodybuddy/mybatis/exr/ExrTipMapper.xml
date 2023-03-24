@@ -9,7 +9,8 @@
 		<result column="regdate" property="regdate"/>
 		<result column="hit" property="hit"/>
 		<result column="member_idx" property="member.member_idx"/>
-		<result column="exr_category_idx" property="exrCategory.exr_category_idx"/>
+		
+		<association property="exrCategory" column="exr_category_idx" javaType="int" select="ExrCategory.select"/>
 	</resultMap>
 	
 	
@@ -37,6 +38,14 @@
 		update exr_tip set hit=hit+1
 		where exr_tip_idx=#{exr_tip_idx}
 	</update>
+	
+	
+	<!-- 추천수 증가 -->
+	<update id="plusRecommend" parameterType="int">
+		update exr_tip set recommend=recommend+1
+		where exr_tip_idx=#{exr_tip_idx}
+	</update>
+	
 	
 
 	<update id="update" parameterType="ExrRoutine">

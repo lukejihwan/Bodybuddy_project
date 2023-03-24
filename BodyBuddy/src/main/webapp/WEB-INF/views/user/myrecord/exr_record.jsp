@@ -143,6 +143,27 @@
 	transform:scale(1.2);
 	cursor: pointer;
 }
+
+<!-- 구글맵과 관련된 스타일 -->
+.space-medium{
+    width: 100%;
+    height: 100%;
+    margin: auto;
+}
+
+
+  #myMap {
+    height: 100%;
+  }
+  .top{
+    height: 500px;
+  }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
 </style>
 <script type="text/javascript">
 let currentYear;
@@ -151,6 +172,8 @@ let nextDate;
 let today;
 //vue 컨트롤객체
 let app1;
+// 현재 위치에 포커스 맞추기
+let map;
 
 const rowlist={
 	template:`
@@ -403,11 +426,86 @@ function getExrRecordForMonth(){
 	});
 }
 
-//시작할 때 로드될 메서드
+
+
+	/*------------------------------------------------------------------------------
+			구글맵과 관련된 영역
+		-----------------------------------------------------------------------------*/
+	// 1) 맵 초기 콜백 함수 
+	function initMap() {
+		let mapProp= {
+		  center:new google.maps.LatLng(37.556436, 126.945207),
+		  zoom:16,
+		};
+		map = new google.maps.Map(document.getElementById("myMap"),mapProp);
+
+		console.log("잘 호출 되는 거지? ", map);
+		
+	}
+	
+	
+	// db에 저장된 위치 데이터 불러오는 함수
+	function getGpsData(){
+		$.ajax({
+			url:"/rest/myrecord/today/gps",
+			typr:"GET",
+			success:function(result, status, xhr){
+				createPolyline(result);
+				
+				console.log("결과 ", result);
+				console.log("결과안의 개수 ", result.length);
+			
+				
+				let jsonList=[];
+				
+				for(let i=0; i<result.length; i++){
+					let dto=result[i];
+
+					
+					let json={};
+					json['lat']=dto.lati;
+					json['lng']=dto.longi;
+					
+					console.log("가공된 제이슨은? ",json);
+					jsonList.push(json);
+					
+				}
+				console.log("가공된 제이슨 리스트는? ",jsonList);
+				createPolyline(jsonList);
+				
+			}
+		});
+	}
+	
+	
+	// 라인그리기
+	function createPolyline(jsonList){
+		//console.log("그림 그릴 제이슨리스트의 모습은? ", jsonList);
+
+		 const flightPath = new google.maps.Polyline({
+			    path: jsonList,
+			    geodesic: true,
+			    strokeColor: "	#FF4500",
+			    strokeOpacity: 1.0,
+			    strokeWeight: 6,
+			  });
+			  flightPath.setMap(map);
+	}
+	
+	/*------------------------------------------------------------------------------*/
+	
+	
+/*** 시작할 때 로드될 메서드 ***/
 $(document).ready(function() {
     //초기화
     init();
     //달력초기화
+	/*------------------*/
+	getGpsData();
+	initMap();
+	/*------------------*/
+	
+	//달력초기화
 	calendarInit();
     
     //처음 보여주는 달력의 등록된 운동기록 보여주기
@@ -420,6 +518,8 @@ $(document).ready(function() {
     $("#bt_running").click(function(){
     	getRunningCalendar();
     });
+    
+    
 });
 </script>
 <body class="animsition">
@@ -480,10 +580,23 @@ $(document).ready(function() {
 							</div>
 						</div>
 
+
 					</div>
 				</div>
 
+
+				<!-- 구글맵 나올 영역 -->
+				<div class="col-lg-4 top">
+					<div class="mapArea top" style="background:red">
+						<div id="myMap">
+						</div>
+					</div>
+				</div>
+
+
+
 			</div>
+			<!-- ./row -->
 			
 			<!-- 하단 상세정보 보여질 애니메이션 창 -->
 			<div class="row">
@@ -522,7 +635,7 @@ $(document).ready(function() {
     <%@include file="../inc/footer_tiny.jsp" %>
     
 	<%@include file="../inc/footer_link.jsp" %>
-
 </body>
-
 </html>
+<!-- 구글 맵 API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABFfH85xw6pNOdcGrmBAMGKOJhVhsQL6Q&callback=initMap"></script>

@@ -26,8 +26,11 @@ import com.edu.bodybuddy.domain.exr.ExrCategory;
 import com.edu.bodybuddy.domain.exr.ExrRoutine;
 import com.edu.bodybuddy.domain.exr.ExrRoutineComment;
 import com.edu.bodybuddy.domain.exr.ExrTip;
+import com.edu.bodybuddy.domain.myrecord.GpsData;
 import com.edu.bodybuddy.exception.ExrCategoryException;
+import com.edu.bodybuddy.exception.ExrRoutineCommentException;
 import com.edu.bodybuddy.exception.ExrRoutineException;
+import com.edu.bodybuddy.exception.ExrTipException;
 import com.edu.bodybuddy.model.exr.ExrCategoryService;
 import com.edu.bodybuddy.model.exr.ExrRoutineCommentService;
 import com.edu.bodybuddy.model.exr.ExrRoutineService;
@@ -54,8 +57,8 @@ public class RestExrController {
 	@GetMapping("/routine_list")
 	public List<ExrRoutine> getRoutineList(int pg,HttpServletRequest request){
 		
-		//List<ExrRoutine> exrRoutineList=exrRoutineService.selectAll();
-		List<ExrRoutine> exrRoutineList=exrRoutineService.selectAllByPage(pg);
+		List<ExrRoutine> exrRoutineList=exrRoutineService.selectAll();
+		//List<ExrRoutine> exrRoutineList=exrRoutineService.selectAllByPage(pg);
 		
 		logger.info("문제있니? 확인 "+exrRoutineList);
 
@@ -113,14 +116,15 @@ public class RestExrController {
 	}
 	
 	
-	// 추천 수 증가
+	// 추천 수 증가  --> 후 그 값 반환함
 	@GetMapping("/routine/recommend/{exr_routine_idx}")
-	public ResponseEntity<Msg> plusReccomend(@PathVariable int exr_routine_idx, HttpServletRequest request){
+	public ResponseEntity<Integer> plusReccomend(@PathVariable int exr_routine_idx, HttpServletRequest request){
 		exrRoutineService.plusRecommend(exr_routine_idx);
 		
-		Msg msg=new Msg();
-		msg.setMsg("추천 되었습니다");
-		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		ExrRoutine exrRoutine=exrRoutineService.select(exr_routine_idx);
+		int recommend=exrRoutine.getRecommend();
+		
+		ResponseEntity<Integer> entity=new ResponseEntity<Integer>(recommend, HttpStatus.OK);
 		return entity;
 	}
 	
@@ -162,7 +166,6 @@ public class RestExrController {
 	public ResponseEntity<Msg> reply(ExrRoutineComment exrRoutineComment, HttpServletRequest request){
 		logger.info("넘어온 답글 reply 함수 확인 "+exrRoutineComment);
 		
-		
 		exrRoutineCommentService.registReply(exrRoutineComment);
 		
 		Msg msg=new Msg();
@@ -203,6 +206,7 @@ public class RestExrController {
 		return entity;
 	}
 	
+	
 	// 리스트 조회
 	@GetMapping("/tip_list")
 	public List<ExrRoutine> getTipList(HttpServletRequest request){
@@ -212,12 +216,46 @@ public class RestExrController {
 	}
 	
 	
+	// 추천 수 증가  --> 후 그 값 반환함
+	@GetMapping("/tip/recommend/{exr_tip_idx}")
+	public ResponseEntity<Integer> plusTipReccomend(@PathVariable int exr_tip_idx, HttpServletRequest request){
+		exrTipService.plusRecommend(exr_tip_idx);
+		
+		ExrTip exrTip=exrTipService.select(exr_tip_idx);
+		int recommend=exrTip.getRecommend();
+		
+		ResponseEntity<Integer> entity=new ResponseEntity<Integer>(recommend, HttpStatus.OK);
+		return entity;
+	}
+	
+	
+	
+	/*------------------------------------
+		운동 팁 게시판
+	--------------------------------------*/
+	
+	
+	
 	
 	/*------------------------------------------
 	  예외 객체
 	 --------------------------------------------*/ 
 	@ExceptionHandler(ExrRoutineException.class)
 	public ResponseEntity<Msg> handle(ExrRoutineException e){
+		Msg msg=new Msg();
+		msg.setMsg("컨트롤러에서 오류 잡힘 e : "+e.getMessage());
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	@ExceptionHandler(ExrRoutineCommentException.class)
+	public ResponseEntity<Msg> handle(ExrRoutineCommentException e){
+		Msg msg=new Msg();
+		msg.setMsg("컨트롤러에서 오류 잡힘 e : "+e.getMessage());
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	@ExceptionHandler(ExrTipException.class)
+	public ResponseEntity<Msg> handle(ExrTipException e){
 		Msg msg=new Msg();
 		msg.setMsg("컨트롤러에서 오류 잡힘 e : "+e.getMessage());
 		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);

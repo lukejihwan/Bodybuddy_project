@@ -14,4 +14,6 @@ public interface ExrTipDAO {
 	
 	// 조회수 증가
 	public void plusHit(int exr_tip_idx);
+	// 추천수 증가
+	public void plusRecommend(int exr_routine_idx);
 }
