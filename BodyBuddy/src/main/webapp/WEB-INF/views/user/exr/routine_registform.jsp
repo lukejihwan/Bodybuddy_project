@@ -8,12 +8,21 @@
 <html lang="en">
 <head>
 <%@include file="../inc/header_link.jsp"%>
+<style type="text/css">
+	.hero-section{
+		background-image: url("/resources/user/images/exr/routine_back.jpg");
+	}
+</style>
 </head>
 
 <body class="animsition">
 	<!-- top-bar start-->
 	<%@include file="../inc/topbar.jsp"%>
 	<!-- /top-bar end-->
+	
+	<!-- 로그인체크 -->
+	<%@include file="../inc/loginCheck.jsp"%>
+
 
 	<!-- hero section start -->
 	<div class="hero-section">
@@ -44,10 +53,11 @@
 				<div class="col-sm-12">
 					<form id="form1">
 						<div class="form-group">
+							<input type="hidden" name="member.member_idx" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
 							<input type="text" class="form-control" name="title" placeholder="제목을 입력하세요" style="height:100px; font-size:30px">
 						</div>
 						<div class="form-group">
-							<input type="text" class="form-control" name="writer" placeholder="작성자...">
+							<input type="text" class="form-control" name="writer" placeholder="작성자..." value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>">
 						</div>
 						
 						<div class="form-group">

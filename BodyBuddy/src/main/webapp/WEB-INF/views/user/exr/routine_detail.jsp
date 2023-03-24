@@ -12,8 +12,12 @@
 <html lang="en">
 <head>
 <%@include file="../inc/header_link.jsp"%>
+<style type="text/css">
+	.hero-section{
+		background-image: url("/resources/user/images/exr/routine_back.jpg");
+	}
+</style>
 </head>
-
 <body class="animsition">
 	<!-- top-bar start-->
 	<%@include file="../inc/topbar.jsp"%>
@@ -40,8 +44,8 @@
 
 	<!-- content start -->
 	<div class="space-medium">
-		<div class="container">
-			<h3>루틴 공유 입력폼</h3>
+		<div class="container" id="app1">
+			<h3>루틴 공유 게시판</h3>
 
 			<div class="row">
 				<div class="col">
@@ -50,7 +54,7 @@
                     <span><a href="#"><i class="fa fa-twitter  float-right">찜하기</i></a></span>
                     <br/>
                     <span><%= exrRoutine.getWriter() %> | <%= exrRoutine.getRegdate().substring(0, 10) + " " + exrRoutine.getRegdate().substring(10, exrRoutine.getRegdate().length()-2) %></span>
-                    <span class="float-right">조회 <%= exrRoutine.getHit() %> | 추천 <%= exrRoutine.getRecommend() %></span>
+                    <span class="float-right">조회 <%= exrRoutine.getHit() %> | 추천 {{recommend}}</span>
                     <hr>
 				</div>
 			</div>
@@ -68,7 +72,7 @@
 
 				<div class="col-md-12 mt-5 mb-4 text-center">
 					<button class="btn btn-default" id="bt_recommend">
-						<i class="fa-solid fa-thumbs-up"></i>추천 <%=exrRoutine.getRecommend() %></button>
+						<i class="fa-solid fa-thumbs-up"></i>추천 {{recommend}}</button>
 				</div>
 
 					<hr>
@@ -77,19 +81,31 @@
 				<div class="col-sm-9">
 					<label class="control-label" for="textarea">Comments</label>
 					<form id="form1">
+						<input type="hidden" name="recommend" value="<%=exrRoutine.getRecommend()%>">
 						<input type="hidden" name="exr_routine_idx" value="<%=exrRoutine.getExr_routine_idx()%>">
 						<textarea class="form-control" name="content"rows="6" placeholder="댓글 입력 창"></textarea>
-						<input type="text" class="form-control" name="writer" placeholder="작성자"/>
+						<input type="text" class="form-control" name="writer" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>"/>
 						<button id="bt_comment" class="btn btn-default" type="button">등록</button>
 					</form>
 				</div>
 
-				<div class="col-sm-9" id="app1">
+				<div class="col-sm-9">
 					
 					<!-- Vue 템플릿 시작 예정 -->
 					<template v-for="comment in commentList">
 						<row :dto="comment"/>
 					</template>
+					
+					
+					<div id="replySection" class="col-sm-9 mt-3">
+						<hr>
+						<form id="form2">
+							<input type="hidden" name="exr_routine_idx" value="<%=exrRoutine.getExr_routine_idx()%>">
+							<textarea class="form-control" name="content" rows="6" placeholder="댓글 입력 창"></textarea>
+							<input type="text" class="form-control" name="writer" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" />
+							<button id="bt_reply" class="btn btn-default" type="button">등록</button>
+						</form>
+					</div>
 					
 					<!-- ./템플릿 -->
 				</div>
@@ -114,6 +130,7 @@
 </body>
 <script type="text/javascript">
 	let app1;
+	let selectRow;
 	
 	const row={
 			template:`
@@ -122,9 +139,10 @@
 					<h4 class="user-title mb10">{{comment.content}}</h4>
 					<div>
 						<button type="button" class="btn btn btn-danger float-right" @click="del(comment.exr_routine_comment_idx)">삭제</button>
-						<button id="bt_comment" class="btn btn-default float-right" type="button" @click="reply()">답글달기</button>
+						<button id="bt_comment" class="btn btn-default float-right" type="button" @click="replyForm(comment)">답글달기</button>
 					</div>
 					<div class="comment-meta">
+						<span class="comment-meta-date">{{comment.writer}}</span>
 						<span class="comment-meta-date">{{comment.regdate}}</span>
 					</div>
 					<div class="comment-content">
@@ -138,30 +156,16 @@
 					comment:this.dto					
 				}
 			},
+			
 			methods:{
-				// 답글 등록(대댓글)
-				reply:function(){
-					if (!confirm("답글을 등록하시겠습니까?")) {return;}
+				// 답글 폼 등장
+				replyForm:function(comment){
+					$("#replySection").show();
 					
-					let formData=new FormData();
-					formData.append("exrRoutine.exr_routine_idx", $("input[name='exr_routine_idx']").val());
-					formData.append("content", $("#form1 textarea[name='content']").val());
-					formData.append("writer", $("#form1 input[name='writer']").val());
 					
-					$.ajax({
-						url:"/rest/exr/routine/comment/reply",
-						type:"POST",
-						contentType:false,
-						processData:false,
-						data:formData,
-						success:function(result, status, xhr){
-							alert(result.msg);
-							
-							getComments();
-							// 내용 비워주기
-							$("#form1 textarea[name='content']").val("");
-							$("#form1 input[name='writer']").val("");
-						},
+					// 답글
+					$("#bt_reply").click(function() {
+						reply(comment);
 					});
 				},
 				
@@ -177,37 +181,26 @@
 						success:function(result, status, xhr){
 							alert(result.msg);
 							getComments();
-						},
+						}
 					});
 				}
 			}
 		}
-
-/* 	function reply(){
-		let formData=new FormData();
-		formData.append("exrRoutine.exr_routine_idx", $("input[name='exr_routine_idx']").val());
-		formData.append("content", $("#form1 textarea[name='content']").val());
-		formData.append("writer", $("#form1 input[name='writer']").val());
-		
-		$.ajax({
-			url:"/rest/exr/routine/reply",
-			type:"POST",
-			contentType:false,
-			processData:false,
-			data:formData,
-			success:function(result, status, xhr){
-				alert(result.msg);
-				
-				getComments();
-				// 내용 비워주기
-				$("#form1 textarea[name='content']").val("");
-				$("#form1 input[name='writer']").val("");
-			},
-		});
-	} */
-					
-					
+	
+			
+	
+	// 댓글 등록
 	function regist(){
+		<sec:authorize access="isAnonymous()">
+			Swal.fire({
+				title:"로그인해야 사용할 수 있는 기능입니다",
+				icon:"warning",
+				confirmButtonText:"확인",
+				confirmButtonColor: '#c5f016'
+			});
+			return;
+		</sec:authorize>
+		
 		let formData=new FormData();
 		formData.append("exrRoutine.exr_routine_idx", $("input[name='exr_routine_idx']").val());
 		formData.append("content", $("#form1 textarea[name='content']").val());
@@ -230,14 +223,44 @@
 		});
 	}
 
+	//답글 등록
+ 	function reply(comment){
+		//if (!confirm("답글을 등록하시겠습니까?")) {return;}
+		let formData=new FormData();
+		formData.append("exrRoutine.exr_routine_idx", $("input[name='exr_routine_idx']").val());
+		formData.append("content", $("#form2 textarea[name='content']").val());
+		formData.append("writer", $("#form2 input[name='writer']").val());
+		formData.append("post", comment.post);
+		
+		$.ajax({
+			url:"/rest/exr/routine/comment/reply",
+			type:"POST",
+			contentType:false,
+			processData:false,
+			data:formData,
+			success:function(result, status, xhr){
+				alert(result.msg);
+				
+				//location.href="/exr/routine_detail/"+$("input[name='exr_routine_idx']").val();
+				getComments();
+				
+				
+				// 내용 비워주기
+				$("#form2 textarea[name='content']").val("");
+				$("#form2 input[name='writer']").val("");
+			},
+		});
+	}
+	
+	
 	
 	function getComments(){
 		$.ajax({
 			url:"/rest/exr/routine/comment/"+$("input[name='exr_routine_idx']").val(),
 			type:"GET",
 			success:function(result, status, xhr){
+				console.log("결과 확인 들어갑니다", result);
 				app1.commentList=result;
-				console.log(app1.exrRoutineList);
 			},
 			error:function(xhr, status, err){
 				console.log(xhr.responseText);
@@ -252,7 +275,7 @@
 			url:"/rest/exr/routine/recommend/"+$("input[name='exr_routine_idx']").val(),
 			type:"GET",
 			success:function(result, status, xhr){
-				alert(result.msg);
+				app1.recommend=result;
 			},
 			error:function(xhr, status, err){
 				console.log(xhr.responseText);
@@ -265,7 +288,8 @@
 		app1=new Vue({
 			el:"#app1",
 			data:{
-				commentList:[]
+				commentList:[],
+				recommend:$("input[name='recommend']").val()
 			},
 			components:{
 				row
@@ -274,14 +298,16 @@
 	}
 	
 	
+	
 	/***onLoad***/
 	$(function() {
 		init();
 		
 		// 댓글 목록 가져오기
 		getComments();
-		
+		$("#replySection").hide();
 
+		
 		// 목록 페이지 이동
 		$("#bt_list").click(function() {
 			location.href = "/exr/routine_list/1";
@@ -300,6 +326,7 @@
 				regist();
 			}
 		});
+
 		
 		// 추천
 		$("#bt_recommend").click(function() {

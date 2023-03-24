@@ -16,17 +16,36 @@
 
 
 	<select id="selectByFk" parameterType="int" resultMap="resultMap">
-		select * from exr_routine_comment
-		where exr_routine_idx=#{exrRoutine.exr_routine_idx}
+		select * from exr_routine_comment where exr_routine_idx=#{exr_routine_idx}
+		order by post desc, step asc
 	</select>
-
+	
+	
+	<!-- 해당 글에 대한 답글의 수 구하기 -->
+	<select id="totalCount" resultType="int" parameterType="int">
+		select count(*) from exr_routine_comment
+		where exr_routine_idx=#{exr_routine_idx}
+	</select>
+	
+	
 
 	<!-- 답글은 1씩 무조건 증가시킴 -->
 	<insert id="insert" parameterType="ExrRoutineComment">
 		insert into exr_routine_comment(exr_routine_idx, member_idx, writer, content, post, step, depth)
-		values(#{exrRoutine.exr_routine_idx}, #{member.member_idx}, #{writer}, #{content}, #{exrRoutine.exr_routine_idx}, #{step}+1, #{depth}+1)
+		values(#{exrRoutine.exr_routine_idx}, #{member.member_idx}, #{writer}, #{content}, #{post}, #{step}+1, #{depth}+1)
+		
+		<selectKey keyColumn="exr_routine_comment_idx" keyProperty="exr_routine_comment_idx" order="AFTER" resultType="int">
+			select last_insert_id() as exr_routine_idx from dual
+		</selectKey>
 	</insert>
 	
+	
+	<!-- 고유의 idx 값을 post로 지정하기 위해서 post를 업데이트 시킬 것 -->
+	<update id="update" parameterType="ExrRoutineComment">
+		update exr_routine_comment set post=#{post}
+		where exr_routine_comment_idx=#{exr_routine_comment_idx}
+	</update>
+		
 		
 	<delete id="delete" parameterType="int">
 		delete from exr_routine_comment
@@ -41,7 +60,7 @@
 		where post=#{post}
 	</select>
 	
-		
+
 
 	<!-- 댓글 자리가 올 곳 마련 -->
 	<update id="updateStep" parameterType="ExrRoutineComment">

@@ -1,3 +1,4 @@
+<%@page import="com.edu.bodybuddy.domain.exr.ExrTip"%>
 <%@page import="com.edu.bodybuddy.domain.exr.ExrRoutine"%>
 <%@page import="com.edu.bodybuddy.domain.exr.ExrCategory"%>
 <%@page import="java.util.List"%>
@@ -5,8 +6,8 @@
 <%
 	List<ExrCategory> exrCategoryList=(List<ExrCategory>)request.getAttribute("exrCategoryList");
 	
-	ExrRoutine exrRoutine=(ExrRoutine)request.getAttribute("exrRoutine");
-	System.out.println("확인"+exrRoutine);
+	ExrTip exrTip=(ExrTip)request.getAttribute("exrTip");
+	System.out.println("확인"+exrTip);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,23 +47,23 @@
 	<!-- content start -->
 	<div class="space-medium">
 		<div class="container">
-			<h3>루틴 공유 입력폼</h3>
-			<h1>Share Your Excercise Routine !</h1>
+			<h3>운동 팁 입력폼</h3>
+			<h1>Scrap Your Excercise Video !</h1>
 			<hr>
 			<div class="row">
 				<div class="col-sm-12">
 					<form id="form1">
 						<div class="form-group">
-							<input type="hidden" name="exr_routine_idx" value="<%=exrRoutine.getExr_routine_idx() %>">
-							<input type="text" class="form-control" name="title" value="<%=exrRoutine.getTitle() %>" style="height:100px; font-size:30px">
+							<input type="hidden" name="exr_routine_idx" value="<%=exrTip.getExr_tip_idx() %>">
+							<input type="text" class="form-control" name="title" value="<%=exrTip.getTitle() %>" style="height:100px; font-size:30px">
 						</div>
 						<div class="form-group">
-							<input type="text" class="form-control" name="writer" value="<%=exrRoutine.getWriter() %>">
+							<input type="text" class="form-control" name="writer" value="<%=exrTip.getWriter() %>">
 						</div>
 						
 						<div class="form-group">
 							<select class="form-control" name="exrCategory" id="exrCategory">
-								<option value="0"><%=exrRoutine.getExrCategory().getExr_category_name() %></option>
+								<option value="0"><%=exrTip.getExrCategory().getExr_category_name() %></option>
 								<% for(ExrCategory exrCategory:exrCategoryList){ %>
 									<option value="<%=exrCategory.getExr_category_idx()%>"><%=exrCategory.getExr_category_name() %></option>
 								<% } %>
@@ -70,7 +71,7 @@
 						</div>
 						
 						<div class="form-group">
-							<textarea id="summernote" name="content"><%=exrRoutine.getContent() %></textarea>
+							<textarea id="summernote" name="content"><%=exrTip.getContent() %></textarea>
 						</div>
 						
 						<div class="form-group">
@@ -156,9 +157,16 @@
 		});
 
 		// 삭제
+		$("#bt_delete").click(
+				function() {
+					if (confirm("삭제하시겠습니까?")) {
+						location.href = "/exr/routine/delete?exr_routine_idx="
+								+ $("#form1 input[name='exr_routine_idx']")
+										.val();
+						alert("삭제되었습니다");
+					}
+				});
 
-
-		
 		// 써머 노트 적용
 		$('#summernote').summernote({
 			height : 400

@@ -52,12 +52,12 @@
      
 
 	<!-- 컨텐트 시작! -->
-	<div class="content m-5">
+	<div class="content m-5" id="app1">
 		<div class="row">
 		
-			<div class="col-lg-8">
+			<div class="col-lg-7">
 				<div class="widget widget-search mb40">
-					<h2 class="widget-title">searchBar</h2>
+					<h2 class="widget-title">원하는 운동 키워드를 검색해보세요</h2>
 					<div class="input-group">
 							<input type="text" class="form-control" placeholder="Seacrh Here" name="keyword">
 							<span class="input-group-btn">
@@ -69,7 +69,7 @@
 				</div>
 
 					
-				<div id="app1">
+				<div>
 					<center>
 						<div id="youtube"></div>
 					</center>
@@ -79,7 +79,7 @@
 			</div>
 
 				
-			<div class="col-lg-4">
+			<div class="col-lg-5">
 				<a href="/exr/tip/registfrom" class="btn btn-default float-right">Scrap</a>
 
 				<div class="card-body table-responsive p-0">
@@ -87,16 +87,17 @@
 						<thead>
 							<tr>
 								<th>No</th>
+								<th>카테고리</th>
 								<th>제목</th>
-								<th>작성자</th>
 								<th>등록일</th>
 							</tr>
 						</thead>
 						<tbody>
-							<template v-for="exrTip in exrTipList">
-							<h3>저기욤</h3>
-								<row :dto="exrTip" :key="exrTip.exr_tip_idx"/>
+						
+							<template v-for="tip in exrTipList">
+								<row :dto="tip" :key="tip.exr_tip_idx"/>
 							</template>
+							
 						</tbody>
 					</table>
 				</div>
@@ -118,6 +119,7 @@
 <script type="text/javascript">
 	// 나의 api키
 	let APIKey="AIzaSyABFfH85xw6pNOdcGrmBAMGKOJhVhsQL6Q";
+	
 	
 	//----------------------------------------------------------------------------------//
 	function searchVideo(){
@@ -142,6 +144,7 @@
 		});
 	}
 	
+	
 	function getExrTipList(){
 		$.ajax({
 			url:"/rest/exr/tip_list",
@@ -156,14 +159,15 @@
 		});
 	}
 	
+	
 	const row={
 			template:`
-				<tr>
+ 				<tr>
 				    <td>{{exrTip.exr_tip_idx}}</td>
+				    <td>{{exrTip.exrCategory.exr_category_name}}</td>
 				    <td><a href="#" @click="getDetail(exrTip)">{{exrTip.title}}</a></td>
-				    <td>{{exrTip.writer}}</td>
 				    <td>{{exrTip.regdate.substr(0, 10)}}</td>
-				</tr>
+				</tr> 
 			`,
 			props:["dto"],
 			data(){
@@ -172,11 +176,13 @@
 				}
 			},
 			methods:{
-				getDetail:function(exrRoutine){
-					//location.href="/exr/routine_detail/"+exrRoutine.exr_routine_idx;
+				getDetail:function(exrTip){
+					//alert(exrTip.exr_tip_idx);
+					location.href="/exr/tip_detail/"+exrTip.exr_tip_idx;
 				}
 			}
-		}
+			
+	}
 	
 	
 	function init(){

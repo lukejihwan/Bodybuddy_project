@@ -15,6 +15,8 @@
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrRecord" alias="ExrRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrDetailRecord" alias="ExrDetailRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.DietRecord" alias="DietRecord"/>
+ 	
+ 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.GpsData" alias="GpsData"/>
   
   	<!-- Exr Alias -->
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrCategory" alias="ExrCategory" />
@@ -51,10 +53,13 @@
     <mapper resource="com/edu/bodybuddy/mybatis/member/PasswordMapper.xml"/>
 
     <!-- Myrecord Mapper -->
+    
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/PhysicalRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/ExrRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/ExrDetailRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/DietRecordMapper.xml"/>
+    
+    <mapper resource="com/edu/bodybuddy/mybatis/myrecord/GpsDataMapper.xml"/>
 
     <!-- Exr Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrCategoryMapper.xml"/>

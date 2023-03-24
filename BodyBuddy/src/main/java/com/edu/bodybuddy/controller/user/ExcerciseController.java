@@ -16,10 +16,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edu.bodybuddy.domain.exr.ExrCategory;
 import com.edu.bodybuddy.domain.exr.ExrNotice;
 import com.edu.bodybuddy.domain.exr.ExrRoutine;
+import com.edu.bodybuddy.domain.exr.ExrTip;
 import com.edu.bodybuddy.exception.ExrCategoryException;
 import com.edu.bodybuddy.model.exr.ExrCategoryService;
 import com.edu.bodybuddy.model.exr.ExrNoticeService;
 import com.edu.bodybuddy.model.exr.ExrRoutineService;
+import com.edu.bodybuddy.model.exr.ExrTipService;
 import com.edu.bodybuddy.util.Msg;
 import com.edu.bodybuddy.util.PageManager;
 
@@ -34,6 +36,8 @@ public class ExcerciseController {
 	private ExrCategoryService exrCategoryService;
 	@Autowired
 	private ExrRoutineService exrRoutineService;
+	@Autowired
+	private ExrTipService exrTipService;
 	
 	
 	// 메인페이지
@@ -87,14 +91,17 @@ public class ExcerciseController {
 	// 글 등록 폼
 	@GetMapping("/routine/registform")
 	public ModelAndView getTipForm(HttpServletRequest request){
-		ModelAndView mv= new ModelAndView("exr/tip_registform");
+		List<ExrNotice> exrCategoryList=exrCategoryService.selectAll();
+		
+		ModelAndView mv= new ModelAndView("exr/routine_registform");
+		mv.addObject("exrCategoryList", exrCategoryList);
 		return mv;
 	}
 	
 	
 	// 상세 보기
 	@GetMapping("/routine_detail/{exr_routine_idx}")
-	public ModelAndView getDetail(@PathVariable int exr_routine_idx, HttpServletRequest request){
+	public ModelAndView getRoutineDetail(@PathVariable int exr_routine_idx, HttpServletRequest request){
 		List<ExrCategory> exrCategoryList=exrCategoryService.selectAll();
 		ExrRoutine exrRoutine=exrRoutineService.select(exr_routine_idx);
 		
@@ -108,7 +115,7 @@ public class ExcerciseController {
 	}
 	
 	
-	// 상세 보기
+	// 수정폼
 	@GetMapping("/routine/edit/{exr_routine_idx}")
 	public ModelAndView getEditForm(@PathVariable int exr_routine_idx, HttpServletRequest request){
 		List<ExrCategory> exrCategoryList=exrCategoryService.selectAll();
@@ -135,18 +142,82 @@ public class ExcerciseController {
 	/*-----------------------
 	  	팁 게시판
 	 -------------------------*/ 
-	@GetMapping("/tip")
+	@GetMapping("/tip_list")
 	public ModelAndView getRegistForm(HttpServletRequest request) {
 		ModelAndView mv= new ModelAndView("/exr/tip_main");
 		return mv;
 	}
 	
+	
+	// 등록폼
 	@GetMapping("/tip/registfrom")
 	public ModelAndView getTipMain(HttpServletRequest request) {
 		List<ExrCategory> exrCategoryList=exrCategoryService.selectAll();
 		
 		ModelAndView mv= new ModelAndView("/exr/tip_registform");
 		mv.addObject("exrCategoryList", exrCategoryList);
+		return mv;
+	}
+	
+	
+	// 상세 보기
+	@GetMapping("/tip_detail/{exr_tip_idx}")
+	public ModelAndView getTipDetail(@PathVariable int exr_tip_idx, HttpServletRequest request){
+		ExrTip exrTip=exrTipService.select(exr_tip_idx);
+		
+		// 조회수 증가
+		exrTipService.plusHit(exr_tip_idx);
+		
+		ModelAndView mv= new ModelAndView("exr/tip_detail");
+		mv.addObject("exrTip", exrTip);
+		return mv;
+	}
+
+
+	// 수정폼
+	@GetMapping("/tip/edit/{exr_tip_idx}")
+	public ModelAndView getTipEditForm(@PathVariable int exr_tip_idx, HttpServletRequest request){
+		List<ExrCategory> exrCategoryList=exrCategoryService.selectAll();
+		ExrTip exrTip=exrTipService.select(exr_tip_idx);
+		
+		ModelAndView mv= new ModelAndView("exr/tip_edit");
+		mv.addObject("exrCategoryList", exrCategoryList);
+		mv.addObject("exrTip", exrTip);
+		return mv;
+	}
+	
+	
+	// 삭제
+	@GetMapping("/tip/delete")
+	public ModelAndView deleteTip(int exr_tip_idx, HttpServletRequest request) {
+		//logger.info("넘어온 idx "+exr_tip_idx);
+		
+		exrTipService.delete(exr_tip_idx);
+		
+		ModelAndView mv= new ModelAndView("redirect:/exr/tip_list");
+		return mv;
+	}
+	
+	
+	
+	/*-----------------------
+  		오운완 게시판
+ 	-------------------------*/ 
+	// 등록폼
+	@GetMapping("/today_list")
+	public ModelAndView getTipList(HttpServletRequest request){
+		logger.info("응답 받음!");
+		
+		//int total=exrRoutineService.totalCount();
+		//logger.info("토탈 레코드 수는?"+total);
+		//logger.info("현제 페이지는? "+pg);
+		
+		
+		PageManager pageManager=new PageManager();
+		//pageManager.init(total, pg);
+		
+		ModelAndView mv= new ModelAndView("exr/today_list");
+		//mv.addObject("pageManager", pageManager);
 		return mv;
 	}
 	
