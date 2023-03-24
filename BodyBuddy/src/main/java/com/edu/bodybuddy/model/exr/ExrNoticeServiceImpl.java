@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.edu.bodybuddy.domain.exr.ExrNotice;
-import com.edu.bodybuddy.domain.exr.ExrNoticeImg;
 import com.edu.bodybuddy.exception.ExrNoticeException;
 import com.edu.bodybuddy.util.FileManager;
 
@@ -16,8 +15,6 @@ import com.edu.bodybuddy.util.FileManager;
 public class ExrNoticeServiceImpl  implements ExrNoticeService{
 	@Autowired
 	private ExrNoticeDAO exrNoticeDAO;
-	@Autowired
-	private ExrNoticeImgDAO exrNoticeImgDAO;
 	@Autowired
 	private FileManager fileManager;
 	

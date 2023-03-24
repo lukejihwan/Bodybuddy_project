@@ -59,6 +59,7 @@ public class MybatisExrRoutineDAO implements ExrRoutineDAO{
 			throw new ExrRoutineException("루틴 공유 글 등록 실패");
 		}
 	}
+	
 
 	@Override
 	public void update(ExrRoutine exrRoutine) throws ExrRoutineException{
