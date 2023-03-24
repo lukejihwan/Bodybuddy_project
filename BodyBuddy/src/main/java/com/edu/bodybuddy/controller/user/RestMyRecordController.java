@@ -38,7 +38,7 @@ public class RestMyRecordController {
 	private ExrRecordService exrRecordService;
 	
 	
-	@PostMapping("/location")
+	@PostMapping("/gps")
 	public String getLocation(){
 		
 		logger.info("응답 받음");

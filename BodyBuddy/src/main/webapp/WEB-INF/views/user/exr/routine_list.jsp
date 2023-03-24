@@ -102,7 +102,7 @@
 								</thead>
 								<tbody>
 									<template v-for="exrRoutine in exrRoutineList">
-										<row :dto="exrRoutine" :key="exrRoutine.exr_routine_idx" :num="num"/>
+										<row :dto="exrRoutine" :key="exrRoutine.exr_routine_idx"/>
 									</template>
 								</tbody>
 							</table>
@@ -165,7 +165,6 @@
 <script type="text/javascript">
 	let app1;
 	
-	
 	// 카테고리별 목록 출력
 	function getCategory(idx){
 		//alert(idx);
@@ -176,7 +175,7 @@
 	const row={
 		template:`
 			<tr>
-			    <td>{{n}}</td>
+			    <td>{{exrRoutine.exr_routine_idx}}</td>
 			    <td>{{exrRoutine.exrCategory.exr_category_name}}</td>
 			    <td><a href="#" @click="getDetail(exrRoutine)">{{exrRoutine.title}}
 			    	<span>(0)</span>
@@ -186,25 +185,16 @@
 			    <td>{{exrRoutine.hit}}</td>
 			</tr>
 		`,
-		props:["dto", "num", "comment"],
+		props:["dto"],
 		data(){
 			return{
 				exrRoutine:this.dto,
-				n:this.num
 			}
 		},
 		methods:{
 			getDetail:function(exrRoutine){
 				location.href="/exr/routine_detail/"+exrRoutine.exr_routine_idx;
-			},
-			
-			setNum:function(){
-				for(let i=0; i<app1.exrRoutineList.length; i++){
-					this.num--;
-				}
-				
 			}
-
 		}
 		
 	}
@@ -219,18 +209,6 @@
 			success:function(result, status, xhr){
 				app1.exrRoutineList=result;
 				console.log(app1.exrRoutineList);
-	
-	/* 			let json={};
-				for(let i=0; i<result.length; i++){
-					let dto=result[i];
-					json['exrRoutine']=dto;
-					
-					app1.exrRoutineList.push(json);
-				} */
-				
-				//console.log("가공된 리스트 확인 ", app1.exrRoutineList);
-				//console.log("안에 뭐 있니 ", app1.exrRoutineList.exrRoutine);
-				
 			
 			},
 			error:function(xhr, status, err){
@@ -245,17 +223,11 @@
 			el:"#app1",
 			data:{
 				exrRoutineList:[],
-				num:$("input[name='num']").val()
 			},
 			components:{
 				row
 			},
 			
-			computed:{
-				setNum(){
-					return this.num--;
-				}
-			}
 		});
 	}
 	

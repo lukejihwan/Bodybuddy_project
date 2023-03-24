@@ -13,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edu.bodybuddy.domain.exr.ExrCategory;
@@ -23,7 +21,6 @@ import com.edu.bodybuddy.domain.exr.ExrNotice;
 import com.edu.bodybuddy.exception.ExrCategoryException;
 import com.edu.bodybuddy.exception.ExrNoticeException;
 import com.edu.bodybuddy.model.exr.ExrCategoryService;
-import com.edu.bodybuddy.model.exr.ExrNoticeImgService;
 import com.edu.bodybuddy.model.exr.ExrNoticeService;
 import com.edu.bodybuddy.util.Msg;
 @Controller
@@ -34,8 +31,6 @@ public class ExrAdminController {
 	private ExrCategoryService exrCategoryService;
 	@Autowired
 	private ExrNoticeService exrNoticeService;
-	@Autowired
-	private ExrNoticeImgService exrNoticeImgService;
 	
 	
 	/*-------------------------------------
@@ -97,7 +92,6 @@ public class ExrAdminController {
 		
 		// 만약 사진이 있다면
 		if(exrNoticeService.selectAll().size()>1) {
-			exrNoticeImgService.delete(exr_notice_idx);
 			exrNoticeService.delete(exr_notice_idx);
 		}else {
 			exrNoticeService.delete(exr_notice_idx);

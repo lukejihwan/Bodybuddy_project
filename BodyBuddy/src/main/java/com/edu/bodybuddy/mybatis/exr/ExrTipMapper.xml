@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ExrTip">
+
+	<resultMap type="ExrTip" id="resultMap">
+		<id column="exr_tip_idx" property="exr_tip_idx"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="regdate" property="regdate"/>
+		<result column="hit" property="hit"/>
+		<result column="member_idx" property="member.member_idx"/>
+		<result column="exr_category_idx" property="exrCategory.exr_category_idx"/>
+	</resultMap>
+	
+	
+	<!-- 글 상세보기 -->
+	<select id="select" parameterType="int" resultMap="resultMap">
+		select * from exr_tip
+		where exr_tip_idx=#{exr_tip_idx}	
+	</select>
+	
+
+	<select id="selectAll" resultMap="resultMap">
+		select * from exr_tip
+	</select>
+
+
+	<!-- Member 나중에 추가 예정 -->
+	<insert id="insert" parameterType="ExrRoutine">
+		insert into exr_tip(exr_category_idx, title, writer, content)
+		values(#{exrCategory.exr_category_idx}, #{title}, #{writer}, #{content})
+	</insert>
+	
+	
+	<!-- 조회수 증가 -->
+	<update id="plusHit" parameterType="int">
+		update exr_tip set hit=hit+1
+		where exr_tip_idx=#{exr_tip_idx}
+	</update>
+	
+
+	<update id="update" parameterType="ExrRoutine">
+		update exr_tip set exr_category_idx=#{exrCategory.exr_category_idx}, title=#{title}, writer=#{writer}, content=#{content}
+		where exr_tip_idx=#{exr_tip_idx}
+	</update>
+
+
+	<delete id="delete" parameterType="int">
+		delete from exr_tip
+		where exr_tip_idx=#{exr_tip_idx}
+	</delete>
+	
+
+</mapper>
