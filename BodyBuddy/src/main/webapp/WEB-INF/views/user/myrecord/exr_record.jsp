@@ -178,34 +178,59 @@ let map;
 const rowlist={
 	template:`
 		<div class="card bg-dark text-white wrapper">
-			<div class="row card-body">
-				운동명: {{exer.exr_name}}
+			<div class="row card-body">{{exr.exr_record_idx}}
+				운동명: {{exr.exr_name}}
 			</div>
 			<div div class="row">
-				<div class="col-md-8 card-body">
+				<div class="col-md-10 card-body">
 					<div class="form-group">
+						<template v-for="(detail_exr,i) in exr.exrRecordDetailList">
+							<div class="row">
+								<div class="col-md-2">
+									{{i+1}}세트
+								</div>
+								<div class="col-md-3">
+									<input type="number" class="form-control input-sm" v-model="detail_exr.kg">
+								</div>
+								<div class="col-md-2">
+									kg
+								</div>
+								<div class="col-md-3">
+									<input type="number" class="form-control input-sm" v-model="detail_exr.times">
+								</div>
+								<div class="col-md-2">
+									개
+								</div>
+							</div>
+						</template>
 					</div>
 				</div>
-				<div class="col-md-4 card-body">
-					<div class="form-group">
-						<button type="button" class="btn btn-warning" v-on:click="update(exer.exr_name)">수정</button>
+				<form>
+					<input type="hidden" value="{{exr.exr_record_idx}}" name="exr_idx">
+					<div class="col-md-2 card-body">
+						<div class="form-group">
+							<button type="button" class="btn btn-warning" v-on:click="update(exr.exr_name)">수정</button>
+						</div>
+						<div class="form-group">
+							<button type="button" class="btn btn-danger" v-on:click="del(exr.exr_record_idx)">삭제</button>
+						</div>
 					</div>
-					<div class="form-group">
-						<button type="button" class="btn btn-danger">삭제</button>
-					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 		`,
-		props:['exr', 'key_idx'],
-		data:function(){
+		props:['exr'],
+		data(){
 			return{
-				exer:this.exr
+				exr:this.exr
 			};
 		},
 		methods:{
 			update:function(exrname){
 				alert(exrname+" 수정할래요?");
+			},
+			del:function(exr_record_idx){
+				
 			}
 		}
 }
@@ -214,7 +239,8 @@ function init(){
 	app1=new Vue({
 		el:"#app1",
 		data:{
-			exrList:[]
+			exrList:[],
+			count:10
 		},
 		components:{
 			rowlist
@@ -286,8 +312,8 @@ function calendarInit() {
     const utc = date.getTime() + (date.getTimezoneOffset() * 60 * 1000); // uct 표준시 도출
     const kstGap = 9 * 60 * 60 * 1000; // 한국 kst 기준시간 더하기
     today = new Date(utc + kstGap); // 한국 시간으로 date 객체 만들기(오늘)
-    console.log(utc);
-    console.log(today);
+    //console.log(utc);
+    //console.log(today);
   
     let thisMonth = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     // 달력에서 표기하는 날짜 객체
@@ -351,6 +377,7 @@ function showExrRecord(clickedDay){
 			//console.log(typeof result); object형
 			console.log("받아온 결과는 ", result);
 			app1.exrList=result;
+			console.log("exrList의 길이는 ",app1.exrList.length);
 			showExrRecordsOnCollapse(result);
 		},
 		error:function(xhr, status, error){
@@ -439,7 +466,7 @@ function getExrRecordForMonth(){
 		};
 		map = new google.maps.Map(document.getElementById("myMap"),mapProp);
 
-		console.log("잘 호출 되는 거지? ", map);
+		//console.log("잘 호출 되는 거지? ", map);
 		
 	}
 	
@@ -452,8 +479,8 @@ function getExrRecordForMonth(){
 			success:function(result, status, xhr){
 				createPolyline(result);
 				
-				console.log("결과 ", result);
-				console.log("결과안의 개수 ", result.length);
+				//console.log("결과 ", result);
+				//console.log("결과안의 개수 ", result.length);
 			
 				
 				let jsonList=[];
@@ -499,15 +526,15 @@ function getExrRecordForMonth(){
 $(document).ready(function() {
     //초기화
     init();
-    //달력초기화
-	/*------------------*/
+	//달력초기화
+	calendarInit();
+	
+	/*구글맵 호출하는 부분*/
 	getGpsData();
 	initMap();
 	/*------------------*/
 	
-	//달력초기화
-	calendarInit();
-    
+	
     //처음 보여주는 달력의 등록된 운동기록 보여주기
     getExrRecordForMonth();
     
@@ -605,10 +632,10 @@ $(document).ready(function() {
 				</div>
   				
   				<!-- 운동기록 상세보기가 나올 창 -->
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
 				
-				<template v-for="exr in exrList">
-					<rowlist :key_idx="exr.exr_record_idx" :exr="exr"/>
+				<template v-for="exer in exrList">
+					<rowlist :key_idx="exer.exr_record_idx" :exr="exer"/>
 				</template>
 				
 					<!-- 
