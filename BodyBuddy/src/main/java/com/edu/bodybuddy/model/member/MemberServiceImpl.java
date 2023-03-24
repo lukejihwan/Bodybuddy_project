@@ -4,15 +4,12 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.edu.bodybuddy.domain.member.Address;
 import com.edu.bodybuddy.domain.member.Member;
 import com.edu.bodybuddy.domain.member.Role;
-import com.edu.bodybuddy.domain.security.MemberDetail;
 import com.edu.bodybuddy.exception.AddressException;
 import com.edu.bodybuddy.exception.MemberException;
 import com.edu.bodybuddy.exception.PasswordException;
