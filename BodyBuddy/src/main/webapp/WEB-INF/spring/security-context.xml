@@ -39,7 +39,7 @@
     
 	
    	
-   	<beans:bean class="com.edu.bodybuddy.model.security.MemberAuthenticationProvider" id="authenticationProvider"/>
+   	<beans:bean class="com.edu.bodybuddy.model.security.LoginAuthenticationProvider" id="authenticationProvider"/>
 	<beans:bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="passwordEncoder"></beans:bean>
  
     <authentication-manager erase-credentials="true">
