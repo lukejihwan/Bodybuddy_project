@@ -161,9 +161,6 @@ const rowlist={
 			<div div class="row">
 				<div class="col-md-8 card-body">
 					<div class="form-group">
-						<template v-for="(exrDetail,i) in exer.exrRecordDetailList">
-							<div>{{i+1}}세트 {{exrDetail.kg}}kg {{exrDetail.times}}개</div>
-						</template>
 					</div>
 				</div>
 				<div class="col-md-4 card-body">
@@ -311,7 +308,7 @@ function showExrRecordsOnCollapse(exrLists){
 		//console.log("운동명은",exrList[i].exr_name);
 		//하나의 운동명을 아래 영역에 보여줄 함수
 		
-		for(let a=0; a<exrList[i].exrRecordDetailList.length; a++){
+		for(let a=0; a<exrLists[i].exrRecordDetailList.length; a++){
 			//console.log(exrList[i].exrRecordDetailList.length);
 			console.log("번쨰 세트의 detail_idx는 ", exrLists[i].exrRecordDetailList[a].exr_record_detail_idx );
 		}
@@ -331,7 +328,7 @@ function showExrRecord(clickedDay){
 			//console.log(typeof result); object형
 			console.log("받아온 결과는 ", result);
 			app1.exrList=result;
-			//showExrRecordsOnCollapse(result);
+			showExrRecordsOnCollapse(result);
 		},
 		error:function(xhr, status, error){
 			console.log("error",error);
@@ -408,10 +405,10 @@ function getExrRecordForMonth(){
 
 //시작할 때 로드될 메서드
 $(document).ready(function() {
-    //달력초기화
-	calendarInit();
     //초기화
     init();
+    //달력초기화
+	calendarInit();
     
     //처음 보여주는 달력의 등록된 운동기록 보여주기
     getExrRecordForMonth();
@@ -443,7 +440,7 @@ $(document).ready(function() {
 
     
     <!-- content start -->
-    <div class="space-medium">
+    <div class="space-medium" id="app1">
         <div class="container">
             <div class="row">
             	<!-- 왼쪽에 나의 기록 목록 나오는 영역 -->
@@ -495,11 +492,12 @@ $(document).ready(function() {
 				</div>
   				
   				<!-- 운동기록 상세보기가 나올 창 -->
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"  id="app1">
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 				
-				<template v-for="exercise in exrList">
-					<rowlist :key_idx="exercise.exr_record_idx" :exr="exercise"/>
+				<template v-for="exr in exrList">
+					<rowlist :key_idx="exr.exr_record_idx" :exr="exr"/>
 				</template>
+				
 					<!-- 
 					<div id="exrCollapse" class="collapse">
 				 		<div class="card bg-success text-white">
