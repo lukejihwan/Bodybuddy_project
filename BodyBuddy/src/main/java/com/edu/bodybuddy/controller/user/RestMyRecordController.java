@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.controller.user;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -60,6 +61,8 @@ public class RestMyRecordController {
 	@PostMapping("/exrListForMonth")
 	public List<ExrRecord> getExrRecordForMonth(@RequestBody Map<String, String> oneMonthPeriod){
 		logger.info("한달동안의 기록을 불러올 첫날과 마지막 날 값은 :" +oneMonthPeriod.get("firstDay")+",,"+oneMonthPeriod.get("lastDay"));
+		LocalDate  currentDate=LocalDate.now();
+		logger.info("오늘 날짜는"+currentDate);
 		List<ExrRecord> exrRecordListMonth=exrRecordService.seletForMonth(oneMonthPeriod);
 		return exrRecordListMonth;
 	}
@@ -75,6 +78,8 @@ public class RestMyRecordController {
 			logger.info("받아온 운동명은 : "+exrRecord.getExr_name());
 		}
 		*/
+		
+		
 		logger.info("운동목록 받아오는 : "+exrList);
 		exrRecordService.regist(exrList);
 		Message msg=new Message();

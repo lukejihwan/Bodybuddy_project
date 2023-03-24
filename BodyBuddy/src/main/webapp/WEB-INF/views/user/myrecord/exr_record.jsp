@@ -19,6 +19,7 @@
 	margin: 10px;
 }
 .wrapper{
+	margin: 15px;
 	padding: 10px;
 	font-size: 20px;
 }
@@ -138,8 +139,9 @@
 	border-radius: 5px;
 	border: 2px solid #28a745;
 }
-.current{
-	
+.current:hover{
+	transform:scale(1.2);
+	cursor: pointer;
 }
 </style>
 <script type="text/javascript">
@@ -154,19 +156,19 @@ const rowlist={
 	template:`
 		<div class="card bg-dark text-white wrapper">
 			<div class="row card-body">
-				운동명: 벤치프레스
+				운동명: {{exer.exr_name}}
 			</div>
 			<div div class="row">
 				<div class="col-md-8 card-body">
 					<div class="form-group">
-						<div>1세트 20kg 5개</div>
-						<div>2세트 20kg 5개</div>
-						<div>3세트 20kg 5개</div>
+						<template v-for="(exrDetail,i) in exer.exrRecordDetailList">
+							<div>{{i+1}}세트 {{exrDetail.kg}}kg {{exrDetail.times}}개</div>
+						</template>
 					</div>
 				</div>
 				<div class="col-md-4 card-body">
 					<div class="form-group">
-						<button type="button" class="btn btn-warning">수정</button>
+						<button type="button" class="btn btn-warning" v-on:click="update(exer.exr_name)">수정</button>
 					</div>
 					<div class="form-group">
 						<button type="button" class="btn btn-danger">삭제</button>
@@ -175,14 +177,16 @@ const rowlist={
 			</div>
 		</div>
 		`,
-		props:[],
-		data(){
+		props:['exr', 'key_idx'],
+		data:function(){
 			return{
-				
+				exer:this.exr
 			};
 		},
 		methods:{
-			
+			update:function(exrname){
+				alert(exrname+" 수정할래요?");
+			}
 		}
 }
 
@@ -190,7 +194,7 @@ function init(){
 	app1=new Vue({
 		el:"#app1",
 		data:{
-			exrList:["123"]
+			exrList:[]
 		},
 		components:{
 			rowlist
@@ -302,14 +306,14 @@ function makeDayFormat(clickedDay){
 }
 
 //해당일의 운동기록과 세부내용을 collapse에 rendering하는 함수
-function showExrRecordsOnCollapse(exrList){
-	for(let i=0; i<exrList.length; i++){
-		console.log("운동명은",exrList[i].exr_name);
+function showExrRecordsOnCollapse(exrLists){
+	for(let i=0; i<exrLists.length; i++){
+		//console.log("운동명은",exrList[i].exr_name);
 		//하나의 운동명을 아래 영역에 보여줄 함수
 		
 		for(let a=0; a<exrList[i].exrRecordDetailList.length; a++){
-			console.log(exrList[i].exrRecordDetailList.length);
-			console.log("번쨰 세트의 detail_idx는 ", exrList[i].exrRecordDetailList[a].exr_record_detail_idx );
+			//console.log(exrList[i].exrRecordDetailList.length);
+			console.log("번쨰 세트의 detail_idx는 ", exrLists[i].exrRecordDetailList[a].exr_record_detail_idx );
 		}
 	}
 }
@@ -326,7 +330,8 @@ function showExrRecord(clickedDay){
 		success:function(result, status, xhr){
 			//console.log(typeof result); object형
 			console.log("받아온 결과는 ", result);
-			showExrRecordsOnCollapse(result);
+			app1.exrList=result;
+			//showExrRecordsOnCollapse(result);
 		},
 		error:function(xhr, status, error){
 			console.log("error",error);
@@ -492,8 +497,8 @@ $(document).ready(function() {
   				<!-- 운동기록 상세보기가 나올 창 -->
 				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"  id="app1">
 				
-				<template v-for="exr in exrList">
-					<rowlist/>
+				<template v-for="exercise in exrList">
+					<rowlist :key_idx="exercise.exr_record_idx" :exr="exercise"/>
 				</template>
 					<!-- 
 					<div id="exrCollapse" class="collapse">
@@ -505,7 +510,7 @@ $(document).ready(function() {
 					</div>
 					 -->
 				</div>
-				
+
 			</div>
 			
         </div>
