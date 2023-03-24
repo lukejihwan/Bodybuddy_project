@@ -466,11 +466,11 @@ function getExrRecordForMonth(){
 					json['lat']=dto.lati;
 					json['lng']=dto.longi;
 					
-					console.log("가공된 제이슨은? ",json);
+					//console.log("가공된 제이슨은? ",json);
 					jsonList.push(json);
 					
 				}
-				console.log("가공된 제이슨 리스트는? ",jsonList);
+				//console.log("가공된 제이슨 리스트는? ",jsonList);
 				createPolyline(jsonList);
 				
 			}
