@@ -15,6 +15,14 @@
 	position: fixed;
 }
 */
+#app1{
+	margin: 10px;
+}
+.wrapper{
+	margin: 15px;
+	padding: 10px;
+	font-size: 20px;
+}
 .sec_cal {
     width: 360px;
     margin: 0 auto;
@@ -131,8 +139,9 @@
 	border-radius: 5px;
 	border: 2px solid #28a745;
 }
-.current{
-	
+.current:hover{
+	transform:scale(1.2);
+	cursor: pointer;
 }
 
 <!-- 구글맵과 관련된 스타일 -->
@@ -161,12 +170,57 @@ let currentYear;
 let currentMonth;
 let nextDate;
 let today;
-
-/*---------------------*/
-let map;
+//vue 컨트롤객체
+let app1;
 // 현재 위치에 포커스 맞추기
+let map;
 
-/*---------------------*/
+const rowlist={
+	template:`
+		<div class="card bg-dark text-white wrapper">
+			<div class="row card-body">
+				운동명: {{exer.exr_name}}
+			</div>
+			<div div class="row">
+				<div class="col-md-8 card-body">
+					<div class="form-group">
+					</div>
+				</div>
+				<div class="col-md-4 card-body">
+					<div class="form-group">
+						<button type="button" class="btn btn-warning" v-on:click="update(exer.exr_name)">수정</button>
+					</div>
+					<div class="form-group">
+						<button type="button" class="btn btn-danger">삭제</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		`,
+		props:['exr', 'key_idx'],
+		data:function(){
+			return{
+				exer:this.exr
+			};
+		},
+		methods:{
+			update:function(exrname){
+				alert(exrname+" 수정할래요?");
+			}
+		}
+}
+
+function init(){
+	app1=new Vue({
+		el:"#app1",
+		data:{
+			exrList:[]
+		},
+		components:{
+			rowlist
+		}
+	});
+}
 
 
 /*
@@ -272,16 +326,19 @@ function makeDayFormat(clickedDay){
 }
 
 //해당일의 운동기록과 세부내용을 collapse에 rendering하는 함수
-function showExrRecordsOnCollapse(exrList){
-	for(let i=0; i<exrList.length; i++){
-		console.log("운동명은",exrList[i].exr_name);
-		for(let a=0; a<exrList[i].exrRecordDetailList.length; a++){
-			console.log(exrList[i].exrRecordDetailList.length);
-			console.log("번쨰 세트의 detail_idx는 ", exrList[i].exrRecordDetailList[a].exr_record_detail_idx );
+function showExrRecordsOnCollapse(exrLists){
+	for(let i=0; i<exrLists.length; i++){
+		//console.log("운동명은",exrList[i].exr_name);
+		//하나의 운동명을 아래 영역에 보여줄 함수
+		
+		for(let a=0; a<exrLists[i].exrRecordDetailList.length; a++){
+			//console.log(exrList[i].exrRecordDetailList.length);
+			console.log("번쨰 세트의 detail_idx는 ", exrLists[i].exrRecordDetailList[a].exr_record_detail_idx );
 		}
 	}
 }
 
+//각 날짜 클릭시 동작할 함수
 function showExrRecord(clickedDay){
 	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
 	console.log("registedDate", registedDate);
@@ -293,6 +350,7 @@ function showExrRecord(clickedDay){
 		success:function(result, status, xhr){
 			//console.log(typeof result); object형
 			console.log("받아온 결과는 ", result);
+			app1.exrList=result;
 			showExrRecordsOnCollapse(result);
 		},
 		error:function(xhr, status, error){
@@ -404,10 +462,14 @@ function getExrRecordForMonth(){
 					json['lat']=dto.lati;
 					json['lng']=dto.longi;
 					
+<<<<<<< HEAD
+=======
+					//console.log("가공된 제이슨은? ",json);
+>>>>>>> 574b16d01eba7a6803fd8ae23596f21732865894
 					jsonList.push(json);
 					
 				}
-				console.log("가공된 제이슨 리스트는? ",jsonList);
+				//console.log("가공된 제이슨 리스트는? ",jsonList);
 				createPolyline(jsonList);
 				
 			}
@@ -434,6 +496,9 @@ function getExrRecordForMonth(){
 	
 /*** 시작할 때 로드될 메서드 ***/
 $(document).ready(function() {
+    //초기화
+    init();
+    //달력초기화
 	/*------------------*/
 	getGpsData();
 	initMap();
@@ -474,7 +539,7 @@ $(document).ready(function() {
 
     
     <!-- content start -->
-    <div class="space-medium">
+    <div class="space-medium" id="app1">
         <div class="container">
             <div class="row">
             	<!-- 왼쪽에 나의 기록 목록 나오는 영역 -->
@@ -540,6 +605,12 @@ $(document).ready(function() {
   				
   				<!-- 운동기록 상세보기가 나올 창 -->
 				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				
+				<template v-for="exr in exrList">
+					<rowlist :key_idx="exr.exr_record_idx" :exr="exr"/>
+				</template>
+				
+					<!-- 
 					<div id="exrCollapse" class="collapse">
 				 		<div class="card bg-success text-white">
 				 			<div class="card-body">
@@ -547,8 +618,9 @@ $(document).ready(function() {
 				 			</div>
 				 		</div>
 					</div>
+					 -->
 				</div>
-				
+
 			</div>
 			
         </div>

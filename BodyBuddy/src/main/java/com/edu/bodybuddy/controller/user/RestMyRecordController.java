@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.bodybuddy.domain.myrecord.ExrRecord;
@@ -67,6 +68,15 @@ public class RestMyRecordController {
 		logger.info("위치데이터 입력 성공");
 	}
 	
+	@GetMapping("/weatherAPI/{nx}/{ny}")
+	public Map<String, String> getWeather(@PathVariable(name="nx") int nx, @PathVariable(name="ny") int ny) {
+		
+		logger.info("받아온 nx값은 : "+nx);
+		logger.info("받아온 ny값은 : "+ny);
+		
+		Map<String, String> dataForResponseMap=myRecordService.getWeather(nx, ny);
+		return dataForResponseMap;
+	}
 	
 	// 해당 날짜에 대한 위도 경도 값을 가져오는 함수!
 	@GetMapping("/today/gps")
@@ -78,16 +88,13 @@ public class RestMyRecordController {
 	
 	
 	
-	@GetMapping("/weatherAPI")
-	public void getWeather() {
-		myRecordService.getWeather();
-	}
-	
 	//한달간의 기록을 보여주는 메서드
 	//ResponseBody 를 붙일 필요없음, RestController로 클래스 선언이 되어있기 때문에
 	@PostMapping("/exrListForMonth")
 	public List<ExrRecord> getExrRecordForMonth(@RequestBody Map<String, String> oneMonthPeriod){
 		logger.info("한달동안의 기록을 불러올 첫날과 마지막 날 값은 :" +oneMonthPeriod.get("firstDay")+",,"+oneMonthPeriod.get("lastDay"));
+		LocalDate  currentDate=LocalDate.now();
+		logger.info("오늘 날짜는"+currentDate);
 		List<ExrRecord> exrRecordListMonth=exrRecordService.seletForMonth(oneMonthPeriod);
 		return exrRecordListMonth;
 	}
@@ -103,6 +110,7 @@ public class RestMyRecordController {
 			logger.info("받아온 운동명은 : "+exrRecord.getExr_name());
 		}
 		*/
+		
 		logger.info("운동목록 받아오는 : "+exrList);
 		exrRecordService.regist(exrList);
 		Message msg=new Message();
