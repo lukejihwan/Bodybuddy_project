@@ -29,7 +29,7 @@
 	
 	
 
-	<!-- 답글은 1씩 무조건 증가시킴 -->
+	<!-- 첫 댓글은 1씩 무조건 증가시킴 -->
 	<insert id="insert" parameterType="ExrRoutineComment">
 		insert into exr_routine_comment(exr_routine_idx, member_idx, writer, content, post, step, depth)
 		values(#{exrRoutine.exr_routine_idx}, #{member.member_idx}, #{writer}, #{content}, #{post}, #{step}+1, #{depth}+1)

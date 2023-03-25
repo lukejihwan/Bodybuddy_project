@@ -394,21 +394,16 @@ function getExrRecordForMonth(){
 			success:function(result, status, xhr){
 				createPolyline(result);
 				
-				console.log("결과 ", result);
 				console.log("결과안의 개수 ", result.length);
-			
 				
 				let jsonList=[];
-				
 				for(let i=0; i<result.length; i++){
 					let dto=result[i];
-
 					
 					let json={};
 					json['lat']=dto.lati;
 					json['lng']=dto.longi;
 					
-					console.log("가공된 제이슨은? ",json);
 					jsonList.push(json);
 					
 				}

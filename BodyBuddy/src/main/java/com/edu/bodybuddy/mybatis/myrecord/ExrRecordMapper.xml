@@ -18,13 +18,6 @@
 			ofType="ExrDetailRecord"
 			select="ExrDetailRecord.selectByExrRecord"/>
 
-		<collection
-			column="exr_record_idx"
-			property="gpsDataList"
-			javaType="java.util.List"
-			ofType="GPSData"
-			select="GpsData.selectByFk"/>
-		
 	</resultMap>
 	
 	<!-- 한달간 운동 기록을 불러오는 쿼리-->
