@@ -21,7 +21,7 @@ public class AroundmeServiceImpl implements AroundmeService{
 		logger.info("service place : "+place);
 		logger.info("service latlon : "+latlon);
 		
-		String addr = naverMapAPIManager.getLoadAddrByCoords(latlon);
+		String addr = naverMapAPIManager.getAddrByCoords(latlon);
 		HashMap<String, Object> map = naverMapAPIManager.searchPlaceByLoadAddr(addr, place);
 		logger.info("addr : "+addr);
 		logger.info("searchPlaceByLoadAddr : "+map);
@@ -37,4 +37,15 @@ public class AroundmeServiceImpl implements AroundmeService{
 		logger.info("searchPlaceByLoadAddr : "+map);
 		return map;
 	}
+	public HashMap<String, Object> getCoordsByAddr(String addr) {
+		return naverMapAPIManager.getCoordsByAddr(addr);
+	}
+	
+
+	public String getAddrByCoords(String latlon) {
+		return naverMapAPIManager.getAddrByCoords(latlon);
+	}
+
+	
+	
 }

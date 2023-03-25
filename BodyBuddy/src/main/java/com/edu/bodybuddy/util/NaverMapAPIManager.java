@@ -49,7 +49,7 @@ public class NaverMapAPIManager {
 		return map;
 	}
 	
-	public String getLoadAddrByCoords(double lat, double lon) {
+	public String getAddrByCoords(double lat, double lon) {
 		RestRequestManager requestManager = new RestRequestManager();
 		requestManager.init();
 		
@@ -83,22 +83,25 @@ public class NaverMapAPIManager {
 		JsonNode result = node.get("results");
 		
 		JsonNode range = result.get(0);
+		logger.info("range : "+range);
 		
 		if(range.get("name").asText().equals("roadaddr")) {
-			addr = range.get("land").get("addition0").asText();
+			addr = range.get("land").get("name").asText();
+			logger.info("roadaddr : "+addr);
 		}else {
+			logger.info("load없음");
 			addr = range.get("region").get("area3").get("name").asText();
 		}
 		
 		
 		return addr;
 	}
-	public String getLoadAddrByCoords(String latlon) {
+	public String getAddrByCoords(String latlon) {
 		HashMap<String, Double> coords = parseCoords(latlon);
-		return this.getLoadAddrByCoords(coords.get("lat"), coords.get("lon"));
+		return this.getAddrByCoords(coords.get("lat"), coords.get("lon"));
 	}
 	
-	public HashMap searchPlaceByLoadAddr(String loadAddr, String place) {
+	public HashMap searchPlaceByLoadAddr(String addr, String place) {
 
 		RestRequestManager requestManager = new RestRequestManager();
 		requestManager.init();
@@ -106,7 +109,7 @@ public class NaverMapAPIManager {
 		requestManager.addHeader(NAVER_SEARCH_ID_PARAM, naverSearchId);
 		requestManager.addHeader(NAVER_SEARCH_SECRET_PARAM, naverSearchSecret);
 		
-		requestManager.addParam("query", loadAddr+" "+place);
+		requestManager.addParam("query", addr+" "+place);
 		requestManager.addParam("display", "5");
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -121,6 +124,36 @@ public class NaverMapAPIManager {
 			e.printStackTrace();
 		}
 		
+		return map;
+	}
+	
+	public HashMap getCoordsByAddr(String addr) {
+		
+		RestRequestManager requestManager = new RestRequestManager();
+		requestManager.init();
+		//키 설정
+		requestManager.addHeader(NAVER_MAP_ID_PARAM, naverMapId);
+		requestManager.addHeader(NAVER_MAP_SECRET_PARAM, naverMapSecret);
+		
+		//파라미터 설정
+		requestManager.addParam("query", addr);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		HashMap<String, Double> map = new HashMap();
+		JsonNode node = null;
+		try {
+			node = mapper.readTree(requestManager.request(geocoding, HttpMethod.GET).getBody());
+			//logger.info("geocoding : " + node.get("addresses").get(0).get("x").asDouble());
+			map.put("lat", node.get("addresses").get(0).get("y").asDouble());
+			map.put("lon", node.get("addresses").get(0).get("x").asDouble());
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return map;
 	}
 }

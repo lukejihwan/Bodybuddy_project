@@ -16,6 +16,15 @@
 	.card-primary:not(.card-outline)>.card-header{
 		background-color: #c5f016;
 	}
+	.btn-default {
+	    color: #1e1e1f;
+	    background-color: #c5f016;
+	}
+	.btn-default:hover {
+	    color: #2f2e2c;
+	    background-color: #b9e118;
+	    border-color: #b9e118;
+	}
 </style>
 
 <body class="animsition">
@@ -318,7 +327,8 @@
 				start:1,
 				itemList:[],
 				markerList:[],
-				itemFlag:false
+				itemFlag:false,
+				myaddr:"",
 			},
 			components:{
 				myheader,
@@ -355,7 +365,7 @@
 	
 	function askMemberAddress() {
 		Swal.fire({
-			  title: '회원님이 기입하신 주소('+1+')로 검색하시겠습니까?',
+			  title: '회원님이 기입하신 주소('+htmlDecode('<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.address.member_address"/></sec:authorize>')+')로 검색하시겠습니까?',
 			  text:"아니오를 누르실 경우 gps로 현재 위치를 기반으로 알려드립니다",
 			  showCancelButton: true,
 			  confirmButtonText: '네',
@@ -365,11 +375,25 @@
 			  cancelButtonColor: '#d33',
 			}).then((result) => {
 			  if (result.isConfirmed) {
-			    
+				  app1.myaddr = htmlDecode('<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.address.member_address"/></sec:authorize>');
+				  getGPSByAddr();
 			  }else{
 				  getGPS();
 			  }
 			})
+	}
+	function getGPSByAddr() {
+		$.ajax({
+			url:"/rest/aroundme/coords/addr/"+app1.myaddr,
+			type:"GET",
+			success:(result, status, xhr)=>{
+				console.log(result);
+				app1.coords = result;
+			},
+			error:(xhr, status ,err)=>{
+				console.log(err);
+			}
+		});
 	}
 	
 	function getGPS() {
@@ -384,9 +408,11 @@
 						lat,
 						lon
 				}
-				console.log("before : ", app1.coords);
+				//console.log("before : ", app1.coords);
 				app1.coords = a;
-				console.log("after : ", app1.coords);
+				getAddrByCoords(lat, lon);
+					
+				//console.log("after : ", app1.coords);
 			}, 
 			()=>{
 				alert("거절 누름");
@@ -397,11 +423,25 @@
 	//네이버
 	function getPlaceListByCoords(lat, lon, place) {
 		$.ajax({
-			url:"/rest/aroundme/coords/"+place+"/"+lat+","+lon,
+			url:"/rest/aroundme/place/coords/"+place+"/"+lat+","+lon,
 			type:"GET",
 			success:(result, status, xhr)=>{
 				console.log(result);
 				app1.itemList = result.items;
+			},
+			error:(xhr, status ,err)=>{
+				console.log(err);
+			}
+		});
+	}
+	function getAddrByCoords(lat, lon){
+		$.ajax({
+			url:"/rest/aroundme/addr/coords/"+lat+","+lon,
+			type:"GET",
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			success:(result, status, xhr)=>{
+				console.log(result);
+				app1.myaddr=result.msg;
 			},
 			error:(xhr, status ,err)=>{
 				console.log(err);
@@ -435,7 +475,7 @@
 		app1.markerList.forEach(marker=>{
 			marker.listener=naver.maps.Event.addDOMListener(marker.marker.getElement(), 'click', function(e) {
 				let infowindow = new naver.maps.InfoWindow({
-				    content: '<div style="padding:20px;">'+marker.title+'</div>'
+				    content: "<div style=\"padding:20px;\">"+marker.title+"</div><center><button type=\"button\" onClick=\"window.open('http://map.naver.com/index.nhn?slng="+app1.coords.lon+"&slat="+app1.coords.lat+"&stext="+app1.myaddr+"&elng="+marker.marker.getPosition().x+"&elat="+marker.marker.getPosition().y+"&pathType=1&showMap=true&etext="+marker.title+"&menu=route')\" class=\"btn btn-default\" style=\"margin-bottom:10px\">길찾기</button></center>"
 				});
 			    infowindow.open(map, marker.marker);
 			    map.setCenter(marker.marker.getPosition());
