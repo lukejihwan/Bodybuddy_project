@@ -9,6 +9,7 @@
 	</select>
 
 	<!-- 운동기록에서 하나의 운동이 생성될때 같이 생성될 운동 상세 DML -->
+	<!-- 또 운동상세기록을 수정할 때 사용될 DML -->
 	<insert id="insertByExrRecord" parameterType="ExrDetailRecord">
 		insert into exr_record_detail (exr_record_idx, set_number, kg, times)
 		values (#{exr_record_idx}, #{set_number}, #{kg}, #{times})

@@ -44,6 +44,16 @@
 		</selectKey>
 	</insert>
 	
+	<update id="update" parameterType="ExrRecord">
+		update exr_record
+		set exr_name=#{exr_name}
+		where exr_record_idx=#{exr_record_idx}
+	</update>
 	
-
+	<delete id="delete" parameterType="int">
+		delete 
+		from exr_record
+		where exr_record_idx=#{exr_record_idx}
+	</delete>
+	
 </mapper>

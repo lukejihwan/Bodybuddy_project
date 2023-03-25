@@ -399,7 +399,7 @@ function getExrRecordForMonth(){
 		contentType:"application/json",
 		success:function(result, status, xhr){
 			//console.log(typeof result);
-			alert("성공적으로 불러옴");
+			//alert("성공적으로 불러옴");
 			appendImageDays(result);
 			console.log("받아온 날짜는",result);
 		},
@@ -460,6 +460,20 @@ $(function(){
 	$("#bt_getDetailForExr").click(function(){
 		moveToExrDetail();
 	});
+	
+	//왼쪽 사이드바 페이지 이동 이벤트
+    $("#bt_addRecord").click(function(){
+    	location.href="/myrecord/addrecord";
+    });
+    $("#bt_physicalRecord").click(function(){
+    	location.href="/myrecord/physical_record";
+    });
+    $("#bt_exrRecord").click(function(){
+    	location.href="/myrecord/exr_record";
+    });
+    $("#bt_dietRecord").click(function(){
+    	location.href="/myrecord/diet_record";
+    });
 });
 </script>
 <body>
@@ -485,10 +499,10 @@ $(function(){
             	<!-- 왼쪽에 나의 기록 목록 나오는 영역 -->
             	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
 				    <div class = "btn-group-vertical">
-				        <button type = "button" class = "btn btn-default">기록 추가</button>
-				        <button type = "button" class = "btn btn-primary">신체기록</button>
-				        <button type = "button" class = "btn btn-primary">운동기록</button>
-				        <button type = "button" class = "btn btn-primary">식단기록</button>
+				        <button type = "button" class = "btn btn-default" id="bt_addRecord">기록 추가</button>
+				        <button type = "button" class = "btn btn-primary" id="bt_physicalRecord">신체기록</button>
+				        <button type = "button" class = "btn btn-primary" id="bt_exrRecord">운동기록</button>
+				        <button type = "button" class = "btn btn-primary" id="bt_dietRecord">식단기록</button>
 				    </div>
             	</div>
             	

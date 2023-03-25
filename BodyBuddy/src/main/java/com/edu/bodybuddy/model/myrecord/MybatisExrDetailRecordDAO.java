@@ -21,8 +21,8 @@ public class MybatisExrDetailRecordDAO implements ExrDetailRecordDAO{
 	}
 
 	@Override
-	public void delete(ExrDetailRecord exrDetailRecord) throws ExrDetailRecordException{
-		int result=sqlSessionTemplate.delete("ExrDetailRecord.deleteByExrRecord", exrDetailRecord);
+	public void delete(int exr_record_idx) throws ExrDetailRecordException{
+		int result=sqlSessionTemplate.delete("ExrDetailRecord.deleteByExrRecord", exr_record_idx);
 		if(result<1) {
 			throw new ExrDetailRecordException("운동상세정보 삭제 실패");
 		}

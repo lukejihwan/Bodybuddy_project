@@ -39,11 +39,17 @@ public class MybatisExrRecordDAO implements ExrRecordDAO {
 		}
 	}
 	
-	
+	@Override
+	public void update(ExrRecord exrRecord) throws ExrRecordException{
+		int result=sqlSessionTemplate.update("ExrRecord.update", exrRecord);
+		if(result<1) {
+			throw new ExrRecordException("운동기록 수정 실패");
+		}
+	}
 
 	@Override
-	public void delete(ExrRecord exrRecord) throws ExrRecordException{
-		int result=sqlSessionTemplate.delete("ExrRecord.delete", exrRecord);
+	public void delete(int exr_record_idx) throws ExrRecordException{
+		int result=sqlSessionTemplate.delete("ExrRecord.delete", exr_record_idx);
 		if(result<1) {
 			throw new ExrRecordException("운동기록 삭제 실패");
 		}
@@ -59,6 +65,8 @@ public class MybatisExrRecordDAO implements ExrRecordDAO {
 		}
 		return exrList;
 	}
+
+	
 
 	
 

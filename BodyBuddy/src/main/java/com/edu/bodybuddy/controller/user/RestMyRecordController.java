@@ -1,9 +1,8 @@
 package com.edu.bodybuddy.controller.user;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,15 +12,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.edu.bodybuddy.domain.myrecord.ExrDetailRecord;
 import com.edu.bodybuddy.domain.myrecord.ExrRecord;
 import com.edu.bodybuddy.domain.myrecord.GpsData;
 import com.edu.bodybuddy.exception.ExrDetailRecordException;
@@ -126,6 +129,40 @@ public class RestMyRecordController {
 		logger.info("받아온 값은"+ regdate);
 		List<ExrRecord> exrList=exrRecordService.selectForDay(regdate);
 		return exrList;
+	}
+	
+	@PostMapping("/exrRecord")
+	public ResponseEntity<Message> updateExrRecord(@RequestParam("exrname") String exrname, 
+																			@RequestParam("exr_idx") int exr_idx, 
+																			@RequestParam("kgs[]") List<Integer> kgList, 
+																			@RequestParam("times[]") List<Integer> timesList){
+		
+		
+		/*
+		logger.info(exrname);
+		logger.info("받아온 1번째 kgs[]의 값은 :"+kgList.get(0));
+		logger.info("받아온 2번째 kgs[]의 값은 :"+kgList.get(1));
+		logger.info("받아온 3번째 kgs[]의 값은 :"+kgList.get(2));
+		logger.info("받아온 첫번째 times[]의 값은 : :"+timesList.get(0));
+		*/
+		//서비스 일시키기
+		exrRecordService.update(exrname, exr_idx, kgList, timesList);
+		
+		Message message=new Message();
+		message.setMsg("수정되었습니다");
+		ResponseEntity<Message> entity=new ResponseEntity<Message>(message, HttpStatus.OK);
+		return entity;
+	}
+	
+	//운동기록을 삭제하는 메서드
+	@DeleteMapping("/exrRecord/{exr_record_idx}")
+	public ResponseEntity<Message> delExrRecord(@PathVariable(name="exr_record_idx") int exr_record_idx){
+		logger.debug("받아온 삭제할 idx값은"+exr_record_idx);
+		exrRecordService.delete(exr_record_idx);
+		Message message=new Message();
+		message.setMsg("삭제되었습니다");
+		ResponseEntity<Message> entity=new ResponseEntity<Message>(message, HttpStatus.OK);
+		return entity;
 	}
 	
 	

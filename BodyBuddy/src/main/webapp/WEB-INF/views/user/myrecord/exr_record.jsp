@@ -175,11 +175,15 @@ let app1;
 // 현재 위치에 포커스 맞추기
 let map;
 
+
 const rowlist={
 	template:`
 		<div class="card bg-dark text-white wrapper">
-			<div class="row card-body">{{exr.exr_record_idx}}
-				운동명: {{exr.exr_name}}
+		<!--form id값 동적으로 할당-->
+			<form :id="'form'+exr.exr_record_idx">
+			<div class="row card-body">
+				운동명: <input type="text" class="form-control input-sm" v-model="exr.exr_name" name="exrname">
+				<input type="hidden" v-model="exr.exr_record_idx" name="exr_idx">
 			</div>
 			<div div class="row">
 				<div class="col-md-10 card-body">
@@ -190,13 +194,13 @@ const rowlist={
 									{{i+1}}세트
 								</div>
 								<div class="col-md-3">
-									<input type="number" class="form-control input-sm" v-model="detail_exr.kg">
+									<input type="number" min="1" max="700" class="form-control input-sm" v-model="detail_exr.kg" name="kgs[]">
 								</div>
 								<div class="col-md-2">
 									kg
 								</div>
 								<div class="col-md-3">
-									<input type="number" class="form-control input-sm" v-model="detail_exr.times">
+									<input type="number" min="1" max="700" class="form-control input-sm" v-model="detail_exr.times" name="times[]">
 								</div>
 								<div class="col-md-2">
 									개
@@ -205,18 +209,19 @@ const rowlist={
 						</template>
 					</div>
 				</div>
-				<form>
+					<!--
 					<input type="hidden" value="{{exr.exr_record_idx}}" name="exr_idx">
+					-->
 					<div class="col-md-2 card-body">
 						<div class="form-group">
-							<button type="button" class="btn btn-warning" v-on:click="update(exr.exr_name)">수정</button>
+							<button type="button" class="btn btn-warning" v-on:click="update(exr)">수정</button>
 						</div>
 						<div class="form-group">
 							<button type="button" class="btn btn-danger" v-on:click="del(exr.exr_record_idx)">삭제</button>
 						</div>
 					</div>
-				</form>
 			</div>
+			</form>
 		</div>
 		`,
 		props:['exr'],
@@ -226,15 +231,69 @@ const rowlist={
 			};
 		},
 		methods:{
-			update:function(exrname){
-				alert(exrname+" 수정할래요?");
+			update:function(exr){
+				if(confirm("수정하시겠습니까?")){
+					//form 요소 선택(백틱사용)
+					console.log("여기는 왔다");
+					let form=document.getElementById('form'+exr.exr_record_idx);
+					console.log(form);
+					//form 데이터를 FormData 객체로 변환
+					let formData = new FormData(form);
+					
+					//formData안의 내용물을 확인하는 법
+					for(let pair of formData.entries()){
+						console.log(pair[0]+", "+pair[1]);
+					}
+					// fetch요청을 보낼 url
+					let url="/rest/myrecord/exrRecord"
+					console.log("어디까지 왔다.");
+					fetch(url,{
+						method:"POST",
+						body:formData
+					})
+					.then(response=>{
+						if(response.ok){
+							//요청 성공적으로 처리시
+							console.log("수정 완료");
+							alert("수정이 완료되었습니다");
+							location.href="/myrecord/exr_record";
+						}else{
+							//요청 실패시
+							console.log("수정 실패");
+						}
+					})
+					.catch(error=>{
+						console.log(error);
+					});
+				}
 			},
 			del:function(exr_record_idx){
-				
+				deleteExrRecord(exr_record_idx);
 			}
 		}
+		
 }
 
+//운동기록 삭제하는 함수
+function deleteExrRecord(){
+	if(confirm("삭제하시겠습니까?")){
+		$.ajax({
+			url:"/rest/myrecord/exrRecord/"+exr_record_idx,
+			type:"delete",
+			success:function(result, status, xhr){
+				console.log("result는",result);
+				console.log("삭제성공");
+				alert("삭제되었습니다");
+				location.href="/myrecord/exr_record";
+			},
+			error:function(xhr, status, error){
+				console.log("에러", error);
+			}
+		});
+	}
+}
+
+//vue 초기화 함수
 function init(){
 	app1=new Vue({
 		el:"#app1",
@@ -382,6 +441,7 @@ function showExrRecord(clickedDay){
 		},
 		error:function(xhr, status, error){
 			console.log("error",error);
+			app1.exrList=[];
 		}
 	});
 		
@@ -445,7 +505,7 @@ function getExrRecordForMonth(){
 		success:function(result, status, xhr){
 			renderExrRecord(result);
 			console.log("받아온 날짜는",result);
-			alert("성공적으로 불러옴");
+			//alert("성공적으로 불러옴");
 		},
 		error:function(xhr, status, error){
 			console.log(error, "기록불러오던 중 에러발생");
@@ -453,75 +513,71 @@ function getExrRecordForMonth(){
 	});
 }
 
+/*------------------------------------------------------------------------------
+		구글맵과 관련된 영역
+	-----------------------------------------------------------------------------*/
+// 1) 맵 초기 콜백 함수 
+function initMap() {
+	let mapProp= {
+	  center:new google.maps.LatLng(37.556436, 126.945207),
+	  zoom:16,
+	};
+	map = new google.maps.Map(document.getElementById("myMap"),mapProp);
 
-
-	/*------------------------------------------------------------------------------
-			구글맵과 관련된 영역
-		-----------------------------------------------------------------------------*/
-	// 1) 맵 초기 콜백 함수 
-	function initMap() {
-		let mapProp= {
-		  center:new google.maps.LatLng(37.556436, 126.945207),
-		  zoom:16,
-		};
-		map = new google.maps.Map(document.getElementById("myMap"),mapProp);
-
-		//console.log("잘 호출 되는 거지? ", map);
-		
-	}
+	//console.log("잘 호출 되는 거지? ", map);
 	
-	
-	// db에 저장된 위치 데이터 불러오는 함수
-	function getGpsData(){
-		$.ajax({
-			url:"/rest/myrecord/today/gps",
-			typr:"GET",
-			success:function(result, status, xhr){
-				createPolyline(result);
-				
-				//console.log("결과 ", result);
-				//console.log("결과안의 개수 ", result.length);
+}
+
+// db에 저장된 위치 데이터 불러오는 함수
+function getGpsData(){
+	$.ajax({
+		url:"/rest/myrecord/today/gps",
+		typr:"GET",
+		success:function(result, status, xhr){
+			createPolyline(result);
 			
-				
-				let jsonList=[];
-				
-				for(let i=0; i<result.length; i++){
-					let dto=result[i];
+			//console.log("결과 ", result);
+			//console.log("결과안의 개수 ", result.length);
+		
+			let jsonList=[];
+			
+			for(let i=0; i<result.length; i++){
+				let dto=result[i];
 
-					
-					let json={};
-					json['lat']=dto.lati;
-					json['lng']=dto.longi;
-					
-					//console.log("가공된 제이슨은? ",json);
-					jsonList.push(json);
-					
-				}
-				//console.log("가공된 제이슨 리스트는? ",jsonList);
-				createPolyline(jsonList);
+				
+				let json={};
+				json['lat']=dto.lati;
+				json['lng']=dto.longi;
+				
+				//console.log("가공된 제이슨은? ",json);
+				jsonList.push(json);
 				
 			}
-		});
-	}
-	
-	
-	// 라인그리기
-	function createPolyline(jsonList){
-		//console.log("그림 그릴 제이슨리스트의 모습은? ", jsonList);
+			//console.log("가공된 제이슨 리스트는? ",jsonList);
+			createPolyline(jsonList);
+			
+		}
+	});
+}
 
-		 const flightPath = new google.maps.Polyline({
-			    path: jsonList,
-			    geodesic: true,
-			    strokeColor: "	#FF4500",
-			    strokeOpacity: 1.0,
-			    strokeWeight: 6,
-			  });
-			  flightPath.setMap(map);
-	}
-	
-	/*------------------------------------------------------------------------------*/
-	
-	
+
+// 라인그리기
+function createPolyline(jsonList){
+	//console.log("그림 그릴 제이슨리스트의 모습은? ", jsonList);
+
+	 const flightPath = new google.maps.Polyline({
+		    path: jsonList,
+		    geodesic: true,
+		    strokeColor: "	#FF4500",
+		    strokeOpacity: 1.0,
+		    strokeWeight: 6,
+		  });
+		  flightPath.setMap(map);
+}
+
+/*------------------------------------------------------------------------------*/
+
+
 /*** 시작할 때 로드될 메서드 ***/
 $(document).ready(function() {
     //초기화
@@ -546,7 +602,19 @@ $(document).ready(function() {
     	getRunningCalendar();
     });
     
-    
+    //왼쪽 사이드바 페이지 이동 이벤트
+    $("#bt_addRecord").click(function(){
+    	location.href="/myrecord/addrecord";
+    });
+    $("#bt_physicalRecord").click(function(){
+    	location.href="/myrecord/physical_record";
+    });
+    $("#bt_exrRecord").click(function(){
+    	location.href="/myrecord/exr_record";
+    });
+    $("#bt_dietRecord").click(function(){
+    	location.href="/myrecord/diet_record";
+    });
 });
 </script>
 <body class="animsition">
@@ -569,19 +637,20 @@ $(document).ready(function() {
     <!-- content start -->
     <div class="space-medium" id="app1">
         <div class="container">
+        	<!-- row 1 시작 -->
             <div class="row">
             	<!-- 왼쪽에 나의 기록 목록 나오는 영역 -->
             	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
 				    <div class = "btn-group-vertical">
-				        <button type = "button" class = "btn btn-primary">기록 추가</button>
-				        <button type = "button" class = "btn btn-primary">신체기록</button>
-				        <button type = "button" class = "btn btn-default">운동기록</button>
-				        <button type = "button" class = "btn btn-primary">식단기록</button>
+				        <button type = "button" class = "btn btn-primary" id="bt_addRecord">기록 추가</button>
+				        <button type = "button" class = "btn btn-primary" id="bt_physicalRecord">신체기록</button>
+				        <button type = "button" class = "btn btn-default" id="bt_exrRecord">운동기록</button>
+				        <button type = "button" class = "btn btn-primary" id="bt_dietRecord">식단기록</button>
 				    </div>
             	</div>
             	
             	<!-- 달력 나올 영역 -->
-            	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 calendar">
 					<div class="sec_cal">
 					<button type="button" id="bt_strengthExr" class="btn btn-success btn-sm">근력운동</button>
             		<button type="button" id="bt_running" class="btn btn-danger btn-sm">러닝</button>
@@ -623,9 +692,10 @@ $(document).ready(function() {
 
 
 			</div>
-			<!-- ./row -->
+			<!-- row 1 끝 -->
 			
 			<!-- 하단 상세정보 보여질 애니메이션 창 -->
+			<!-- row 2 시작 -->
 			<div class="row">
 				
 				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
@@ -650,6 +720,7 @@ $(document).ready(function() {
 				</div>
 
 			</div>
+			<!-- row 2 끝 -->
 			
         </div>
     </div>
