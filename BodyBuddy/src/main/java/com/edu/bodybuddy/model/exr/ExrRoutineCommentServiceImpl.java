@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.edu.bodybuddy.domain.exr.ExrRoutineComment;
 import com.edu.bodybuddy.exception.ExrRoutineCommentException;
@@ -60,8 +62,8 @@ public class ExrRoutineCommentServiceImpl implements ExrRoutineCommentService{
 	
 	// 3단계를 여기서 모두 거칠 예정!  -- 트랜잭션!
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void registReply(ExrRoutineComment exrRoutineComment) throws ExrRoutineCommentException{
-		
 		int post=exrRoutineComment.getPost();
 		exrRoutineComment.setPost(post);
 		

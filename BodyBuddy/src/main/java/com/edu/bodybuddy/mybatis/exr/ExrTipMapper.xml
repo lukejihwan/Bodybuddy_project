@@ -5,9 +5,11 @@
 	<resultMap type="ExrTip" id="resultMap">
 		<id column="exr_tip_idx" property="exr_tip_idx"/>
 		<result column="title" property="title"/>
+		<result column="writer" property="writer"/>
 		<result column="content" property="content"/>
 		<result column="regdate" property="regdate"/>
 		<result column="hit" property="hit"/>
+		<result column="recommend" property="recommend"/>
 		<result column="member_idx" property="member.member_idx"/>
 		
 		<association property="exrCategory" column="exr_category_idx" javaType="int" select="ExrCategory.select"/>
@@ -28,9 +30,21 @@
 
 	<!-- Member 나중에 추가 예정 -->
 	<insert id="insert" parameterType="ExrRoutine">
-		insert into exr_tip(exr_category_idx, title, writer, content)
-		values(#{exrCategory.exr_category_idx}, #{title}, #{writer}, #{content})
+		insert into exr_tip(exr_category_idx, member_idx, title, writer, content)
+		values(#{exrCategory.exr_category_idx}, #{member.member_idx}, #{title}, #{writer}, #{content})
 	</insert>
+	
+	
+	<update id="update" parameterType="ExrRoutine">
+		update exr_tip set exr_category_idx=#{exrCategory.exr_category_idx}, title=#{title}, writer=#{writer}, content=#{content}
+		where exr_tip_idx=#{exr_tip_idx}
+	</update>
+
+
+	<delete id="delete" parameterType="int">
+		delete from exr_tip
+		where exr_tip_idx=#{exr_tip_idx}
+	</delete>
 	
 	
 	<!-- 조회수 증가 -->
@@ -45,19 +59,5 @@
 		update exr_tip set recommend=recommend+1
 		where exr_tip_idx=#{exr_tip_idx}
 	</update>
-	
-	
-
-	<update id="update" parameterType="ExrRoutine">
-		update exr_tip set exr_category_idx=#{exrCategory.exr_category_idx}, title=#{title}, writer=#{writer}, content=#{content}
-		where exr_tip_idx=#{exr_tip_idx}
-	</update>
-
-
-	<delete id="delete" parameterType="int">
-		delete from exr_tip
-		where exr_tip_idx=#{exr_tip_idx}
-	</delete>
-	
 
 </mapper>

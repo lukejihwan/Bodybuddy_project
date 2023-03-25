@@ -24,6 +24,8 @@
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrRoutine" alias="ExrRoutine" />
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrRoutineComment" alias="ExrRoutineComment" />
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrTip" alias="ExrTip" />
+  	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrToday" alias="ExrToday" />
+  	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrTodayComment" alias="ExrTodayComment" />
  	
  	<!-- Diet Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietCategory" alias="DietCategory" />
@@ -67,6 +69,8 @@
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrRoutineMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrRoutineCommentMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrTipMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrTodayMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrTodayCommentMapper.xml"/>
     
     <!-- Diet Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietCategoryMapper.xml"/>

@@ -80,12 +80,11 @@ public class RestMyRecordController {
 	
 	// 해당 날짜에 대한 위도 경도 값을 가져오는 함수!
 	@GetMapping("/today/gps")
-	public List getGPSData() {
-		List<GpsData>gpsList=gpsDataService.selectForDay("2023-03-24 00:00:00");
+	public List<GpsData> getGPSData() {
+		List<GpsData>gpsList=gpsDataService.selectForDay("2023-03-25 00:00:00");
 		return gpsList;
 	}
 	/*------------------------------------------------------------------------------*/
-	
 	
 	
 	
