@@ -2,4 +2,95 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="DietTipComments">
+	
+	<resultMap type="DietTipComments" id="resultMap">
+		<id column="diet_tip_comments_idx" property="diet_tip_comments_idx"/>
+		<result column="content" property="content"/>
+		<result column="writer" property="writer"/>
+		<result column="regdate" property="regdate"/>
+		<result column="post" property="post"/>
+		<result column="step" property="step"/>
+		<result column="depth" property="depth"/>
+		<result column="member_idx" property="member.member_idx"/>
+		<result column="diet_tip_idx" property="dietTip.diet_tip_idx"/>
+	</resultMap>
+	
+	<select id="selectAllTip" resultMap="resultMap" parameterType="int">
+		select * from diet_tip_comments where diet_tip_idx=#{diet_tip_idx} order by step asc
+	</select>
+	
+	<select id="selectAllMember" resultMap="resultMap" parameterType="int">
+		select * from diet_tip_comments where member_idx=#{member_idx} order by step asc
+	</select>
+	
+	<select id="select" resultMap="resultMap" parameterType="int">
+	 	select * from diet_tip_comments where diet_tip_comments_idx=#{diet_tip_comments_idx}
+	</select>
+	
+	<insert id="insert" parameterType="DietTipComments">
+		insert into diet_tip_comments(member.idx, diet_tip_idx, content, wrtier, post, step, depth)
+		values (#{member.member_idx}, #{diet_tip_idx}, #{{content}, #{writer}, #{post}, #{step}, #{depth})
+	
+		<selectKey
+			keyColumn="diet_tip_comments_idx"
+			keyProperty="diet_tip_comments_idx"
+			resultType="int"
+			order="AFTER">
+			select last_insert_id() as diet_diet_tip_comments_idx from dual		
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="DietTipComments">
+		update diet_tip_comments set content=#{content}, post=#{post} where diet_tip_comments_idx=#{diet_tip_comments_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from diet_tip_comments where diet_tip_idx=#{diet_tip_idx}
+	</delete>
+	
+	<select id="totalCount" resultType="int" parameterType="DietTipComments">
+		select count(*) from diet_tip_comments where diet_tip_idx=#{diet_tip_idx}
+	</select>
+	
+	<select id="maxStepInChild" resultType="int" parameterType="DietTipComments">
+		select step-1 from diet_tip_comments
+		where diet_tip_idx=#{dietTip.diet_tip_idx}
+		and step>#{step} and depth=#{depth}
+		order by step asc limit 1;
+	</select>
+	<select id="maxStepInPost" resultType="int" parameterType="DietTipComments">
+		select max(step) from diet_tip_comments
+		where diet_tip_idx=#{dietTip.diet_tip_idx}
+		and post=#{post}
+	</select>
+	<select id="maxStepInDepth" resultType="int" parameterType="DietTipComments">
+		select step from diet_tip_comments
+		where fdiet_tip_idx=#{dietTip.diet_tip_idx}
+		and depth=#{depth}
+		and post=#{post}
+		order by step desc limit 1;
+	</select>
+	
+	<!-- step 올리기 -->
+	<update id="addSteps" parameterType="DietTipComments">
+		update diet_tip_comments set step = step + 1
+		where step>#{step} and diet_tip_idx=#{dietTip.diet_tip_idx}
+	</update>
+	
+	<!-- step 내리기 -->
+	<update id="removeSteps" parameterType="DietTipComments">
+		update diet_tip_comments set step = step - 1
+		where step>#{step} and free_board_idx=#{dietTip.diet_tip_idx}
+	</update>
+	
+	<select id="countSteps" resultType="int" parameterType="DietTipComments">
+		select count(step) from diet_tip_comments
+		where step>#{step} and free_board_idx=#{dietTip.diet_tip_idx}
+	</select>
+	
+	<delete id="deleteAllByBoard" parameterType="DietTipComments">
+		delete from diet_tip_comments
+		where free_board_idx=#{dietTip.diet_tip_idx}
+	</delete>
+
 </mapper>
