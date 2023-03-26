@@ -1,7 +1,6 @@
 package com.edu.bodybuddy.controller.user;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,26 +11,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.edu.bodybuddy.domain.myrecord.ExrDetailRecord;
 import com.edu.bodybuddy.domain.myrecord.ExrRecord;
 import com.edu.bodybuddy.domain.myrecord.GpsData;
+import com.edu.bodybuddy.domain.myrecord.PhysicalRecord;
 import com.edu.bodybuddy.exception.ExrDetailRecordException;
 import com.edu.bodybuddy.exception.ExrRecordException;
+import com.edu.bodybuddy.model.myrecord.DietRecordService;
 import com.edu.bodybuddy.model.myrecord.ExrRecordService;
 import com.edu.bodybuddy.model.myrecord.GpsDataService;
 import com.edu.bodybuddy.model.myrecord.MyRecordService;
+import com.edu.bodybuddy.model.myrecord.PhysicalRecordService;
 import com.edu.bodybuddy.util.Message;
 
 @RestController
@@ -44,7 +43,14 @@ public class RestMyRecordController {
 	private MyRecordService myRecordService;
 	
 	@Autowired
+	private PhysicalRecordService physicalRecordService;
+	
+	@Autowired
 	private ExrRecordService exrRecordService;
+	
+	@Autowired
+	private DietRecordService dietRecordService;
+	
 	@Autowired
 	private GpsDataService gpsDataService;
 
@@ -87,21 +93,52 @@ public class RestMyRecordController {
 		List<GpsData>gpsList=gpsDataService.selectForDay("2023-03-24 00:00:00");
 		return gpsList;
 	}
-	/*------------------------------------------------------------------------------*/
 	
 	
+	/*==============================================
+	 * =======================신체기록==================
+	 * =============================================*/
 	
+	//신체기록을 등록하는 메서드
+	@PostMapping("/physicalRecord")
+	public ResponseEntity<Message> postPhysicalRecord(@RequestBody PhysicalRecord physicalRecord) {
+		
+		logger.info("받아온 몸무게는"+physicalRecord.getWeight());
+		logger.info("받아온 bmi는"+physicalRecord.getBMI());
+		logger.info("받아온 체지방은"+physicalRecord.getBodyFat());
+		logger.info("받아온 골격근량은"+physicalRecord.getMusclemass());
+		logger.info("받아온 날짜는"+physicalRecord.getRegdate());
+		//service 일시키기
+		physicalRecordService.regist(physicalRecord);
+		
+		Message message=new Message();
+		message.setMsg("신체기록 등록 성공");
+		return new ResponseEntity<Message>(message ,HttpStatus.OK);
+	}
+	
+	//해당월의 신체기록을 불러오는 메서드
+	@PostMapping("/physicalListForMonth")
+	public List<PhysicalRecord> getPhysicalRecordForMonth(@RequestBody Map<String, String> pysicalOneMonthPeriod){
+		logger.info("한달동안의 신체기록을 불러올 첫날과 마지막 날 값은 :" +pysicalOneMonthPeriod.get("firstDay")+",,"+pysicalOneMonthPeriod.get("lastDay"));
+		List<PhysicalRecord> physicalList=physicalRecordService.selectForMonth(pysicalOneMonthPeriod);
+		return physicalList;
+	}
+	
+	/*=============================================
+	 * ===================운동기록영역=====================
+	 * =============================================*/
 	
 	//한달간의 기록을 보여주는 메서드
 	//ResponseBody 를 붙일 필요없음, RestController로 클래스 선언이 되어있기 때문에
 	@PostMapping("/exrListForMonth")
 	public List<ExrRecord> getExrRecordForMonth(@RequestBody Map<String, String> oneMonthPeriod){
 		logger.info("한달동안의 기록을 불러올 첫날과 마지막 날 값은 :" +oneMonthPeriod.get("firstDay")+",,"+oneMonthPeriod.get("lastDay"));
-		LocalDate  currentDate=LocalDate.now();
-		logger.info("오늘 날짜는"+currentDate);
+		//LocalDate  currentDate=LocalDate.now();
+		//logger.info("오늘 날짜는"+currentDate);
 		List<ExrRecord> exrRecordListMonth=exrRecordService.seletForMonth(oneMonthPeriod);
 		return exrRecordListMonth;
 	}
+	
 	
 	@PostMapping("/exrList") //Rest방식의 이름을 어떻게 하는게 Restful적일까
 	public ResponseEntity<Message> getExrRecords(@RequestBody List<ExrRecord> exrList) { //Post방식으로 보내야 Body가 있기 때문에 RequestBody로 받을 수 있는 것
@@ -163,6 +200,21 @@ public class RestMyRecordController {
 		message.setMsg("삭제되었습니다");
 		ResponseEntity<Message> entity=new ResponseEntity<Message>(message, HttpStatus.OK);
 		return entity;
+	}
+	
+	
+	
+	/*=============================================
+	 * =====================식단기록 영역=================
+	 * */
+	
+	@GetMapping("/dietAPIRecord")
+	public Map<String, String> getDietAPIRecord(@RequestBody Map<String, String> foodName){
+		logger.info("여기는 옴");
+		logger.info("받아온 음식이름은"+foodName);
+		Map<String, String> dietAPIRecord=dietRecordService.getDietAPIRecord(foodName.get("foodName"));
+		
+		return dietAPIRecord;
 	}
 	
 	

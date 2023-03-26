@@ -83,5 +83,11 @@
 		<property name="dataType" 				value="json"/>
 	</bean>
 	
+	<!-- 식단API를 사용하기 위한 bean등록 -->
+	<bean id="dietAPIManager" class="com.edu.bodybuddy.util.DietAPIManager">
+		<property name="dietServiceKey" value="5OLMbd4sbXgeeMPa2saChLrICRYMFhGvDm5S3y3XUNG6KoMuumA0OTf1wapCRiAG1n5%2BOQY8xFTUr2gwGLQuWg%3D%3D"/>
+		<property name="dataType" 		value="json"/>
+	</bean>
+	
 </beans>
 

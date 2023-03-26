@@ -11,7 +11,7 @@
  	<typeAlias type="com.edu.bodybuddy.domain.member.Password" alias="Password"/>
  	
  	<!-- Myrecord Alias -->
- 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.PhysicalRecord" alias="PysicalRecord"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.PhysicalRecord" alias="PhysicalRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrRecord" alias="ExrRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrDetailRecord" alias="ExrDetailRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.DietRecord" alias="DietRecord"/>

@@ -29,5 +29,4 @@ public class GpsDataServiceImpl implements GpsDataService{
 		gpsDataDAO.delete(exr_routine_idx);
 	}
 
-
 }
