@@ -139,21 +139,6 @@ public class RestDietAdminController {
 		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg,HttpStatus.OK);	
 		return entity;	
 	}
-	
-	//글 검색 
-	@GetMapping("/diet/search")
-	public List<DietInfo> getSearch(String keyword) {
-		logger.info("응답 받음");
-
-		HashMap<String, String> map=new HashMap<String, String>();
-		map.put("keyword", keyword);
-		logger.info("맵의 문자열은? "+keyword);
-		
-		List<DietInfo> dietInfoList=dietInfoService.selectBySearch(map);
-		
-		return dietInfoList;
-	}
-	
 
 	
 	@ExceptionHandler(DietCategoryException.class)

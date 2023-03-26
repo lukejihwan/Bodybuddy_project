@@ -20,6 +20,6 @@ public interface DietTipService {
 	public List selectBySearch(HashMap<String, String> map);
 	
 	//페이징처리
-	public int totalRecord();
+	public int totalCount();
 	public List selectAllPage(int page);
 }

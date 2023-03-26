@@ -57,8 +57,8 @@ public class DietTipServiceImpl implements DietTipService{
 	}
 
 	@Override
-	public int totalRecord() {
-		return dietTipDAO.totalRecord();
+	public int totalCount() {
+		return dietTipDAO.totalCount();
 	}
 
 	@Override
