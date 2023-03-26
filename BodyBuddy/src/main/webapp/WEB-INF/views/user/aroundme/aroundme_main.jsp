@@ -5,10 +5,9 @@
 <html lang="en">
 <head>
 <%@include file="../inc/header_link.jsp"%>
-<script
-	src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+<%@include file="../inc/adminlte.jsp"%>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0x0lvn9t3z"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=0x0lvn9t3z&submodules=geocoder"></script>
 </head>
@@ -75,7 +74,7 @@
 		<div class="container" id="app1">
 			<div class="row">
 				<div class="col">
-					<div class="card card-primary card-tabs">
+					<div class="card card-primary card-tabs" id="main">
 						<div class="card-header p-0 pt-1">
 							<ul class="nav nav-tabs" role="tablist">
 								<template v-for="(place, i) in places">
@@ -169,6 +168,23 @@
 		`,
 		props:["item"],
 	};
+	const reviews = {
+			template:`
+				<div class="row">
+					<div class="col-md-12">
+						<p class="no-result">검색 결과가 존재하지 않습니다..</p>
+					</div>
+					<!-- end of col-md-12 -->
+				</div>
+				<!-- end of row -->
+			`,
+			data(){
+				return {
+					reviewList:[]
+				};
+			}
+	}
+	
 	
 	const myheader = {
 			template:`
@@ -213,10 +229,10 @@
 									
 									<div class="row">
 										<div class="col-md-6">
-											<div id="map" style="width:100%;height:400px;"></div>
+											<div id="map" style="width:100%;height:425px;"></div>
 										</div>
 										<!-- end of col-md-6 -->
-										<div class="col-md-6">
+										<div class="col-md-6 table-responsive">
 											<table class="table table-bordered table-hover">
 												<thead>
 													<tr>
@@ -239,6 +255,22 @@
 							<!-- end of card -->
 						</div>
 						<!-- end of col-md-12 -->
+				</div>
+				<!-- end of row -->
+				<div class="row">
+				<div class="col-md-12">
+				<div class="card card-primary">
+					<div class="card-header">
+						<h3 class="card-title">블로그 리뷰</h3>
+					</div>
+					<div class="card-body">
+						<reviews/>
+					</div>
+					<!-- end of body -->
+				</div>
+				<!-- end of card -->
+			</div>
+			<!-- end of col-md-12 -->
 				</div>
 				<!-- end of row -->
 				</div>
@@ -305,9 +337,12 @@
 			},
 			components:{
 				myrow,
-				myrowbody
+				myrowbody,
+				reviews
 			}
 	}
+	
+	
 	
 	//vue
 	
@@ -328,6 +363,7 @@
 				itemList:[],
 				markerList:[],
 				itemFlag:false,
+				itemFlag2:false,
 				myaddr:"",
 			},
 			components:{
@@ -343,6 +379,49 @@
 			}
 			
 		});
+	}
+	
+	function itemSelected(e){
+		console.log("itemSelected 눌림", e);
+		//console.log("객체?", typeof(e)=='object');
+		console.log("엘리먼트?", e);
+		
+		let trList = $("tr[data-widget='expandable-table']");
+		
+		console.log("itemFlag", app1.itemFlag);
+		if(app1.itemFlag==false){
+			if(typeof(e)=='object'){
+				for(let i =0;i<trList.length;i++){
+					//console.log("tr.val", htmlDecode(trList[i].__vue__.item.title));
+					if(e.title==htmlDecode(trList[i].__vue__.item.title)){
+						app1.itemFlag=true;
+						$(trList[i]).trigger("click");
+					}
+				}
+			}else{
+				for(let i =0;i<app1.markerList.length;i++){
+					//console.log("app1.markerList[i].title", app1.markerList[i].title);
+					if(e==app1.markerList[i].title){
+						app1.itemFlag=true;
+						$(app1.markerList[i].marker.getElement()).trigger("click");
+					}
+				}
+			}
+			
+		}else{
+			console.log("끊김");
+			
+			app1.itemFlag=false;
+			
+			if(app1.itemFlag2==false){
+				app1.itemFlag2=true;
+			}else{
+				app1.itemFlag2=false;
+				return;
+			}
+			
+			console.log("블로그 검색을 위한 타이틀 요청");
+		}
 	}
 	
 	function hideAll() {
@@ -420,34 +499,6 @@
 		);
 	}
 	
-	//네이버
-	function getPlaceListByCoords(lat, lon, place) {
-		$.ajax({
-			url:"/rest/aroundme/place/coords/"+place+"/"+lat+","+lon,
-			type:"GET",
-			success:(result, status, xhr)=>{
-				console.log(result);
-				app1.itemList = result.items;
-			},
-			error:(xhr, status ,err)=>{
-				console.log(err);
-			}
-		});
-	}
-	function getAddrByCoords(lat, lon){
-		$.ajax({
-			url:"/rest/aroundme/addr/coords/"+lat+","+lon,
-			type:"GET",
-			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-			success:(result, status, xhr)=>{
-				console.log(result);
-				app1.myaddr=result.msg;
-			},
-			error:(xhr, status ,err)=>{
-				console.log(err);
-			}
-		});
-	}
 	function setMarkerList() {
 		for(let i =0;i<app1.markerList.length;i++){
 			app1.markerList[i].marker.setMap(null);
@@ -471,6 +522,7 @@
 		app1.markerList=markerList;
 		console.log(markerList);
 	}
+	
 	function addEventToMarker() {
 		app1.markerList.forEach(marker=>{
 			marker.listener=naver.maps.Event.addDOMListener(marker.marker.getElement(), 'click', function(e) {
@@ -485,50 +537,81 @@
 			})
 		});
 	}
+	
 	function removeEventToMarker() {
 		console.log("마커리스트 리스너 삭제됨");
 		app1.markerList.forEach(marker=>{
 			new naver.maps.Event.removeDOMListener(marker.listener);
 		});
 	}
-	function itemSelected(e){
-		console.log("itemSelected 눌림", e);
-		//console.log("객체?", typeof(e)=='object');
-		console.log("엘리먼트?", e);
-		
-		let trList = $("tr[data-widget='expandable-table']");
-		
-		if(app1.itemFlag==false){
-			console.log("itemFlag", app1.itemFlag);
-			if(typeof(e)=='object'){
-				for(let i =0;i<trList.length;i++){
-					console.log("tr.val", htmlDecode(trList[i].__vue__.item.title));
-					if(e.title==htmlDecode(trList[i].__vue__.item.title)){
-						app1.itemFlag=true;
-						$(trList[i]).trigger("click");
-					}
-				}
-			}else{
-				for(let i =0;i<app1.markerList.length;i++){
-					console.log("app1.markerList[i].title", app1.markerList[i].title);
-					if(e==app1.markerList[i].title){
-						app1.itemFlag=true;
-						$(app1.markerList[i].marker.getElement()).trigger("click");
-					}
-				}
+	
+	//네이버
+	function getPlaceListByCoords(lat, lon, place) {
+		setLoadingOverlay($("#main"));
+		$.ajax({
+			url:"/rest/aroundme/place/coords/"+place+"/"+lat+","+lon,
+			type:"GET",
+			success:(result, status, xhr)=>{
+				console.log(result);
+				app1.itemList = result.items;
+				removeLoadingOverlay($("#main"));
+			},
+			error:(xhr, status ,err)=>{
+				console.log(err);
 			}
-			
-		}else{
-			console.log("끊김");
-			app1.itemFlag=false;
-		}
+		});
 	}
+	function getAddrByCoords(lat, lon){
+		setLoadingOverlay($("#main"));
+		$.ajax({
+			url:"/rest/aroundme/addr/coords/"+lat+","+lon,
+			type:"GET",
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			success:(result, status, xhr)=>{
+				console.log(result);
+				app1.myaddr=result.msg;
+			},
+			error:(xhr, status ,err)=>{
+				console.log(err);
+			}
+		});
+	}
+	
+	function getBlogByTitle(title){
+		
+		$.ajax({
+			url:"/rest/aroundme/blog/"+title,
+			type:"GET",
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			success:(result, status, xhr)=>{
+				console.log(result);
+			},
+			error:(xhr, status ,err)=>{
+				console.log(err);
+			}
+		});
+	}
+	
 	
 	
 	//기타 함수
 	function htmlDecode(input) {
 	  var doc = new DOMParser().parseFromString(input, "text/html");
 	  return doc.documentElement.textContent;
+	}
+	
+	function setLoadingOverlay(el){
+		if($(el).children(".overlay").length>0) return;
+		
+		let overlay = `
+			<div class="overlay dark">
+			  <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+			</div>
+		`;
+		$(el).append(overlay);
+	}
+	function removeLoadingOverlay(el){
+		$(el).children(".overlay").remove();
 	}
 	
 	

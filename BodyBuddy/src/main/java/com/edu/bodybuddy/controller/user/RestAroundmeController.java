@@ -34,7 +34,7 @@ public class RestAroundmeController {
 	public RestAroundmeController() {
 		placeMap = new HashMap<String, String>();
 		placeMap.put("gym", " 근처 헬스장");
-		placeMap.put("park", " 근처 공원");
+		placeMap.put("park", " 공원");
 	}
 	
 	@GetMapping("/place/coords/{place}/{latlon:.+}")
@@ -66,5 +66,14 @@ public class RestAroundmeController {
 		logger.info("getCoordsByAddr : "+map);
 		
 		return map;
+	}
+	@GetMapping("/blog/{title}")
+	public HashMap<String, Object> getBlogByTitle(HttpServletRequest request,@PathVariable String title) {
+		logger.info("title : "+title);
+		//3단계
+		//HashMap<String, Object> map = aroundmeService.getCoordsByAddr(addr);
+		//logger.info("getCoordsByAddr : "+map);
+		
+		return null;
 	}
 }
