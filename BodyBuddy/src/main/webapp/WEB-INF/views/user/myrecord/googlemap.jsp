@@ -22,22 +22,13 @@
 </head>
 <body>
 구글맵 출력 예정
-<div class="container top">
 		<div class="row mt-2 top">
-			<div div class="col-md-3 border top">
-				좌		
-				<div class="form-group mt-2">
-					<button id="bt_geo" type="button" class="btn btn-danger">Geo</button>
-				</div>		
-			</div>
-		
 			<div class="col-md-9 border top">
 				<div id="map">
 			
 				</div>
 			</div>
 		</div>
-	</div>
 <script type="text/javascript">
 	//let map=new google.maps.Map(document.getElementById("map"), mapProp);
 	
@@ -99,4 +90,4 @@
 </body>
 </html>
 <!-- 구글 맵 API & 드로잉 레이어 라이브러리(API) -->
-<script async src="https://maps.googleapis.com/maps/api/js?&libraries=drawing&libraries=drawing&libraries=drawing&key=AIzaSyCygGXycbdibyxeRnH6YKo6mZSeKV1Nfn0&callback=initMap"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?&libraries=drawing&libraries=drawing&libraries=drawing&key=AIzaSyABFfH85xw6pNOdcGrmBAMGKOJhVhsQL6Q&callback=initMap"></script>

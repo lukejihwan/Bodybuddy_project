@@ -17,7 +17,7 @@
 			javaType="java.util.List"
 			ofType="ExrDetailRecord"
 			select="ExrDetailRecord.selectByExrRecord"/>
-		
+
 	</resultMap>
 	
 	<!-- 한달간 운동 기록을 불러오는 쿼리-->

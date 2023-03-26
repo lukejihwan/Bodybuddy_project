@@ -53,6 +53,11 @@
 	<!-- 이메일 관련 빈 설정 -->
 	<context:property-placeholder location="classpath:./social.properties"/>
 	
+	
+	<!-- ListConverter 빈 등록 -->
+	<bean id="listConverter" class="com.edu.bodybuddy.util.ListConverter"/>
+	
+	
 	<bean class="org.springframework.mail.javamail.JavaMailSenderImpl" id="javaMailSender">
 		<property name="host" value="smtp.gmail.com"/>
 		<property name="port" value="587"/>
@@ -68,6 +73,14 @@
 				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
 			</props>
 		</property>
+	</bean>
+	
+	<!-- 기상청 API를 사용하기 위한 bean등록 -->
+	<bean id="weatherAPIManager"  class="com.edu.bodybuddy.util.WeatherAPIManager">
+		<property name="weatherServiceKey" 	value="5OLMbd4sbXgeeMPa2saChLrICRYMFhGvDm5S3y3XUNG6KoMuumA0OTf1wapCRiAG1n5%2BOQY8xFTUr2gwGLQuWg%3D%3D"/>
+		<property name="pageNo" 				 	value="1"/>
+		<property name="numOfRows" 			value="1000"/>
+		<property name="dataType" 				value="json"/>
 	</bean>
 	
 </beans>

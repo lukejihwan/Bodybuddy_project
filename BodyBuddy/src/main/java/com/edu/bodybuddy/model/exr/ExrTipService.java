@@ -14,4 +14,6 @@ public interface ExrTipService {
 	
 	// 조회수 증가
 	public void plusHit(int exr_tip_idx);
+	// 추천수 증가
+	public void plusRecommend(int exr_tip_idx);
 }

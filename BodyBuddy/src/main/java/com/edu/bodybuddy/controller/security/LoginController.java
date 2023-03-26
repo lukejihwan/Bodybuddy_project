@@ -94,7 +94,7 @@ public class LoginController {
 		}
 		
 		//유저 정보를 session에 담는다 => 로그인 처리
-		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(existMember,existMember.getPassword(),existMember.getAuthorities()));
+		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(existMember,null,existMember.getAuthorities()));
 		ModelAndView mv = new ModelAndView("redirect:/mypage");
 		return mv;
 	}

@@ -16,6 +16,11 @@
 <head profile="http://www.w3.org/2005/10/profile">
 
 <%@include file="../inc/header_link.jsp" %>
+<style type="text/css">
+	.hero-section{
+		background-image: url("/resources/user/images/exr/routine_back.jpg");
+	}
+</style>
 </head>
 
 <body class="animsition">
@@ -35,7 +40,7 @@
                       <h1 class="hero-title">루틴 공유 게시판</h1>
                       <p class="small-caps mb30 text-white">BodyBuddy Excercise Routine Share Here.</p>
                       <p class="hero-text">자신만의 운동 루틴을 기록해보세요!</p>
-                      <a href="/exr/routine/regist" class="btn btn-default">지금 기록하기</a>
+                      <a href="/exr/routine/registform" class="btn btn-default">지금 기록하기</a>
                   </div>
               </div>
           </div>
@@ -47,40 +52,32 @@
     <div class="space-medium">
         <div class="container" id="app1">
 
-				
-					<div class="card">
-					
 						<div class="card-header">
 							<div class="row">
 
-								<div class="col-6">
+								<div class="col-7">
 									<h3 class="card-title">루틴 공유 게시판</h3>
 
 									<div class="card-tools">
 										<form action="form1">
-											<div class="input-group input-group-sm" style="width: 250px;">
 											
 												<input type="hidden" name="pg" value="<%=pageManager.getCurrentPage()%>">
 												<input type="hidden" name="num" value="<%=pageManager.getNum()%>">
 												
-												<input type="text" name="keyword" placeholder="제목 검색">
-												<div class="input-group-append">
-													<button class="btn btn-default" type="button"
-														id="bt_search">
+												<input type="text" name="keyword" placeholder="제목 검색" style="width:80%">
+													<button class="btn btn-default" type="button" id="bt_search">
 														<i class="fa fa-search"></i>
 													</button>
-												</div>
-											</div>
 										</form>
 									</div>
 
 								</div>
 								<!-- 검색 태그들이 올 곳 -->
-								<div class="col-6">
+								<div class="col-5">
 								<%for(ExrCategory category:exrCategoryList){	%>
-								<div>
+								<span class="m-3">
 									<a href="javascript:getCategory(<%=category.getExr_category_idx() %>)" title="Beginners"><%=category.getExr_category_name() %></a>
-								</div>
+								</span>
 								<%} %>
 								</div>
 							</div>
@@ -97,12 +94,13 @@
 										<th>제목</th>
 										<th>작성자</th>
 										<th>등록일</th>
+										<th>추천</th>
 										<th>조회수</th>
 									</tr>
 								</thead>
 								<tbody>
 									<template v-for="exrRoutine in exrRoutineList">
-										<row :dto="exrRoutine" :key="exrRoutine.exr_routine_idx"/>
+										<row :dto="exrRoutine" :key="exrRoutine.exr_routine_idx" :num="exrRoutine.commentList.length"/>
 									</template>
 								</tbody>
 							</table>
@@ -110,14 +108,13 @@
 						<!-- /.card-body -->
 						
 		
-					</div>
 					<!-- /.card -->
 					<!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"> -->
 
 
 					<div class="row">
-						<div class="card-footer col-12">
-							<div class="st-pagination"style="float:none; margin:100 auto">
+						<div class="col text-center">
+							<div class="st-pagination">
 								<ul class="pagination"  >
 								
 								<%if((pageManager.getFirstPage()-1)>0){ %>
@@ -178,23 +175,26 @@
 			    <td>{{exrRoutine.exr_routine_idx}}</td>
 			    <td>{{exrRoutine.exrCategory.exr_category_name}}</td>
 			    <td><a href="#" @click="getDetail(exrRoutine)">{{exrRoutine.title}}
-			    	<span>(0)</span>
+			    <span class="comment-count" style="color:red">[&nbsp{{this.num}}&nbsp]</span>
 			    </a></td>
 			    <td>{{exrRoutine.writer}}</td>
 			    <td>{{exrRoutine.regdate.substr(0, 10)}}</td>
+			    <td>{{exrRoutine.recommend}}</td>
 			    <td>{{exrRoutine.hit}}</td>
 			</tr>
 		`,
-		props:["dto"],
+		props:["dto", "num"],
 		data(){
 			return{
 				exrRoutine:this.dto,
+				commentCount:this.num
 			}
 		},
 		methods:{
 			getDetail:function(exrRoutine){
 				location.href="/exr/routine_detail/"+exrRoutine.exr_routine_idx;
 			}
+			
 		}
 		
 	}
@@ -209,25 +209,25 @@
 			success:function(result, status, xhr){
 				app1.exrRoutineList=result;
 				console.log(app1.exrRoutineList);
-			
+				
 			},
 			error:function(xhr, status, err){
 				console.log(xhr.responseText);
 			}
 		});
 	}
+
 	
 	
 	function init(){
 		app1=new Vue({
 			el:"#app1",
 			data:{
-				exrRoutineList:[],
+				exrRoutineList:[]
 			},
 			components:{
 				row
-			},
-			
+			}
 		});
 	}
 	
@@ -236,8 +236,6 @@
 	$(function(){
 		init();
 		
-		// 처음 보여질 때는 동기 방식.. 가능?
-				
 				
 		// 처음 보여질 때는 전체 목록을 조회한다
 		getExrRoutineList("/rest/exr/routine_list?pg="+$("input[name='pg']").val());

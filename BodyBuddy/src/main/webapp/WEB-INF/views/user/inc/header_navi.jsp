@@ -25,9 +25,9 @@
                             <ul>
                                 <li><a href="/exr/notice">정보</a></li>
                                 <li><a href="/exr/routine_list/1">루틴 공유</a></li>
-                                <li><a href="/exr/tip" title="Classes Detail">팁</a></li>
+                                <li><a href="/exr/tip_list" title="Classes Detail">팁</a></li>
+                                <li><a href="/exr/today_list" title="Classes Detail">오운완</a></li>
                                 <li><a href="classes-detail.html" title="Classes Detail">크루</a></li>
-                                <li><a href="classes-detail.html" title="Classes Detail">챌린지</a></li>
                                 <li><a href="classes-detail.html" title="Classes Detail">칼로리 소모 계산기</a></li>
                             </ul>
                         </li>
