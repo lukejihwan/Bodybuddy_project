@@ -1,8 +1,10 @@
 package com.edu.bodybuddy.controller.user;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.edu.bodybuddy.domain.myrecord.DietRecord;
 import com.edu.bodybuddy.domain.myrecord.ExrRecord;
 import com.edu.bodybuddy.domain.myrecord.GpsData;
 import com.edu.bodybuddy.domain.myrecord.PhysicalRecord;
@@ -54,6 +57,9 @@ public class RestMyRecordController {
 	@Autowired
 	private GpsDataService gpsDataService;
 
+	/*================================================
+	 * =================안드로이드 google API영역=================
+	 * */
 	
 	// 안드로이드에서 전송한 GPSData 정보를 받는 메서드
 	@PostMapping("/today/gps")
@@ -77,6 +83,35 @@ public class RestMyRecordController {
 		logger.info("위치데이터 입력 성공");
 	}
 	
+	
+	// 해당 날짜에 대한 위도 경도 값을 가져오는 함수!
+	@GetMapping("/today/gps")
+	public List getGPSData() {
+		logger.info("여기까지 왔니");
+		List<GpsData>gpsList=gpsDataService.selectForDay("2023-03-24 00:00:00");
+		return gpsList;
+	}
+	
+	/*지환 영역 시작*/
+	//한달간의 러닝기록을 불러오는 함수!
+	@PostMapping("/runningRecord")
+	public List getRunningRecord(@RequestBody Map<String, String> runningOneMonthPeriod) {
+		
+		logger.info("받아온 첫날 :"+runningOneMonthPeriod.get("firstDay")+" 마지막날은"+runningOneMonthPeriod.get("lastDay"));
+		Set runningListForMonth=gpsDataService.selectRunningForMonth(runningOneMonthPeriod);
+		
+		//생성된 Set배열을 List형식으로 변환
+		List<String> runningRegdateForMonth=new ArrayList<>(runningListForMonth);
+		
+		return runningRegdateForMonth;
+	}
+	
+	/*지환 영역 끝*/
+	
+	/*=========================================
+	 * ==============날씨 API 영역====================
+	 * */
+	
 	@GetMapping("/weatherAPI/{nx}/{ny}")
 	public Map<String, String> getWeather(@PathVariable(name="nx") int nx, @PathVariable(name="ny") int ny) {
 		
@@ -85,13 +120,6 @@ public class RestMyRecordController {
 		
 		Map<String, String> dataForResponseMap=myRecordService.getWeather(nx, ny);
 		return dataForResponseMap;
-	}
-	
-	// 해당 날짜에 대한 위도 경도 값을 가져오는 함수!
-	@GetMapping("/today/gps")
-	public List getGPSData() {
-		List<GpsData>gpsList=gpsDataService.selectForDay("2023-03-24 00:00:00");
-		return gpsList;
 	}
 	
 	
@@ -208,13 +236,21 @@ public class RestMyRecordController {
 	 * =====================식단기록 영역=================
 	 * */
 	
-	@GetMapping("/dietAPIRecord")
-	public Map<String, String> getDietAPIRecord(@RequestBody Map<String, String> foodName){
+	@PostMapping("/dietAPIRecord")
+	public List getDietAPIRecord(@RequestBody Map<String, String> foodName){
 		logger.info("여기는 옴");
 		logger.info("받아온 음식이름은"+foodName);
-		Map<String, String> dietAPIRecord=dietRecordService.getDietAPIRecord(foodName.get("foodName"));
+		List dietAPIRecord=dietRecordService.getDietAPIRecord(foodName.get("foodName"));
 		
 		return dietAPIRecord;
+	}
+	
+	@PostMapping("/dietRecord")
+	public ResponseEntity<Message> registDietRecord(@RequestBody DietRecord dietRecord){
+		
+		dietRecordService.regist(dietRecord);
+		
+		return null;
 	}
 	
 	

@@ -174,6 +174,8 @@ let today;
 let app1;
 // 현재 위치에 포커스 맞추기
 let map;
+//근력운동, 러닝에 따라 변화될 논리값
+let condition=true;
 
 
 const rowlist={
@@ -268,6 +270,7 @@ const rowlist={
 				}
 			},
 			del:function(exr_record_idx){
+				console.log("삭제할 운동idx값은", exr_record_idx);
 				deleteExrRecord(exr_record_idx);
 			}
 		}
@@ -275,7 +278,7 @@ const rowlist={
 }
 
 //운동기록 삭제하는 함수
-function deleteExrRecord(){
+function deleteExrRecord(exr_record_idx){
 	if(confirm("삭제하시겠습니까?")){
 		$.ajax({
 			url:"/rest/myrecord/exrRecord/"+exr_record_idx,
@@ -349,7 +352,7 @@ function renderCalender(thisMonth) {
     }
     // 이번달
     for (let i = 1; i <= nextDate; i++) {
-        calendar.innerHTML = calendar.innerHTML + "<div class='day current' onclick='showExrRecord("+i+")' data-toggle='collapse' data-target='#exrCollapse'>" + i + "</div>"
+        calendar.innerHTML = calendar.innerHTML + "<div class='day current' onclick='showExrAndRunningRecord("+i+")'>" + i + "</div>"
     }
     // 다음달
     for (let i = 1; i <= (7 - nextDay == 7 ? 0 : 7 - nextDay); i++) {
@@ -391,14 +394,22 @@ function calendarInit() {
     $(".go-prev").on("click", function() {
         thisMonth = new Date(currentYear, currentMonth - 1, 1);//년, 월, 일
         renderCalender(thisMonth);
-        getExrRecordForMonth();
+        if(condition){
+    	    getExrRecordForMonth();
+        }else{
+        	getRunningRecordForMonth();
+        }
     });
 
     // 다음달로 이동
     $(".go-next").on("click", function() {
         thisMonth = new Date(currentYear, currentMonth + 1, 1);
         renderCalender(thisMonth); 
-        getExrRecordForMonth();
+        if(condition){
+    	    getExrRecordForMonth();
+        }else{
+        	getRunningRecordForMonth();
+        }
     });
 }
 
@@ -411,6 +422,7 @@ function makeDayFormat(clickedDay){
 }
 
 //해당일의 운동기록과 세부내용을 collapse에 rendering하는 함수
+/*
 function showExrRecordsOnCollapse(exrLists){
 	for(let i=0; i<exrLists.length; i++){
 		//console.log("운동명은",exrList[i].exr_name);
@@ -422,31 +434,43 @@ function showExrRecordsOnCollapse(exrLists){
 		}
 	}
 }
+*/
 
 //각 날짜 클릭시 동작할 함수
-function showExrRecord(clickedDay){
-	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
-	console.log("registedDate", registedDate);
+function showExrAndRunningRecord(clickedDay){
 	
-	$.ajax({
-		url:"/rest/myrecord/exrRecord/"+registedDate,
-		type:"GET",
-		data: registedDate,
-		success:function(result, status, xhr){
-			//console.log(typeof result); object형
-			console.log("받아온 결과는 ", result);
-			app1.exrList=result;
-			console.log("exrList의 길이는 ",app1.exrList.length);
-			showExrRecordsOnCollapse(result);
-		},
-		error:function(xhr, status, error){
-			console.log("error",error);
-			app1.exrList=[];
-		}
-	});
+	//근력운동이 눌렸을때, 러닝이 눌렸을때에 따라 다르게 동작하게 하기 위해
+	if(condition){ //근력운동이 눌렸을 때
+		let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
+		console.log("registedDate", registedDate);
 		
+		$.ajax({
+			url:"/rest/myrecord/exrRecord/"+registedDate,
+			type:"GET",
+			data: registedDate,
+			success:function(result, status, xhr){
+				//console.log(typeof result); object형
+				console.log("받아온 결과는 ", result);
+				app1.exrList=result;
+				console.log("exrList의 길이는 ",app1.exrList.length);
+				//showExrRecordsOnCollapse(result);
+			},
+			error:function(xhr, status, error){
+				console.log("error",error);
+				app1.exrList=[];
+			}
+		});
+	}else{ //러닝버튼이 눌리고, 각날짜를 불러올 영역
+		$.ajax({
+			url:"",
+			type:"GET"
+		});
+	}
 }
 
+//받아온 regdate를 달력에 표시하기 위한 작업
+//속상: 잘못한게..근력운동과 러닝 둘다 호환되도록 함수를 만들어 놓았어야 하는데,
+//근력운동에만 호환되도록 되었음...... 나중에 바꾸도록
 function renderExrRecord(registedDataForMonth){
 	let divdays=document.getElementsByClassName("current");
 	let selectedDays=[];
@@ -472,18 +496,70 @@ function renderExrRecord(registedDataForMonth){
 	}
 }
 
+function renderRunningRecord(registedRunningDataForMonth){
+	let divdays=document.getElementsByClassName("current");
+	let selectedDays=[];
+	
+	//숫자 변환 작업 01을 1로 11은 11같이
+	for(let i=0; i<registedRunningDataForMonth.length; i++){
+		let registedRunningData=registedRunningDataForMonth[i];
+		let processedData=registedRunningData.slice(8,10);
+		if(processedData.substr(0,1)==0){
+			let selectedDay=registedRunningData.slice(9,10); //ex: 11 (일)div와 비교해 이미지 붙이기 위해
+			selectedDays.push(selectedDay);
+		}else{
+			let selectedDay=registedRunningData.slice(8,10); //ex: 11 (일)div와 비교해 이미지 붙이기 위해
+			selectedDays.push(selectedDay);
+		}
+		//console.log(selectedDays[0]);
+	}
+	
+	for(let a=0; a<selectedDays.length; a++){
+		let getDay=selectedDays[a];
+		setBackground(getDay);
+	}
+}
+
 function setBackground(getDay){
-	$($(".current")[getDay-1]).css("background-color", "#49469c");
+	if(condition){ //근력운동 버튼 일때
+		$($(".current")[getDay-1]).css("background-color", "#28a745");
+	}else{ //러닝 버튼 일 때
+		$($(".current")[getDay-1]).css("background-color", "#dc3545");
+	}
 }
 
 //근력운동에 관한 달력 불러오는 곳
 function getStrengthExrCalendar(){
+	
+	//운동기록에 해당하는 div의 색상도 원래대로 돌려놓기
+	$(".current").css("background-color", "#ffffff");
+	
+	//근력운동 모드로 진입
+	condition=true;
+	
 	document.getElementById("div_ExrCalendar").style.border="2px solid #28a745";
+	
+	//한달간의 근력운동기록을 불러오는 함수
+	getExrRecordForMonth();
 }
 
+//러닝버튼을 클릭했을 때 동작
 //러닝에 관한 달력 불러오는 곳
 function getRunningCalendar(){
+	//운동상세정보가 나와있다면 들어가도록
+	app1.exrList=[];
+	
+	//운동기록에 해당하는 div의 색상도 원래대로 돌려놓기
+	$(".current").css("background-color", "#ffffff");
+	
+	//런닝기록 모드로 진입
+	condition=false;
+	
+	//달력디자인 테두리 빨강으로 변경
 	document.getElementById("div_ExrCalendar").style.border="2px solid #dc3545";
+	
+	//한달간의 러닝기록을 불러오는 함수
+	getRunningRecordForMonth();
 }
 
 //운동기록된 내용과 날짜 등을 불러올 메서드
@@ -512,6 +588,56 @@ function getExrRecordForMonth(){
 		}
 	});
 }
+
+//러닝 한달기록을 불러오는 함수
+function getRunningRecordForMonth(){
+	//해당달의 첫날과 마지막날을 JSON형식으로 만듬
+	let json={};
+	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
+	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
+	let dateData=JSON.stringify(json);
+	console.log("러닝기록을 불러올 시작날짜와 끝 날짜",dateData);
+	
+	//console.log(firstDay);
+	//console.log(lastDay);
+	//비동기로 해당달의 첫날과 마지막날을 전송
+	$.ajax({
+		url:"/rest/myrecord/runningRecord",
+		type:"POST",
+		contentType:"application/json",
+		processData:false,
+		data:dateData,
+		success:function(result, status, xhr){
+			console.log("받아온 한달간의 러닝기록 결과는",  result);
+			renderRunningRecord(result);
+			/*
+			createPolyline(result);
+			
+			console.log("받아온 날짜는",result);
+			
+			let jsonList=[];
+			
+			for(let i=0; i<result.length; i++){
+				let dto=result[i];
+				
+				let json={};
+				json['lat']=dto.lati;
+				json['lng']=dto.longi;
+				
+				//console.log("가공된 제이슨은? ",json);
+				jsonList.push(json);
+				
+			}
+			//console.log("가공된 제이슨 리스트는? ",jsonList);
+			createPolyline(jsonList);
+			*/
+		},
+		error:function(xhr, status, error){
+			console.log(error, "기록불러오던 중 에러발생");
+		}
+	});
+}
+
 
 /*------------------------------------------------------------------------------
 		구글맵과 관련된 영역
@@ -589,7 +715,6 @@ $(document).ready(function() {
 	getGpsData();
 	initMap();
 	/*------------------*/
-	
 	
     //처음 보여주는 달력의 등록된 운동기록 보여주기
     getExrRecordForMonth();

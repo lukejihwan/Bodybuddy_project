@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="GpsData">
 
+	<!-- 예서영역 시작 -->
 
 	<!-- 하루를 기준으로 데이터 가져오기! -->
 	<select id="selectForDay" parameterType="String" resultType="GpsData">
@@ -9,8 +10,6 @@
 		where regdate = #{regdate}
 	</select>
 	
-	
-
 	<!-- Member 나중에 추가 예정 -->
 	<insert id="insert" parameterType="GpsData">
 		insert into gpsdata(lati, longi, regdate)
@@ -22,6 +21,17 @@
 		delete from gpsdata
 		where exr_record_idx=#{exrRecord.exr_record_idx}
 	</delete>
+	
+	<!-- 예서영역 끝 -->
+	
+	
+	<!-- 지환 영역 시작-->
+	<select id="selectForMonth" parameterType="java.util.Map" resultType="GpsData">
+		select * from gpsdata
+		where regdate between #{firstDay} and #{lastDay}
+		order by regdate asc
+	</select>
+	<!-- 지환 영역 끝 -->
 	
 
 </mapper>

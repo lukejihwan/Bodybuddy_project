@@ -1,14 +1,13 @@
 package com.edu.bodybuddy.model.myrecord;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.edu.bodybuddy.domain.exr.ExrTip;
 import com.edu.bodybuddy.domain.myrecord.GpsData;
-import com.edu.bodybuddy.exception.ExrTipException;
 import com.edu.bodybuddy.exception.GpsDataException;
 
 @Repository
@@ -39,5 +38,14 @@ public class MybatisGpsDataDAO implements GpsDataDAO{
 		}
 	}
 
+	/*지환 영역 시작*/
+	@Override
+	public List<GpsData> selectForMonth(Map<String, String> runningOneMonthPeriod) throws GpsDataException{
+		//Set배열 사용가능한지 확인 필요
+		List<GpsData> runningListForMonth=sqlSessionTemplate.selectList("GpsData.selectForMonth", runningOneMonthPeriod);
+		if(runningListForMonth==null)throw new GpsDataException("러닝기록 조회 결과 없음");
+		return runningListForMonth;
+	}
+	/*지환 영역 끝*/
 	
 }
