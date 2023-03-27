@@ -17,6 +17,8 @@ public class AroundmeServiceImpl implements AroundmeService{
 	
 	private Logger logger = LoggerFactory.getLogger(getClass().getName());
 	
+	public static final int PAGE_SIZE = 5; 
+	
 	public HashMap<String, Object> getPlaceByCoords(String place, String latlon) {
 		logger.info("service place : "+place);
 		logger.info("service latlon : "+latlon);
@@ -41,10 +43,16 @@ public class AroundmeServiceImpl implements AroundmeService{
 		return naverMapAPIManager.getCoordsByAddr(addr);
 	}
 	
+	public HashMap<String, Object> getBlogByTitle(String title, int page) {
+		int pagesize = 5;
+		return naverMapAPIManager.getBlogByTitle(title, page, PAGE_SIZE);
+	}
 
 	public String getAddrByCoords(String latlon) {
 		return naverMapAPIManager.getAddrByCoords(latlon);
 	}
+
+	
 
 	
 	

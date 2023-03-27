@@ -24,12 +24,25 @@
 	    background-color: #b9e118;
 	    border-color: #b9e118;
 	}
+	.review{
+		margin-bottom:10px;
+		padding:20px;
+		cursor: pointer;
+	}
+	.review:hover {
+		background-color: #ececec;
+	}
+	#reviews li{
+		cursor: pointer;
+	}
+	
 </style>
 
 <body class="animsition">
 	<!-- top-bar start-->
 	<%@include file="../inc/topbar.jsp"%>
 	<!-- /top-bar end-->
+	<%@include file="../inc/list_css.jsp"%>
 
 
 	<!-- hero section start -->
@@ -170,9 +183,39 @@
 	};
 	const reviews = {
 			template:`
-				<div class="row">
+				<div class="row" id="reviews">
 					<div class="col-md-12">
-						<p class="no-result">검색 결과가 존재하지 않습니다..</p>
+						<p class="no-result" v-if="review.total==0">검색 결과가 존재하지 않습니다..</p>
+						<template v-if="review.total>0">
+							<div class="row" v-for="item in review.items">
+								<div class="col-md-12 outline review" @click="openBlog(item.link)">
+									<h5><b>{{htmlDecode(item.title)}}</b></h5>
+									<p>
+										{{htmlDecode(item.description)}}
+									</p>
+									<small class="badge badge-secondary"><i class="far fa-clock"></i> {{item.postdate.substr(0, 4)+"."+item.postdate.substr(4, 2)+"."+item.postdate.substr(6)}}</small>
+								</div>
+							</div>
+							<!-- end of row -->
+							<div class="row">
+								<div class="col text-center">
+									<div class="st-pagination">
+										<!--st-pagination-->
+										<ul class="pagination">
+											<li><a @click="getBlogByTitle(review.pageManager.firstPage-1)" v-if="review.pageManager.firstPage>1"><span>이전</span></a></li>
+											<template v-for="i in (review.pageManager.lastPage-review.pageManager.firstPage+1)">
+											
+												<li v-if="(i+review.pageManager.firstPage-1)<=review.pageManager.totalPage" :class="(i+review.pageManager.firstPage-1)==review.pageManager.currentPage?'active':''"><a @click="getBlogByTitle((i+review.pageManager.firstPage-1))">{{(i+review.pageManager.firstPage-1)}}</a></li>
+												
+											</template>
+											
+											<li><a @click="getBlogByTitle(review.pageManager.lastPage+1)" v-if="review.pageManager.lastPage<review.pageManager.totalPage"><span>다음</span></a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<!-- end of row -->
+						</template>
 					</div>
 					<!-- end of col-md-12 -->
 				</div>
@@ -180,8 +223,25 @@
 			`,
 			data(){
 				return {
-					reviewList:[]
+					review:{
+						total:0
+					}
 				};
+			},
+			methods:{
+				htmlDecode:window.htmlDecode,
+				openBlog:function(url){
+					window.open(url);
+				},
+				getBlogByTitle:function(page){
+					
+					//console.log("searchQuery : ", this.review.searchQuery);
+					//console.log("page : ", page);
+					window.getBlogByTitle(this.review.searchQuery, page);
+				}
+			},
+			updated(){
+				removeLoadingOverlay($("#blog"));
 			}
 	}
 	
@@ -206,7 +266,8 @@
 			methods:{
 				setContent:function(){
 					app1.selected=this.place;
-					this.hideAll();					
+					this.hideAll();
+					$("#reviews")[0].__vue__.review.total=0;
 				},
 				hideAll:window.hideAll
 			}
@@ -259,7 +320,7 @@
 				<!-- end of row -->
 				<div class="row">
 				<div class="col-md-12">
-				<div class="card card-primary">
+				<div class="card card-primary" id="blog">
 					<div class="card-header">
 						<h3 class="card-title">블로그 리뷰</h3>
 					</div>
@@ -421,6 +482,15 @@
 			}
 			
 			console.log("블로그 검색을 위한 타이틀 요청");
+			let title;
+			if(typeof(e)=='object'){
+				title=e.title;
+			}else{
+				title=e;
+			}
+			
+			setLoadingOverlay($("#blog"));
+			getBlogByTitle(title, 1);
 		}
 	}
 	
@@ -478,23 +548,39 @@
 	function getGPS() {
 		navigator.geolocation.getCurrentPosition(
 			(pos)=>{
-				alert("허락 누름");
+				//alert("허락 누름");
 				console.log(pos);
-				lat = pos.coords.latitude;
-				lon = pos.coords.longitude;
+				let lat = pos.coords.latitude;
+				let lon = pos.coords.longitude;
 				//getPlaceListByCoords(lat, lon, "gym");
-				let a = {
+				let coords = {
 						lat,
 						lon
 				}
 				//console.log("before : ", app1.coords);
-				app1.coords = a;
+				app1.coords = coords;
 				getAddrByCoords(lat, lon);
 					
 				//console.log("after : ", app1.coords);
 			}, 
 			()=>{
-				alert("거절 누름");
+				//alert("거절 누름");
+				Swal.fire({
+					title: 'GPS 요청이 거부되었습니다',
+					text:"GPS를 사용하기 원하신다면 브라우저 설정에서 권한을 다시 설정해주세요",
+					confirmButtonText: '네',
+					icon:"warning",
+					confirmButtonColor: '#c5f016',
+				});
+				
+				let lat = 37.556574;
+				let lon = 126.945418;
+				let coords = {
+						lat,
+						lon
+				}
+				app1.coords = coords;
+				getAddrByCoords(lat, lon);
 			}
 		);
 	}
@@ -577,14 +663,15 @@
 		});
 	}
 	
-	function getBlogByTitle(title){
+	function getBlogByTitle(title, page){
 		
 		$.ajax({
-			url:"/rest/aroundme/blog/"+title,
+			url:"/rest/aroundme/blog/"+title+"/"+page,
 			type:"GET",
 			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 			success:(result, status, xhr)=>{
 				console.log(result);
+				$("#reviews")[0].__vue__.review = result;
 			},
 			error:(xhr, status ,err)=>{
 				console.log(err);

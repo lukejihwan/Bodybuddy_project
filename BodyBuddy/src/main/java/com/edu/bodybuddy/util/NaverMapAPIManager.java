@@ -21,6 +21,7 @@ public class NaverMapAPIManager {
 	private String geocoding;
 	private String reverseGeocoding;
 	private String search;
+	private String blog;
 	private String naverMapId;
 	private String naverMapSecret;
 	private String naverSearchId;
@@ -147,6 +148,33 @@ public class NaverMapAPIManager {
 			//logger.info("geocoding : " + node.get("addresses").get(0).get("x").asDouble());
 			map.put("lat", node.get("addresses").get(0).get("y").asDouble());
 			map.put("lon", node.get("addresses").get(0).get("x").asDouble());
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	public HashMap getBlogByTitle(String title, int start, int pagesize) {
+		RestRequestManager requestManager = new RestRequestManager();
+		requestManager.init();
+		
+		//키 설정
+		requestManager.addHeader(NAVER_SEARCH_ID_PARAM, naverSearchId);
+		requestManager.addHeader(NAVER_SEARCH_SECRET_PARAM, naverSearchSecret);
+		
+		//파라미터 설정
+		requestManager.addParam("query", title);
+		requestManager.addParam("display", Integer.toString(pagesize));
+		requestManager.addParam("start", Integer.toString(1 + ((start-1) * pagesize)));
+		
+		ObjectMapper mapper = new ObjectMapper();
+		HashMap map = null;
+		try {
+			 map = mapper.readValue(requestManager.request(blog, HttpMethod.GET).getBody(), HashMap.class);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {

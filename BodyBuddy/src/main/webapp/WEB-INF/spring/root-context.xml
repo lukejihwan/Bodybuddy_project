@@ -75,6 +75,7 @@
 		<property name="geocoding" value="https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode"></property>
 		<property name="reverseGeocoding" value="https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc"></property>
 		<property name="search" value="https://openapi.naver.com/v1/search/local.json"></property>
+		<property name="blog" value="https://openapi.naver.com/v1/search/blog.json"></property>
 		<property name="naverMapId" value="0x0lvn9t3z"></property>
 		<property name="naverMapSecret" value="S2gOreVzy2FUMYfwKKZCDwWvUy8vjZX3mw1Zpnet"></property>
 		<property name="naverSearchId" value="4C1yJMD0RY1sBUWHLekW"></property>

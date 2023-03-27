@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.bodybuddy.model.aroundme.AroundmeService;
 import com.edu.bodybuddy.util.Message;
+import com.edu.bodybuddy.util.PageManager;
 
 
 
@@ -34,7 +35,7 @@ public class RestAroundmeController {
 	public RestAroundmeController() {
 		placeMap = new HashMap<String, String>();
 		placeMap.put("gym", " 근처 헬스장");
-		placeMap.put("park", " 공원");
+		placeMap.put("park", " 근처 공원");
 	}
 	
 	@GetMapping("/place/coords/{place}/{latlon:.+}")
@@ -67,13 +68,20 @@ public class RestAroundmeController {
 		
 		return map;
 	}
-	@GetMapping("/blog/{title}")
-	public HashMap<String, Object> getBlogByTitle(HttpServletRequest request,@PathVariable String title) {
+	@GetMapping("/blog/{title}/{page}")
+	public HashMap<String, Object> getBlogByTitle(HttpServletRequest request, @PathVariable String title, @PathVariable int page) {
 		logger.info("title : "+title);
+		logger.info("page : "+page);
 		//3단계
-		//HashMap<String, Object> map = aroundmeService.getCoordsByAddr(addr);
-		//logger.info("getCoordsByAddr : "+map);
+		HashMap<String, Object> map = aroundmeService.getBlogByTitle(title, page);
 		
-		return null;
+		PageManager pageManager = new PageManager();
+		pageManager.setPageSize((Integer)map.get("display"));
+		pageManager.init((Integer)map.get("total"), page);
+		//logger.info("page : "+pageManager);
+		map.put("pageManager", pageManager);
+		map.put("searchQuery", title);
+		
+		return map;
 	}
 }
