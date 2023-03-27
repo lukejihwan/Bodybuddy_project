@@ -56,7 +56,7 @@
                                 <li><a href="/mypage/report" title="신고내역" class="animsition-link">나의 신고내역</a></li>
                             </ul>
                         </li>
-                        <li><a href="contact.html" title="Contact Us" class="animsition-link">내 주변 정보</a> </li>
+                        <li><a href="/aroundme/aroundme_main" class="animsition-link">내 주변 정보</a> </li>
                     </ul>
                 </div>
             </div>
