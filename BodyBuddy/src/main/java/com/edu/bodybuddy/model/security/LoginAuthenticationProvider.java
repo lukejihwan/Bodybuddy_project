@@ -31,17 +31,13 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
         String password = (String)authentication.getCredentials();
         
         log.info("로그인 시도한 이메일 : "+email);
-        log.info("로그인 시도한 비밀번호 : "+password);
 
-        
         MemberDetail userDetails = (MemberDetail) userDetailsService.loadUserByUsername(email);
         
         //일반가입 유저는 DB에서 로그인 정보와 일치하는 사용자 정보를 찾아 DTO에 담아 비교
         if (!passwordEncoder.matches(password, userDetails.getPassword())){
-            log.info("password 불일치 : 입력한 패스워드 = "+password + "// DB 패스워드 = " + userDetails.getPassword());
             throw new LoginException("로그인 실패, 정보를 확인하세요");
         }
-        log.info("password 일치 : 입력한 패스워드 = "+password + "// DB 패스워드 = " + userDetails.getPassword());
         log.info("권한은 : "+userDetails.getAuthorities());
         //일치하는 사용자가 있을 경우 인증 토큰을 발급한다, 보안을 위해 password는 제거
         userDetails.getMember().setPassword(null);
