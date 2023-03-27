@@ -18,6 +18,11 @@
 	.hero-section{
 		background-image: url("/resources/user/images/exr/todaybg.jpg");
 	}
+	.comment-count{
+		margin-left:10px;
+		color:red;
+		font-weight: 10px;
+	}
 </style>
 </head>
 
@@ -91,7 +96,9 @@
 						<%ExrToday exrToday=exrTodayList.get(i); %>
 						<tr>
 							<td><%=exrToday.getExr_today_idx() %></td>
-							<td><a href="/exr/today/detail?exr_today_idx=<%=exrToday.getExr_today_idx() %>"><%=exrToday.getTitle() %></a></td>
+							<td><a href="/exr/today/detail?exr_today_idx=<%=exrToday.getExr_today_idx() %>"><%=exrToday.getTitle() %>
+								<span class="comment-count">[&nbsp <%=exrToday.getCommentList().size() %> &nbsp]</span>
+							</a></td>
 							<td><%=exrToday.getWriter() %></td>
 							<td><%=exrToday.getRegdate() %></td>
 							<td><%=exrToday.getRecommend() %></td>

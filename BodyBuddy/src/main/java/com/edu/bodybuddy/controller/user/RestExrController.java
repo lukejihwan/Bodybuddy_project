@@ -284,7 +284,9 @@ public class RestExrController {
 	public ResponseEntity<Msg> replyTodayComment(ExrTodayComment exrTodayComment, HttpServletRequest request){
 		logger.info("넘어온 답글 reply 함수 확인 "+exrTodayComment);
 		
+		logger.info("컨트롤러에서 넣기 전에 확인"+exrTodayComment);
 		exrTodayCommentService.registReply(exrTodayComment);
+		logger.info("컨트롤러에서 넣은 후 확인"+exrTodayComment);
 		
 		Msg msg=new Msg();
 		msg.setMsg("답글 등록 완료");

@@ -1,3 +1,4 @@
+<%@page import="com.edu.bodybuddy.domain.exr.ExrTodayComment"%>
 <%@page import="com.edu.bodybuddy.domain.exr.ExrToday"%>
 <%@page import="com.edu.bodybuddy.domain.exr.ExrTip"%>
 <%@page import="com.edu.bodybuddy.domain.exr.ExrRoutine"%>
@@ -13,8 +14,22 @@
 <head>
 <%@include file="../inc/header_link.jsp"%>
 <style type="text/css">
+#body{
+    background-size: 100%;
+}
 	.hero-section{
 		background-image: url("/resources/user/images/exr/todaybg.jpg");
+	}
+	.comment-area{
+		/* background:pink; */
+		border:solid 2px gray;
+	}
+	.test{
+		background:white;
+		margin: 10px;
+	}
+	.section{
+		margin:30px;
 	}
 </style>
 </head>
@@ -78,41 +93,58 @@
 	
 				</div>
 				<hr>
-					
 				
 				<div class="comment-area">
-					<div class="col-sm-9">
-						<label class="control-label" for="textarea">Comments</label>
-						<form id="form1">
-							<input type="hidden" name="recommend" value="<%=exrToday.getRecommend()%>">
-							<input type="hidden" name="exr_today_idx" value="<%=exrToday.getExr_today_idx()%>">
-							
-							<textarea class="form-control" name="content" rows="6" placeholder="댓글 입력 창"></textarea>
-							<input type="text" class="form-control" name="writer" placeholder="작성자"/>
-							
-							<button id="bt_comment" class="btn btn-default" type="button">등록</button>
-						</form>
-					</div>
+					<div class="section">
+
+						<div class="col-sm-9">
+							<label class="control-label" for="textarea">Comments</label>
+							<form id="form1">
+								<input type="hidden" name="recommend"
+									value="<%=exrToday.getRecommend()%>"> <input
+									type="hidden" name="exr_today_idx"
+									value="<%=exrToday.getExr_today_idx()%>">
 	
-					<div class="col-sm-9">
-						<template v-for="comment in commentList">
-							<row :dto="comment"/>
-						</template>
-					
-					<!-- reply-form -->
-					<hr>
-					<div id="replySection" class="col-sm-9 mt-3">
-						<label class="control-label" for="textarea">님에게 답변</label>
-						
-						<form id="form2">
-							<input type="hidden" name="exr_today_idx" value="<%=exrToday.getExr_today_idx()%>">
-							<textarea class="form-control" name="content" rows="6" placeholder="답변 작성"></textarea>
-							<input type="text" class="form-control" name="writer"/>
-							<button id="bt_reply" class="btn btn-default" type="button">답변 등록</button>
-						</form>
+								<textarea class="form-control" name="content" rows="6"
+									placeholder="댓글 입력 창"></textarea>
+								<input type="text" class="form-control" name="writer"
+									placeholder="작성자" />
+	
+								<button id="bt_comment" class="btn btn-default" type="button">등록</button>
+							</form>
+						</div>
+	
+						<div class="col-sm-9">
+							<template v-for="(comment, i) in commentList">
+								<!-- <input type="hidden" name="depth" value="comment.depth"> -->
+								<row :dto="comment" :key="comment.exr_today_comment_idx"
+									:depth="comment.depth*70" />
+							</template>
+	
+							<!-- reply-form -->
+							<hr>
+							<div id="replySection" class="col-sm-9 mt-3">
+								<%for(int i=0; i<exrToday.getCommentList().size(); i++){
+										ExrTodayComment comment=exrToday.getCommentList().get(i);
+										if(i==exrToday.getExr_today_idx()){
+										%>
+										<%} %>
+								<%} %>
+								<label class="control-label" for="textarea"><%=comment.getWriter() %>님에게 답변</label>
+	
+								<form id="form2">
+									<input type="hidden" name="exr_today_idx"
+										value="<%=exrToday.getExr_today_idx()%>">
+									<textarea class="form-control" name="content" rows="6"
+										placeholder="답변 작성"></textarea>
+									<input type="text" class="form-control" name="writer" />
+									<button id="bt_reply" class="btn btn-default" type="button">답변
+										등록</button>
+								</form>
+							</div>
+							<!-- ./reply-form -->
+
 					</div>
-					<!-- ./reply-form -->
-					
 				</div><!-- ./comment-area -->
 
 
@@ -182,10 +214,8 @@
 			success:function(result, status, xhr){
 				alert(result.msg);
 				
-				getComments();
-				// 내용 비워주기
-				$("#form1 textarea[name='content']").val("");
-				$("#form1 input[name='writer']").val("");
+				// redirect
+				location.href="/exr/today/detail?exr_today_idx="+$("input[name='exr_today_idx']").val();
 			},
 		});
 	}
@@ -207,12 +237,8 @@
 			data:formData,
 			success:function(result, status, xhr){
 				alert(result.msg);
-				getComments();
-				
-				// 내용 비워주기
-				$("#form2 textarea[name='content']").val("");
-				$("#form2 input[name='writer']").val("");
-			},
+				location.href="/exr/today/detail?exr_today_idx="+$("input[name='exr_today_idx']").val();
+			}
 		});
 	}
 	
@@ -221,7 +247,7 @@
 	// 댓글 목록 출력
 	const row={
 			template:`
-				<div class="test" style="padding:0 0 0 5*(comment.depth)">
+				<div class="test" :style="'margin-left:'+c_depth+'px;'">
 					<hr>
 					<h4 class="user-title mb10">{{comment.content}}</h4>
 					<div>
@@ -237,10 +263,11 @@
 					</div>
 				</div>
 			`,
-			props:["dto"],
+			props:["dto", "depth"],
 			data(){
 				return{
-					comment:this.dto					
+					comment:this.dto,
+					c_depth:this.depth
 				}
 			},
 			
@@ -274,6 +301,7 @@
 			}
 		}
 
+	
 	
 	function init(){
 		app1=new Vue({

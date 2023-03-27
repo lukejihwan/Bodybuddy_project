@@ -49,8 +49,8 @@ public class MybatisExrTodayCommentDAO implements ExrTodayCommentDAO{
 
 	
 	@Override
-	public int totalCount(int exr_today_idx) {
-		return sqlSessionTemplate.selectOne("ExrTodayComment.totalCount", exr_today_idx);
+	public int totalCount(ExrTodayComment exrTodayComment) {
+		return sqlSessionTemplate.selectOne("ExrTodayComment.totalCount", exrTodayComment);
 	}
 	
 	

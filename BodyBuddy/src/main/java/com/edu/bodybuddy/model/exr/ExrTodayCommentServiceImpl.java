@@ -30,27 +30,30 @@ public class ExrTodayCommentServiceImpl implements ExrTodayCommentService{
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void insert(ExrTodayComment exrTodayComment) throws ExrTodayCommentException{
 		int fk=exrTodayComment.getExrToday().getExr_today_idx();	// 해당 글에 대한 번호
-		int count=exrTodayCommentDAO.totalCount(fk);					// 해당 글에 댓글이 있는지 확인
+		int count=exrTodayCommentDAO.totalCount(exrTodayComment);
 		
-		// 1-1) 스텝 증가 여부 따지기
-		if(count==0) {
-			// 해당 글에 대한 댓글의 개수가 없다면 최초로 들어간 댓글
-			exrTodayComment.setStep(0);
-		}else {
-			
-			// 해당 원본 글에 댓글이 이미 있다면, 스텝을 마지막 댓글의 수로 세팅한다!
+		int post=exrTodayComment.getPost();
+		
+		logger.info("잘 구해지나"+count);
+		 // 입력되어 날라온 post와 기존에 post가 다르면 증가시키면 안됨
+		 // 1-1) step 가공
+		if(count==0) { // 해당 글에 대한 댓글의 개수가 없다면 최초로 들어간 댓글 (아예 최초임)
+			exrTodayComment.setStep(1);
+		  
+		}else { 
+			// 해당 원본 글에 댓글이 이미 있다면, 스텝을 마지막 댓글의 수로 세팅한다! 
 			exrTodayComment.setStep(count);
 		}
+		// 기본 뎁스 1
 		
-		// 수정된 스텝을 최종적으로 넣어주기!
-		exrTodayCommentDAO.insert(exrTodayComment);
-		
-		// 1-2)고정된 어떤 기준이 되는 숫자가 필요함!
-		// 고유 idx를 post로 지정하기
-		exrTodayComment.setPost(exrTodayComment.getExr_today_comment_idx());		// insert 후 pk 존재
-		exrTodayCommentDAO.update(exrTodayComment);
-		
-	}
+		 // 수정된 스텝을 최종적으로 넣어주기!
+		 exrTodayCommentDAO.insert(exrTodayComment);
+		 
+		 // 1-2)고정된 어떤 기준이 되는 숫자가 필요함!
+		 // 고유 idx를 post로 지정하기
+		 exrTodayComment.setPost(exrTodayComment.getExr_today_comment_idx());		// insert 후 pk 존재
+		 exrTodayCommentDAO.update(exrTodayComment);		// post 수정
+	 }
 	
 
 	@Override
@@ -70,14 +73,14 @@ public class ExrTodayCommentServiceImpl implements ExrTodayCommentService{
 		int maxStep=exrTodayCommentDAO.selectMaxStep(exrTodayComment);
 		logger.info("조조조"+maxStep);
 		
-		exrTodayComment.setStep(maxStep);
+		exrTodayComment.setStep(maxStep+1);
 		exrTodayComment.setDepth(exrTodayComment.getDepth()+1);
+		//exrRoutineCommentDAO.updateStep(exrRoutineComment);
 		
 		// 최종적으로 인서트
 		exrTodayCommentDAO.insert(exrTodayComment);
+		}
 		
-		
-	}
 	
+	}
 
-}
