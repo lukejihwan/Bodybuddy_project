@@ -124,13 +124,8 @@
 							<!-- reply-form -->
 							<hr>
 							<div id="replySection" class="col-sm-9 mt-3">
-								<%for(int i=0; i<exrToday.getCommentList().size(); i++){
-										ExrTodayComment comment=exrToday.getCommentList().get(i);
-										if(i==exrToday.getExr_today_idx()){
-										%>
-										<%} %>
-								<%} %>
-								<label class="control-label" for="textarea"><%=comment.getWriter() %>님에게 답변</label>
+
+								<label class="control-label" for="textarea">님에게 답변</label>
 	
 								<form id="form2">
 									<input type="hidden" name="exr_today_idx"
