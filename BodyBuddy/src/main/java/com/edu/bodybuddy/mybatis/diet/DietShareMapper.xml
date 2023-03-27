@@ -78,16 +78,4 @@
 	<select id="selectBySearch" resultType="DietShare" parameterType="java.util.Map">
 		select * from diet_share where title like '%${keyword}%'
 	</select>
-	
-	<!-- 페이징 처리를 위한 전체 레코드 수 -->
-	<select id="totalCount" resultType="int">
-		select count(*) as totalCount from diet_share
-	</select>
-	
-	<select id="selectAllPage" resultMap="shareMap" parameterType="int">
-		select * from diet_share order by diet_share_idx desc limit 0,10
-	</select>
-	
-	
-	
 </mapper>

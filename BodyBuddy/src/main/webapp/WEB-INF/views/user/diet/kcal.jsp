@@ -1,8 +1,11 @@
+<%@page import="org.json.simple.JSONObject"%>
+<%@page import="org.apache.ibatis.reflection.SystemMetaObject"%>
+<%@page import="java.util.List"%>
 <%@page import="com.edu.bodybuddy.util.PageManager"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 
 <%
-	//PageManager pageManager=(PageManager)request.getAttribute("pageManager");
+
 %>
 
 
@@ -42,12 +45,25 @@
 		<div class="container">
 			<div class="row">
 				<div class="col">
-                    <h1>식단팁 게시판</h1>
+                    <h1>칼로리 계산기</h1>
                     <hr>
-                    
+           <!-- 계산기 -->       
+            <div class="row">
+            	<div class="col" style="background:#c5f016; width:500px; height:200px; margin-left:110px" >
+            	
+            	</div>
+            	<div class="col" style="font-size:40px; text-align:center; margin-top:70px; margin-left:70px">
+            		<div class="row">
+            			총 24444 kcal
+            		</div>
+            	</div>
+            </div>  
+            <br/>
+            <!-- 계산기 끝 -->              
+            
             <!-- 검색처리 -->
 			<div class="row">
-				<div class="col-lg-offset-4 col-lg-8" style="margin-left:180px">
+				<div class="col-lg-offset-4 col-lg-10" style="margin-left:100px">
 					<div class="widget widget-search mb10">
 						<form>
 							<div class="input-group">
@@ -58,9 +74,11 @@
 					</div>
 				</div>				
 			</div>
+		
 			<!-- 검색처리 끝 -->
-                    
-				</div>
+			
+      
+			</div>
 			</div>
 			<!-- end of row -->
 			<form id="form">
@@ -78,7 +96,7 @@
 							</tr>
 						</thead>
 						<tbody>
-						<%for(int i=0; i<10; i++){ %>
+						<%for(int i=0; i<15; i++){ %>
 							<tr>
 								<th>No</th>
 								<th>제목</th>
@@ -93,15 +111,6 @@
 				<!-- end of col -->
 			</div>
 			</form>
-
-			
-			<!-- 페이징 처리 -->
-			
-			<!-- 페이징 처리 끝 -->
-			
-			
-			
-		
 		</div>
 	</div>
 	<!-- /content end -->
@@ -118,13 +127,6 @@
 </body>
 <script type="text/javascript">
 	function test(){
-		
-		
-		
-		
-		
-		
-		
 		$.ajax({
 			url:"/rest/diet/kcal/test",
 			type:"get",

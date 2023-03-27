@@ -6,7 +6,6 @@
 
 <%
 	List<DietTip> dietTipList=(List)request.getAttribute("dietTipList");
-	PageManager pageManager=(PageManager)request.getAttribute("pageManager");
 %>
 <!DOCTYPE html>
 <!-- content 부분만 비워둔 기본 템플릿 -->
@@ -216,6 +215,7 @@
 			type:"get",
 			success:function(result,status, xhr){
 				app1.dietTipList=result;
+				pageLink(currentPage);
 			}
 		});
 	}

@@ -71,14 +71,4 @@ public class MybatisDietTipDAO implements DietTipDAO{
 		return sqlSessionTemplate.selectList("DietTip.selectBySearch", map);
 	}
 
-	@Override
-	public int totalCount() {
-		return sqlSessionTemplate.selectOne("DietTip.totalCount");
-	}
-
-	@Override
-	public List selectAllPage(int page) {
-		return sqlSessionTemplate.selectList("DietTip.selectAllPage", page);
-	}
-
 }

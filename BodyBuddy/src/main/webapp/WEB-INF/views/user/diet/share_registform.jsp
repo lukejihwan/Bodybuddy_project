@@ -120,7 +120,7 @@
 			data:formData,
 			success:function(result, status, xhr){
 				alert("글 등록 완료");
-				location.href="/diet/share_list/1"
+				location.href="/diet/share_list"
 			}
 		});
 	}
@@ -142,7 +142,7 @@
 		
 		// 목록 페이지 이동
 		$("#bt_list").click(function(){
-			location.href="/diet/share_list/1";
+			location.href="/diet/share_list";
 		});
 		
 		// 등록

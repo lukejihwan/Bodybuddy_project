@@ -17,7 +17,4 @@ public interface DietShareService {
 	public void addRecommend(int diet_share_idx); //추천수 증가 
 	
 	public List selectBySearch(HashMap<String, String> map); //검색기능 
-	
-	public int totalCount(); //페이징처리
-	public List selectAllPage(int page); //페이징처리
 }

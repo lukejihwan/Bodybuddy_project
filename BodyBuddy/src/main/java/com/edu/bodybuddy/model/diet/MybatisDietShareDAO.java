@@ -76,14 +76,4 @@ public class MybatisDietShareDAO implements DietShareDAO{
 		return sqlSessionTemplate.selectList("DietShare.selectBySearch", map);
 	}
 
-	@Override
-	public int totalCount() {
-		return sqlSessionTemplate.selectOne("DietShare.totalCount");
-	}
-
-	@Override
-	public List selectAllPage(int page) {
-		return sqlSessionTemplate.selectList("DietShare.selectAllPage", page);
-	}
-
 }
