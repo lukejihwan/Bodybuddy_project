@@ -32,7 +32,7 @@
                             <div class="col-md-8 col-sm-12">
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12">
-                                    <img src="/resources/user/images/time1.png" class="" alt="time1">
+                                    <img src="/resources/user/images/diet/time1.png" class="" alt="time1">
                                     <p></p>
                                     <div class="mb30">
                                         <h1>간헐적 단식(Intermittent fasting)</h1>
@@ -86,10 +86,10 @@
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <div class="side-nav mb30  ">
                                             <ul class="listnone sidenav">
-                                                <li> <a href="/diet/info_general/?diet_category_idx=1"><i class="icon-2 service-sidenav-icon "></i><span class="sidenav-text">일반식</span></a></li>
-                                                <li> <a href="/diet/info_kito/?diet_category_idx=2"><i class="icon-1 service-sidenav-icon"></i><span class="sidenav-text">키토제닉</span> </a></li>
-                                                <li> <a href="/diet/info_fish/?diet_category_idx=3"><i class="icon-4 service-sidenav-icon"></i><span class="sidenav-text">지중해식</span> </a></li>
-                                                <li> <a href="/diet/info_vegan/?diet_category_idx=4"><i class="icon-5 service-sidenav-icon"></i><span class="sidenav-text">비건식</span> </a></li>
+                                                <li> <a href="/diet/info_general/1"><i class="icon-2 service-sidenav-icon "></i><span class="sidenav-text">일반식</span></a></li>
+                                                <li> <a href="/diet/info_kito/2"><i class="icon-1 service-sidenav-icon"></i><span class="sidenav-text">키토제닉</span> </a></li>
+                                                <li> <a href="/diet/info_fish/3"><i class="icon-4 service-sidenav-icon"></i><span class="sidenav-text">지중해식</span> </a></li>
+                                                <li> <a href="/diet/info_vegan/4"><i class="icon-5 service-sidenav-icon"></i><span class="sidenav-text">비건식</span> </a></li>
                                                 <li class="active"> <a href="/diet/info_time"><i class="icon-6 service-sidenav-icon"></i><span class="sidenav-text">간헐적단식</span> </a></li>
                                             </ul>
                                         </div>

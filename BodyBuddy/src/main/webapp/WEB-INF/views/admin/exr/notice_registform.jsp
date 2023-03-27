@@ -353,7 +353,8 @@
 				
 				console.log("제이슨? ",json);
 				// 수정시 선택된 줄을 반영한다.
-				selectRow.category=json;
+				//selectRow.category=json;
+				
 				//selectRow=category.exr_category_name;
 				
 				//getCategoryList();

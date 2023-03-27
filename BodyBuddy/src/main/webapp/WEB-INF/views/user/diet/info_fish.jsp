@@ -41,7 +41,7 @@
                             <div class="col-md-8 col-sm-12">
                                 <div class="row">
                                 	<!-- 사진 들어갈 곳 -->
-                                    <div class="col-md-12 col-sm-12"><img src="/resources/user/images/fish1.jpg" class="" alt="Mediterranean">
+                                    <div class="col-md-12 col-sm-12"><img src="/resources/user/images/diet/fish1.jpg" class="" alt="Mediterranean">
                                     <p></p>
                                     
                                     <!-- 내용 -->

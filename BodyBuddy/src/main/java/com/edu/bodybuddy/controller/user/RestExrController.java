@@ -26,12 +26,21 @@ import com.edu.bodybuddy.domain.exr.ExrCategory;
 import com.edu.bodybuddy.domain.exr.ExrRoutine;
 import com.edu.bodybuddy.domain.exr.ExrRoutineComment;
 import com.edu.bodybuddy.domain.exr.ExrTip;
+import com.edu.bodybuddy.domain.exr.ExrToday;
+import com.edu.bodybuddy.domain.exr.ExrTodayComment;
+import com.edu.bodybuddy.domain.myrecord.GpsData;
 import com.edu.bodybuddy.exception.ExrCategoryException;
+import com.edu.bodybuddy.exception.ExrRoutineCommentException;
 import com.edu.bodybuddy.exception.ExrRoutineException;
+import com.edu.bodybuddy.exception.ExrTipException;
+import com.edu.bodybuddy.exception.ExrTodayCommentException;
+import com.edu.bodybuddy.exception.ExrTodayException;
 import com.edu.bodybuddy.model.exr.ExrCategoryService;
 import com.edu.bodybuddy.model.exr.ExrRoutineCommentService;
 import com.edu.bodybuddy.model.exr.ExrRoutineService;
 import com.edu.bodybuddy.model.exr.ExrTipService;
+import com.edu.bodybuddy.model.exr.ExrTodayCommentService;
+import com.edu.bodybuddy.model.exr.ExrTodayService;
 import com.edu.bodybuddy.util.Msg;
 
 @RestController
@@ -46,6 +55,10 @@ public class RestExrController {
 	private ExrRoutineCommentService exrRoutineCommentService;
 	@Autowired
 	private ExrTipService exrTipService; 
+	@Autowired
+	private ExrTodayService exrTodayService; 
+	@Autowired
+	private ExrTodayCommentService exrTodayCommentService; 
 	
 	/*---------------------
 	 *  루틴 공유 게시판
@@ -53,20 +66,13 @@ public class RestExrController {
 	// 리스트 조회
 	@GetMapping("/routine_list")
 	public List<ExrRoutine> getRoutineList(int pg,HttpServletRequest request){
-		
-		//List<ExrRoutine> exrRoutineList=exrRoutineService.selectAll();
-		List<ExrRoutine> exrRoutineList=exrRoutineService.selectAllByPage(pg);
-		
-		logger.info("문제있니? 확인 "+exrRoutineList);
-
-		return exrRoutineList;
+		return exrRoutineService.selectAll();
 	}
 	
 	
 	// 등록
 	@PostMapping("/routine")
 	public ResponseEntity<Msg> insert(ExrRoutine exrRoutine) throws ExrCategoryException{
-		//logger.info("비동기 컨트롤러 확인요 "+exrRoutine);
 		exrRoutineService.insert(exrRoutine);
 		
 		Msg msg=new Msg();
@@ -79,7 +85,6 @@ public class RestExrController {
 	// 공유 게시판 글 수정
 	@RequestMapping(value = "/routine", method = RequestMethod.PUT)
 	public ResponseEntity<Msg> update(@RequestBody ExrRoutine exrRoutine) throws ExrCategoryException{
-		logger.info("비동기 카테고리는????? "+exrRoutine.getExrCategory());
 		exrRoutineService.update(exrRoutine);
 		
 		Msg msg=new Msg();
@@ -92,14 +97,10 @@ public class RestExrController {
 	// 검색 기능
 	@GetMapping("/routine/search")
 	public List<ExrRoutine> getSearch(String keyword, HttpServletRequest request) {
-		logger.info("응답 받음");
-
 		HashMap<String, String> map=new HashMap<String, String>();
 		map.put("keyword", keyword);
-		logger.info("맵의 문자열은? "+keyword);
 		
 		List<ExrRoutine> exrRoutineList=exrRoutineService.selectBySearch(map);
-		
 		return exrRoutineList;
 	}
 	
@@ -107,20 +108,19 @@ public class RestExrController {
 	// 태그(카테고리)별 조회
 	@GetMapping("/routine_category/{exr_category_idx}")
 	public List<ExrRoutine> getRoutineByCategory(@PathVariable int exr_category_idx, HttpServletRequest request){
-		List<ExrRoutine> exrRoutineList=exrRoutineService.selectByFk(exr_category_idx);
-		logger.info(""+exrRoutineList);
-		return exrRoutineList;
+		return exrRoutineService.selectByFk(exr_category_idx);
 	}
 	
 	
-	// 추천 수 증가
+	// 추천 수 증가  --> 후 그 값 반환함
 	@GetMapping("/routine/recommend/{exr_routine_idx}")
-	public ResponseEntity<Msg> plusReccomend(@PathVariable int exr_routine_idx, HttpServletRequest request){
+	public ResponseEntity<Integer> plusReccomend(@PathVariable int exr_routine_idx, HttpServletRequest request){
 		exrRoutineService.plusRecommend(exr_routine_idx);
 		
-		Msg msg=new Msg();
-		msg.setMsg("추천 되었습니다");
-		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		ExrRoutine exrRoutine=exrRoutineService.select(exr_routine_idx);
+		int recommend=exrRoutine.getRecommend();
+		
+		ResponseEntity<Integer> entity=new ResponseEntity<Integer>(recommend, HttpStatus.OK);
 		return entity;
 	}
 	
@@ -128,15 +128,9 @@ public class RestExrController {
 	/*---------------------
 	 *  댓글 관련 영역
 	 * --------------------*/
+	// 댓글 등록
 	@PostMapping("/routine/comment")
-	public ResponseEntity<Msg> regist(ExrRoutineComment exrRoutineComment, HttpServletRequest request){
-		//logger.info("넘어온 글 확인 "+exrRoutineComment);
-		
-		// 댓글의 스텝과 뎁스를 1로 세팅 후 insert
-
-		
-		logger.info("들어가기 전에 세팅 잘 되었나 확인 "+exrRoutineComment.getStep());
-		logger.info("들어가기 전에 세팅 잘 되었나 확인 "+exrRoutineComment.getDepth());
+	public ResponseEntity<Msg> registRoutineComment(ExrRoutineComment exrRoutineComment, HttpServletRequest request){
 		exrRoutineCommentService.insert(exrRoutineComment);
 		
 		Msg msg=new Msg();
@@ -148,21 +142,16 @@ public class RestExrController {
 	
 	// 댓글 조회
 	@GetMapping("/routine/comment/{exr_routine_idx}")
-	public List<ExrRoutineComment> getCommentList(@PathVariable int exr_routine_idx, HttpServletRequest request){
-		List<ExrRoutineComment> exrRoutineCommentList=exrRoutineCommentService.selectByFk(exr_routine_idx);
-		//logger.info("댓글 리스트 확인 "+exrRoutineCommentList);
-		
-		return exrRoutineCommentList;
+	public List<ExrRoutineComment> getRoutineCommentList(@PathVariable int exr_routine_idx, HttpServletRequest request){
+		return exrRoutineCommentService.selectByFk(exr_routine_idx);
 	}
 	
 	
-	// 답글 등록
+	// 대댓글 등록
 	// 자기 자신에 대한 아이디 엑스?
 	@PostMapping("/routine/comment/reply")
-	public ResponseEntity<Msg> reply(ExrRoutineComment exrRoutineComment, HttpServletRequest request){
+	public ResponseEntity<Msg> replyRoutineComment(ExrRoutineComment exrRoutineComment, HttpServletRequest request){
 		logger.info("넘어온 답글 reply 함수 확인 "+exrRoutineComment);
-		
-		
 		exrRoutineCommentService.registReply(exrRoutineComment);
 		
 		Msg msg=new Msg();
@@ -174,7 +163,7 @@ public class RestExrController {
 	
 	// 댓글 삭제
 	@DeleteMapping("/routine/comment/{exr_routine_comment_idx}")
-	public ResponseEntity<Msg> delCommet(@PathVariable int exr_routine_comment_idx, HttpServletRequest request){
+	public ResponseEntity<Msg> delRoutineCommet(@PathVariable int exr_routine_comment_idx, HttpServletRequest request){
 		logger.info("넘어오는지 확인! "+exr_routine_comment_idx);
 		exrRoutineCommentService.delete(exr_routine_comment_idx);
 		
@@ -203,6 +192,7 @@ public class RestExrController {
 		return entity;
 	}
 	
+	
 	// 리스트 조회
 	@GetMapping("/tip_list")
 	public List<ExrRoutine> getTipList(HttpServletRequest request){
@@ -212,12 +202,153 @@ public class RestExrController {
 	}
 	
 	
+	// 추천 수 증가  --> 후 그 값 반환함
+	@GetMapping("/tip/recommend/{exr_tip_idx}")
+	public ResponseEntity<Integer> plusTipReccomend(@PathVariable int exr_tip_idx, HttpServletRequest request){
+		exrTipService.plusRecommend(exr_tip_idx);
+		
+		ExrTip exrTip=exrTipService.select(exr_tip_idx);
+		int recommend=exrTip.getRecommend();
+		
+		ResponseEntity<Integer> entity=new ResponseEntity<Integer>(recommend, HttpStatus.OK);
+		return entity;
+	}
 	
-	/*------------------------------------------
+	
+	/*------------------------------------
+		오운완 게시판
+	--------------------------------------*/
+	// 등록
+	@PostMapping("/today")
+	public ResponseEntity<Msg> todayInsert(ExrToday exrToday) throws ExrCategoryException{
+		logger.info("등록될 입력 값!"+exrToday);
+		
+		exrTodayService.insert(exrToday);
+		
+		Msg msg=new Msg();
+		msg.setMsg("오운완 추가 완료");
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	
+	
+	// 추천 수 증가  --> 후 그 값 반환함
+	@GetMapping("/today/recommend/{exr_today_idx}")
+	public ResponseEntity<Integer> plusTodayReccomend(@PathVariable int exr_today_idx, HttpServletRequest request){
+		exrTodayService.plusRecommend(exr_today_idx);
+		
+		ExrToday exrToday=exrTodayService.select(exr_today_idx);
+		int recommend=exrToday.getRecommend();
+		
+		ResponseEntity<Integer> entity=new ResponseEntity<Integer>(recommend, HttpStatus.OK);
+		return entity;
+	}
+	
+	
+	@PutMapping("/today")
+	public ResponseEntity<Msg> editToday(@RequestBody ExrToday exrToday, HttpServletRequest request){
+		exrTodayService.update(exrToday);
+		
+		Msg msg=new Msg();
+		msg.setMsg("수정되었습니다");
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	
+	
+	/*-------------------------
+	 *  오운완 댓글 관련 영역
+	 * ------------------------*/
+	// 댓글 조회
+	@GetMapping("/today/comment/{exr_today_idx}")
+	public List<ExrTodayComment> getTodayCommentList(@PathVariable int exr_today_idx, HttpServletRequest request){
+		return exrTodayCommentService.selectAllByToday(exr_today_idx);
+	}
+	
+	
+	// 댓글 등록
+	@PostMapping("/today/comment")
+	public ResponseEntity<Msg> registTodayComment(ExrTodayComment exrTodayComment, HttpServletRequest request){
+		exrTodayCommentService.insert(exrTodayComment);
+		
+		Msg msg=new Msg();
+		msg.setMsg("댓글 등록 완료");
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	
+	
+	// 대댓글 등록
+	// 자기 자신에 대한 아이디 엑스?
+	@PostMapping("/today/comment_reply")
+	public ResponseEntity<Msg> replyTodayComment(ExrTodayComment exrTodayComment, HttpServletRequest request){
+		logger.info("넘어온 답글 reply 함수 확인 "+exrTodayComment);
+		
+		logger.info("컨트롤러에서 넣기 전에 확인"+exrTodayComment);
+		exrTodayCommentService.registReply(exrTodayComment);
+		logger.info("컨트롤러에서 넣은 후 확인"+exrTodayComment);
+		
+		Msg msg=new Msg();
+		msg.setMsg("답글 등록 완료");
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	
+	
+	// 댓글 삭제
+	@DeleteMapping("/today/comment/{exr_today_comment_idx}")
+	public ResponseEntity<Msg> delTodayCommet(@PathVariable int exr_today_comment_idx, HttpServletRequest request){
+		logger.info("넘어오는지 확인! "+exr_today_comment_idx);
+		exrTodayCommentService.delete(exr_today_comment_idx);
+		
+		Msg msg=new Msg();
+		msg.setMsg("댓글 삭제 완료");
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	
+	
+	
+	/*-----------------------------
 	  예외 객체
-	 --------------------------------------------*/ 
+	 ------------------------------*/ 
+	@ExceptionHandler(ExrCategoryException.class)
+	public ResponseEntity<Msg> handle(ExrCategoryException e){
+		Msg msg=new Msg();
+		msg.setMsg(e.getMessage());
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.INTERNAL_SERVER_ERROR);
+		return entity;
+	}
 	@ExceptionHandler(ExrRoutineException.class)
 	public ResponseEntity<Msg> handle(ExrRoutineException e){
+		Msg msg=new Msg();
+		msg.setMsg("컨트롤러에서 오류 잡힘 e : "+e.getMessage());
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	@ExceptionHandler(ExrRoutineCommentException.class)
+	public ResponseEntity<Msg> handle(ExrRoutineCommentException e){
+		Msg msg=new Msg();
+		msg.setMsg("컨트롤러에서 오류 잡힘 e : "+e.getMessage());
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	@ExceptionHandler(ExrTipException.class)
+	public ResponseEntity<Msg> handle(ExrTipException e){
+		Msg msg=new Msg();
+		msg.setMsg("컨트롤러에서 오류 잡힘 e : "+e.getMessage());
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	@ExceptionHandler(ExrTodayException.class)
+	public ResponseEntity<Msg> handle(ExrTodayException e){
+		Msg msg=new Msg();
+		msg.setMsg("컨트롤러에서 오류 잡힘 e : "+e.getMessage());
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	@ExceptionHandler(ExrTodayCommentException.class)
+	public ResponseEntity<Msg> handle(ExrTodayCommentException e){
 		Msg msg=new Msg();
 		msg.setMsg("컨트롤러에서 오류 잡힘 e : "+e.getMessage());
 		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);

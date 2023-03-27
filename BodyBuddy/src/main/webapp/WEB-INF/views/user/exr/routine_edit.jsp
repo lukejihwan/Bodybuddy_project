@@ -12,6 +12,11 @@
 <html lang="en">
 <head>
 <%@include file="../inc/header_link.jsp"%>
+<style type="text/css">
+	.hero-section{
+		background-image: url("/resources/user/images/exr/routine_back.jpg");
+	}
+</style>
 </head>
 
 <body class="animsition">
@@ -151,16 +156,9 @@
 		});
 
 		// 삭제
-		$("#bt_delete").click(
-				function() {
-					if (confirm("삭제하시겠습니까?")) {
-						location.href = "/exr/routine/delete?exr_routine_idx="
-								+ $("#form1 input[name='exr_routine_idx']")
-										.val();
-						alert("삭제되었습니다");
-					}
-				});
 
+
+		
 		// 써머 노트 적용
 		$('#summernote').summernote({
 			height : 400

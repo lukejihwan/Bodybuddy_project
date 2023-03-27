@@ -11,6 +11,7 @@ public class ExrTip {
 	private String writer;
 	private String content;
 	private String regdate;
+	private int recommend;
 	private int hit;
 	
 	// fk

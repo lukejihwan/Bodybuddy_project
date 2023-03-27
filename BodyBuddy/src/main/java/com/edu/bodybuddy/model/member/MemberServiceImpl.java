@@ -83,37 +83,15 @@ public class MemberServiceImpl implements MemberService{
 		}
 
 		log.info("회원가입 진입지점 6, 주소객체는 :" + member.getAddress());
-		//주소 입력되었을 경우 주소도 기입
-//		if(member.getAddress().getMember_address().equals("")) {
-//			member.getAddress().setMember_address("서울시 중구 명동");
-//		}
-//		addressDAO.insert(member);
-		
 		//회원가입이 모두 완료되었을 경우 축하 메시지 발송
 		emailManager.send(member);
 	}
 
 	@Override
 	public void update(Member member) throws MemberException, AddressException, PasswordException{
-		//닉네임 중복 확인
-		//memberDAO.selectByNickname(member);
-		
+
 		//업데이트 진행
 		memberDAO.update(member);
-		
-//		//주소가 입력되었는지 아닌지를 판단하여 insert, update, delete 판단
-//		Address dto = addressDAO.selectByMember(member.getMember_idx());
-//		if(dto != null && member.getAddress()!=null) {
-//			addressDAO.update(member.getAddress());
-//		} else if(dto != null && member.getAddress()==null) {
-//			//기존 주소가 있었으나 지운 경우 delete 실행
-//			addressDAO.delete(member.getMember_idx());
-//		} else if(dto == null && member.getAddress()!=null) {
-//			addressDAO.insert(member.getAddress());
-//		}
-		
-		//기본 주소가 생겼으므로, 주소를 무조건 업데이트 한다
-		
 	}
 
 	@Override

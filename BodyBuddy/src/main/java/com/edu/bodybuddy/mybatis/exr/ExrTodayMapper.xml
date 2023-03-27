@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ExrToday">
+
+	<resultMap type="ExrToday" id="resultMap">
+		<id column="exr_today_idx" property="exr_today_idx"/>
+		<result column="title" property="title"/>
+		<result column="writer" property="writer"/>
+		<result column="content" property="content"/>
+		<result column="regdate" property="regdate"/>
+		<result column="hit" property="hit"/>
+		<result column="recommend" property="recommend"/>
+		<result column="member_idx" property="member.member_idx"/>
+		
+		<collection column="exr_today_idx" property="commentList" 
+						 javaType="java.util.List" ofType="ExrTodayComment" 
+						 select="ExrTodayComment.selectAllByToday"/>
+	</resultMap>
+
+
+	<select id="selectAll" resultMap="resultMap">
+		select * from exr_today order by exr_today_idx desc
+	</select>
+	
+	
+	<!-- 글 상세보기 -->
+	<select id="select" parameterType="int" resultMap="resultMap">
+		select * from exr_today
+		where exr_today_idx=#{exr_today_idx}	
+	</select>
+
+	<insert id="insert" parameterType="ExrToday">
+		insert into exr_today(member_idx, title, writer, content)
+		values(#{member.member_idx}, #{title}, #{writer}, #{content})
+	</insert>
+	
+
+	<update id="update" parameterType="ExrToday">
+		update exr_today set title=#{title}, content=#{content}
+		where exr_today_idx=#{exr_today_idx}
+	</update>
+
+
+	<delete id="delete" parameterType="int">
+		delete from exr_today
+		where exr_today_idx=#{exr_today_idx}
+	</delete>
+	
+	
+	<!-- 조회수 증가 -->
+	<update id="plusHit" parameterType="int">
+		update exr_today set hit=hit+1
+		where exr_today_idx=#{exr_today_idx}
+	</update>
+	
+	
+	<!-- 추천수 증가 -->
+	<update id="plusRecommend" parameterType="int">
+		update exr_today set recommend=recommend+1
+		where exr_today_idx=#{exr_today_idx}
+	</update>
+
+</mapper>
