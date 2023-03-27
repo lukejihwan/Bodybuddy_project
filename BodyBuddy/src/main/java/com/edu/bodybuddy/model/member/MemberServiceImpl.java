@@ -2,6 +2,7 @@ package com.edu.bodybuddy.model.member;
 
 import java.util.List;
 
+import com.edu.bodybuddy.domain.member.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -85,25 +86,31 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
+	@Transactional
 	public void update(Member member) throws MemberException, AddressException, PasswordException{
-
 		//업데이트 진행
 		memberDAO.update(member);
+		//비밀번호가 변경되었을 경우 비밀번호 업데이트
+		if(member.getPassword()!=null){
+			String encodedPass = passwordEncoder.encode(member.getPassword().getPass());
+			member.getPassword().setPass(encodedPass);
+			passwordDAO.update(member);
+		}
+		//주소가 입력되었는지 확인
+		if(member.getAddress()==null) return;
+		
+		//주소를 확인해서 기존 주소가 있으면 insert, 없으면 update
+		Address address = addressDAO.selectByMember(member.getMember_idx());
+		if(address == null){
+			addressDAO.insert(member);
+		} else {
+			addressDAO.update(member);
+		}
 	}
 
 	@Override
-	public void updatePass(Member member) throws MemberException, PasswordException {
-		//비밀번호를 암호화 후 저장
-		String encodedPass = passwordEncoder.encode(member.getPassword().getPass());
-        member.getPassword().setPass(encodedPass);
-		memberDAO.updatePass(member);
+	public void delete(Member member) throws MemberException {
+		passwordDAO.delete(member);
+		memberDAO.delete(member);
 	}
-
-	@Override
-	public void delete(int member_idx) throws MemberException {
-		memberDAO.delete(member_idx);
-	}
-
-
-
 }

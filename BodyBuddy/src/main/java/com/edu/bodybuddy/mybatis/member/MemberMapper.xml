@@ -14,6 +14,11 @@
 		<collection column="member_idx" property="password" javaType="Password" select="Password.selectByMember"></collection>
 	</resultMap>
 	
+	<!-- 어드민 조회용 -->
+	<select id="selectByIdx" parameterType="Member" resultType="Member">
+		select * from member where member_idx = #{member_idx}
+	</select>
+	
 	<!-- 닉네임 중복확인 -->
 	<select id="selectByNickname" parameterType="Member" resultType="Member">
 		select * from member where nickname=#{nickname}
@@ -40,16 +45,11 @@
 	
 	<!-- 회원 정보 수정 -->
 	<update id="update" parameterType="Member">
-		update member set nickname =#{nickname} where member_idx = #{member_idx}
-	</update>
-	
-	<!-- 회원 비밀번호 수정 -->
-	<update id="updatePass" parameterType="Member">
-		update member set pass = #{pass} where member_idx = #{member_idx}
+		update member set nickname =#{nickname}, phone=#{phone} where member_idx = #{member_idx}
 	</update>
 	
 	<!-- 회원 탈퇴, 관리자 직권삭제 -->
-	<delete id="delete" parameterType="int">
+	<delete id="delete" parameterType="Member">
 		delete from member where member_idx = #{member_idx}
 	</delete>
 	

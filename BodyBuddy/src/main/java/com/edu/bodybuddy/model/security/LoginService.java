@@ -29,7 +29,6 @@ public class LoginService implements UserDetailsService{
     	Member emailCheck = new Member();
     	emailCheck.setEmail(email);
         Member member = memberDAO.selectByEmail(emailCheck);
-        log.info("받아온 멤버 : "+member);
         if(member==null){
             throw new UsernameNotFoundException("userEmail" + email + " not found");
         }

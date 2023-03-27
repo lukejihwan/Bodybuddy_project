@@ -105,6 +105,14 @@ input {
     display: none;
 }
 
+.adrBt {
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    margin-top: -15px;
+}
+
 .verifyBt {
     height: 30px;
     position: absolute;
