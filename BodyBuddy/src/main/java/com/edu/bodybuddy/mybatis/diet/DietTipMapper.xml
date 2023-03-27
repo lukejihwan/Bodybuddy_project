@@ -46,14 +46,5 @@
 		select * from diet_tip where title like '%${keyword}%'
 	</select>
 	
-	<!-- 페이징 처리를 위한 전체 레코드 수 -->
-	<select id="totalCount" resultType="int">
-		select count(*) as totalCount from diet_tip
-	</select>
-	
-	<select id="selectAllPage" resultMap="tipMap" parameterType="int">
-		select * from diet_tip order by diet_tip_idx desc limit 0,10
-	</select>
-	
 
 </mapper>

@@ -113,20 +113,15 @@ public class DietController {
 				식단공유페이지
 	--------------------------------*/	
 	//식단공유 메인페이지
-	@GetMapping("/share_list/{page}")
-	public ModelAndView shareMain(@PathVariable int page) {
+	@GetMapping("/share_list")
+	public ModelAndView shareMain() {
 		//카테고리 불러오기 
 		List<DietCategory> dietCategoryList=dietCategoryService.selectAll(); 
-		//List<DietShare> dietShareList=dietShareService.selectAll();
-		
-		int total=dietShareService.totalCount();
-		PageManager pageManager=new PageManager();
-		pageManager.init(total,page);
+		List<DietShare> dietShareList=dietShareService.selectAll();
 		
 		ModelAndView mav= new ModelAndView("diet/share_list");
 		mav.addObject("dietCategoryList", dietCategoryList);
-		//mav.addObject("dietShareList", dietShareList);
-		mav.addObject("pageManager", pageManager);
+		mav.addObject("dietShareList", dietShareList);
 		
 		return mav;
 	}
@@ -175,21 +170,14 @@ public class DietController {
 				식단팁페이지
 	--------------------------------*/
 	//메인페이지
-	@GetMapping("/tip_list") ///{page}
-	public ModelAndView tipList() { //@PathVariable int page
+	@GetMapping("/tip_list")
+	public ModelAndView tipList() { 
 		//logger.info("일반 작동");
-		
-		//int total=dietShareService.totalCount();
-		//PageManager pageManager=new PageManager();
-		//pageManager.init(total,page);
-
 		List<DietTip> dietTipList=dietTipService.selectAll();
 			
 		ModelAndView mav= new ModelAndView("diet/tip_list");
 		mav.addObject("dietTipList", dietTipList);
-		//mav.addObject("pageManager", pageManager);
 
-		
 		return mav;	
 	}	
 	

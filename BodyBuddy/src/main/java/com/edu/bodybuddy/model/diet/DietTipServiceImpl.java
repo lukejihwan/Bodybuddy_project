@@ -56,14 +56,4 @@ public class DietTipServiceImpl implements DietTipService{
 		return dietTipDAO.selectBySearch(map);
 	}
 
-	@Override
-	public int totalCount() {
-		return dietTipDAO.totalCount();
-	}
-
-	@Override
-	public List selectAllPage(int page) {
-		return dietTipDAO.selectAllPage(page);
-	}
-
 }
