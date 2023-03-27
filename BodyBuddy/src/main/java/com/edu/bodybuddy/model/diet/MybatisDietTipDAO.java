@@ -72,7 +72,7 @@ public class MybatisDietTipDAO implements DietTipDAO{
 	}
 
 	@Override
-	public int totalRecord() {
+	public int totalCount() {
 		return sqlSessionTemplate.selectOne("DietTip.totalCount");
 	}
 

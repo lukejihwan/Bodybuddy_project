@@ -15,10 +15,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.edu.bodybuddy.domain.diet.DietCategory;
 import com.edu.bodybuddy.domain.diet.DietInfo;
+import com.edu.bodybuddy.domain.diet.DietShare;
 import com.edu.bodybuddy.domain.diet.DietTip;
 import com.edu.bodybuddy.model.diet.DietCategoryService;
 import com.edu.bodybuddy.model.diet.DietInfoService;
+import com.edu.bodybuddy.model.diet.DietShareService;
 import com.edu.bodybuddy.model.diet.DietTipService;
+import com.edu.bodybuddy.util.PageManager;
 
 @Controller
 @RequestMapping("/diet")
@@ -33,6 +36,9 @@ public class DietController {
 	
 	@Autowired
 	private DietTipService dietTipService;
+	
+	@Autowired
+	private DietShareService dietShareService;
 	
 	/*--------------------------------
 	 			식단정보페이지
@@ -105,26 +111,86 @@ public class DietController {
 	
 	/*--------------------------------
 				식단공유페이지
-	--------------------------------*/
+	--------------------------------*/	
 	//식단공유 메인페이지
-	@GetMapping("/share_list")
-	public ModelAndView shareMain() {
+	@GetMapping("/share_list/{page}")
+	public ModelAndView shareMain(@PathVariable int page) {
+		//카테고리 불러오기 
+		List<DietCategory> dietCategoryList=dietCategoryService.selectAll(); 
+		//List<DietShare> dietShareList=dietShareService.selectAll();
+		
+		int total=dietShareService.totalCount();
+		PageManager pageManager=new PageManager();
+		pageManager.init(total,page);
+		
 		ModelAndView mav= new ModelAndView("diet/share_list");
+		mav.addObject("dietCategoryList", dietCategoryList);
+		//mav.addObject("dietShareList", dietShareList);
+		mav.addObject("pageManager", pageManager);
+		
 		return mav;
 	}
 	
+	//등록페이지
+	@GetMapping("/share_registform")
+	public ModelAndView getShareRegistform() {
+		//카테고리 불러오기 
+		List<DietCategory> dietCategoryList=dietCategoryService.selectAll(); 
+		
+		ModelAndView mav= new ModelAndView("diet/share_registform");
+		mav.addObject("dietCategoryList", dietCategoryList);
+		
+		return mav;
+	}
 	
+	//상세보기페이지
+	@GetMapping("/share_detail/{diet_share_idx}")
+	public ModelAndView getShareDetail(@PathVariable int diet_share_idx) {
+		//조회수 증가
+		dietShareService.addHit(diet_share_idx);
+		
+		List<DietCategory> dietCategoryList=dietCategoryService.selectAll();
+		DietShare dietShare=dietShareService.select(diet_share_idx);
+			
+		ModelAndView mav=new ModelAndView("diet/share_detail");
+		mav.addObject("dietCategoryList", dietCategoryList);
+		mav.addObject("dietShare", dietShare);
+				
+		return mav;
+	}
+		
+	//글수정페이지
+	@GetMapping("/share_edit/{diet_share_idx}")
+	public ModelAndView getShareEdit(@PathVariable int diet_share_idx) {
+		List<DietCategory> dietCategoryList=dietCategoryService.selectAll();
+		DietShare dietShare=dietShareService.select(diet_share_idx);
+					
+		ModelAndView mav=new ModelAndView("diet/share_edit");
+		mav.addObject("dietCategoryList", dietCategoryList);
+		mav.addObject("dietShare", dietShare);
+					
+		return mav;
+	}	
 	/*--------------------------------
 				식단팁페이지
 	--------------------------------*/
 	//메인페이지
-	@GetMapping("/tip_list")
-	public ModelAndView tipMain() {
-		List<DietTip> dietTipList=dietTipService.selectAll();
+	@GetMapping("/tip_list") ///{page}
+	public ModelAndView tipList() { //@PathVariable int page
+		//logger.info("일반 작동");
 		
+		//int total=dietShareService.totalCount();
+		//PageManager pageManager=new PageManager();
+		//pageManager.init(total,page);
+
+		List<DietTip> dietTipList=dietTipService.selectAll();
+			
 		ModelAndView mav= new ModelAndView("diet/tip_list");
 		mav.addObject("dietTipList", dietTipList);
-		return mav;
+		//mav.addObject("pageManager", pageManager);
+
+		
+		return mav;	
 	}	
 	
 	//등록페이지
@@ -137,6 +203,8 @@ public class DietController {
 	//상세보기페이지
 	@GetMapping("/tip_detail/{diet_tip_idx}")
 	public ModelAndView getTipDetail(@PathVariable int diet_tip_idx) {
+		//조회수 증가
+		dietTipService.addHit(diet_tip_idx);
 		DietTip dietTip=dietTipService.select(diet_tip_idx);
 		
 		ModelAndView mav=new ModelAndView("diet/tip_detail");
