@@ -3,7 +3,6 @@
 <html lang="en">
 <head>
 <%@include file="../inc/header_link.jsp"%>
-<%@include file="./inc/values.jsp"%>
 </head>
 
 <body class="animsition">
@@ -40,6 +39,10 @@
 						<!-- 신고게시판 시작 -->
 						<list v-if="showList" :data="report_data"></list>
 						<!-- /신고게시판 끝-->
+						
+						<!-- 상세보기 -->
+						<detail v-if="showDetail" :data="detail_data"></detail>
+						<!-- /상세보기-->
 
 						<!-- 글쓰기 폼-->
 						<writeform v-if="showForm" :data="formdata"></writeform>
@@ -60,7 +63,7 @@
 	<%@include file="../inc/footer_tiny.jsp"%>
 	
 	<%@include file="../inc/footer_link.jsp"%>
-	<script src="/resources/user/js/vue/list_ask.js"></script>
+	<script src="/resources/user/js/vue/cs.js"></script>
 	<script>
 		let askApp;
 		
@@ -74,14 +77,17 @@
 					return{
 						showList: true,
 						showForm: false,
+						showDetail: false,
 						ask_data : {type:"ask", title: "1:1 문의 내역", list:[], form_title:"1:1 문의하기"},
 						report_data : {type:"report", title: "신고 내역", list:[], form_title:"신고하기"},
+						detail_data: {type:"", dto:{}},
 						formdata:{}
 					}
 				},
 				components: {
 					list: List,
-					writeform: Writeform
+					writeform: Writeform,
+					detail: Detail
 				},
 			})
 		}

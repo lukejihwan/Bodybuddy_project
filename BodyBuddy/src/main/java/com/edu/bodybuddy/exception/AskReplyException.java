@@ -1,10 +1,10 @@
 package com.edu.bodybuddy.exception;
 
-public class AskimgException extends RuntimeException{
-	public AskimgException(String msg) {
+public class AskReplyException extends RuntimeException{
+	public AskReplyException(String msg) {
 		super(msg);
 	}
-	public AskimgException(String msg, Throwable e) {
+	public AskReplyException(String msg, Throwable e) {
 		super(msg, e);
 	}
 }

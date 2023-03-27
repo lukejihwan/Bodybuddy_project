@@ -42,4 +42,6 @@
 <!-- sweetalert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link href="/resources/user/css/my-sweetalert2.css" rel="stylesheet">
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<script src="/resources/user/js/values.js"></script>
 <%@include file="./list_css.jsp"%>
