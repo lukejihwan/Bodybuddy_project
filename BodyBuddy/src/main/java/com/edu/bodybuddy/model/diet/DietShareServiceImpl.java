@@ -59,14 +59,4 @@ public class DietShareServiceImpl implements DietShareService{
 		return dietShareDAO.selectBySearch(map);
 	}
 
-	@Override
-	public int totalCount() {
-		return dietShareDAO.totalCount();
-	}
-
-	@Override
-	public List selectAllPage(int page) {
-		return dietShareDAO.selectAllPage(page);
-	}
-
 }

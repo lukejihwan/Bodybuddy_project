@@ -53,6 +53,7 @@
                     <input type="hidden" class="form-control" name="diet_share_idx"value="<%=dietShare.getDiet_share_idx()%>">
                     <h3><%=dietShare.getTitle() %></h3>
                     <span><%=dietShare.getDietCategory().getDiet_category_name() %></span>
+                    <span class="float-right"><img src="/resources/user/images/diet/heart.png" style="width:20px; height:20px"> 찜하기</span>
                     <br/>
                     <span>작성자 | <%=dietShare.getRegdate().substring(0,10) %></span>
                     <span class="float-right">조회 <%=dietShare.getHit() %> | 추천 {{recommend}}</span>
@@ -194,7 +195,7 @@
 		
 		//목록버튼 
 		$("#bt_list").click(function(){
-			location.href="/diet/share_list/1"; 
+			location.href="/diet/share_list"; 
 		});
 		
 		//수정페이지 버튼 

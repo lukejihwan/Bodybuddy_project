@@ -34,7 +34,7 @@
                         <li><a href="/diet/info" title="diet" class="animsition-link">식단</a>
                             <ul>
                                 <li><a href="/diet/info" title="Blog" class="animsition-link">식단정보</a></li>
-                                <li><a href="/diet/share_list/1" title="Blog Single" class="animsition-link">식단공유</a></li>
+                                <li><a href="/diet/share_list" title="Blog Single" class="animsition-link">식단공유</a></li>
                                 <li><a href="/diet/tip_list" title="Blog Single" class="animsition-link">식단 팁</a></li>
                                 <li><a href="/diet/kcal" title="Blog Single" class="animsition-link">칼로리계산기</a></li>
                             </ul>

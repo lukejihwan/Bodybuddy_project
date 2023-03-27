@@ -18,8 +18,4 @@ public interface DietTipService {
 	
 	//검색기능 
 	public List selectBySearch(HashMap<String, String> map);
-	
-	//페이징처리
-	public int totalCount();
-	public List selectAllPage(int page);
 }

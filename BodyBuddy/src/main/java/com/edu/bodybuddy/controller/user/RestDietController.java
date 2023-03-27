@@ -28,13 +28,16 @@ import com.edu.bodybuddy.domain.diet.DietCategory;
 import com.edu.bodybuddy.domain.diet.DietInfo;
 import com.edu.bodybuddy.domain.diet.DietShare;
 import com.edu.bodybuddy.domain.diet.DietTip;
+import com.edu.bodybuddy.domain.diet.DietTipComments;
 import com.edu.bodybuddy.domain.exr.ExrRoutine;
+import com.edu.bodybuddy.domain.exr.ExrRoutineComment;
 import com.edu.bodybuddy.exception.DietInfoException;
 import com.edu.bodybuddy.exception.DietShareException;
 import com.edu.bodybuddy.exception.DietTipException;
 import com.edu.bodybuddy.model.diet.DietCategoryService;
 import com.edu.bodybuddy.model.diet.DietInfoService;
 import com.edu.bodybuddy.model.diet.DietShareService;
+import com.edu.bodybuddy.model.diet.DietTipCommentsService;
 import com.edu.bodybuddy.model.diet.DietTipService;
 import com.edu.bodybuddy.util.Msg;
 
@@ -63,13 +66,18 @@ public class RestDietController {
 	@Autowired
 	private DietShareService dietShareService;
 	
+	@Autowired
+	private DietTipCommentsService dietTipCommentsService;
+	
+	
+	
 	/*--------------------------------
 			식단공유 페이지 관련 
 	--------------------------------*/
 	//글 목록 조회 
 	@GetMapping("/share_list")
-	public List<DietShare> getShareList(int page){
-		List<DietShare> dietShareList=dietShareService.selectAllPage(page);
+	public List<DietShare> getShareList(){
+		List<DietShare> dietShareList=dietShareService.selectAll();
 		
 		return dietShareList;
 	}
@@ -244,8 +252,33 @@ public class RestDietController {
 		return dietTipList;
 	}
 	
+	//댓글 목록 
+	@GetMapping("/tip/comments/{diet_tip_idx}")
+	public List<DietTipComments> getTipComments(@PathVariable int diet_tip_idx){
+		return dietTipCommentsService.selectByIdx(diet_tip_idx);
+	}
+	
+	//댓글등록 
+	@PostMapping("/tip/comments/regist")
+	public ResponseEntity<Msg> registTipComments(DietTipComments dietTipComments){
+		dietTipCommentsService.insert(dietTipComments);
+		
+		Msg msg=new Msg();
+		msg.setMsg("댓글 등록 완료");
+		
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
 	
 	
+	
+	
+	
+	
+	
+	/*--------------------------------
+			칼로리계산기 페이지 관련 
+	--------------------------------*/
 	
 	
 	
@@ -304,7 +337,6 @@ public class RestDietController {
                 JSONObject itemLists=(JSONObject)items.get(i);
 
                 String food=(String)itemLists.get("DESC_KOR");
-                String serving=(String)itemLists.get("SERVING_WT");
                 String kcal=(String)itemLists.get("NUTR_CONT1");
                 String car=(String)itemLists.get("NUTR_CONT2");
                 String tien=(String)itemLists.get("NUTR_CONT3");
@@ -312,13 +344,11 @@ public class RestDietController {
 
                 System.out.println("\n----- "+(i+1)+"번째 음식 정보 -----");
                 System.out.println("음식이름 : "+food);
-                System.out.println("1회 제공량 : "+serving);
                 System.out.println("열량 : "+kcal);
                 System.out.println("탄수화물 : "+car);
                 System.out.println("단백질 : "+tien);
                 System.out.println("지방 : "+vince);
             }
-
 
         } catch (ParseException e) {
             e.printStackTrace();

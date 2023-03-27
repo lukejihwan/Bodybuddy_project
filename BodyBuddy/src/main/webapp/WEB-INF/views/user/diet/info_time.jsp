@@ -32,7 +32,7 @@
                             <div class="col-md-8 col-sm-12">
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12">
-                                    <img src="/resources/user/images/time1.png" class="" alt="time1">
+                                    <img src="/resources/user/images/diet/time1.png" class="" alt="time1">
                                     <p></p>
                                     <div class="mb30">
                                         <h1>간헐적 단식(Intermittent fasting)</h1>
