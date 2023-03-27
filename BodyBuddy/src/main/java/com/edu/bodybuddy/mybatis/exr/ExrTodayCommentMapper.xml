@@ -24,7 +24,7 @@
 	<!-- 첫 댓글은 1씩 무조건 증가시킴 -->
 	<insert id="insert" parameterType="ExrTodayComment">
 		insert into exr_today_comment(exr_today_idx, member_idx, writer, content, post, step, depth)
-		values(#{exrToday.exr_today_idx}, #{member.member_idx}, #{writer}, #{content}, #{post}, #{step}+1, #{depth}+1)
+		values(#{exrToday.exr_today_idx}, #{member.member_idx}, #{writer}, #{content}, #{post}, #{step}, #{depth})
 		
 		<selectKey keyColumn="exr_today_comment_idx" keyProperty="exr_today_comment_idx" order="AFTER" resultType="int">
 			select last_insert_id() as exr_today_comment_idx from dual
@@ -46,9 +46,9 @@
 	
 		
 	<!-- 해당 글에 대한 답글의 수 구하기 -->
-	<select id="totalCount" resultType="int" parameterType="int">
+	<select id="totalCount" resultType="int" parameterType="ExrTodayComment">
 		select count(*) from exr_today_comment
-		where exr_today_idx=#{exr_today_idx}
+		where exr_today_idx=#{exrToday.exr_today_idx}
 	</select>
 	
 
@@ -65,13 +65,7 @@
 		update exr_today_comment set step=#{step}+1
 		where post=#{post} and step>#{step}
 	</update>
-	
-	
-	<!-- 대댓글 등록하기 -->
-	<insert id="reply" parameterType="ExrTodayComment">
-		insert into exr_today_comment(writer, content, post, step, depth)
-		values(#{writer}, #{content}, #{post}, #{step}+1, #{depth}+1)
-	</insert>
+
 	
 
 </mapper>
