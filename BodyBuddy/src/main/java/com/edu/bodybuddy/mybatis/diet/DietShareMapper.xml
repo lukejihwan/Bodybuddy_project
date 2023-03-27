@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DietShare">
+	<resultMap type="DietShare" id="shareMap">
+		<id column="diet_share_idx" property="diet_share_idx"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="preview" property="preview"/>
+		<result column="regdate" property="regdate"/>
+		<result column="hit" property="hit"/>
+		<result column="recommend" property="recommend"/>
+		<result column="kcal" property="kcal"/>
+		<result column="carbohydrate" property="carbohydrate"/>
+		<result column="protein" property="protein"/>
+		<result column="province" property="province"/>
+		
+		<association 
+			column="diet_category_idx"
+			property="dietCategory" 
+			javaType="DietCategory"
+			select="DietCategory.select"/>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="shareMap">
+		select * from diet_share order by diet_share_idx desc;
+	</select>
+	
+	<select id="select" resultMap="shareMap" parameterType="int">
+		select * from diet_share where diet_share_idx=#{diet_share_idx}
+	</select>
+	
+	<!-- 카테고리 해당 글 선택하기 -->
+	<select id="selectByIdx" resultMap="shareMap" parameterType="int">
+		select * from diet_share where diet_category_idx=#{dietCategory.diet_category_idx} order by diet_share_idx desc
+	</select>
+	
+	<insert id="insert" parameterType="DietShare">
+		insert into diet_share(diet_category_idx, title, content, preview, kcal, carbohydrate, protein, province)
+		values(#{dietCategory.diet_category_idx}, #{title}, #{content}, #{preview}, #{kcal}, #{carbohydrate}, #{protein}, #{province})
+		
+		<selectKey 
+			keyColumn="diet_share_idx"
+			keyProperty="diet_share_idx"
+			order="AFTER"
+			resultType="int">
+			
+			select last_insert_id() as diet_share_idx
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="DietInfo">
+		update diet_share set
+		title=#{title}
+		, content=#{content}
+		, preview=#{preview}
+		, kcal=#{kcal}
+		, carbohydrate=#{carbohydrate}
+		, protein=#{protein}
+		, province=#{province}
+		where diet_share_idx=#{diet_share_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from diet_share where diet_share_idx=#{diet_share_idx}
+	</delete>
+	
+	<!-- 조회수 증가 -->
+	<update id="addHit" parameterType="int">
+		update diet_share set hit=hit+1 where diet_share_idx=#{diet_share_idx}
+	</update>
+	
+	<!-- 추천수 증가 -->
+	<update id="addRecommend" parameterType="int">
+		update diet_share set recommend=recommend+1 where diet_share_idx=#{diet_share_idx}
+	</update>
+	
+	<!-- 검색하기 -->
+	<select id="selectBySearch" resultType="DietShare" parameterType="java.util.Map">
+		select * from diet_share where title like '%${keyword}%'
+	</select>
+</mapper>

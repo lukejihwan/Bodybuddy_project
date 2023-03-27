@@ -15,6 +15,8 @@
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrRecord" alias="ExrRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrDetailRecord" alias="ExrDetailRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.DietRecord" alias="DietRecord"/>
+ 	
+ 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.GpsData" alias="GpsData"/>
   
   	<!-- Exr Alias -->
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrCategory" alias="ExrCategory" />
@@ -22,12 +24,15 @@
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrRoutine" alias="ExrRoutine" />
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrRoutineComment" alias="ExrRoutineComment" />
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrTip" alias="ExrTip" />
+  	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrToday" alias="ExrToday" />
+  	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrTodayComment" alias="ExrTodayComment" />
  	
  	<!-- Diet Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietCategory" alias="DietCategory" />
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietInfo" alias="DietInfo" />
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietTip" alias="DietTip" />
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietTipComments" alias="DietTipComments" />
+ 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietShare" alias="DietShare" />
  
  	<!-- Mypage Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Report" alias="Report"/>
@@ -52,10 +57,13 @@
     <mapper resource="com/edu/bodybuddy/mybatis/member/PasswordMapper.xml"/>
 
     <!-- Myrecord Mapper -->
+    
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/PhysicalRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/ExrRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/ExrDetailRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/DietRecordMapper.xml"/>
+    
+    <mapper resource="com/edu/bodybuddy/mybatis/myrecord/GpsDataMapper.xml"/>
 
     <!-- Exr Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrCategoryMapper.xml"/>
@@ -63,12 +71,15 @@
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrRoutineMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrRoutineCommentMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrTipMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrTodayMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrTodayCommentMapper.xml"/>
     
     <!-- Diet Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietCategoryMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietInfoMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietTipMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietTipCommentsMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/diet/DietShareMapper.xml"/>
     
     <!-- Mypage Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskMapper.xml"/>

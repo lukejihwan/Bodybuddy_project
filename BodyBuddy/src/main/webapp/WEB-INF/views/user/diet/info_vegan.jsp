@@ -41,7 +41,7 @@
                             <div class="col-md-8 col-sm-12">
                                 <div class="row">
                                 	<!-- 사진 들어갈 곳 -->
-                                    <div class="col-md-12 col-sm-12"><img src="/resources/user/images/vegan1.png" class="" alt="Vegan">
+                                    <div class="col-md-12 col-sm-12"><img src="/resources/user/images/diet/vegan1.png" class="" alt="Vegan">
                                     <p></p>
                                     
                                     <!-- 내용 -->

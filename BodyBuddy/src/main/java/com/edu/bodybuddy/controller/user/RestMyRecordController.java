@@ -1,7 +1,12 @@
 package com.edu.bodybuddy.controller.user;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,16 +19,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.bodybuddy.domain.myrecord.ExrRecord;
+import com.edu.bodybuddy.domain.myrecord.GpsData;
 import com.edu.bodybuddy.exception.ExrDetailRecordException;
 import com.edu.bodybuddy.exception.ExrRecordException;
 import com.edu.bodybuddy.model.myrecord.ExrRecordService;
+import com.edu.bodybuddy.model.myrecord.GpsDataService;
 import com.edu.bodybuddy.model.myrecord.MyRecordService;
 import com.edu.bodybuddy.util.Message;
-import com.edu.bodybuddy.util.Msg;
 
 @RestController
 @RequestMapping("/rest/myrecord")
@@ -36,26 +42,59 @@ public class RestMyRecordController {
 	
 	@Autowired
 	private ExrRecordService exrRecordService;
+	@Autowired
+	private GpsDataService gpsDataService;
+
 	
-	
-	@PostMapping("/gps")
-	public String getLocation(){
-		
+	// 안드로이드에서 전송한 GPSData 정보를 받는 메서드
+	@PostMapping("/today/gps")
+	public void GPSDatafromAndroid(HttpServletRequest request,@RequestBody List<GpsData> gpsList){
 		logger.info("응답 받음");
+		logger.info("받은 데이터의 모습!"+gpsList);
 		
-		return "지금 확인 중";
+		LocalDate currentDate=LocalDate.now();
+		logger.info("오늘 날짜는"+currentDate);
+		
+		
+		//GpsData insert!
+		for(int i=0; i<gpsList.size(); i++) {
+			GpsData gpsData=gpsList.get(i);
+			
+			// 오늘 날짜 같이 넣기!
+			gpsData.setRegdate(currentDate.toString());
+			gpsDataService.insert(gpsData);
+		}
+		
+		logger.info("위치데이터 입력 성공");
 	}
 	
-	@GetMapping("/weatherAPI")
-	public void getWeather() {
-		myRecordService.getWeather();
+	@GetMapping("/weatherAPI/{nx}/{ny}")
+	public Map<String, String> getWeather(@PathVariable(name="nx") int nx, @PathVariable(name="ny") int ny) {
+		
+		logger.info("받아온 nx값은 : "+nx);
+		logger.info("받아온 ny값은 : "+ny);
+		
+		Map<String, String> dataForResponseMap=myRecordService.getWeather(nx, ny);
+		return dataForResponseMap;
 	}
+	
+	// 해당 날짜에 대한 위도 경도 값을 가져오는 함수!
+	@GetMapping("/today/gps")
+	public List<GpsData> getGPSData() {
+		List<GpsData>gpsList=gpsDataService.selectForDay("2023-03-25 00:00:00");
+		return gpsList;
+	}
+	/*------------------------------------------------------------------------------*/
+	
+	
 	
 	//한달간의 기록을 보여주는 메서드
 	//ResponseBody 를 붙일 필요없음, RestController로 클래스 선언이 되어있기 때문에
 	@PostMapping("/exrListForMonth")
 	public List<ExrRecord> getExrRecordForMonth(@RequestBody Map<String, String> oneMonthPeriod){
 		logger.info("한달동안의 기록을 불러올 첫날과 마지막 날 값은 :" +oneMonthPeriod.get("firstDay")+",,"+oneMonthPeriod.get("lastDay"));
+		LocalDate  currentDate=LocalDate.now();
+		logger.info("오늘 날짜는"+currentDate);
 		List<ExrRecord> exrRecordListMonth=exrRecordService.seletForMonth(oneMonthPeriod);
 		return exrRecordListMonth;
 	}
@@ -71,6 +110,7 @@ public class RestMyRecordController {
 			logger.info("받아온 운동명은 : "+exrRecord.getExr_name());
 		}
 		*/
+		
 		logger.info("운동목록 받아오는 : "+exrList);
 		exrRecordService.regist(exrList);
 		Message msg=new Message();

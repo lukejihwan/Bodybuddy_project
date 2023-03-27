@@ -43,7 +43,7 @@
                             <div class="col-md-8 col-sm-12">
                                 <div class="row">
                                 	<!-- 사진 들어갈 곳 -->
-                                    <div class="col-md-12 col-sm-12"><img src="/resources/user/images/general1.jpg" class="" alt="General Diet">
+                                    <div class="col-md-12 col-sm-12"><img src="/resources/user/images/diet/general1.jpg" class="" alt="General Diet">
                                     <p></p>
                                     
                                     <!-- 내용 -->

@@ -61,10 +61,9 @@ public class CounsellingBoardService implements BoardService{
 		
 		page = page - 1;
 		if(page <0) page = 0;
-		HashMap<Integer, String> map = new HashMap<Integer, String>();
-		logger.info("값이 없으면 : " + map.get("asd"));
-		
 		List<CounsellingBoard> counsellingList = boardDAO.selectAllByPage(page * PAGE_SIZE);
+		
+		HashMap<Integer, String> map = new HashMap<Integer, String>();
 		int count = 1;
 		for(int i =0;i<counsellingList.size();i++) {
 			CounsellingBoard board = counsellingList.get(i);

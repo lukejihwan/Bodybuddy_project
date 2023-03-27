@@ -130,7 +130,7 @@ const setlist={
 			{{t_set}}set
 			<input type="number" name="t_kg[]" min="1" max="600">kg
 			<input type="number" name="t_ea[]" min="1" max="100">개
-			<a href="#">X</a>
+			<a href="#" @click="del">X</a>
 		</div>
 	`,
 	props:['set'],
@@ -140,7 +140,10 @@ const setlist={
 		}
 	},
 	methods:{
-		
+		del:function(){
+			console.log("먹음");
+			app1.count-=1;
+		}
 	}
 }
 const exrlist={
@@ -225,12 +228,14 @@ function getDate(){
 	};
 }
 
+//날짜 클릭시 오른쪽 기록추가 날짜 영역에 값이 옮겨짐
 function popups(currentYear, currentMonth, today){
 	currentDay=today;
 	$("#exr_day").val(" "+currentYear+" 년 "+currentMonth+" 월 "+today+"일");
 }
 
 let exrList=[]; //운동을 담을 배열
+let exrObject=new Object(); //하나의 운동(exr_name, setList[])를 담을 객체
 //모달창 운동등록 버튼 클릭시, 운동명과, 세트수 가져와서 기록추가 창에 보여주기
 //PS: 이부분을 오른쪽영역에 rendering하는 부분과 JSON구성하는 부분을 나누는게 좋을듯
 function addexr(){
@@ -239,7 +244,6 @@ function addexr(){
 		alert("운동기록을 적어주세요");
 	}else{
 		let json={}; //JSON을 담을 바구니;
-		let exrObject=new Object(); //하나의 운동(exr_name, setList[])를 담을 객체
 		let setList=[]; //한운동에 해당하는 세트를 담을 배열
 		
 		//세트 수의 크기
@@ -258,15 +262,9 @@ function addexr(){
 		
 		//운동명
 		let exrname=$("input[name='t_exr_research']").val();
-		let exr_day=$("#exr_day").val();
-		let regdate=currentYear+"-"+currentMonth+"-"+currentDay;
-		console.log(regdate);
 		
 		exrObject.exr_name=exrname;
-		exrObject.regdate=regdate;
 		exrObject.exrRecordDetailList=setList;
-		
-		exrList.push(exrObject);
 		
 		//기록추가 영역에 추가될 미리보기
 		app1.exerciseList.push(exrObject);
@@ -274,8 +272,18 @@ function addexr(){
 	
 }
 
+//운동기록 날짜를 가져올 함수
+function getDayforRegistExr(){
+	let exr_day=$("#exr_day").val();
+	let regdate=currentYear+"-"+currentMonth+"-"+currentDay;
+	console.log(regdate);
+	exrObject.regdate=regdate;
+}
 
 function regist(){
+	getDayforRegistExr();
+	exrList.push(exrObject);
+	
 	if($("#exr_day").val()=="" || $("input[name='t_exr_research']").val()==""){
 		alert("날짜또는 운동기록을 추가해주세요");
 		
@@ -326,6 +334,7 @@ function removeContent(){
 
 //div에 상세버튼 추가하기를 따로 둠(다른 기록 기록할때, 또 생성하게 하지 않기 위해)
 function addButtononRecord(getDay){
+	
 	$($(".bt_days")[getDay-1]).append("<button type='button' class='btn btn-block bg-gradient-primary btn-xs' onclick='putDetail("+getDay+")' data-toggle='modal' data-target='#detailModal'>상세</button>");	
 }
 
@@ -347,7 +356,7 @@ function appendImage(getDay){
 //운동기록이 있는 날에 이미지 붙이기
 function appendImageDays(registedDataForMonth){
 	let divdays=document.getElementsByClassName("bt_days");
-	let selectedDays=[];
+	let selectedDays=new Set(); //중복되지 않는 배열
 	
 	//숫자 변환 작업 01을 1로 11은 11같이
 	for(let i=0; i<registedDataForMonth.length; i++){
@@ -355,18 +364,20 @@ function appendImageDays(registedDataForMonth){
 		let processedData=registedData.regdate.slice(8,10);
 		if(processedData.substr(0,1)==0){
 			let selectedDay=registedData.regdate.slice(9,10); //ex: 11 (일)div와 비교해 이미지 붙이기 위해
-			selectedDays.push(selectedDay);
+			selectedDays.add(selectedDay);
 		}else{
 			let selectedDay=registedData.regdate.slice(8,10); //ex: 11 (일)div와 비교해 이미지 붙이기 위해
-			selectedDays.push(selectedDay);
+			selectedDays.add(selectedDay);
 		}
 		//console.log(selectedDays[0]);
 	}
 	
 	//console.log(processedData);
-	for(let a=0; a<selectedDays.length; a++){
-		let getDay=selectedDays[a];
-		appendImage(getDay);
+	//중복되지 않는 set배열 반복문 돌리는 법
+	for(let item of selectedDays.values()){
+		//let getDay=selectedDays[item];
+		appendImage(item);
+		console.log("selectedDays에서 받은 값은", item);
 	}
 	
 }
@@ -387,10 +398,10 @@ function getExrRecordForMonth(){
 		data:dateData,
 		contentType:"application/json",
 		success:function(result, status, xhr){
-			console.log(typeof result);
+			//console.log(typeof result);
+			alert("성공적으로 불러옴");
 			appendImageDays(result);
 			console.log("받아온 날짜는",result);
-			alert("성공적으로 불러옴");
 		},
 		error:function(xhr, status, error){
 			console.log(error, "기록불러오던 중 에러발생");

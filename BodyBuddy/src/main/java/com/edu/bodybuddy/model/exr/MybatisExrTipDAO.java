@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.edu.bodybuddy.domain.exr.ExrTip;
+import com.edu.bodybuddy.exception.ExrRoutineException;
 import com.edu.bodybuddy.exception.ExrTipException;
 
 import lombok.Data;
@@ -61,6 +62,15 @@ public class MybatisExrTipDAO implements ExrTipDAO{
 		if(result<1) {
 			throw new ExrTipException("조회수 추가 실패");
 		}		
+	}
+
+
+	@Override
+	public void plusRecommend(int exr_tip_idx) throws ExrTipException{
+		int result=sqlSessionTemplate.update("ExrTip.plusRecommend", exr_tip_idx);
+		if(result<1) {
+			throw new ExrTipException("추천수 추가 실패");
+		}			
 	}
 
 }
