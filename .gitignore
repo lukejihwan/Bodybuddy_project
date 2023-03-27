@@ -3,3 +3,5 @@
 */target/**
 */.settings/**
 /BodyBuddy/src/main/resources/social.properties
+/.idea/
+/BodyBuddy/BodyBuddy.iml
