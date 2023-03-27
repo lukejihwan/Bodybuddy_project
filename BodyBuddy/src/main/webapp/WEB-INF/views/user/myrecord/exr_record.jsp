@@ -462,10 +462,6 @@ function getExrRecordForMonth(){
 					json['lat']=dto.lati;
 					json['lng']=dto.longi;
 					
-<<<<<<< HEAD
-=======
-					//console.log("가공된 제이슨은? ",json);
->>>>>>> 574b16d01eba7a6803fd8ae23596f21732865894
 					jsonList.push(json);
 					
 				}

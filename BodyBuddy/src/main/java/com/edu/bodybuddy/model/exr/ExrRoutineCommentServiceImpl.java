@@ -77,8 +77,6 @@ public class ExrRoutineCommentServiceImpl implements ExrRoutineCommentService{
 		
 		// 최종적으로 인서트
 		exrRoutineCommentDAO.insert(exrRoutineComment);
-		
-		
 	}
 
 }
