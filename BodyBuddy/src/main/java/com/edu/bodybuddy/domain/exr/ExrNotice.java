@@ -1,6 +1,5 @@
 package com.edu.bodybuddy.domain.exr;
 
-
 import lombok.Data;
 
 @Data
@@ -10,7 +9,5 @@ public class ExrNotice {
 	private String content;
 	private String regdate;
 	private ExrCategory exrCategory;
-	
-	//private MultipartFile[] photo;
-	//private List<ExrNoticeImg> exrNoticeImgList;
+
 }

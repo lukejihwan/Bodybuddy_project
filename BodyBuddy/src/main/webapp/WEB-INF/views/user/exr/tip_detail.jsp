@@ -19,7 +19,7 @@
 	<!-- /top-bar end-->
 
 	<!-- hero section start -->
-	<div class="hero-section">
+	<div class="hero-section" style="background:#EF5350">
 		<!-- navigation-->
 		<%@include file="../inc/header_navi.jsp"%>
 		<!-- /navigation end -->

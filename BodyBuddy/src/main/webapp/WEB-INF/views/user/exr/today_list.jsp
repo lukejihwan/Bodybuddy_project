@@ -96,7 +96,7 @@
 						<%ExrToday exrToday=exrTodayList.get(i); %>
 						<tr>
 							<td><%=exrToday.getExr_today_idx() %></td>
-							<td><a href="/exr/today/detail?exr_today_idx=<%=exrToday.getExr_today_idx() %>"><%=exrToday.getTitle() %>
+							<td><a href="/exr/today_detail?exr_today_idx=<%=exrToday.getExr_today_idx() %>"><%=exrToday.getTitle() %>
 								<span class="comment-count">[&nbsp <%=exrToday.getCommentList().size() %> &nbsp]</span>
 							</a></td>
 							<td><%=exrToday.getWriter() %></td>

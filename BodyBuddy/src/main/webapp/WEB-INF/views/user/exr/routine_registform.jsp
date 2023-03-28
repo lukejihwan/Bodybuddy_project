@@ -53,7 +53,7 @@
 				<div class="col-sm-12">
 					<form id="form1">
 						<div class="form-group">
-							<input type="hidden" name="member.member_idx" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
+							<input type="hidden" name="member_idx" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
 							<input type="text" class="form-control" name="title" placeholder="제목을 입력하세요" style="height:100px; font-size:30px">
 						</div>
 						<div class="form-group">
@@ -103,6 +103,7 @@
 	function registAsync(){
 		let formData=new FormData();
 		formData.append("exrCategory.exr_category_idx", $("#form1 select[name='exr_category_idx']").val());
+		formData.append("member.member_idx", $("#form1 *[name='member_idx']").val());
 		formData.append("title", $("#form1 input[name='title']").val());
 		formData.append("writer", $("#form1 input[name='writer']").val());
 		formData.append("content", $("#form1 textarea[name='content']").val());
@@ -136,7 +137,7 @@
 		
 		// 목록 페이지 이동
 		$("#bt_list").click(function(){
-			location.href="/exr/routine_list";
+			location.href="/exr/routine_list/1";
 		});
 		
 		// 등록
@@ -145,7 +146,6 @@
 			//regist();
 		});
 		
-
 		
 		// 써머 노트 적용
 		$('#summernote').summernote({

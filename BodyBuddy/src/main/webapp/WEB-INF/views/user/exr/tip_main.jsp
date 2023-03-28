@@ -15,13 +15,15 @@
 <head profile="http://www.w3.org/2005/10/profile">
 
 <%@include file="../inc/header_link.jsp" %>
-<style type="text/css">
-
-#ytplayer{
-	width:720;
-	height:405;
-}
-
+	<style type="text/css">
+	
+	#ytplayer{
+		width:720;
+		height:405;
+	}
+	 .section{
+	 	margin-top:90px;
+	 }
 </style>
 </head>
 
@@ -31,7 +33,7 @@
     <!-- /top-bar end-->
 
     <!-- hero section start -->
-    <div class="hero-section">
+    <div class="hero-section" style="background:#E57373">
 		<!-- navigation-->
 	   	<%@include file="../inc/header_navi.jsp" %>
 	    <!-- /navigation end -->
@@ -57,12 +59,13 @@
 		
 			<div class="col-lg-7">
 				<div class="widget widget-search mb40">
-					<h2 class="widget-title">원하는 운동 키워드를 검색해보세요</h2>
+					<img src="/resources/user/images/exr/youtube.jpg" style="width:200px">
+					<h2 class="widget-title">원하는 운동 키워드를 검색해보세요!</h2>
 					<div class="input-group">
 							<input type="text" class="form-control" placeholder="Seacrh Here" name="keyword">
-							<span class="input-group-btn">
-								<button class="btn btn-default" type="button" id="bt_search">
-									<i class="fa fa-search"></i>
+							<span class="input-group-btn" style="color:red">
+								<button class="btn btn-default" type="button" id="bt_search" style="background:red">
+									<i class="fa fa-search" ></i>
 								</button>
 							</span>
 					</div>
@@ -78,30 +81,35 @@
 					
 			</div>
 
-				
+		
 			<div class="col-lg-5">
-				<a href="/exr/tip/registfrom" class="btn btn-default float-right">Scrap</a>
-
-				<div class="card-body table-responsive p-0">
-					<table class="table table-hover text-nowrap">
-						<thead>
-							<tr>
-								<th>No</th>
-								<th>카테고리</th>
-								<th>제목</th>
-								<th>등록일</th>
-							</tr>
-						</thead>
-						<tbody>
-						
-							<template v-for="tip in exrTipList">
-								<row :dto="tip" :key="tip.exr_tip_idx"/>
-							</template>
+				<div class="section">
+			
+					<a href="/exr/tip/registfrom" class="btn btn-default float-right">Scrap</a>
+	
+					<div class="card-body table-responsive p-0">
+						<table class="table table-hover text-nowrap">
+							<thead>
+								<tr>
+									<th>No</th>
+									<th>카테고리</th>
+									<th>제목</th>
+									<th>등록일</th>
+								</tr>
+							</thead>
+							<tbody>
 							
-						</tbody>
-					</table>
-				</div>
+								<template v-for="tip in exrTipList">
+									<row :dto="tip" :key="tip.exr_tip_idx"/>
+								</template>
+								
+							</tbody>
+						</table>
+					</div>
+			
+				</div><!-- ./section -->
 			</div>
+				
 				
 			<!-- ./row -->
 			</div>
