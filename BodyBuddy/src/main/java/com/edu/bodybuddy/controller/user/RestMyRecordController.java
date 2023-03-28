@@ -16,8 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -149,6 +151,50 @@ public class RestMyRecordController {
 		logger.info("한달동안의 신체기록을 불러올 첫날과 마지막 날 값은 :" +pysicalOneMonthPeriod.get("firstDay")+",,"+pysicalOneMonthPeriod.get("lastDay"));
 		List<PhysicalRecord> physicalList=physicalRecordService.selectForMonth(pysicalOneMonthPeriod);
 		return physicalList;
+	}
+	
+	@GetMapping("/physicalRecord")
+	public PhysicalRecord getPhysicalRecord(@RequestParam("regdate") String regdate, @RequestParam("member_idx") int member_idx) {
+		PhysicalRecord physicalRecord=new PhysicalRecord();
+		physicalRecord.setRegdate(regdate);
+		physicalRecord.setMember_idx(member_idx);
+		//서비스 호출하기
+		physicalRecord= physicalRecordService.select(physicalRecord);
+		
+		return physicalRecord;
+	}
+	
+	@PutMapping("/physicalRecord")
+	public ResponseEntity<Message> updatePhysicalRecord(@RequestBody PhysicalRecord physicalRecord){
+		
+		logger.info("클라이언트로부터 받아온 member_idx 값은"+physicalRecord.getMember_idx());
+		logger.info("클라이언트로부터 받아온 regdate 값은"+physicalRecord.getRegdate());
+		logger.info("클라이언트로부터 받아온 BMI 값은"+physicalRecord.getBMI());
+		
+		//service 일시키기
+		physicalRecordService.update(physicalRecord);
+		
+		return null;
+	}
+	
+	@DeleteMapping("/physicalRecord")
+	public ResponseEntity<Message> deletePhysicalRecord(@RequestBody PhysicalRecord physicalRecord){
+		//아래의 방식으로 사용해도 됨 (선택의 문제)
+		//RequestParam("regdate") String regdate, RequestParam("member_idx") int member_idx
+		
+		logger.info("받아온 member_idx 값은"+physicalRecord.getMember_idx());
+		logger.info("받아온 regdate 값은"+physicalRecord.getRegdate());
+		
+		physicalRecordService.delete(physicalRecord);
+		
+		Message message=new Message();
+		message.setCode(200);
+		message.setMsg("신체기록 삭제 완료");
+		ResponseEntity<Message> entity=new ResponseEntity<Message>(message, HttpStatus.OK);
+		
+		logger.info("신체기록 삭제하기 전달");
+		
+		return entity;
 	}
 	
 	/*=============================================
