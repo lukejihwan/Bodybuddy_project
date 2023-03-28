@@ -35,6 +35,7 @@
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietShare" alias="DietShare" />
  
  	<!-- Mypage Alias -->
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.Mypost" alias="Mypost"/>
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Report" alias="Report"/>
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.ReportReply" alias="ReportReply"/>
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Ask" alias="Ask"/>
@@ -82,6 +83,7 @@
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietShareMapper.xml"/>
     
     <!-- Mypage Mapper -->
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/MypostMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskReplyMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/ReportMapper.xml"/>
