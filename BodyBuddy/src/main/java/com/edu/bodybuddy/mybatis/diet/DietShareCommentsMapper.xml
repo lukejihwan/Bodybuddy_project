@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="DietShareComments">
+	
+	<resultMap type="DietShareComments" id="resultMap">
+		<id column="diet_share_comments_idx" property="diet_share_comments_idx"/>
+		<result column="content" property="content"/>
+		<result column="writer" property="writer"/>
+		<result column="regdate" property="regdate"/>
+		<result column="post" property="post"/>
+		<result column="step" property="step"/>
+		<result column="depth" property="depth"/>
+		<result column="member_idx" property="member.member_idx"/>
+		<result column="diet_share_idx" property="dietShare.diet_share_idx"/>
+	</resultMap>
+	
+	<select id="selectByIdx" resultMap="resultMap" parameterType="int">
+		select * from diet_share_comments where diet_share_idx=#{diet_share_idx} order by post desc, step asc
+	</select>
+	
+	
+	<!-- 해당 글에 대한 답글 수 -->
+	<select id="totalCount" resultMap="resultMap" parameterType="int">
+		select count(*) from diet_share_comments where diet_share_idx=#{diet_share_idx}
+	</select>
+	
+	
+	<insert id="insert" parameterType="DietShareComments">
+		insert into diet_share_comments(diet_share_idx, member_idx, writer, content, post, step, depth)
+		values(#{dietShare.diet_share_idx}, #{member.member_idx}, #{writer}, #{content}, #{post}, #{step}, #{depth})
+	
+		<selectKey keyColumn="diet_share_comments_idx" keyProperty="diet_share_comments_idx" resultType="int" order="AFTER">
+			select last_insert_id() as diet_share_comments_idx from dual
+		</selectKey>	
+	</insert>
+	
+	
+	<update id="update" parameterType="DietShareComments">
+		update diet_share_comments set content=#{content} where diet_share_comments_idx=#{diet_share_comments_idx}
+	</update>
+	
+	
+	<delete id="delete" parameterType="int">
+		delete from diet_share_comments where diet_share_comments_idx=#{diet_share_comments_idx}
+	</delete>	
+	
+	
+	<!-- post 업데이트 -->
+	<update id="updateByPost" parameterType="DietShareComments">
+		update diet_share_comments set post=#{post} where diet_share_comments_idx=#{diet_share_comments_idx}
+	</update>
+	
+	
+	<!-- 마지막 댓글 구하기 -->
+	<select id="selectMaxStep" parameterType="DietShareComments" resultType="int">
+		select max(step) from diet_share_comments where post=#{post}
+	</select>
+	
+</mapper>

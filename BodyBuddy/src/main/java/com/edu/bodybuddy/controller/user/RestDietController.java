@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.controller.user;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,8 +28,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.edu.bodybuddy.domain.diet.DietCategory;
 import com.edu.bodybuddy.domain.diet.DietInfo;
 import com.edu.bodybuddy.domain.diet.DietShare;
+import com.edu.bodybuddy.domain.diet.DietShareComments;
 import com.edu.bodybuddy.domain.diet.DietTip;
 import com.edu.bodybuddy.domain.diet.DietTipComments;
+import com.edu.bodybuddy.domain.diet.Food;
 import com.edu.bodybuddy.domain.exr.ExrRoutine;
 import com.edu.bodybuddy.domain.exr.ExrRoutineComment;
 import com.edu.bodybuddy.exception.DietInfoException;
@@ -36,6 +39,7 @@ import com.edu.bodybuddy.exception.DietShareException;
 import com.edu.bodybuddy.exception.DietTipException;
 import com.edu.bodybuddy.model.diet.DietCategoryService;
 import com.edu.bodybuddy.model.diet.DietInfoService;
+import com.edu.bodybuddy.model.diet.DietShareCommentsService;
 import com.edu.bodybuddy.model.diet.DietShareService;
 import com.edu.bodybuddy.model.diet.DietTipCommentsService;
 import com.edu.bodybuddy.model.diet.DietTipService;
@@ -68,6 +72,9 @@ public class RestDietController {
 	
 	@Autowired
 	private DietTipCommentsService dietTipCommentsService;
+	
+	@Autowired
+	private DietShareCommentsService dietShareCommentsService;
 	
 	
 	
@@ -163,6 +170,35 @@ public class RestDietController {
 		return dietShareList;
 	}
 	
+	//댓글 목록 
+	@GetMapping("/share/comments/{diet_share_idx}")
+	public List<DietShareComments> getShareCommentsList(@PathVariable int diet_share_idx){
+		return dietShareCommentsService.selectByIdx(diet_share_idx);
+	}
+		
+	//댓글등록 
+	@PostMapping("/share/comments/regist")
+	public ResponseEntity<Msg> registShareComments(DietShareComments dietShareComments){
+		dietShareCommentsService.insert(dietShareComments);
+			
+		Msg msg=new Msg();
+		msg.setMsg("댓글 등록 완료");
+			
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+		
+	//댓글삭제 
+	@DeleteMapping("/share/comments/{diet_share_comments_idx}")
+	public ResponseEntity<Msg> delShareComments(@PathVariable int diet_share_comments_idx, HttpServletRequest request){
+		dietShareCommentsService.delete(diet_share_comments_idx);
+			
+		Msg msg=new Msg();
+		msg.setMsg("댓글 삭제 완료");
+		
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
 	
 	
 	
@@ -254,7 +290,7 @@ public class RestDietController {
 	
 	//댓글 목록 
 	@GetMapping("/tip/comments/{diet_tip_idx}")
-	public List<DietTipComments> getTipComments(@PathVariable int diet_tip_idx){
+	public List<DietTipComments> getTipCommentsList(@PathVariable int diet_tip_idx){
 		return dietTipCommentsService.selectByIdx(diet_tip_idx);
 	}
 	
@@ -270,34 +306,29 @@ public class RestDietController {
 		return entity;
 	}
 	
-	
-	
-	
-	
-	
+	//댓글삭제 
+	@DeleteMapping("/tip/comments/{diet_tip_comments_idx}")
+	public ResponseEntity<Msg> delTipComments(@PathVariable int diet_tip_comments_idx, HttpServletRequest request){
+		dietTipCommentsService.delete(diet_tip_comments_idx);
+		
+		Msg msg=new Msg();
+		msg.setMsg("댓글 삭제 완료");
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+
 	
 	/*--------------------------------
 			칼로리계산기 페이지 관련 
 	--------------------------------*/
-	
-	
-	
-	/*
-	 * 
-	 * 
-	 * */
-	@GetMapping("/kcal/test")
-	public List getGet() throws IOException {
-
+	@GetMapping("/kcal/list")
+	public List<Food> getFoodList() throws IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1471000/FoodNtrIrdntInfoService1/getFoodNtrItdntList1"); /*URL*/
+        
         urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=QjMliKoiQ9gSagmSAFaEQ3xJNMR8F1%2FpOcKLAhXvXFhWAVjqHaRjeYDlPw%2BQWJwmTD0ZMJF407DnUpER3k8o3g%3D%3D"); /*Service Key*/
-        //urlBuilder.append("&" + URLEncoder.encode("desc_kor","UTF-8") + "=" + URLEncoder.encode("바나나칩", "UTF-8")); /*식품이름*/
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("30", "UTF-8")); /*페이지번호*/
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("100", "UTF-8")); /*한 페이지 결과 수*/
-        //urlBuilder.append("&" + URLEncoder.encode("bgn_year","UTF-8") + "=" + URLEncoder.encode("2017", "UTF-8")); /*구축년도*/
-        //urlBuilder.append("&" + URLEncoder.encode("animal_plant","UTF-8") + "=" + URLEncoder.encode("(유)돌코리아", "UTF-8")); /*가공업체*/
-        urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*응답데이터 형식(xml/json) Default: xml*/
-       
+        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); //1~220
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("20", "UTF-8"));/*한 페이지 결과 수*/  
+        urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*응답데이터 형식(xml/json) Default: xml*/      
         
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -314,18 +345,19 @@ public class RestDietController {
         
         StringBuilder sb = new StringBuilder();
         String line;
+        
         while ((line = rd.readLine()) != null) {
             sb.append(line);
         }
         
         rd.close();
         conn.disconnect();
-        //System.out.println(sb.toString());
         
         String data=sb.toString();
 		
         //json 문자열을 대상으로 파싱해서 원하는 결과 가공하기
         JSONParser jsonParser=new JSONParser();
+        List<Food> foodList=new ArrayList<Food>();
         try {
             JSONObject json=(JSONObject)jsonParser.parse(data);
 
@@ -333,27 +365,30 @@ public class RestDietController {
             JSONArray items=(JSONArray)body.get("items");
 
             for(int i=0; i<items.size(); i++) {
-
                 JSONObject itemLists=(JSONObject)items.get(i);
 
-                String food=(String)itemLists.get("DESC_KOR");
+                String name=(String)itemLists.get("DESC_KOR");
+                String wt=(String)itemLists.get("SERVING_WT");
                 String kcal=(String)itemLists.get("NUTR_CONT1");
                 String car=(String)itemLists.get("NUTR_CONT2");
                 String tien=(String)itemLists.get("NUTR_CONT3");
                 String vince=(String)itemLists.get("NUTR_CONT4");
-
-                System.out.println("\n----- "+(i+1)+"번째 음식 정보 -----");
-                System.out.println("음식이름 : "+food);
-                System.out.println("열량 : "+kcal);
-                System.out.println("탄수화물 : "+car);
-                System.out.println("단백질 : "+tien);
-                System.out.println("지방 : "+vince);
+                
+                Food food=new Food();
+                food.setDESC_KOR(name);
+                food.setSERVING_WT(wt);
+                food.setNUTR_CONT1(kcal);
+                food.setNUTR_CONT2(car);
+                food.setNUTR_CONT3(tien);
+                food.setNUTR_CONT4(vince);
+                
+                foodList.add(food);
             }
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return null;
+        return foodList;
         
     }
 		
