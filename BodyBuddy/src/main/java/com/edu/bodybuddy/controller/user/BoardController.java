@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.controller.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -103,6 +104,25 @@ public class BoardController {
 		return mav;
 	}
 	
+	@GetMapping("/free_list/search/{value}/{pg}")
+	public ModelAndView getFreeListBySearch(HttpServletRequest request, @PathVariable String value, @PathVariable int pg) {
+		
+		logger.info("value : " + value);
+		logger.info("pg : " + pg);
+		
+		//3단계
+		List freeBoardList = freeBoardService.selectAllBySearch(value, pg);
+		PageManager pageManager = new PageManager();
+		int totalCountSearch = freeBoardService.totalCountSearch(value);
+		pageManager.init(totalCountSearch, pg);
+		
+		//4단계
+		ModelAndView mav = new ModelAndView("/board/free_list");
+		mav.addObject("freeBoardList", freeBoardList);
+		mav.addObject("pageManager", pageManager);
+		return mav;
+	}
+	
 	//등록
 	@PostMapping("/free_regist")
 	public ModelAndView registFree(HttpServletRequest request, FreeBoard freeBoard) {
@@ -189,6 +209,25 @@ public class BoardController {
 		return mav;
 	}
 	
+	@GetMapping("/qna_list/search/{value}/{pg}")
+	public ModelAndView getQnaListBySearch(HttpServletRequest request, @PathVariable String value, @PathVariable int pg) {
+		
+		logger.info("value : " + value);
+		logger.info("pg : " + pg);
+		
+		//3단계
+		List freeBoardList = qnaBoardService.selectAllBySearch(value, pg);
+		PageManager pageManager = new PageManager();
+		int totalCountSearch = qnaBoardService.totalCountSearch(value);
+		pageManager.init(totalCountSearch, pg);
+		
+		//4단계
+		ModelAndView mav = new ModelAndView("/board/qna_list");
+		mav.addObject("qnaBoardList", freeBoardList);
+		mav.addObject("pageManager", pageManager);
+		return mav;
+	}
+	
 	//등록
 	@PostMapping("/qna_regist")
 	public ModelAndView registQna(HttpServletRequest request, QnaBoard qnaBoard) {
@@ -271,6 +310,25 @@ public class BoardController {
 		//4단계
 		ModelAndView mav = new ModelAndView("/board/counselling_list");
 		mav.addObject("counsellingBoardList", counsellingBoardList);
+		mav.addObject("pageManager", pageManager);
+		return mav;
+	}
+	
+	@GetMapping("/counselling_list/search/{value}/{pg}")
+	public ModelAndView getCounsellingListBySearch(HttpServletRequest request, @PathVariable String value, @PathVariable int pg) {
+		
+		logger.info("value : " + value);
+		logger.info("pg : " + pg);
+		
+		//3단계
+		List freeBoardList = counsellingBoardService.selectAllBySearch(value, pg);
+		PageManager pageManager = new PageManager();
+		int totalCountSearch = counsellingBoardService.totalCountSearch(value);
+		pageManager.init(totalCountSearch, pg);
+		
+		//4단계
+		ModelAndView mav = new ModelAndView("/board/counselling_list");
+		mav.addObject("counsellingBoardList", freeBoardList);
 		mav.addObject("pageManager", pageManager);
 		return mav;
 	}

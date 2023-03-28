@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.model.board;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -54,6 +55,17 @@ public class MybatisQnaBoardDAO implements BoardDAO{
 	public void addRecommend(int qna_board_idx) throws QnaBoardException{
 		int result = sqlSessionTemplate.update("QnaBoard.addRecommend", qna_board_idx);
 		if(result < 1) throw new QnaBoardException("QnA게시판 추천 추가 실패");
+	}
+
+	public List selectAllBySearch(String value, int page) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("value", value);
+		map.put("page", page);
+		return sqlSessionTemplate.selectList("QnaBoard.selectAllBySearch", map);
+	}
+
+	public int totalCountSearch(String value) {
+		return sqlSessionTemplate.selectOne("QnaBoard.totalCountSearch", value);
 	}
 	
 }
