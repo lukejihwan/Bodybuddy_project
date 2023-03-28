@@ -79,5 +79,23 @@
 		<property name="dataType" 				value="json"/>
 	</bean>
 	
+	<!-- 식단API를 사용하기 위한 bean등록 -->
+	<bean id="dietAPIManager" class="com.edu.bodybuddy.util.DietAPIManager">
+		<property name="dietServiceKey" value="5OLMbd4sbXgeeMPa2saChLrICRYMFhGvDm5S3y3XUNG6KoMuumA0OTf1wapCRiAG1n5%2BOQY8xFTUr2gwGLQuWg%3D%3D"/>
+		<property name="dataType" 		value="json"/>
+	</bean>
+	
+	<!-- 네이버맵, 검색 api bean 등록 -->
+	<bean id="naverMapAPIManager" class="com.edu.bodybuddy.util.NaverMapAPIManager">
+		<property name="geocoding" value="https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode"></property>
+		<property name="reverseGeocoding" value="https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc"></property>
+		<property name="search" value="https://openapi.naver.com/v1/search/local.json"></property>
+		<property name="blog" value="https://openapi.naver.com/v1/search/blog.json"></property>
+		<property name="naverMapId" value="0x0lvn9t3z"></property>
+		<property name="naverMapSecret" value="S2gOreVzy2FUMYfwKKZCDwWvUy8vjZX3mw1Zpnet"></property>
+		<property name="naverSearchId" value="4C1yJMD0RY1sBUWHLekW"></property>
+		<property name="naverSearchSecret" value="I5dm4a84UH"></property>
+	</bean>
+	
 </beans>
 

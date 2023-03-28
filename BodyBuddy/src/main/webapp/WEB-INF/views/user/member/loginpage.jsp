@@ -19,7 +19,7 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="page-caption pinside40">
                     <h1 class="page-title">로그인</h1>
-                    <p>이부분 로그인페이지에서는 빼는게 나을거같음</p>
+                    <p>사이트 기능 이용을 위해서 로그인 해주세요</p>
                 </div>
             </div>
         </div>

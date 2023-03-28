@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.model.myrecord;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.edu.bodybuddy.domain.myrecord.ExrDetailRecord;
 import com.edu.bodybuddy.domain.myrecord.ExrRecord;
+import com.edu.bodybuddy.exception.ExrDetailRecordException;
 import com.edu.bodybuddy.exception.ExrRecordException;
 
 @Service
@@ -54,10 +56,46 @@ public class ExrRecordServiceImpl implements ExrRecordService{
 			}
 		}
 	}
-
-	@Override
-	public void delete(ExrRecord exrRecord) {
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void update(String exrname, int exr_idx, List<Integer> kgList, List<Integer> timesList) {
 		
+		//DAO에서 수행하기 편하게 객체에 담아서 전달
+		ExrRecord exrRecord=new ExrRecord();
+		exrRecord.setExr_name(exrname);
+		exrRecord.setExr_record_idx(exr_idx);
+		
+		List<ExrDetailRecord> exrDetailList=new ArrayList<ExrDetailRecord>();
+		for(int i=0; i<kgList.size(); i++) {
+			ExrDetailRecord exrDetailRecord=new ExrDetailRecord();
+			exrDetailRecord.setExr_record_idx(exr_idx);
+			exrDetailRecord.setKg(kgList.get(i));
+			exrDetailRecord.setTimes(timesList.get(i));
+			//front단에서 세트수를 넣어주지 않고 여기서 set번호를 넣어줌
+			exrDetailRecord.setSet_number(i+1);
+			exrDetailList.add(exrDetailRecord);
+		}
+		exrRecord.setExrRecordDetailList(exrDetailList);
+		
+		//수정된 운동명을 먼저 update해줌
+		exrRecordDAO.update(exrRecord);
+		
+		//수정될 상세운동기록을 삭제해줌
+		exrDetailRecordDAO.delete(exrRecord.getExr_record_idx());
+		
+		//수정된 상세운동기록을 다시 등록함
+		for(int i=0; i<exrRecord.getExrRecordDetailList().size(); i++) {
+			ExrDetailRecord exrDetailRecord=exrRecord.getExrRecordDetailList().get(i);
+			
+			//입력된 세트수만큼 insert 함
+			exrDetailRecordDAO.insert(exrDetailRecord);
+		}
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(int exr_record_idx) throws ExrRecordException, ExrDetailRecordException{
+		exrDetailRecordDAO.delete(exr_record_idx);
+		exrRecordDAO.delete(exr_record_idx);
 	}
 
 	@Override
@@ -65,5 +103,7 @@ public class ExrRecordServiceImpl implements ExrRecordService{
 		List<ExrRecord> exrList=exrRecordDAO.selectForDay(regdate);
 		return exrList;
 	}
+
+	
 
 }

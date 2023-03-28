@@ -1,3 +1,4 @@
+<%@page import="org.w3c.dom.stylesheets.LinkStyle"%>
 <%@page import="com.edu.bodybuddy.util.PageManager"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.edu.bodybuddy.domain.board.FreeBoard"%>
@@ -9,6 +10,11 @@ PageManager pageManager = (PageManager) request.getAttribute("pageManager");
 String listURI = "/board/free_list/"; // href 이동 주소 이것만 변경하면 됨. 뒤에 / 붙일 것 ex. /board/free_list/
 String detailURI = "/board/free_detail_view/";
 String registformURI="/board/free_registform";
+String listSearchURI = listURI + "search/";
+
+if(request.getRequestURI().indexOf(listURI+"search")!=-1){
+	listURI = listSearchURI;
+}
 
 if (boardList == null)
 	out.print("<script>location.href='" + listURI + "1'</script>");
@@ -63,6 +69,18 @@ if (boardList == null) {
 				</div>
 			</div>
 			<!-- end of row -->
+			<div class="row">
+				<div class="col text-center">
+					<div class="input-group search">
+						<input type="text" class="form-control" id="t_search" placeholder="제목을 검색하세요..">
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button" id="bt_search"><i class="fa fa-search"></i></button>
+						</span> 
+                    </div>
+				</div>
+			</div>
+			<!-- end of row -->	
+			</br>
 			<div class="row">
 				<div class="col table-responsive">
 					<table class="table table-hover">
@@ -150,6 +168,9 @@ if (boardList == null) {
 		$("#bt_regist").click(()=>{
 			regist();
 		});
+		$("#bt_search").click(()=>{
+			search();
+		});
 	});
 	
 	function regist() {
@@ -164,6 +185,22 @@ if (boardList == null) {
 		<sec:authorize access="isAuthenticated()">
 			location.href = "<%= registformURI %>";
 		</sec:authorize>
+	}
+	
+	function search() {
+		//console.log();
+		
+		if($("#t_search").val()==""){
+			Swal.fire({
+				title:"검색어를 입력해주세요",
+				icon:"warning",
+				confirmButtonText:"확인",
+				confirmButtonColor: '#c5f016'
+			});
+			return;
+		}
+		
+		location.href="<%= listSearchURI %>"+$("#t_search").val()+"/"+1;
 	}
 	
 	function getDetail(idx) {

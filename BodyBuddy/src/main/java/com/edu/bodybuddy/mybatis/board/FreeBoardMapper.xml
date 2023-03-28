@@ -64,4 +64,15 @@
 		set recommend=recommend+1
 		where free_board_idx=#{free_board_idx}
 	</update>
+	
+	<!-- 검색용 -->
+	<select id="selectAllBySearch" resultMap="resultMap" parameterType="java.util.HashMap">
+		select * from free_board
+		where title like '%${value}%'
+		order by free_board_idx desc limit 10 offset #{page}
+	</select>
+	<select id="totalCountSearch" resultType="int" parameterType="String">
+		select count(*) as totalCountSearch from free_board
+		where title like '%${value}%'
+	</select>
 </mapper>

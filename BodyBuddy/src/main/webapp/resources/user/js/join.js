@@ -29,6 +29,7 @@ const NAMES = ["email", "pass", "passc", "nickname", "phone"];
 
 let isEmailValid = false;
 let isEmailChecked = false;
+let isPassChecked = false;
 let isNicknameChecked = false;
 let isPhoneValid = false;
 let isPhoneChecked = false;
@@ -115,26 +116,29 @@ function comparePw() {
     if(pw2.value === pw1.value && pw2.value != "") {
         pwImg2.src = "/resources/user/images/join/m_icon_check_enable.png";
         error[PASSC].style.display = "none";
+        isPassChecked = true;
     } else if(pw2.value !== pw1.value) {
         pwImg2.src = "/resources/user/images/join/m_icon_check_disable.png";
         error[PASSC].innerHTML = "비밀번호가 일치하지 않습니다.";
         error[PASSC].style.display = "block";
+        isPassChecked = false;
     } 
-
     if(pw2.value === "") {
         error[PASSC].innerHTML = "필수 정보입니다.";
         error[PASSC].style.display = "block";
+        isPassChecked = false;
     }
 }
 
 function checkNickname() {
-    let namePattern = /[a-zA-Z가-힣]{2,10}/;
+    let namePattern = /^[a-zA-Z가-힣0-9]{2,8}$/;
     if(nickname.value === "") {
         error[NICKNAME].innerHTML = "필수 정보입니다.";
         error[NICKNAME].style.display = "block";
         isNicknameChecked = false;
     } else if(!namePattern.test(nickname.value) || nickname.value.indexOf(" ") > -1) {
         error[NICKNAME].innerHTML = "2~10자 한글과 영문 대 소문자를 사용하세요. (특수기호, 공백 사용 불가)";
+        error[NICKNAME].style.color = "red";
         error[NICKNAME].style.display = "block";
         isNicknameChecked = false;
     } else {
@@ -168,16 +172,16 @@ function checkPhoneNum() {
         error[PHONE].innerHTML = "필수 정보입니다.";
         error[PHONE].style.display = "block";
         isPhoneValid = false;
-        $("#bt_checkP").hide();
+        $("#bt_checkPhone").hide();
     } else if(!isPhoneNum.test(phone.value)) {
         error[PHONE].innerHTML = "형식에 맞지 않는 번호입니다.";
         error[PHONE].style.display = "block";
         isPhoneValid = false;
-        $("#bt_checkP").hide();
+        $("#bt_checkPhone").hide();
     } else {
         error[PHONE].style.display = "none";
         isPhoneValid = true;
-        $("#bt_checkP").show();
+        $("#bt_checkPhone").show();
     }
     
 }
@@ -239,12 +243,21 @@ function verify(value) {
 }
 
 function verifyAll(){
-    if(isEmailValid && isEmailValid && isEmailChecked && isEmailChecked && isNicknameChecked && isPhoneValid && isPhoneChecked){
+    if(isEmailValid && isEmailChecked && isNicknameChecked && isPhoneValid && isPhoneChecked){
         isAllChecked = true;
     } else {
         isAllChecked = false;
     }
     return isAllChecked;
+}
+
+function searchAddress() {
+    new daum.Postcode({
+        oncomplete: function (data) {
+            $("#address").val(data.address);
+            $("#address").attr("disabled", false);
+        },
+    }).open();
 }
 
 
@@ -265,8 +278,6 @@ function regist() {
 	})
 }
 
-
-
 $(function(){
 
 	//회원가입 버튼 연결
@@ -284,7 +295,7 @@ $(function(){
         }
 	})
 	
-    $("#bt_checkP").click(function(){
+    $("#bt_checkPhone").click(function(){
 		if(isPhoneValid) send(PHONE);
         else{
             error[PHONE].innerHTML = "휴대폰 번호 형식을 확인하세요";

@@ -64,4 +64,15 @@
 		set recommend=recommend+1
 		where qna_board_idx=#{qna_board_idx}
 	</update>
+	
+	<!-- 검색용 -->
+	<select id="selectAllBySearch" resultMap="resultMap" parameterType="java.util.HashMap">
+		select * from qna_board
+		where title like '%${value}%'
+		order by qna_board_idx desc limit 10 offset #{page}
+	</select>
+	<select id="totalCountSearch" resultType="int" parameterType="String">
+		select count(*) as totalCountSearch from qna_board
+		where title like '%${value}%'
+	</select>
 </mapper>

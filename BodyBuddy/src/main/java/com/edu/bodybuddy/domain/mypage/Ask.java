@@ -1,9 +1,5 @@
 package com.edu.bodybuddy.domain.mypage;
 
-import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import com.edu.bodybuddy.domain.member.Member;
 
 import lombok.Data;
@@ -14,6 +10,6 @@ public class Ask {
 	private String title;
 	private String content;
 	private String regdate;
-	private MultipartFile[] photo;
-	private List<Ask_img> imgList;
+	private String status;
+	private AskReply ask_reply;
 }

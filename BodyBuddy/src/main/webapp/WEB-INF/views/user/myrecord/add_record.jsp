@@ -77,15 +77,6 @@
 .btn-group-vertical {
 	position: fixed;
 }
-#right_sector {
-	padding: 20px;
-	position: relative;
-	top: 150px;
-	text-align: center;
-	height: 400px;
-	border-radius:5px;
-	background-color: #eeeee4;
-}
 #bt_add_record, #bt_regist {
 	border-radius:5px;
 	border: 1px solid white;
@@ -99,7 +90,49 @@
 #t_setgroup {
 	text-align: center;
 }
+/*오른쪽 기록추가 영역에 대한 디자인*/
+.right-area{
+	padding: 0px;
+}
+.empty{
+	height: 50px;
+}
+#right_sector1, #right_sector2, #right_sector3 {
+	padding: 20px;
+	position: relative;
+	text-align: center;
+	height: 600px;
+	border-radius:5px;
+	background-color: #eeeee4;
+}
+.text-field{
+	border-radius: 5px;
+	height: 40px;
+}
+#bt_physicalcard{
+	background-color: #c5f016;
+}
+#bt_exrcard{
+	background-color: #28a745;
+}
+#bt_dietcard{
+	background-color: #FF9933;
+}
+.diet{
+	background-color: #FF9933;
+}
+.physical{
+	border-radius: 5px;
+	height: 40px;
+}
 
+/*신체기록 아이콘 스타일*/
+.fa-heart-pulse{
+	color:#de4426;
+}
+.fa-heart-pulse:hover{
+	transform: scale(1.3);
+}
 /*운동아이콘 스타일*/
 .fa-dumbbell {
 	color:#49469c;
@@ -107,6 +140,14 @@
 .fa-dumbbell:hover {
 	transform: scale(1.3);
 }
+/*식단아이콘 스타일*/
+.fa-burger{
+	color:#ffa600;
+}
+.fa-burger:hover{
+	transform: scale(1.3);
+}
+/*------------*/
 .bg-gradient-primary {
     background: #007bff linear-gradient(180deg,#268fff,#007bff);
     color: #fff;
@@ -122,6 +163,9 @@ let currentMonth;
 let currentDay;
 let lastDay;
 let divValue;
+
+//버튼을 효율적으로 생성하기 위한 배열 모음
+let buttonRegdateList=new Set();
 
 let app1;
 const setlist={
@@ -214,7 +258,13 @@ function getDate(){
 		document.querySelector('.dateBoard').innerHTML="";
 		document.querySelector('.dateTitle').innerHTML="";
 		makeCalendar(new Date(date.setMonth(date.getMonth() - 1)));
+		//달 이동시마다 Set배열 초기화
+		buttonRegdateList.clear();
+		
+		//이전달 이동시 신체, 운동, 식단 기록 호출
 		getExrRecordForMonth();
+		getPhysicalRecordForMonth();
+		getDietRecordForMonth();
 	}
 	
 	// 다음달 이동
@@ -222,7 +272,13 @@ function getDate(){
 		document.querySelector('.dateBoard').innerHTML="";
 		document.querySelector('.dateTitle').innerHTML="";
 		makeCalendar(new Date(date.setMonth(date.getMonth() + 1)));
+		//달 이동시마다 Set배열 초기화
+		buttonRegdateList.clear();
+		
+		//다음달 이동시 신체, 운동, 식단 기록 호출
 		getExrRecordForMonth();
+		getPhysicalRecordForMonth();
+		getDietRecordForMonth();
 	}
 	document.getElementById("bt_add_record").onclick=function(){
 	};
@@ -231,7 +287,14 @@ function getDate(){
 //날짜 클릭시 오른쪽 기록추가 날짜 영역에 값이 옮겨짐
 function popups(currentYear, currentMonth, today){
 	currentDay=today;
-	$("#exr_day").val(" "+currentYear+" 년 "+currentMonth+" 월 "+today+"일");
+	$("#exr_day1").val(currentYear+"년"+currentMonth+"월"+today+"일");
+	$("#exr_day2").val(currentYear+"년"+currentMonth+"월"+today+"일");
+	$("#exr_day3").val(currentYear+"년"+currentMonth+"월"+today+"일");
+	
+	//신체기록 등록할 때, input hidden에 넣어서 form으로 보낼 값
+	$("#t_regdate").val(currentYear+"-"+currentMonth+"-"+today);
+	//식단기록 등록할 때, input hidden에 넣어서 json형식으로 보낼 값
+	$("#t_dietRegdate").val(currentYear+"-"+currentMonth+"-"+today);
 }
 
 let exrList=[]; //운동을 담을 배열
@@ -270,21 +333,25 @@ function addexr(){
 		app1.exerciseList.push(exrObject);
 	}
 	
+	//운동등록 후 운동기록 모달 창 초기화
+	removeContent();
 }
 
 //운동기록 날짜를 가져올 함수
 function getDayforRegistExr(){
-	let exr_day=$("#exr_day").val();
+	let exr_day=$("#exr_day2").val();
 	let regdate=currentYear+"-"+currentMonth+"-"+currentDay;
 	console.log(regdate);
 	exrObject.regdate=regdate;
 }
 
+
+//운동기록 등록하는 함수
 function regist(){
 	getDayforRegistExr();
 	exrList.push(exrObject);
 	
-	if($("#exr_day").val()=="" || $("input[name='t_exr_research']").val()==""){
+	if($("#exr_day2").val()=="" || $("input[name='t_exr_research']").val()==""){
 		alert("날짜또는 운동기록을 추가해주세요");
 		
 	}else{
@@ -332,26 +399,13 @@ function removeContent(){
 	app1.count=1;
 }
 
-//div에 상세버튼 추가하기를 따로 둠(다른 기록 기록할때, 또 생성하게 하지 않기 위해)
-function addButtononRecord(getDay){
-	
-	$($(".bt_days")[getDay-1]).append("<button type='button' class='btn btn-block bg-gradient-primary btn-xs' onclick='putDetail("+getDay+")' data-toggle='modal' data-target='#detailModal'>상세</button>");	
-}
-
 //상세버튼 클릭시 날짜와 세트수가 기록상세 모달의 운동기록에 전달
 //형식: 2022-03-24 운동기록보러가기
 function putDetail(getDay){
 	$("label[for='la_exrDetail']").text(currentYear+"년 "+currentMonth+"월 "+getDay+"일 운동기록 상세보기");
 }
 
-//해당 div에 이미지 넣기
-function appendImage(getDay){
-	//<br>태그를 임시로 적어두긴 했는데, 나중에 위치조정할 것
-	addButtononRecord(getDay);
-	$($(".bt_days")[getDay-1]).append("<br><br><i class='fa-solid fa-dumbbell fa-lg'></i>");
-	$($(".bt_days")[getDay-1]).css("border", "1px solid #49469c");
-	//상세보기 버튼 주기
-}
+
 
 //운동기록이 있는 날에 이미지 붙이기
 function appendImageDays(registedDataForMonth){
@@ -376,19 +430,151 @@ function appendImageDays(registedDataForMonth){
 	//중복되지 않는 set배열 반복문 돌리는 법
 	for(let item of selectedDays.values()){
 		//let getDay=selectedDays[item];
-		appendImage(item);
-		console.log("selectedDays에서 받은 값은", item);
+		appendExrImage(item);
+		//console.log("selectedDays에서 받은 값은", item);
 	}
 	
 }
 
-function getExrRecordForMonth(){
+
+//신체기록 아이콘 붙이는 함수
+function appendPhysicalImage(getDay){
+	//<br>태그를 임시로 적어두긴 했는데, 나중에 위치조정할 것
+	buttonRegdateList.add(getDay);
+	console.log("신체기록까지 담겨있는 버튼날짜들은",buttonRegdateList);
+	$($(".bt_days")[getDay-1]).append("<i class='fa-solid fa-heart-pulse fa-lg'></i>");
+	$($(".bt_days")[getDay-1]).css("border", "1px solid #49469c");
+	//상세보기 버튼 주기
+}
+
+//해당 div에 운동기록 아이콘 넣기
+function appendExrImage(getDay){
+	//<br>태그를 임시로 적어두긴 했는데, 나중에 위치조정할 것
+	buttonRegdateList.add(getDay);
+	$($(".bt_days")[getDay-1]).append("<i class='fa-solid fa-dumbbell fa-lg'></i>");
+	$($(".bt_days")[getDay-1]).css("border", "1px solid #49469c");
+	//상세보기 버튼 주기
+}
+
+//식단기록 아이콘 붙이는 함수
+function appendDietImage(getDay){
+	//<br>태그를 임시로 적어두긴 했는데, 나중에 위치조정할 것
+	buttonRegdateList.add(getDay);
+	console.log("식단기록까지 담겨있는 버튼날짜들은",buttonRegdateList);
+	$($(".bt_days")[getDay-1]).append("<i class='fa-solid fa-burger fa-lg'></i>");
+	$($(".bt_days")[getDay-1]).css("border", "1px solid #49469c");
+	//상세보기 버튼 주기
+}
+
+
+//호출한 신체기록 한달간의 기록에 아이콘을 붙이기 위한 함수
+function refinePhysicalDataForMonth(registedPhysicalDataForMonth){
+	if(registedPhysicalDataForMonth!=undefined){
+		let divdays=document.getElementsByClassName("bt_days");
+		let selectedDays=new Set(); //중복되지 않는 배열
+		
+		console.log(registedPhysicalDataForMonth);
+		
+		//숫자 변환 작업 01을 1로 11은 11같이
+		for(let i=0; i<registedPhysicalDataForMonth.length; i++){
+			let registedData=registedPhysicalDataForMonth[i];
+			let processedData=registedData.regdate.slice(8,10);
+			if(processedData.substr(0,1)==0){
+				let selectedDay=registedData.regdate.slice(9,10); //ex: 11 (일)div와 비교해 이미지 붙이기 위해
+				selectedDays.add(selectedDay);
+			}else{
+				let selectedDay=registedData.regdate.slice(8,10); //ex: 11 (일)div와 비교해 이미지 붙이기 위해
+				selectedDays.add(selectedDay);
+			}
+			//console.log(selectedDays[0]);
+		}
+		
+		//console.log(processedData);
+		//중복되지 않는 set배열 반복문 돌리는 법
+		for(let item of selectedDays.values()){
+			//let getDay=selectedDays[item];
+			appendPhysicalImage(item);
+			//console.log("selectedDays에서 받은 값은", item);
+		}
+	}
+	
+}
+
+//호출한 한달간의 식단기록에 아이콘을 붙이기 위한 함수
+function refineDietDataForMonth(registedDietDataForMonth){
+	if(registedDietDataForMonth!=undefined){
+		let divdays=document.getElementsByClassName("bt_days");
+		let selectedDays=new Set(); //중복되지 않는 배열
+		
+		console.log(registedDietDataForMonth);
+		
+		//숫자 변환 작업 01을 1로 11은 11같이
+		for(let i=0; i<registedDietDataForMonth.length; i++){
+			let registedData=registedDietDataForMonth[i];
+			let processedData=registedData.regdate.slice(8,10);
+			if(processedData.substr(0,1)==0){
+				let selectedDay=registedData.regdate.slice(9,10); //ex: 11 (일)div와 비교해 이미지 붙이기 위해
+				selectedDays.add(selectedDay);
+			}else{
+				let selectedDay=registedData.regdate.slice(8,10); //ex: 11 (일)div와 비교해 이미지 붙이기 위해
+				selectedDays.add(selectedDay);
+			}
+			//console.log(selectedDays[0]);
+		}
+		
+		//console.log(processedData);
+		//중복되지 않는 set배열 반복문 돌리는 법
+		for(let item of selectedDays.values()){
+			//let getDay=selectedDays[item];
+			appendDietImage(item);
+			//console.log("selectedDays에서 받은 값은", item);
+		}
+	}
+	
+}
+
+//해당월의 신체기록을 불러오는 함수
+function getPhysicalRecordForMonth(){
 	//해당달의 첫날과 마지막날을 JSON형식으로 만듬
 	let json={};
 	json['firstDay']=currentYear+"-"+currentMonth+"-"+1;
 	json['lastDay']=currentYear+"-"+currentMonth+"-"+lastDay;
 	let dateData=JSON.stringify(json);
 	console.log(dateData);
+	
+	//비동기로 해당달의 첫날과 마지막날을 전송
+	$.ajax({
+		url:"/rest/myrecord/physicalListForMonth",
+		type:"POST",
+		processData:false,
+		data:dateData,
+		contentType:"application/json",
+		success:function(result, status, xhr){
+			console.log(typeof result);
+			//alert("성공적으로 불러옴");
+			console.log("신체기록으로 부터 받아온 날짜는",result);
+			refinePhysicalDataForMonth(result);
+			
+			//신체, 운동, 식단 기록을 불러온 후 담겨진 Set배열을 통해 버튼 생성
+			//appendButton();
+		},
+		error:function(xhr, status, error){
+			console.log(error, "신체기록불러오던 중 에러발생");
+			
+			//신체, 운동, 식단 기록을 불러온 후 담겨진 Set배열을 통해 버튼 생성
+			//appendButton();
+		}
+	});
+}
+
+//해당월의 운동기록을 불러오는 함수
+function getExrRecordForMonth(){
+	//해당달의 첫날과 마지막날을 JSON형식으로 만듬
+	let json={};
+	json['firstDay']=currentYear+"-"+currentMonth+"-"+1;
+	json['lastDay']=currentYear+"-"+currentMonth+"-"+lastDay;
+	let dateData=JSON.stringify(json);
+	console.log("운동기록에 보낼 첫날과 끝날은",dateData);
 	
 	//비동기로 해당달의 첫날과 마지막날을 전송
 	$.ajax({
@@ -399,9 +585,9 @@ function getExrRecordForMonth(){
 		contentType:"application/json",
 		success:function(result, status, xhr){
 			//console.log(typeof result);
-			alert("성공적으로 불러옴");
+			//alert("성공적으로 불러옴");
 			appendImageDays(result);
-			console.log("받아온 날짜는",result);
+			console.log("운동기록으로 부터 받아온 날짜는",result);
 		},
 		error:function(xhr, status, error){
 			console.log(error, "기록불러오던 중 에러발생");
@@ -409,11 +595,33 @@ function getExrRecordForMonth(){
 	});
 }
 
-function getExrDetail(){
-	//event전파를 막는 메서드..
-	//그런데, 이 event는 어디서 받아오는 거지..?
-	//event.stopPropagation(); 이게 있으면 모달 창이 안뜸...
-	//$("#h4_detail_name").val("가자");
+//해당월의 식단기록을 불러오는 함수
+function getDietRecordForMonth(){
+	//해당달의 첫날과 마지막날을 JSON형식으로 만듬
+	let json={};
+	json['firstDay']=currentYear+"-"+currentMonth+"-"+1;
+	json['lastDay']=currentYear+"-"+currentMonth+"-"+lastDay;
+	let dateData=JSON.stringify(json);
+	console.log(dateData);
+	
+	//비동기로 해당달의 첫날과 마지막날을 전송
+	$.ajax({
+		url:"/rest/myrecord/dietListForMonth",
+		type:"POST",
+		processData:false,
+		data:dateData,
+		contentType:"application/json",
+		success:function(result, status, xhr){
+			//alert("성공적으로 불러옴");
+			console.log("식단기록으로 부터 받아온 식단기록이 있는 날짜는",result);
+			refineDietDataForMonth(result);
+			
+		},
+		error:function(xhr, status, error){
+			console.log(error, "신체기록불러오던 중 에러발생");
+			
+		}
+	});
 }
 
 //운동기록 페이지로 이동하는 메서드
@@ -426,10 +634,177 @@ function moveToExrDetail(){
 	location.href="/myrecord/exr_record?detailDate="+detailDate;
 }
 
+//오른쪽 영역 변경하는 메서드
+function changeRightSector(){
+	
+}
+
+//신체기록 등록하는 함수
+function registPhysical(){
+	if(confirm("신체기록을 등록하시겠습니까?")){
+		/*
+		let form=document.getElementById("form1");
+		console.log(form); //form태그 안의 모든 데이터가 찍힘
+		let formData=new FormData(form);
+		
+		//안의 내용물 확인하는데 안됨...name이 없어서 그랬음
+		for(let pair of formData.entries()){
+			console.log(pair[0]+","+pair[1]);
+		}*/
+		
+		//json형식으로 전송하자
+		let json={};
+		let obj=new Object();
+		json['regdate']=$("input[name='regdate']").val();
+		json['height']=$("input[name='height']").val();
+		json['weight']=$("input[name='weight']").val();
+		json['musclemass']=$("input[name='musclemass']").val();
+		json['bodyFat']=$("input[name='bodyFat']").val();
+		json['bmi']=$("input[name='bmi']").val();
+		
+		console.log(json);
+		
+		$.ajax({
+			url:"/rest/myrecord/physicalRecord",
+			type:"POST",
+			contentType:"application/json",
+			data:JSON.stringify(json),
+			success:function(result, status, xhr){
+				console.log("신체기록 등록결과는",result);
+				alert("등록성공");
+			},
+			error:function(xhr, status, error){
+				console.log("error", error);
+			}
+		})
+	}
+}
+
+//신체, 운동, 식단 기록을 불러온 후 담겨진 Set배열을 통해 버튼 생성
+//주의: 비동기 통신에서 끝마치는 시점에 즉, Set배열에 다 담긴후 버튼을 생성해야하는 것 주의
+function appendButton(){
+	console.log("담겨있는 버튼List의 날짜들은",buttonRegdateList);
+	for(let item of buttonRegdateList.values()){
+		addButtononRecord(item);
+	}
+}
+
+//div에 상세버튼 추가하기를 따로 둠(다른 기록 기록할때, 또 생성하게 하지 않기 위해)
+function addButtononRecord(getDay){
+	$($(".bt_days")[getDay-1]).append("<button type='button' class='btn btn-block bg-gradient-primary btn-xs' onclick='putDetail("+getDay+")' data-toggle='modal' data-target='#detailModal'>상세</button>");	
+}
+
+function showDietDetail(dietList){
+	for(let i=0; i<dietList.length ;i++){
+		$("#suggestion_box").html(dietList[i].DESC_KOR);
+		$("#t_servings").val(dietList[0].SERVING_WT);
+		$("#t_kcal").val(dietList[0].NUTR_CONT1);
+		$("#t_carbs").val(dietList[0].NUTR_CONT2);
+		$("#t_protein").val(dietList[0].NUTR_CONT3);
+		$("#t_fat").val(dietList[0].NUTR_CONT4);
+	}
+}
+
+//식단기록 API를 불러올 함수
+function getDietAPIRecord(){
+	let json={};
+	let foodName=$("#t_diet_search").val();
+	//console.log("전송하기전 음식명은",foodName); 여기까지 음식명 가능
+	json['foodName']=foodName;
+	$.ajax({
+		url:"/rest/myrecord/dietAPIRecord",
+		type:"post",
+		contentType:"application/json",
+		data: JSON.stringify(json),
+		success:function(result, status, xhr){
+			console.log("식단API받아온 결과는",result);
+			if(result!=undefined){
+				showDietDetail(result);
+			}
+		},
+		error:function(xhr, status, error){
+			console.log(xhr);
+			console.log("에러" ,error);
+		}
+	});
+}
+
+//식단기록 등록하는 함수
+function registDietRecord(){
+	if( $("#exr_day3").val()!="" && $("#t_diet_search").val()!="" && $("#sel_dietTime").val()!="none"){
+		let json={};
+		json['regdate']=$("#t_dietRegdate").val();
+		//json['member_idx']=$("#t_dietRegdate").val(); 나중에 추가
+		json['time_category_name']=$("#sel_dietTime").val(); //값이 들어가는지 확인 필요
+		json['food_name']=$("#t_diet_search").val();
+		json['servings']=$("#t_servings").val();
+		json['kcal']=$("#t_kcal").val();
+		json['carbs']=$("#t_carbs").val();
+		json['protein']=$("#t_protein").val();
+		json['fat']=$("#t_fat").val();
+		
+		console.log("식단기록 전송전 결과 확인",json);
+		
+		$.ajax({
+			url:"/rest/myrecord/dietRecord",
+			type:"POST",
+			contentType:"application/json",
+			data:JSON.stringify(json),
+			success:function(result, status, xhr){
+				alert("식단이 등록되었습니다");
+				console.log("식단기록등록된 결과는", result);
+				location.href=""
+			},
+			error:function(xhr, status, error){
+				console.log("식단기록 등록 에러", error);
+			}
+		});
+	}else{
+		alert("식단기록 등록할 날짜와 \n 음식명과 식사시간대를 선택해주세요");
+	}
+}
+
+
+//onload될 때
 $(function(){
 	init(); 
 	getDate(); //달력출력
+	
+	//한달간의 운동기록을 불러오는 함수 호출
 	getExrRecordForMonth();
+	
+	//한달간의 신체기록을 불러오는 함수 호출
+	getPhysicalRecordForMonth();
+	
+	//한달간의 식단기록을 불러오는 함수 호출
+	getDietRecordForMonth();
+	
+	//기본으로 오른쪽 영역을 운동으로
+	$("#right_sector1").show();
+	$("#right_sector2").hide();
+	$("#right_sector3").hide();
+	
+	//오른쪽 영역 바꾸는 버튼
+	$("#bt_physicalcard").click(function(){
+		$("#right_sector1").show();
+		$("#right_sector2").hide();
+		$("#right_sector3").hide();
+	});
+	$("#bt_exrcard").click(function(){
+		$("#right_sector1").hide();
+		$("#right_sector2").show();
+		$("#right_sector3").hide();
+	});
+	$("#bt_dietcard").click(function(){
+		$("#right_sector1").hide();
+		$("#right_sector2").hide();
+		$("#right_sector3").show();
+	});
+	
+	//신체기록 등록하는 이벤트
+	$("#bt_pysical_regist").click(function(){
+		registPhysical();
+	});
 	
 	//모달창 세트추가 버튼 클릭시, 세트 추가
 	$("#bt_add_set").click(function(){
@@ -452,6 +827,14 @@ $(function(){
 	$("input[name='t_ea[]']").on("propertychange change paste input", function(){
 		btchange();
 	});
+	
+	//식단기록 식단API호출하는 이벤트 구현
+	$("#t_diet_search").keyup(function(){
+		getDietAPIRecord();
+	});
+	$("#bt_registDiet").click(function(){
+		registDietRecord();
+	});
 
 	//모달창 운동등록 버튼 클릭시, 운동명과, 세트수 가져와서 기록추가 창에 보여주기
 	$("#bt_one_exr_regist").click(function(){
@@ -460,6 +843,20 @@ $(function(){
 	$("#bt_getDetailForExr").click(function(){
 		moveToExrDetail();
 	});
+	
+	//왼쪽 사이드바 페이지 이동 이벤트
+    $("#bt_addRecord").click(function(){
+    	location.href="/myrecord/addrecord";
+    });
+    $("#bt_physicalRecord").click(function(){
+    	location.href="/myrecord/physical_record";
+    });
+    $("#bt_exrRecord").click(function(){
+    	location.href="/myrecord/exr_record";
+    });
+    $("#bt_dietRecord").click(function(){
+    	location.href="/myrecord/diet_record";
+    });
 });
 </script>
 <body>
@@ -480,20 +877,20 @@ $(function(){
     
     <!-- content start -->
     <div class="space-medium">
-        <div class="container" id="app1">
+        <div class="container-fluid" id="app1">
             <div class="row">
             	<!-- 왼쪽에 나의 기록 목록 나오는 영역 -->
             	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
 				    <div class = "btn-group-vertical">
-				        <button type = "button" class = "btn btn-default">기록 추가</button>
-				        <button type = "button" class = "btn btn-primary">신체기록</button>
-				        <button type = "button" class = "btn btn-primary">운동기록</button>
-				        <button type = "button" class = "btn btn-primary">식단기록</button>
+				        <button type = "button" class = "btn btn-default" id="bt_addRecord">기록 추가</button>
+				        <button type = "button" class = "btn btn-primary" id="bt_physicalRecord">신체기록</button>
+				        <button type = "button" class = "btn btn-primary" id="bt_exrRecord">운동기록</button>
+				        <button type = "button" class = "btn btn-primary" id="bt_dietRecord">식단기록</button>
 				    </div>
             	</div>
             	
             	<!-- 달력 나올 영역 -->
-                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
 					<div class='rap'>
 						<div class="header">
 							<div class="btns prevDay"></div>
@@ -524,23 +921,113 @@ $(function(){
                 </div>
                 
                 <!-- 기록추가 화면 나올 곳 -->
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 card" id="right_sector">
-                	<h3 class="">기록 추가</h3>
-					<input type="text" id="exr_day" disabled>
-					
-					<template v-for="exr in exerciseList">
-						<exrlist :exr="exr"/>
-					</template>
-					                	
-                	<div class="form-group">
-		            	<button type="button" class="btn btn-default" id="bt_add_record" data-toggle="modal" data-target="#myModal">기록추가</button>
-		            	<button type="button" class="btn btn-default" id="bt_regist">기록 등록</button>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 right-area h-auto">
+                	<div class="empty">
+                	</div>
+                	<div>
+	                	<button type="button" class="btn btn-primary btn-sm" id="bt_physicalcard">신체</button>
+	                	<button type="button" class="btn btn-primary btn-sm" id="bt_exrcard">운동</button>
+	                	<button type="button" class="btn btn-primary btn-sm" id="bt_dietcard">식단</button>
+                	</div>
+                	
+                	<!-- 오른쪽 영역중, 신체기록 div -->
+                	<div id="right_sector1" class="h-auto">
+                		<form id="form1">
+	                	<h3 class="">신체기록 추가</h3>
+						<input type="text" class="form-control text-field" id="exr_day1" disabled>
+						<input type="hidden" id="t_regdate" name="regdate">
+						
+						<div class="row">
+							<label class="col-md-4">키:</label>
+							<input type="number" class="col-md-8 form-control physical" name="height" placeholder="키 작성...">
+						</div>
+						<div class="row">
+							<label class="col-md-4">체중:</label>
+							<input type="number" class="col-md-8 form-control physical" name="weight" placeholder="체중 작성...">
+						</div>
+						<div class="row">
+							<label class="col-md-4">골격근량:</label>
+							<input type="number" class="col-md-8 form-control physical" name="musclemass" placeholder="근량 작성...">
+						</div>
+						<div class="row">
+							<label class="col-md-4">체지방:</label>
+							<input type="number" class="col-md-8 form-control physical" name="bodyFat" placeholder="체지방 작성...">
+						</div>
+						<div class="row">
+							<label class="col-md-4">BMI:</label>
+							<input type="number" class="col-md-8 form-control physical" name="bmi">
+						</div>
+						</form>
+						
+	                	<div class="form-group">
+			            	<button type="button" class="btn btn-default" id="bt_pysical_regist">기록 등록</button>
+			            </div>
 		            </div>
+		            <!-- 오른쪽 영역 신체기록 끝 -->
+		            
+		            <!-- 오른쪽 영역중, 운동기록 div -->
+                	<div id="right_sector2" class="h-auto">
+	                	<h3 class="">운동기록 추가</h3>
+						<input type="text" class="form-control text-field" id="exr_day2" disabled>
+						
+						<template v-for="exr in exerciseList">
+							<exrlist :exr="exr"/>
+						</template>
+						                	
+	                	<div class="form-group">
+			            	<button type="button" class="btn btn-success" id="bt_add_record" data-toggle="modal" data-target="#myModal">기록추가</button>
+			            	<button type="button" class="btn btn-success" id="bt_regist">기록 등록</button>
+			            </div>
+		            </div>
+		            <!-- 오른쪽 영역 운동기록 끝 -->
+		            
+		            <!-- 오른쪽 영역중, 식단기록 div -->
+                	<div id="right_sector3" class="h-auto">
+	                	<h3 class="">식단기록 추가</h3>
+						<input type="text" class="form-control text-field" id="exr_day3" disabled>
+						<input type="hidden" id="t_dietRegdate" name="regdate">
+
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="식단 검색..." name="t_diet_research" id="t_diet_search">
+							<div id="suggestion_box"></div> 
+							<select class="form-control" id="sel_dietTime">
+								<option value="none">==섭취시간==</option>
+								<option>아침</option>
+								<option>점심</option>
+								<option>저녁</option>
+								<option>간식</option>
+							</select>
+							<div class="form-group">
+								<label>1회제공량(g):</label> <input type="text" class="form-control" id="t_servings">
+							</div>
+							<div class="form-group">
+								<label>열량(kcal):</label> <input type="text" class="form-control" id="t_kcal">
+							</div>
+							<div class="form-group">
+								<label>탄수화물(g):</label> <input type="text" class="form-control" id="t_carbs">
+							</div>
+							<div class="form-group">
+								<label>단백질(g):</label> <input type="text" class="form-control" id="t_protein">
+							</div>
+							<div class="form-group">
+								<label>지방(g):</label> <input type="text" class="form-control" id="t_fat">
+							</div>
+						</div>
+
+						<div class="form-group">
+			            	<button type="button" class="btn btn-default diet" id="bt_registDiet">식단 등록</button>
+			            </div>
+		            </div>
+		            <!-- 오른쪽 영역 식단기록 끝 -->
+		            
+                </div>
+                <!--운동기록 추가화면 끝 -->
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
                 </div>
 				
 				<!-- ------------------------------------------------------------------------------- -->
 				<!-- 추가할 사항: 모달창 배경 투명하게 할 예정, 모달창에서 x누르면 해당 열이 삭제 되도록 -->
-				<!-- 모달 창 나오는 곳 -->
+				<!-- 운동기록모달 창 나오는 곳 -->
 				<div class="modal" id="myModal">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
@@ -572,6 +1059,32 @@ $(function(){
 						</div>
 					</div>
 				</div>
+				<!--운동기록모달 창 끝  -->
+				
+				<!-- 식단기록모달 창 시작 -->
+				<!--
+				<div class="modal" id="dietModal">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+
+							<div class="modal-header">
+								<h4 class="modal-title">식단기록추가</h4>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+
+							<div class="modal-body">
+								
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" id="bt_one_diet_regist" class="btn btn-danger" data-dismiss="modal">식단 등록</button>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				 -->
+				<!--식단기록모달 창 끝  -->
 
 
 				<!-- 상세보기 모달 창 나오는 곳 -->
@@ -604,6 +1117,7 @@ $(function(){
 						</div>
 					</div>
 				</div>
+				<!-- 상세보기 모달 창 끝 -->
 
 			</div>
         </div>

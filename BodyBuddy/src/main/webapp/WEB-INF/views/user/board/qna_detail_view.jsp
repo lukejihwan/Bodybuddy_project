@@ -31,6 +31,10 @@
 	border-left: 2px solid rgba(0, 0, 0, 0.2);
 }
 
+*{
+	word-break: break-all;
+}
+
 @media (max-width: 767.98px){
 	.comment-wrapper-1{
 		padding-left: 30px;
@@ -475,7 +479,12 @@
 	function recommend() {
 		
 		if(localStorage.getItem('<%= boardName+"-"+board_idx %>')==Date().substr(4, 11)){
-			Swal.fire("하루에 한번만 추천할 수 있습니다", "내일 다시 눌러주세요", "info");
+			Swal.fire({
+				title:"하루에 한번만 추천할 수 있습니다", 
+				text:"내일 다시 눌러주세요", 
+				icon:"info",
+				confirmButtonColor: '#c5f016',
+			});
 			return;
 		}else{
 			localStorage.setItem('<%= boardName+"-"+board_idx %>', Date().substr(4, 11));

@@ -17,7 +17,6 @@
 			javaType="java.util.List"
 			ofType="ExrDetailRecord"
 			select="ExrDetailRecord.selectByExrRecord"/>
-
 	</resultMap>
 	
 	<!-- 한달간 운동 기록을 불러오는 쿼리-->
@@ -44,6 +43,16 @@
 		</selectKey>
 	</insert>
 	
+	<update id="update" parameterType="ExrRecord">
+		update exr_record
+		set exr_name=#{exr_name}
+		where exr_record_idx=#{exr_record_idx}
+	</update>
 	
-
+	<delete id="delete" parameterType="int">
+		delete 
+		from exr_record
+		where exr_record_idx=#{exr_record_idx}
+	</delete>
+	
 </mapper>
