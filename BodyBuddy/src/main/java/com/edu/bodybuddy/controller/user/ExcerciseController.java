@@ -47,23 +47,25 @@ public class ExcerciseController {
 	@Autowired
 	private ExrTodayService exrTodayService;
 	
-	
+	/*-------------------
+	 *  운동 정보 게시판
+	 * ------------------*/
 	// 메인페이지
 	@GetMapping("/notice")
 	public ModelAndView getMain(HttpServletRequest request) {
 		List<ExrNotice> exrNoticeList=exrNoticeService.selectAll();
-		ModelAndView mv= new ModelAndView("exr/notice");
+		ModelAndView mv= new ModelAndView("exr/notice_list");
 		mv.addObject("exrNoticeList", exrNoticeList);
 		return mv;
 	}
 
 	
 	// 상세페이지
-	@GetMapping("/notice/{exr_notice_idx}")
-	public ModelAndView getdetail(@PathVariable("exr_notice_idx") int exr_notice_idx, HttpServletRequest request) {
+	@GetMapping("/notice/{exr_category_idx}")
+	public ModelAndView getdetail(@PathVariable("exr_category_idx") int exr_category_idx, HttpServletRequest request) {
 		logger.info("유저 페이지 작동");
 		
-		ExrNotice exrNotice=exrNoticeService.select(exr_notice_idx);
+		ExrNotice exrNotice=exrNoticeService.select(exr_category_idx);
 		List<ExrNotice> exrCategoryList=exrCategoryService.selectAll();
 		
 		ModelAndView mv= new ModelAndView("exr/notice_detail");
@@ -74,9 +76,9 @@ public class ExcerciseController {
 	
 	
 	
-	/*-----------------
+	/*-------------------
 	 *  루틴 공유 게시판
-	 * ----------------*/
+	 * ------------------*/
 	// 리스트 조회
 	@GetMapping("/routine_list/{pg}")
 	public ModelAndView getList(@PathVariable int pg, HttpServletRequest request){
@@ -228,7 +230,7 @@ public class ExcerciseController {
 	
 	
 	// 상세폼
-	@GetMapping("/today/detail")
+	@GetMapping("/today_detail")
 	public ModelAndView getTodayDetail(int exr_today_idx, HttpServletRequest request){
 		ExrToday exrToday=exrTodayService.select(exr_today_idx);
 		

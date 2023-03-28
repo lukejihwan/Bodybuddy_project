@@ -16,6 +16,9 @@
 	<!-- top-bar start-->
 	<%@include file="../inc/topbar.jsp"%>
 	<!-- /top-bar end-->
+	
+		<!-- 로그인체크 -->
+	<%@include file="../inc/loginCheck.jsp"%>
 
 	<!-- hero section start -->
 	<div class="hero-section">
@@ -45,10 +48,11 @@
 				<div class="col-sm-12">
 					<form id="form1">
 						<div class="form-group">
+						<input type="hidden" name="member_idx" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
 							<input type="text" class="form-control" name="title" placeholder="[scrap]" >
 						</div>
 						<div class="form-group">
-							<input type="text" class="form-control" name="writer" placeholder="작성자...">
+							<input type="text" class="form-control" name="writer" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>">
 						</div>
 
 
@@ -84,6 +88,7 @@
 
 	function registAsync(){
 		let formData=new FormData();
+		formData.append("member.member_idx", $("#form1 *[name='member_idx']").val());
 		formData.append("title", $("#form1 input[name='title']").val());
 		formData.append("writer", $("#form1 input[name='writer']").val());
 		formData.append("content", $("#form1 textarea[name='content']").val());

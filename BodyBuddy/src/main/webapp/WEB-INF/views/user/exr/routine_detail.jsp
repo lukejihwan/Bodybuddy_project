@@ -16,6 +16,14 @@
 	.hero-section{
 		background-image: url("/resources/user/images/exr/routine_back.jpg");
 	}
+		.comment-area{
+		/* background:pink; */
+		border:solid 2px gray;
+	}
+	.section{
+		margin:30px;
+	}
+
 </style>
 </head>
 <body class="animsition">
@@ -77,45 +85,59 @@
 
 					<hr>
 				</div>
-				
-				<div class="col-sm-9">
-					<label class="control-label" for="textarea">Comments</label>
-					<form id="form1">
-						<input type="hidden" name="member.member_idx" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
-						<input type="hidden" name="recommend" value="<%=exrRoutine.getRecommend()%>">
-						<input type="hidden" name="exr_routine_idx" value="<%=exrRoutine.getExr_routine_idx()%>">
-						<textarea class="form-control" name="content"rows="6" placeholder="댓글 입력 창"></textarea>
-						<input type="text" class="form-control" name="writer" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>"/>
-						<button id="bt_comment" class="btn btn-default" type="button">등록</button>
-					</form>
-				</div>
 
-				<div class="col-sm-9">
-					
-					<!-- Vue 템플릿 시작 예정 -->
-					<template v-for="comment in commentList">
-						<row :dto="comment"/>
-					</template>
-					
-					
-					<div id="replySection" class="col-sm-9 mt-3">
-						<hr>
-						<form id="form2">
-							<input type="hidden" name="exr_routine_idx" value="<%=exrRoutine.getExr_routine_idx()%>">
-							<textarea class="form-control" name="content" rows="6" placeholder="댓글 입력 창"></textarea>
-							<input type="text" class="form-control" name="writer" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" />
-							<button id="bt_reply" class="btn btn-default" type="button">등록</button>
+			<div class="comment-area">
+				<div class="section">
+
+					<div class="col-sm-9">
+						<label class="control-label" for="textarea">Comments</label>
+						<form id="form1">
+							<input type="hidden" name="member.member_idx"
+								value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
+							<input type="hidden" name="recommend"
+								value="<%=exrRoutine.getRecommend()%>"> <input
+								type="hidden" name="exr_routine_idx"
+								value="<%=exrRoutine.getExr_routine_idx()%>">
+							<textarea class="form-control" name="content" rows="6"
+								placeholder="댓글 입력 창"></textarea>
+							<input type="text" class="form-control" name="writer"
+								value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" />
+							<button id="bt_comment" class="btn btn-default" type="button">등록</button>
 						</form>
 					</div>
-					
-					<!-- ./템플릿 -->
+
+					<div class="col-sm-9">
+
+						<!-- Vue 템플릿 시작 예정 -->
+						<template v-for="comment in commentList">
+							<row :dto="comment" :depth="comment.depth*70"
+								:key="comment.exr_today_comment_idx" />
+						</template>
+
+
+						<div id="replySection" class="col-sm-9 mt-3">
+							<hr>
+							<form id="form2">
+								<input type="hidden" name="exr_routine_idx"
+									value="<%=exrRoutine.getExr_routine_idx()%>">
+								<textarea class="form-control" name="content" rows="6"
+									placeholder="댓글 입력 창"></textarea>
+								<input type="text" class="form-control" name="writer"
+									value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" />
+								<button id="bt_reply" class="btn btn-default" type="button">등록</button>
+							</form>
+						</div>
+
+						<!-- ./템플릿 -->
+					</div>
 				</div>
-
-
 			</div>
-			<!-- end of row -->
-		</div>
-		<!-- end of container -->
+
+
+				</div>
+				<!-- end of row -->
+			</div>
+			<!-- end of container -->
 	</div>
 	<!-- end of space-medium -->
 	<!-- /content end -->
@@ -136,7 +158,7 @@
 	// 댓글 목록 출력
 	const row={
 			template:`
-				<div>
+				<div class="replyform" :style="'margin-left:'+c_depth+'px;'">
 					<hr>
 					<h4 class="user-title mb10">{{comment.content}}</h4>
 					<div>
@@ -152,10 +174,11 @@
 					</div>
 				</div>
 			`,
-			props:["dto"],
+			props:["dto", "depth"],
 			data(){
 				return{
-					comment:this.dto					
+					comment:this.dto,				
+					c_depth:this.depth
 				}
 			},
 			
@@ -217,10 +240,7 @@
 			success:function(result, status, xhr){
 				alert(result.msg);
 				
-				getComments();
-				// 내용 비워주기
-				$("#form1 textarea[name='content']").val("");
-				$("#form1 input[name='writer']").val("");
+				location.href="/exr/routine_detail/"+$("input[name='exr_routine_idx']").val();
 			},
 		});
 	}
@@ -243,13 +263,7 @@
 			success:function(result, status, xhr){
 				alert(result.msg);
 				
-				//location.href="/exr/routine_detail/"+$("input[name='exr_routine_idx']").val();
-				getComments();
-				
-				
-				// 내용 비워주기
-				$("#form2 textarea[name='content']").val("");
-				$("#form2 input[name='writer']").val("");
+				location.href="/exr/routine_detail/"+$("input[name='exr_routine_idx']").val();
 			},
 		});
 	}
