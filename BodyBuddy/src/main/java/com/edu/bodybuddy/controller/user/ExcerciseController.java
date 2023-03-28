@@ -17,11 +17,17 @@ import com.edu.bodybuddy.domain.exr.ExrCategory;
 import com.edu.bodybuddy.domain.exr.ExrNotice;
 import com.edu.bodybuddy.domain.exr.ExrRoutine;
 import com.edu.bodybuddy.domain.exr.ExrTip;
+import com.edu.bodybuddy.domain.exr.ExrToday;
 import com.edu.bodybuddy.exception.ExrCategoryException;
+import com.edu.bodybuddy.exception.ExrRoutineCommentException;
+import com.edu.bodybuddy.exception.ExrRoutineException;
+import com.edu.bodybuddy.exception.ExrTipException;
+import com.edu.bodybuddy.exception.ExrTodayException;
 import com.edu.bodybuddy.model.exr.ExrCategoryService;
 import com.edu.bodybuddy.model.exr.ExrNoticeService;
 import com.edu.bodybuddy.model.exr.ExrRoutineService;
 import com.edu.bodybuddy.model.exr.ExrTipService;
+import com.edu.bodybuddy.model.exr.ExrTodayService;
 import com.edu.bodybuddy.util.Msg;
 import com.edu.bodybuddy.util.PageManager;
 
@@ -38,6 +44,8 @@ public class ExcerciseController {
 	private ExrRoutineService exrRoutineService;
 	@Autowired
 	private ExrTipService exrTipService;
+	@Autowired
+	private ExrTodayService exrTodayService;
 	
 	
 	// 메인페이지
@@ -190,10 +198,7 @@ public class ExcerciseController {
 	// 삭제
 	@GetMapping("/tip/delete")
 	public ModelAndView deleteTip(int exr_tip_idx, HttpServletRequest request) {
-		//logger.info("넘어온 idx "+exr_tip_idx);
-		
 		exrTipService.delete(exr_tip_idx);
-		
 		ModelAndView mv= new ModelAndView("redirect:/exr/tip_list");
 		return mv;
 	}
@@ -203,21 +208,55 @@ public class ExcerciseController {
 	/*-----------------------
   		오운완 게시판
  	-------------------------*/ 
-	// 등록폼
+	// 리스트
 	@GetMapping("/today_list")
 	public ModelAndView getTipList(HttpServletRequest request){
-		logger.info("응답 받음!");
-		
-		//int total=exrRoutineService.totalCount();
-		//logger.info("토탈 레코드 수는?"+total);
-		//logger.info("현제 페이지는? "+pg);
-		
-		
-		PageManager pageManager=new PageManager();
-		//pageManager.init(total, pg);
+		List<ExrToday> exrTodayList=exrTodayService.selectAll();
+		logger.info("컨트롤러에서 확인 "+exrTodayList);
 		
 		ModelAndView mv= new ModelAndView("exr/today_list");
-		//mv.addObject("pageManager", pageManager);
+		mv.addObject("exrTodayList", exrTodayList);
+		return mv;
+	}
+	
+	
+	// 등록폼
+	@GetMapping("/today/registform")
+	public ModelAndView getTipRegistForm(HttpServletRequest request){
+		return new ModelAndView("exr/today_registform");
+	}
+	
+	
+	// 상세폼
+	@GetMapping("/today/detail")
+	public ModelAndView getTodayDetail(int exr_today_idx, HttpServletRequest request){
+		ExrToday exrToday=exrTodayService.select(exr_today_idx);
+		
+		// 조회수 증가
+		exrTodayService.plusHit(exr_today_idx);
+		
+		ModelAndView mv= new ModelAndView("exr/today_detail");
+		mv.addObject("exrToday", exrToday);
+		return mv;
+	}
+	
+	
+	// 수정폼
+	@GetMapping("/today/editform")
+	public ModelAndView getTodayEditForm( int exr_today_idx, HttpServletRequest request){
+		ExrToday exrToday=exrTodayService.select(exr_today_idx);
+		
+		ModelAndView mv= new ModelAndView("exr/today_edit");
+		mv.addObject("exrToday", exrToday);
+		return mv;
+	}
+	
+	
+	// 삭제
+	@GetMapping("/today/delete")
+	public ModelAndView deleteToday(int exr_today_idx, HttpServletRequest request) {
+		exrTodayService.delete(exr_today_idx);
+		ModelAndView mv= new ModelAndView("redirect:/exr/today_list");
 		return mv;
 	}
 	
@@ -233,6 +272,33 @@ public class ExcerciseController {
 		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.INTERNAL_SERVER_ERROR);
 		return entity;
 	}
-	
+	@ExceptionHandler(ExrRoutineException.class)
+	public ResponseEntity<Msg> handle(ExrRoutineException e){
+		Msg msg=new Msg();
+		msg.setMsg("컨트롤러에서 오류 잡힘 e : "+e.getMessage());
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	@ExceptionHandler(ExrRoutineCommentException.class)
+	public ResponseEntity<Msg> handle(ExrRoutineCommentException e){
+		Msg msg=new Msg();
+		msg.setMsg("컨트롤러에서 오류 잡힘 e : "+e.getMessage());
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	@ExceptionHandler(ExrTipException.class)
+	public ResponseEntity<Msg> handle(ExrTipException e){
+		Msg msg=new Msg();
+		msg.setMsg("컨트롤러에서 오류 잡힘 e : "+e.getMessage());
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	@ExceptionHandler(ExrTodayException.class)
+	public ResponseEntity<Msg> handle(ExrTodayException e){
+		Msg msg=new Msg();
+		msg.setMsg("컨트롤러에서 오류 잡힘 e : "+e.getMessage());
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
 	
 }

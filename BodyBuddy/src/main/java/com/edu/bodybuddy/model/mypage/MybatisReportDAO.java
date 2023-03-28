@@ -1,8 +1,11 @@
 package com.edu.bodybuddy.model.mypage;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.edu.bodybuddy.domain.mypage.Report;
@@ -13,12 +16,19 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class MybatisReportDAO implements ReportDAO{
-	
+	private Logger log = LoggerFactory.getLogger(getClass());
 	private final SqlSessionTemplate sqlSessionTemplate;
+	
+	@Override
+	public int selectTotal(int member_idx) {
+		return sqlSessionTemplate.selectOne("Report.selectTotal", member_idx);
+	}
 
 	@Override
-	public List<Report> selectAll() {
-		return sqlSessionTemplate.selectList("Report.selectAll");
+	public List<Report> selectAll(Map map) {
+		List<Report> list = sqlSessionTemplate.selectList("Report.selectByMember", map);
+		log.info("넘어온 리포트리스트는 " +list);
+		return list;
 	}
 
 	@Override
@@ -39,8 +49,8 @@ public class MybatisReportDAO implements ReportDAO{
 	}
 
 	@Override
-	public void delete(int report_idx) throws ReportException{
-		int result = sqlSessionTemplate.delete("Report.delete", report_idx);
+	public void delete(Report report) throws ReportException{
+		int result = sqlSessionTemplate.delete("Report.delete", report);
 		if(result<1) throw new ReportException("신고글 삭제 실패");
 	}
 	

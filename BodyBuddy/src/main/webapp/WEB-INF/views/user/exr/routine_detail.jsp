@@ -81,6 +81,7 @@
 				<div class="col-sm-9">
 					<label class="control-label" for="textarea">Comments</label>
 					<form id="form1">
+						<input type="hidden" name="member.member_idx" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
 						<input type="hidden" name="recommend" value="<%=exrRoutine.getRecommend()%>">
 						<input type="hidden" name="exr_routine_idx" value="<%=exrRoutine.getExr_routine_idx()%>">
 						<textarea class="form-control" name="content"rows="6" placeholder="댓글 입력 창"></textarea>
@@ -132,6 +133,7 @@
 	let app1;
 	let selectRow;
 	
+	// 댓글 목록 출력
 	const row={
 			template:`
 				<div>
@@ -223,7 +225,7 @@
 		});
 	}
 
-	//답글 등록
+	//대댓글 등록
  	function reply(comment){
 		//if (!confirm("답글을 등록하시겠습니까?")) {return;}
 		let formData=new FormData();

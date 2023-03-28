@@ -670,7 +670,6 @@ function getGpsData(){
 			for(let i=0; i<result.length; i++){
 				let dto=result[i];
 
-				
 				let json={};
 				json['lat']=dto.lati;
 				json['lng']=dto.longi;

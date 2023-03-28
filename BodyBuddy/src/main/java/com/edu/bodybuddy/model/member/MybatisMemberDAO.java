@@ -44,17 +44,8 @@ public class MybatisMemberDAO implements MemberDAO {
 	}
 
 	@Override
-	public void updatePass(Member member) throws MemberException{
-		int result = sqlSessionTemplate.update("Member.updatePass", member);
-		if(result<1) throw new MemberException("비밀번호 변경에 실패했습니다");
-	}
-
-	@Override
-	public void delete(int member_idx) throws MemberException{
-		int result = sqlSessionTemplate.delete("Member.update", member_idx);
+	public void delete(Member member) throws MemberException{
+		int result = sqlSessionTemplate.delete("Member.delete", member);
 		if(result<1) throw new MemberException("회원 탈퇴에 실패했습니다. 관리자에게 문의하세요");
 	}
-
-
-
 }

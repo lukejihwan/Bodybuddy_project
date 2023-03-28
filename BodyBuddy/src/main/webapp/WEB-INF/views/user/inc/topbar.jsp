@@ -25,7 +25,7 @@
                 <div class="call-info">
                     <!-- call-info -->
                     <sec:authorize access="isAnonymous()"><p class="call-no">환영합니다</p></sec:authorize>
-                    <sec:authorize access="isAuthenticated()"><p class="call-no"><sec:authentication property="principal.member"/></p></sec:authorize>
+                    <sec:authorize access="isAuthenticated()"><p class="call-no">알림같은거 넣으면 좋을듯</p></sec:authorize>
                 </div>
                 <!-- /.call-info -->
             </div>

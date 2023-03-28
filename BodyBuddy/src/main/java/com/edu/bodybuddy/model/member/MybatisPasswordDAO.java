@@ -17,7 +17,6 @@ public class MybatisPasswordDAO implements PasswordDAO{
 	private Logger log = LoggerFactory.getLogger(getClass());
 	@Override
 	public void insert(Member member) throws PasswordException{
-		log.info("인서트할 멤버 :" + member);
 		int result = sqlSessionTemplate.insert("Password.insert", member);
 		if(result <1) throw new PasswordException("비밀번호 등록 실패");
 	}
@@ -26,6 +25,12 @@ public class MybatisPasswordDAO implements PasswordDAO{
 	public void update(Member member) throws PasswordException{
 		int result = sqlSessionTemplate.update("Password.update", member);
 		if(result <1) throw new PasswordException("비밀번호 등록 실패");
+	}
+
+	@Override
+	public void delete(Member member) throws PasswordException{
+		int result = sqlSessionTemplate.delete("Password.delete", member);
+		if(result <1) throw new PasswordException("비밀번호 삭제 실패");
 	}
 
 }

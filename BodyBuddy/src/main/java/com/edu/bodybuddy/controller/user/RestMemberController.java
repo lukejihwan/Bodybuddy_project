@@ -2,16 +2,14 @@ package com.edu.bodybuddy.controller.user;
 
 import javax.servlet.http.HttpSession;
 
+import com.edu.bodybuddy.domain.security.MemberDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import com.edu.bodybuddy.domain.member.Member;
 import com.edu.bodybuddy.exception.AddressException;
@@ -69,6 +67,20 @@ public class RestMemberController {
 		ResponseEntity<Msg> entity = new ResponseEntity<Msg>(msg, HttpStatus.OK);
 		return entity;
 	}
+
+	@PutMapping()
+	public ResponseEntity<Msg> update(Member member){
+		member.setMember_idx(getMember().getMember_idx());
+		log.info("멤버수정 내용 확인 : " + member);
+		memberService.update(member);
+		Msg msg = new Msg("회원정보가 수정되었습니다");
+		//수정된 회원정보를 다시 세션에 넣어준다
+		Member modified = memberService.selectByEmail(getMember());
+		MemberDetail memberDetail = new MemberDetail(modified);
+		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(memberDetail, null, memberDetail.getAuthorities()));
+		ResponseEntity<Msg> entity = new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
 	
 	@GetMapping("/email")
 	//이메일 인증코드 발송 요청
@@ -101,10 +113,11 @@ public class RestMemberController {
 		return new ResponseEntity<Msg>(msg, HttpStatus.OK);
 	}
 	
-	@PostMapping("/check/{item}")
-	public ResponseEntity<Msg> nicknameCheck(@PathVariable String item, Member member){
+	@PostMapping("/check/{category}")
+	public ResponseEntity<Msg> nicknameCheck(@PathVariable String category, Member member){
+		log.info("캇: "+category + "넘어온 데이터 : "+member);
 		Msg msg = new Msg();
-		if(item.equals("nickname")) {
+		if(category.equals("nickname")) {
 			memberService.nicknameCheck(member);
 			msg.setMsg("사용 가능한 닉네임입니다");
 		} else {
@@ -154,5 +167,14 @@ public class RestMemberController {
 		msg.setMsg(e.getMessage());
 		ResponseEntity<Msg> entity = new ResponseEntity<Msg>(msg, HttpStatus.INTERNAL_SERVER_ERROR);
 		return entity;
+	}
+
+	public Member getMember(){
+		MemberDetail memberDetail =(MemberDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return memberDetail.getMember();
+//		아래는 디버깅 코드
+//        Member member = new Member();
+//        member.setMember_idx(32);
+//        return member;
 	}
 }

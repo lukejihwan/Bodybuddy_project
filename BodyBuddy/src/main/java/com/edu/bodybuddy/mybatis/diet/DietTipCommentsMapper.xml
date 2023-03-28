@@ -2,4 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="DietTipComments">
+	
+	<resultMap type="DietTipComments" id="resultMap">
+		<id column="diet_tip_comments_idx" property="diet_tip_comments_idx"/>
+		<result column="content" property="content"/>
+		<result column="writer" property="writer"/>
+		<result column="regdate" property="regdate"/>
+		<result column="post" property="post"/>
+		<result column="step" property="step"/>
+		<result column="depth" property="depth"/>
+		<result column="member_idx" property="member.member_idx"/>
+		<result column="diet_tip_idx" property="dietTip.diet_tip_idx"/>
+	</resultMap>
+	
+	<select id="selectByIdx" resultMap="resultMap" parameterType="int">
+		select * from diet_tip_comments where diet_tip_idx=#{diet_tip_idx} order by post desc, step asc
+	</select>
+	
+	
+	<!-- 해당 글에 대한 답글 수 -->
+	<select id="totalCount" resultMap="resultMap" parameterType="int">
+		select count(*) from diet_tip_comments where diet_tip_idx=#{diet_tip_idx}
+	</select>
+	
+	
+	<insert id="insert" parameterType="DietTipComments">
+		insert into diet_tip_comments(diet_tip_idx, content, post, step, depth)
+		values(#{dietTip.diet_tip_idx}, #{content}, #{post}, #{step}+1, #{depth}+1)
+	
+		<selectKey keyColumn="diet_tip_comments_idx" keyProperty="diet_tip_comments_idx" resultType="int" order="AFTER">
+			select last_insert_id() as diet_tip_idx from dual
+		</selectKey>	
+	</insert>
+	
+	
+	<update id="update" parameterType="DietTipComments">
+		update diet_tip_comments set content=#{content} where diet_tip_comments_idx=#{diet_tip_comments_idx}
+	</update>
+	
+	
+	<delete id="delete" parameterType="int">
+		delete from diet_tip_comments where diet_tip_comments_idx=#{diet_tip_comments_idx}
+	</delete>	
+	
+	
+	<!-- post 업데이트 -->
+	<update id="updateByPost" parameterType="DietTipComments">
+		update diet_tip_comments set post=#{post} where diet_tip_comments_idx=#{diet_tip_comments_idx}
+	</update>
+	
+	
+	<!-- 마지막 댓글 구하기 -->
+	<select id="selectMaxStep" parameterType="DietTipComments" resultType="int">
+		select max(step) from diet_tip_comments where post=#{post}
+	</select>
+	
 </mapper>
