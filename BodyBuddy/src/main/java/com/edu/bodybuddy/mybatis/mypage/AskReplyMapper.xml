@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AskReply">
+	<select id="selectByAsk" parameterType="int" resultType="AskReply">
+		select * from ask_reply where ask_idx = #{ask_idx}
+	</select>
+	
+	<insert id="insert" parameterType="Ask">
+		insert into ask_reply(ask_idx, title, content) values(#{ask.ask_idx}, #{title}, #{content})
+	</insert>
+
+	<update id="update" parameterType="Ask">
+		update ask_reply set title=#{title}, content=#{content} where ask_idx = #{ask.ask_idx}
+	</update>
+	
+	<delete id="delete" parameterType="Ask">
+		delete from ask_reply where ask_idx = #{ask.ask_idx}
+	</delete>
+</mapper>

@@ -2,5 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="PhysicalRecord">
 
+	<insert id="insert" parameterType="PhysicalRecord">
+		insert into physical_record (member_idx, height, weight, musclemass, bodyFat, BMI, regdate)
+		values (24, #{height}, #{weight}, #{musclemass}, #{bodyFat}, #{BMI}, #{regdate})
+	</insert>
+	
+	<delete id="delete">
+	
+	</delete>
+	
+	<select id="selectForMonth" resultType="PhysicalRecord" parameterType="Map">
+		select * 
+		from physical_record
+		where regdate between #{firstDay} and #{lastDay}
+		order by regdate asc
+	</select>
+	
+	<update id="update">
+	
+	</update>
 
 </mapper>

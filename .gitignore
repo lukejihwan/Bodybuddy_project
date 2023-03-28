@@ -3,3 +3,8 @@
 */target/**
 */.settings/**
 /BodyBuddy/src/main/resources/social.properties
+
+# Intellij
+.idea/
+*.iml
+*.iws

@@ -13,8 +13,11 @@ public interface ExrRecordDAO {
 	//하루의 하나의 운동을 입력하는 메서드
 	public void insert(ExrRecord exrRecord);
 	
+	//운동기록 수정시 운동명을 수정할 메서드
+	public void update(ExrRecord exrRecord);
+	
 	//하루의 하나의 운동을 삭제하는 메서드
-	public void delete(ExrRecord exrRecord);
+	public void delete(int exr_record_idx);
 	
 	//하루간의 데이터를 불러오는 메서드
 	public List<ExrRecord> selectForDay(String regdate);

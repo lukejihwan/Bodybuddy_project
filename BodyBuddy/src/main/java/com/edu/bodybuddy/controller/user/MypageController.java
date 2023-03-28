@@ -14,7 +14,7 @@ public class MypageController {
 	
 	@GetMapping
 	public String getMypage() {
-		return "mypage";
+		return "mypage/mypage";
 	}
 	
 	@GetMapping("/{page}")

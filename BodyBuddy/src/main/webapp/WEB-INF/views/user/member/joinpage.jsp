@@ -5,6 +5,7 @@
 <head>
 <%@include file="../inc/header_link.jsp" %>
 <link rel="stylesheet" href="/resources/user/css/join.css">
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 
 <body class="animsition">
@@ -30,7 +31,7 @@
 			<form id="form1">
 				<!-- EMAIL -->
 				<div>
-					<h3 class="join_title"><label for="email">이메일 주소</span></label></h3>
+					<h3 class="join_title"><label for="email">이메일 주소</label></h3>
 					<span class="box int_email">
 						<input type="text" id="email" name="email" class="int" maxlength="100" placeholder="이메일 주소 입력">
 						<button type="button" class="btn btn-default btn-sm checkBt" id="bt_check">인증번호받기</button>
@@ -64,22 +65,31 @@
 				<div>
 					<h3 class="join_title"><label for="name">닉네임</label></h3>
 					<span class="box int_name">
-						<input type="text" id="name" name="nickname" class="int" maxlength="20">
+						<input type="text" id="nickname" name="nickname" class="int" maxlength="20">
 					</span>
 					<span class="error_next_box"></span>
 				</div>
 				<!-- phone -->
 				<div>
-					<h3 class="join_title"><label for="phoneNo">휴대전화</label></h3>
+					<h3 class="join_title"><label for="phone">휴대전화</label></h3>
 					<span class="box int_phone">
 						<input type="tel" id="phone" name="phone" class="int" maxlength="16" placeholder="전화번호 입력">
-						<button type="button" class="btn btn-default btn-sm checkBt" id="bt_checkP">인증번호받기</button>
+						<button type="button" class="btn btn-default btn-sm checkBt" id="bt_checkPhone">인증번호받기</button>
 					</span>
 					<span class="error_next_box"></span>
 					<span class="box int_auth">
 						<input type="text" name="codeP" class="int" maxlength="6" placeholder="인증번호 입력">
 						<button type="button" class="btn btn-default btn-sm verifyBt" id="bt_verifyP">인증</button>
 					</span>      
+				</div>
+
+				<!-- 주소 -->
+				<div>
+					<h3 class="join_title"><label for="address">주소(선택사항)</label></h3>
+					<span class="box readonly">
+						<input type="text" class="int readonly" id="address" name="address.member_address" value="주소를 검색하세요" disabled>
+						<button type="button" class="btn btn-default btn-sm adrBt" id="bt_address" onclick="searchAddress()">주소검색</button>
+					</span>
 				</div>
 
 				<!-- 가입버튼 -->

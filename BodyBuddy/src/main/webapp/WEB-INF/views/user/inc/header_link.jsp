@@ -1,11 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <meta name="description" content="Fitness - provide the easy responsive free website templates. You can easily customize and make your own website for your startup business.">
 <meta name="keywords" content="bootstrap template, Responsive Template, Website Template, free website templates, free website template download ">
-<title>5조 BodyBuddy</title>
+<title>BodyBuddy</title>
 <!-- Bootstrap -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <!-- jQuery -->
@@ -42,3 +42,6 @@
 <!-- sweetalert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link href="/resources/user/css/my-sweetalert2.css" rel="stylesheet">
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<script src="/resources/user/js/values.js"></script>
+<%@include file="./list_css.jsp"%>
