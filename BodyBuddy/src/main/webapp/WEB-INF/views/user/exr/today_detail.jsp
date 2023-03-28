@@ -84,6 +84,7 @@
 						<button type="button" class="btn btn-primary" id="bt_list">목록</button>
 						<button type="button" class="btn btn-outline-success" id="bt_edit">수정</button>
 						<button type="button" class="btn btn-outline-danger" id="bt_delete">삭제</button>
+						<button type="button" class="btn btn-outline-danger" id="bt_point" style="float:right">확인</button>
 					</div>
 	
 					<div class="col-md-12 mt-5 mb-4 text-center">
@@ -117,8 +118,7 @@
 						<div class="col-sm-9">
 							<template v-for="(comment, i) in commentList">
 								<!-- <input type="hidden" name="depth" value="comment.depth"> -->
-								<row :dto="comment" :key="comment.exr_today_comment_idx"
-									:depth="comment.depth*70" />
+								<row :dto="comment" :key="comment.exr_today_comment_idx" :depth="comment.depth*70" />
 							</template>
 	
 							<!-- reply-form -->
@@ -128,16 +128,20 @@
 								<label class="control-label" for="textarea">님에게 답변</label>
 	
 								<form id="form2">
-									<input type="hidden" name="exr_today_idx"
-										value="<%=exrToday.getExr_today_idx()%>">
-									<textarea class="form-control" name="content" rows="6"
-										placeholder="답변 작성"></textarea>
+									<input type="hidden" name="exr_today_idx" value="<%=exrToday.getExr_today_idx()%>">
+									<textarea class="form-control" name="content" rows="6" placeholder="답변 작성"></textarea>
 									<input type="text" class="form-control" name="writer" />
 									<button id="bt_reply" class="btn btn-default" type="button">답변
 										등록</button>
 								</form>
 							</div>
 							<!-- ./reply-form -->
+
+<!-- 어드민 -->
+		<sec:authorize access="hasRole('ADMIN')">
+			
+		</sec:authorize>
+
 
 					</div>
 				</div><!-- ./comment-area -->
@@ -210,7 +214,7 @@
 				alert(result.msg);
 				
 				// redirect
-				location.href="/exr/today/detail?exr_today_idx="+$("input[name='exr_today_idx']").val();
+				location.href="/exr/today_detail?exr_today_idx="+$("input[name='exr_today_idx']").val();
 			},
 		});
 	}

@@ -73,6 +73,10 @@ public class RestExrController {
 	// 등록
 	@PostMapping("/routine")
 	public ResponseEntity<Msg> insert(ExrRoutine exrRoutine) throws ExrCategoryException{
+		logger.info("넘어온 루틴 글 컨트롤러에서 확인 :"+exrRoutine);
+		logger.info("멤버 아이디가 뭔데 :"+exrRoutine.getMember().getMember_idx());
+		System.out.println("넘어온 루틴 글 컨트롤러에서 확인 :"+exrRoutine);
+		System.out.println("멤버 아이디가 뭔데 :"+exrRoutine.getMember().getMember_idx());
 		exrRoutineService.insert(exrRoutine);
 		
 		Msg msg=new Msg();
@@ -138,6 +142,7 @@ public class RestExrController {
 		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
 		return entity;
 	}
+
 	
 	
 	// 댓글 조회
@@ -218,11 +223,14 @@ public class RestExrController {
 	/*------------------------------------
 		오운완 게시판
 	--------------------------------------*/
-	// 등록
+	// 등록  ** 안드로이드 작업  **
 	@PostMapping("/today")
 	public ResponseEntity<Msg> todayInsert(ExrToday exrToday) throws ExrCategoryException{
-		logger.info("등록될 입력 값!"+exrToday);
+		System.out.println("컨트롤러에서 확인 "+exrToday);
+		logger.info("분명히 날라온 거 다 알고 있어 "+exrToday);
+
 		
+		// 안드로이드에서 받음!
 		exrTodayService.insert(exrToday);
 		
 		Msg msg=new Msg();
@@ -230,6 +238,7 @@ public class RestExrController {
 		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
 		return entity;
 	}
+	
 	
 	
 	// 추천 수 증가  --> 후 그 값 반환함
@@ -254,6 +263,7 @@ public class RestExrController {
 		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
 		return entity;
 	}
+	
 	
 	
 	/*-------------------------

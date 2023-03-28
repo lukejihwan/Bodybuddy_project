@@ -177,17 +177,6 @@
 									</div>
 								</div>
 
-								<div class="form-group row">
-									<div class="col">
-										<textarea name="content1" class="form-control">내용1</textarea>
-									</div>
-								</div>
-												
-								<div class="form-group row">
-									<div class="col">
-										<textarea name="content2" class="form-control">내용2</textarea>
-									</div>
-								</div>
 								</form>
 								
 								<div class="form-group row">
@@ -538,7 +527,7 @@
 
 		// 써머 노트 적용
 		$('#content').summernote({
-			height:400
+			height:600
 		});
 		
 	});

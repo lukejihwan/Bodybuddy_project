@@ -54,10 +54,6 @@
 	<context:property-placeholder location="classpath:./social.properties"/>
 	
 	
-	<!-- ListConverter 빈 등록 -->
-	<bean id="listConverter" class="com.edu.bodybuddy.util.ListConverter"/>
-	
-	
 	<bean class="org.springframework.mail.javamail.JavaMailSenderImpl" id="javaMailSender">
 		<property name="host" value="smtp.gmail.com"/>
 		<property name="port" value="587"/>

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.edu.bodybuddy.domain.exr.ExrNotice;
-import com.edu.bodybuddy.exception.ExrCategoryException;
 import com.edu.bodybuddy.exception.ExrNoticeException;
 
 @Repository
@@ -42,6 +41,8 @@ public class MybatisExrNoticeDAO implements ExrNoticeDAO{
 	
 	@Override
 	public void update(ExrNotice exrNotice) throws ExrNoticeException{
+		logger.info("디에이오에서 확인 "+exrNotice);
+		
 		int result=sqlSessionTemplate.update("ExrNotice.update", exrNotice);
 		if(result<1) {
 			throw new ExrNoticeException("운동정보글 수정 실패");

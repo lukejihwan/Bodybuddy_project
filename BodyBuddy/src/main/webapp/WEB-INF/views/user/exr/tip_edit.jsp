@@ -26,7 +26,7 @@
 	<!-- /top-bar end-->
 
 	<!-- hero section start -->
-	<div class="hero-section">
+	<div class="hero-section" style="background:#E57373">
 		<!-- navigation-->
 		<%@include file="../inc/header_navi.jsp"%>
 		<!-- /navigation end -->
