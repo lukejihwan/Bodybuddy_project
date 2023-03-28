@@ -12,8 +12,11 @@ public interface ExrRecordService {
 	//해당일에 데이터를 등록하는 메서드
 	public void regist(List<ExrRecord> ExrRecordList);
 	
+	//운동기록을 수정할 메서드
+	public void update(String exrname, int exr_idx, List<Integer> kgList, List<Integer> timesList);
+	
 	//해당일의 운동기록을 삭제하는 메서드
-	public void delete(ExrRecord exrRecord);
+	public void delete(int exr_record_idx);
 	
 	//해당 날짜의 운동기록 한건과 세부운동기록까지 같이 가져오는 메서드
 	public List<ExrRecord> selectForDay(String regdate);
