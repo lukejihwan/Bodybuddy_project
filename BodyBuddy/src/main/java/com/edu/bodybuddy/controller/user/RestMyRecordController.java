@@ -133,7 +133,7 @@ public class RestMyRecordController {
 	public ResponseEntity<Message> postPhysicalRecord(@RequestBody PhysicalRecord physicalRecord) {
 		
 		logger.info("받아온 몸무게는"+physicalRecord.getWeight());
-		logger.info("받아온 bmi는"+physicalRecord.getBMI());
+		logger.info("받아온 bmi는"+physicalRecord.getBmi());
 		logger.info("받아온 체지방은"+physicalRecord.getBodyFat());
 		logger.info("받아온 골격근량은"+physicalRecord.getMusclemass());
 		logger.info("받아온 날짜는"+physicalRecord.getRegdate());
@@ -169,12 +169,21 @@ public class RestMyRecordController {
 		
 		logger.info("클라이언트로부터 받아온 member_idx 값은"+physicalRecord.getMember_idx());
 		logger.info("클라이언트로부터 받아온 regdate 값은"+physicalRecord.getRegdate());
-		logger.info("클라이언트로부터 받아온 BMI 값은"+physicalRecord.getBMI());
+		logger.info("클라이언트로부터 받아온 BMI 값은 :"+physicalRecord.getBmi());
+		logger.info("클라이언트로부터 받아온 getBodyFat :"+physicalRecord.getBodyFat());
+		logger.info("클라이언트로부터 받아온 getHeight 값은 :"+physicalRecord.getHeight());
+		logger.info("클라이언트로부터 받아온 getMusclemass 값은 :"+physicalRecord.getMusclemass());
+		logger.info("클라이언트로부터 받아온 getMusclemass 값은 :"+physicalRecord.getMusclemass());
 		
 		//service 일시키기
 		physicalRecordService.update(physicalRecord);
 		
-		return null;
+		Message message=new Message();
+		message.setCode(200);
+		message.setMsg("신체기록 수정 성공");
+		ResponseEntity<Message> entity=new ResponseEntity<Message>(message,HttpStatus.OK);
+		
+		return entity;
 	}
 	
 	@DeleteMapping("/physicalRecord")

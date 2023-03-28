@@ -11,6 +11,6 @@ public class PhysicalRecord {
 	private double weight;
 	private double musclemass;
 	private double bodyFat;
-	private double BMI;
+	private double bmi;
 	private String regdate;
 }

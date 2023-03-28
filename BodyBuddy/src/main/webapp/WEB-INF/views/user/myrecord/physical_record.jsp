@@ -143,7 +143,7 @@
 	cursor: pointer;
 }
 </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script type="text/javascript">
 let currentYear;
 let currentMonth;
@@ -656,10 +656,11 @@ function physicalUpdate(){
 	json['weight']=$("#t_weight").val();
 	json['bodyFat']=$("#t_bodyFat").val();
 	json['musclemass']=$("#t_musclemass").val();
-	json['BMI']=$("#t_bmi").val();
+	json['bmi']=$("#t_bmi").val();
 	json['member_idx']=24;
 	json['regdate']=registedDate;
 	
+	console.log(json);
 	
 	$.ajax({
 		url:"/rest/myrecord/physicalRecord",
