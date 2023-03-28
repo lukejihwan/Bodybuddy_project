@@ -64,4 +64,15 @@
 		set recommend=recommend+1
 		where counselling_board_idx=#{counselling_board_idx}
 	</update>
+	
+	<!-- 검색용 -->
+	<select id="selectAllBySearch" resultMap="resultMap" parameterType="java.util.HashMap">
+		select * from counselling_board
+		where title like '%${value}%'
+		order by counselling_board_idx desc limit 10 offset #{page}
+	</select>
+	<select id="totalCountSearch" resultType="int" parameterType="String">
+		select count(*) as totalCountSearch from counselling_board
+		where title like '%${value}%'
+	</select>
 </mapper>
