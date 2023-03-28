@@ -245,12 +245,26 @@ public class RestMyRecordController {
 		return dietAPIRecord;
 	}
 	
+	@PostMapping("/dietListForMonth")
+	public List<DietRecord> getDietRecordForMonth(@RequestBody Map<String, String> oneMonthPeriod){
+		logger.info("한달동안의 식단기록을 불러올 첫날과 마지막 날 값은 :" +oneMonthPeriod.get("firstDay")+",,"+oneMonthPeriod.get("lastDay"));
+		
+		List<DietRecord> dietRecordListMonth=dietRecordService.selectForMonth(oneMonthPeriod);
+		logger.info("한달간의 식단기록 불러온 결과의 갯수는 : "+dietRecordListMonth.size());
+		return dietRecordListMonth;
+	}
+	
+	
 	@PostMapping("/dietRecord")
 	public ResponseEntity<Message> registDietRecord(@RequestBody DietRecord dietRecord){
 		
 		dietRecordService.regist(dietRecord);
+		Message message=new Message();
+		message.setCode(200);
+		message.setMsg("식단기록 등록 성공");
+		ResponseEntity<Message> entity=new ResponseEntity<Message>(message, HttpStatus.OK); 
 		
-		return null;
+		return entity;
 	}
 	
 	

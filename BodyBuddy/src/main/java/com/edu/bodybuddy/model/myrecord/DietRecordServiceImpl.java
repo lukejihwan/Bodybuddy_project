@@ -2,6 +2,7 @@ package com.edu.bodybuddy.model.myrecord;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,12 @@ public class DietRecordServiceImpl implements DietRecordService{
 	@Override
 	public void regist(DietRecord dietRecord) throws DietRecordException{
 		dietRecordDAO.insert(dietRecord);
+	}
+
+	@Override
+	public List selectForMonth(Map<String, String> oneMonthPeriod) throws DietRecordException{
+		List<DietRecord> dietRecordListMonth=dietRecordDAO.selectForMonth(oneMonthPeriod);
+		return dietRecordListMonth;
 	}
 
 }

@@ -7,4 +7,11 @@
 		values (24, #{time_category_name}, #{food_name}, #{servings}, #{kcal}, #{carbs}, #{protein}, #{fat}, #{regdate})
 	</insert>
 	
+	<select id="selectForMonth" parameterType="Map" resultType="DietRecord">
+		select * 
+		from diet_record
+		where regdate between #{firstDay} and #{lastDay}
+		order by regdate asc
+	</select>
+	
 </mapper>
