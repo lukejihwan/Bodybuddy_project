@@ -1,3 +1,4 @@
+<%@page import="com.edu.bodybuddy.domain.diet.Food"%>
 <%@page import="org.json.simple.JSONObject"%>
 <%@page import="org.apache.ibatis.reflection.SystemMetaObject"%>
 <%@page import="java.util.List"%>
@@ -88,23 +89,19 @@
 					<table class="table table-hover">
 						<thead>
 							<tr>
-								<th>No</th>
 								<th>음식명</th>
-								<th>단위</th>
+								<th>1회 제공량(g)</th>
 								<th>칼로리</th>
+								<th>탄수화물</th>
+								<th>단백질</th>
+								<th>지방</th>
 								<th><input type="checkbox"></th>
 							</tr>
 						</thead>
 						<tbody>
-						<%for(int i=0; i<15; i++){ %>
-							<tr>
-								<th>No</th>
-								<th>제목</th>
-								<th>글쓴이</th>
-								<th>작성일</th>
-								<th><input type="checkbox"></th>
-							</tr>
-						<%} %>
+						<template v-for="food in foodList">
+							<row :obj="food" >
+						</template>
 						</tbody>
 					</table>
 				</div>
@@ -125,21 +122,75 @@
 	<%@include file="../inc/footer_link.jsp" %>
 
 </body>
+<script type="text/javascript" src="/resources/user/js/page/Pager3.js"></script>
 <script type="text/javascript">
-	function test(){
+	let app1;
+	
+	const row={
+		template:`
+			<tr>
+				<th>{{food.name}}</th>
+				<th>{{food.wt}}</th>
+				<th>{{food.kcal}}</th>
+				<th>{{food.car}}</th>
+				<th>{{food.tien}}</th>
+				<th>{{food.vince}}</th>
+				<th><input type="checkbox"></th>
+			</tr>	
+		`,
+		props:["obj", "num"],
+		data:function(){
+			return{
+				food:this.obj,
+				n:this.num
+			}
+		}
+	}
+
+
+	function getFoodList(){
 		$.ajax({
-			url:"/rest/diet/kcal/test",
+			url:"/rest/diet/kcal/list",
 			type:"get",
 			success:function(result, status, xhr){
-				console.log(result);
+				let jsonList=[];
+				for(let i=0; i<result.length; i++){
+					let obj=result[i];
+					//console.log("???????",obj);
+					
+					let json={};
+					json['name']=obj.desc_KOR;
+					json['wt']=obj.serving_WT;
+					json['kcal']=obj.nutr_CONT1;
+					json['car']=obj.nutr_CONT2;
+					json['tien']=obj.nutr_CONT3;
+					json['vince']=obj.nutr_CONT4;
+					
+					jsonList.push(json);
+				}
+					console.log("???????",jsonList);
+					app1.foodList=jsonList;
 			}
 		});
 	}
 
 
+	function init(){
+		app1=new Vue({
+			el:"#app1",
+			data:{
+				foodList:[]
+			},
+			components:{
+				row
+			}
+		});
+	}
 
 	$(function(){
-		test();	
+		init();
+		
+		getFoodList();	
 	});
 
 </script>

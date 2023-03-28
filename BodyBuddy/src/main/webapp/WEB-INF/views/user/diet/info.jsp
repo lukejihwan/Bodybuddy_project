@@ -52,7 +52,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                     <div class="service-block outline mb30">
                         <div class="service-icon">
-                            <i class="icon-default icon-<%=n%>"></i>
+                            <i class=""><img src="/resources/user/images/diet/<%=n %>.png" style="width:300px; height:300px"></i>
                         </div>
                         <div class="service-content pinside40">
                             <h2 class="service-title mb20"><a href="/diet/info_<%=dietCategory.getDiet_category_subname() %>/<%=dietCategory.getDiet_category_idx() %>" class="title"><%=dietCategory.getDiet_category_name() %> </a> </h2>

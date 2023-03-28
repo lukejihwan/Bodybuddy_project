@@ -48,37 +48,30 @@
                                     <div class="mb30">
                                         <h1>비건식(Vegan Diet)</h1>
                                         <p></p>
-                                        <p>영양소의 질과 양을 제한없이 하루에 필요한 영양소로 이루어진 식사로서 사람의 영양상태를 균형있게 해주기 위한 목적으로 이루어져 있습니다.</p>                                       
-                                        <p>특정한 식품이나 질감상의 조정이 필요치 않은 사람에게 적용되며 영챵적 측면과 함께 균형식에 대한 효과를 거둘 수 있도록 합니다.</p>
-                                        <p>과일, 채소, 통곡물, 무지방 또는 저지방 우유 및 유제품을 강조합니다. 해산물, 살코기 및 가금류, 계란, 콩류, 견과류 및 씨앗과 같은 다양한 단백질 식품을 포함합니다. 첨가당, 나트륨, 포화 지방, 트랜스 지방 콜레스테롤이 적습니다.</p>
-                                      	<p>전분과 섬유질이 충분한 음식을 섭취할 수 있으며, 너무 많은 설탕과 나트륨은 피해야합니다. 되도록 하루 세 끼의 균형 잡힌 식사를 하며, 1회 섭취량을 확인하고 다양한 음식을 조금씩 먹습니다. </p>  
+                                        <p>동물성 식품을 제한하고 과일·채소·곡물 등 식물성 식품을 섭취하는 식습관을 지향하는 생활 양식입니다.</p>                                       
+                                        <p>동물성 음식은 보통 동물로 만든 음식과, 동물로부터 나온 유제품(우유, 버터, 치즈, 요구르트 등), 동물의 알, 동물 성분을 물에 넣고 끓인 국물과 어류까지도 포함하는 말이지만, 일부 엄격하지 않은 채식의 경우에는 동물의 고기를 제외한 일부의 동물성 음식을 먹는 경우도 있습니다.</p>
                                     </div>
+                                    
+                                    <!-- 채식주의자 디자인 -->
+                                    <div class="">
+				                        <h3>채식주의자 분류</h3>
+				                       	<ul>
+					                        <li><h4>비건(Vegan)</h4> 유제품과 동물의 알, 벌꿀을 포함한 모든 종류의 동물성 음식을 먹지 않고, 짐승의 가죽으로 만든 옷이나 화장품류처럼 동물성 원료가 포함된 모든 상품도 사용하지 않는 경우. </li>
+					                        <li><h4>생채식주의(Raw veganism)</h4>식물성 재료를 열을 이용해 조리하지 않고 먹거나, 효소가 파괴되는 온도인 48 °C(118 °F) 이상으로는 열을 가하지 않습니다. 조리과정에서 영양소가 파괴되거나 변형되는 것을 막기 위한 경우가 많습니다.</li>
+					                        <li><h4>과식주의(Fruitarianism)</h4>과일과 견과류의 열매와 씨앗 등, 식물에게 해를 끼치지 않는 부분만 먹는 경우. 일부 열매주의자는 나무에 매달려 있는 열매는 먹지 않고, 다 익어 땅에 떨어진 열매만 먹는 경우도 있습니다.</li>
+				                       		<li><h4>락토 베지테리언(lacto vegetarian)</h4>고기와 동물의 알은 먹지 않지만 유제품은 먹는 경우.</li>
+				                       		<li><h4>오보 베지테리언(ovo vegetarian) </h4>유제품은 먹지 않지만 동물의 알은 먹는 경우.</li>
+				                       		<li><h4>락토-오보 베지테리언(lacto-ovo vegetarian) </h4>유제품과 동물의 알은 먹는 경우.</li>
+				                       
+				                       
+				                        </ul>
+		                            </div>   
+		                            <p></p>    
+                                    
+                                    
                                     </div>
-                                </div>
-                                
-                               <!-- 하루 영양소 -->
-                               <div class="container">  
-                               <h4>일반식의 영양기준</h4>        
-								  <table class="table table-dark">
-								    <thead>
-								      <tr>
-								        <th>열량(kcal)</th>
-								        <th>당질(g)</th>
-								        <th>단백질(g)</th>
-								        <th>지질(g)</th>
-								      </tr>
-								    </thead>
-								    <tbody>
-								      <tr>
-								        <td>2205</td>
-								        <td>338</td>
-								        <td>112</td>
-								        <td>46</td>
-								      </tr>
-								      </tr>
-								    </tbody>
-								  </table>
-								</div>
+                                	</div>
+                                	<br/>
                                 
                                 <!-- 식단리스트 -->
                                 <div class="comments-area pinside40 outline mb40">
@@ -120,7 +113,7 @@
                                                 <li> <a href="/diet/info_kito/2"><i class="icon-1 service-sidenav-icon"></i><span class="sidenav-text">키토제닉</span> </a></li>
                                                 <li> <a href="/diet/info_fish/3"><i class="icon-4 service-sidenav-icon"></i><span class="sidenav-text">지중해식</span> </a></li>
                                                 <li class="active"> <a href="/diet/info_vegan/4"><i class="icon-5 service-sidenav-icon"></i><span class="sidenav-text">비건식</span> </a></li>
-                                                <li> <a href="/diet/info_time"><i class="icon-6 service-sidenav-icon"></i><span class="sidenav-text">간헐적단식</span> </a></li>
+                                                <li> <a href="/diet/info_time/5"><i class="icon-6 service-sidenav-icon"></i><span class="sidenav-text">간헐적단식</span> </a></li>
                                             </ul>
                                         </div>
                                         

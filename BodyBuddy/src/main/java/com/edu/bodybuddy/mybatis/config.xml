@@ -33,6 +33,7 @@
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietTip" alias="DietTip" />
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietTipComments" alias="DietTipComments" />
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietShare" alias="DietShare" />
+ 	<typeAlias type="com.edu.bodybuddy.domain.diet.DietShareComments" alias="DietShareComments" />
  
  	<!-- Mypage Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Mypost" alias="Mypost"/>
@@ -81,6 +82,7 @@
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietTipMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietTipCommentsMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietShareMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/diet/DietShareCommentsMapper.xml"/>
     
     <!-- Mypage Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/MypostMapper.xml"/>
