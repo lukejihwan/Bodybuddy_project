@@ -2,18 +2,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<%@include file="./inc/header_link.jsp" %>
+<%@include file="../inc/header_link.jsp" %>
 </head>
 
 <body class="animsition">
     <!-- top-bar start-->
-	<%@include file="./inc/topbar.jsp" %>
+	<%@include file="../inc/topbar.jsp" %>
     <!-- /top-bar end-->
 
     <!-- hero section start -->
     <div class="hero-section">
 		<!-- navigation-->
-	   	<%@include file="./inc/header_navi.jsp" %>
+	   	<%@include file="../inc/header_navi.jsp" %>
 	    <!-- /navigation end -->
     </div>
      <!-- ./hero section end -->
@@ -83,7 +83,7 @@
                             <i class="icon-default icon-envelope-1"></i>
                         </div>
                         <div class="service-content pinside40">
-                            <h2 class="service-title mb20"><a href="/mypage/ask" class="title">문의/신고내역</a></h2>
+                            <h2 class="service-title mb20"><a href="/mypage/cs" class="title">문의/신고내역</a></h2>
                             <p class="mb60">나의 문의와 신고내역</p>
                         </div>
                     </div>
@@ -94,12 +94,12 @@
     <!-- /content end -->
 
     <!-- black footer_space -->
-    <%@include file="./inc/footer_space.jsp" %>
+    <%@include file="../inc/footer_space.jsp" %>
     
     <!-- tiny footer -->
-    <%@include file="./inc/footer_tiny.jsp" %>
+    <%@include file="../inc/footer_tiny.jsp" %>
     
-	<%@include file="./inc/footer_link.jsp" %>
+	<%@include file="../inc/footer_link.jsp" %>
 
 </body>
 

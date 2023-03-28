@@ -1,3 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="Ask"></mapper>
+<mapper namespace="Ask">
+	<resultMap type="Ask" id="askMap">
+		<id column="ask_idx" property="ask_idx"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="regdate" property="regdate"/>
+		<result column="status" property="status"/>
+		<association
+			property="member" 
+			column="member_idx" 
+			javaType="Member" 
+			select="Member.selectByIdx"/>
+		<collection 
+			property="ask_reply"
+			column="ask_idx"
+			javaType="AskReply"
+			select="AskReply.selectByAsk"/>
+	</resultMap>
+	
+	<select id="selectTotal" parameterType="int" resultType="int">
+		select count(*) as total from ask where member_idx = #{member.member_idx}
+	</select>
+	
+	<select id="selectByMember" parameterType="Map" resultMap="askMap">
+		SELECT *  FROM (
+		 SELECT ROW_NUMBER() OVER (ORDER BY ask_idx DESC) AS ROWNUM, ask_idx, member_idx, title, content, regdate, status FROM ask
+		 where member_idx = #{member.member_idx} ORDER BY ask_idx DESC
+		 ) ask 
+		WHERE ROWNUM BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="select" parameterType="int" resultType="Ask">
+		select * from ask where ask_idx = #{ask_idx}
+	</select>
+
+	<insert id="insert" parameterType="Ask">
+		insert into ask(member_idx, title, content) values(#{member.member_idx}, #{title}, #{content})
+	</insert>
+
+	<update id="update" parameterType="Ask">
+		update ask set title=#{title}, content=#{content} where ask_idx = #{ask_idx}
+	</update>
+	
+	<delete id="delete" parameterType="Ask">
+		delete from ask where ask_idx = #{ask_idx}
+	</delete>
+</mapper>

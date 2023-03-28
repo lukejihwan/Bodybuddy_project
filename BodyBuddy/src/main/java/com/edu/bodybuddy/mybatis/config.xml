@@ -11,7 +11,7 @@
  	<typeAlias type="com.edu.bodybuddy.domain.member.Password" alias="Password"/>
  	
  	<!-- Myrecord Alias -->
- 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.PhysicalRecord" alias="PysicalRecord"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.PhysicalRecord" alias="PhysicalRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrRecord" alias="ExrRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrDetailRecord" alias="ExrDetailRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.DietRecord" alias="DietRecord"/>
@@ -36,8 +36,9 @@
  
  	<!-- Mypage Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Report" alias="Report"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.ReportReply" alias="ReportReply"/>
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Ask" alias="Ask"/>
- 	<typeAlias type="com.edu.bodybuddy.domain.mypage.Ask_img" alias="Ask_img"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.AskReply" alias="AskReply"/>
  	
  	<!-- Board Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.board.FreeBoard" alias="FreeBoard"/>
@@ -81,10 +82,10 @@
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietShareMapper.xml"/>
     
     <!-- Mypage Mapper -->
-    <mapper resource="com/edu/bodybuddy/mybatis/mypage/ReportMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskMapper.xml"/>
-
-    <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskimgMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskReplyMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/ReportMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/ReportReplyMapper.xml"/>
 
 
 	<!-- Board Mapper -->

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReportReply">
+	<select id="selectByReport" parameterType="int" resultType="ReportReply">
+		select * from report_reply where report_idx = #{report_idx}
+	</select>
+	
+	<insert id="insert" parameterType="Report">
+		insert into report_reply(report_idx, title, content) values(#{report.report_idx}, #{title}, #{content})
+	</insert>
+
+	<update id="update" parameterType="Report">
+		update report_reply set title=#{title}, content=#{content} where report_idx = #{report.report_idx}
+	</update>
+	
+	<delete id="delete" parameterType="Report">
+		delete from report_reply where report_idx = #{report.report_idx}
+	</delete>
+</mapper>

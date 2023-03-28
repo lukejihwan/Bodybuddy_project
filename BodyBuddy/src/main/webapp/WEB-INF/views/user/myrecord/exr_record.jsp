@@ -174,47 +174,135 @@ let today;
 let app1;
 // 현재 위치에 포커스 맞추기
 let map;
+//근력운동, 러닝에 따라 변화될 논리값
+let condition=true;
+
 
 const rowlist={
 	template:`
 		<div class="card bg-dark text-white wrapper">
+		<!--form id값 동적으로 할당-->
+			<form :id="'form'+exr.exr_record_idx">
 			<div class="row card-body">
-				운동명: {{exer.exr_name}}
+				운동명: <input type="text" class="form-control input-sm" v-model="exr.exr_name" name="exrname">
+				<input type="hidden" v-model="exr.exr_record_idx" name="exr_idx">
 			</div>
 			<div div class="row">
-				<div class="col-md-8 card-body">
+				<div class="col-md-10 card-body">
 					<div class="form-group">
+						<template v-for="(detail_exr,i) in exr.exrRecordDetailList">
+							<div class="row">
+								<div class="col-md-2">
+									{{i+1}}세트
+								</div>
+								<div class="col-md-3">
+									<input type="number" min="1" max="700" class="form-control input-sm" v-model="detail_exr.kg" name="kgs[]">
+								</div>
+								<div class="col-md-2">
+									kg
+								</div>
+								<div class="col-md-3">
+									<input type="number" min="1" max="700" class="form-control input-sm" v-model="detail_exr.times" name="times[]">
+								</div>
+								<div class="col-md-2">
+									개
+								</div>
+							</div>
+						</template>
 					</div>
 				</div>
-				<div class="col-md-4 card-body">
-					<div class="form-group">
-						<button type="button" class="btn btn-warning" v-on:click="update(exer.exr_name)">수정</button>
+					<!--
+					<input type="hidden" value="{{exr.exr_record_idx}}" name="exr_idx">
+					-->
+					<div class="col-md-2 card-body">
+						<div class="form-group">
+							<button type="button" class="btn btn-warning" v-on:click="update(exr)">수정</button>
+						</div>
+						<div class="form-group">
+							<button type="button" class="btn btn-danger" v-on:click="del(exr.exr_record_idx)">삭제</button>
+						</div>
 					</div>
-					<div class="form-group">
-						<button type="button" class="btn btn-danger">삭제</button>
-					</div>
-				</div>
 			</div>
+			</form>
 		</div>
 		`,
-		props:['exr', 'key_idx'],
-		data:function(){
+		props:['exr'],
+		data(){
 			return{
-				exer:this.exr
+				exr:this.exr
 			};
 		},
 		methods:{
-			update:function(exrname){
-				alert(exrname+" 수정할래요?");
+			update:function(exr){
+				if(confirm("수정하시겠습니까?")){
+					//form 요소 선택(백틱사용)
+					console.log("여기는 왔다");
+					let form=document.getElementById('form'+exr.exr_record_idx);
+					console.log(form);
+					//form 데이터를 FormData 객체로 변환
+					let formData = new FormData(form);
+					
+					//formData안의 내용물을 확인하는 법
+					for(let pair of formData.entries()){
+						console.log(pair[0]+", "+pair[1]);
+					}
+					// fetch요청을 보낼 url
+					let url="/rest/myrecord/exrRecord"
+					console.log("어디까지 왔다.");
+					fetch(url,{
+						method:"POST",
+						body:formData
+					})
+					.then(response=>{
+						if(response.ok){
+							//요청 성공적으로 처리시
+							console.log("수정 완료");
+							alert("수정이 완료되었습니다");
+							location.href="/myrecord/exr_record";
+						}else{
+							//요청 실패시
+							console.log("수정 실패");
+						}
+					})
+					.catch(error=>{
+						console.log(error);
+					});
+				}
+			},
+			del:function(exr_record_idx){
+				console.log("삭제할 운동idx값은", exr_record_idx);
+				deleteExrRecord(exr_record_idx);
 			}
 		}
+		
 }
 
+//운동기록 삭제하는 함수
+function deleteExrRecord(exr_record_idx){
+	if(confirm("삭제하시겠습니까?")){
+		$.ajax({
+			url:"/rest/myrecord/exrRecord/"+exr_record_idx,
+			type:"delete",
+			success:function(result, status, xhr){
+				console.log("result는",result);
+				console.log("삭제성공");
+				alert("삭제되었습니다");
+				location.href="/myrecord/exr_record";
+			},
+			error:function(xhr, status, error){
+				console.log("에러", error);
+			}
+		});
+	}
+}
+
+//vue 초기화 함수
 function init(){
 	app1=new Vue({
 		el:"#app1",
 		data:{
-			exrList:[]
+			exrList:[],
+			count:10
 		},
 		components:{
 			rowlist
@@ -264,7 +352,7 @@ function renderCalender(thisMonth) {
     }
     // 이번달
     for (let i = 1; i <= nextDate; i++) {
-        calendar.innerHTML = calendar.innerHTML + "<div class='day current' onclick='showExrRecord("+i+")' data-toggle='collapse' data-target='#exrCollapse'>" + i + "</div>"
+        calendar.innerHTML = calendar.innerHTML + "<div class='day current' onclick='showExrAndRunningRecord("+i+")'>" + i + "</div>"
     }
     // 다음달
     for (let i = 1; i <= (7 - nextDay == 7 ? 0 : 7 - nextDay); i++) {
@@ -286,8 +374,8 @@ function calendarInit() {
     const utc = date.getTime() + (date.getTimezoneOffset() * 60 * 1000); // uct 표준시 도출
     const kstGap = 9 * 60 * 60 * 1000; // 한국 kst 기준시간 더하기
     today = new Date(utc + kstGap); // 한국 시간으로 date 객체 만들기(오늘)
-    console.log(utc);
-    console.log(today);
+    //console.log(utc);
+    //console.log(today);
   
     let thisMonth = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     // 달력에서 표기하는 날짜 객체
@@ -306,14 +394,22 @@ function calendarInit() {
     $(".go-prev").on("click", function() {
         thisMonth = new Date(currentYear, currentMonth - 1, 1);//년, 월, 일
         renderCalender(thisMonth);
-        getExrRecordForMonth();
+        if(condition){
+    	    getExrRecordForMonth();
+        }else{
+        	getRunningRecordForMonth();
+        }
     });
 
     // 다음달로 이동
     $(".go-next").on("click", function() {
         thisMonth = new Date(currentYear, currentMonth + 1, 1);
         renderCalender(thisMonth); 
-        getExrRecordForMonth();
+        if(condition){
+    	    getExrRecordForMonth();
+        }else{
+        	getRunningRecordForMonth();
+        }
     });
 }
 
@@ -326,6 +422,7 @@ function makeDayFormat(clickedDay){
 }
 
 //해당일의 운동기록과 세부내용을 collapse에 rendering하는 함수
+/*
 function showExrRecordsOnCollapse(exrLists){
 	for(let i=0; i<exrLists.length; i++){
 		//console.log("운동명은",exrList[i].exr_name);
@@ -337,29 +434,43 @@ function showExrRecordsOnCollapse(exrLists){
 		}
 	}
 }
+*/
 
 //각 날짜 클릭시 동작할 함수
-function showExrRecord(clickedDay){
-	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
-	console.log("registedDate", registedDate);
+function showExrAndRunningRecord(clickedDay){
 	
-	$.ajax({
-		url:"/rest/myrecord/exrRecord/"+registedDate,
-		type:"GET",
-		data: registedDate,
-		success:function(result, status, xhr){
-			//console.log(typeof result); object형
-			console.log("받아온 결과는 ", result);
-			app1.exrList=result;
-			showExrRecordsOnCollapse(result);
-		},
-		error:function(xhr, status, error){
-			console.log("error",error);
-		}
-	});
+	//근력운동이 눌렸을때, 러닝이 눌렸을때에 따라 다르게 동작하게 하기 위해
+	if(condition){ //근력운동이 눌렸을 때
+		let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
+		console.log("registedDate", registedDate);
 		
+		$.ajax({
+			url:"/rest/myrecord/exrRecord/"+registedDate,
+			type:"GET",
+			data: registedDate,
+			success:function(result, status, xhr){
+				//console.log(typeof result); object형
+				console.log("받아온 결과는 ", result);
+				app1.exrList=result;
+				console.log("exrList의 길이는 ",app1.exrList.length);
+				//showExrRecordsOnCollapse(result);
+			},
+			error:function(xhr, status, error){
+				console.log("error",error);
+				app1.exrList=[];
+			}
+		});
+	}else{ //러닝버튼이 눌리고, 각날짜를 불러올 영역
+		$.ajax({
+			url:"",
+			type:"GET"
+		});
+	}
 }
 
+//받아온 regdate를 달력에 표시하기 위한 작업
+//속상: 잘못한게..근력운동과 러닝 둘다 호환되도록 함수를 만들어 놓았어야 하는데,
+//근력운동에만 호환되도록 되었음...... 나중에 바꾸도록
 function renderExrRecord(registedDataForMonth){
 	let divdays=document.getElementsByClassName("current");
 	let selectedDays=[];
@@ -385,18 +496,70 @@ function renderExrRecord(registedDataForMonth){
 	}
 }
 
+function renderRunningRecord(registedRunningDataForMonth){
+	let divdays=document.getElementsByClassName("current");
+	let selectedDays=[];
+	
+	//숫자 변환 작업 01을 1로 11은 11같이
+	for(let i=0; i<registedRunningDataForMonth.length; i++){
+		let registedRunningData=registedRunningDataForMonth[i];
+		let processedData=registedRunningData.slice(8,10);
+		if(processedData.substr(0,1)==0){
+			let selectedDay=registedRunningData.slice(9,10); //ex: 11 (일)div와 비교해 이미지 붙이기 위해
+			selectedDays.push(selectedDay);
+		}else{
+			let selectedDay=registedRunningData.slice(8,10); //ex: 11 (일)div와 비교해 이미지 붙이기 위해
+			selectedDays.push(selectedDay);
+		}
+		//console.log(selectedDays[0]);
+	}
+	
+	for(let a=0; a<selectedDays.length; a++){
+		let getDay=selectedDays[a];
+		setBackground(getDay);
+	}
+}
+
 function setBackground(getDay){
-	$($(".current")[getDay-1]).css("background-color", "#49469c");
+	if(condition){ //근력운동 버튼 일때
+		$($(".current")[getDay-1]).css("background-color", "#28a745");
+	}else{ //러닝 버튼 일 때
+		$($(".current")[getDay-1]).css("background-color", "#dc3545");
+	}
 }
 
 //근력운동에 관한 달력 불러오는 곳
 function getStrengthExrCalendar(){
+	
+	//운동기록에 해당하는 div의 색상도 원래대로 돌려놓기
+	$(".current").css("background-color", "#ffffff");
+	
+	//근력운동 모드로 진입
+	condition=true;
+	
 	document.getElementById("div_ExrCalendar").style.border="2px solid #28a745";
+	
+	//한달간의 근력운동기록을 불러오는 함수
+	getExrRecordForMonth();
 }
 
+//러닝버튼을 클릭했을 때 동작
 //러닝에 관한 달력 불러오는 곳
 function getRunningCalendar(){
+	//운동상세정보가 나와있다면 들어가도록
+	app1.exrList=[];
+	
+	//운동기록에 해당하는 div의 색상도 원래대로 돌려놓기
+	$(".current").css("background-color", "#ffffff");
+	
+	//런닝기록 모드로 진입
+	condition=false;
+	
+	//달력디자인 테두리 빨강으로 변경
 	document.getElementById("div_ExrCalendar").style.border="2px solid #dc3545";
+	
+	//한달간의 러닝기록을 불러오는 함수
+	getRunningRecordForMonth();
 }
 
 //운동기록된 내용과 날짜 등을 불러올 메서드
@@ -418,7 +581,56 @@ function getExrRecordForMonth(){
 		success:function(result, status, xhr){
 			renderExrRecord(result);
 			console.log("받아온 날짜는",result);
-			alert("성공적으로 불러옴");
+			//alert("성공적으로 불러옴");
+		},
+		error:function(xhr, status, error){
+			console.log(error, "기록불러오던 중 에러발생");
+		}
+	});
+}
+
+//러닝 한달기록을 불러오는 함수
+function getRunningRecordForMonth(){
+	//해당달의 첫날과 마지막날을 JSON형식으로 만듬
+	let json={};
+	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
+	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
+	let dateData=JSON.stringify(json);
+	console.log("러닝기록을 불러올 시작날짜와 끝 날짜",dateData);
+	
+	//console.log(firstDay);
+	//console.log(lastDay);
+	//비동기로 해당달의 첫날과 마지막날을 전송
+	$.ajax({
+		url:"/rest/myrecord/runningRecord",
+		type:"POST",
+		contentType:"application/json",
+		processData:false,
+		data:dateData,
+		success:function(result, status, xhr){
+			console.log("받아온 한달간의 러닝기록 결과는",  result);
+			renderRunningRecord(result);
+			/*
+			createPolyline(result);
+			
+			console.log("받아온 날짜는",result);
+			
+			let jsonList=[];
+			
+			for(let i=0; i<result.length; i++){
+				let dto=result[i];
+				
+				let json={};
+				json['lat']=dto.lati;
+				json['lng']=dto.longi;
+				
+				//console.log("가공된 제이슨은? ",json);
+				jsonList.push(json);
+				
+			}
+			//console.log("가공된 제이슨 리스트는? ",jsonList);
+			createPolyline(jsonList);
+			*/
 		},
 		error:function(xhr, status, error){
 			console.log(error, "기록불러오던 중 에러발생");
@@ -427,82 +639,82 @@ function getExrRecordForMonth(){
 }
 
 
+/*------------------------------------------------------------------------------
+		구글맵과 관련된 영역
+	-----------------------------------------------------------------------------*/
+// 1) 맵 초기 콜백 함수 
+function initMap() {
+	let mapProp= {
+	  center:new google.maps.LatLng(37.556436, 126.945207),
+	  zoom:16,
+	};
+	map = new google.maps.Map(document.getElementById("myMap"),mapProp);
 
-	/*------------------------------------------------------------------------------
-			구글맵과 관련된 영역
-		-----------------------------------------------------------------------------*/
-	// 1) 맵 초기 콜백 함수 
-	function initMap() {
-		let mapProp= {
-		  center:new google.maps.LatLng(37.556436, 126.945207),
-		  zoom:16,
-		};
-		map = new google.maps.Map(document.getElementById("myMap"),mapProp);
+	//console.log("잘 호출 되는 거지? ", map);
+	
+}
 
-		console.log("잘 호출 되는 거지? ", map);
+// db에 저장된 위치 데이터 불러오는 함수
+function getGpsData(){
+	$.ajax({
+		url:"/rest/myrecord/today/gps",
+		typr:"GET",
+		success:function(result, status, xhr){
+			createPolyline(result);
+			
+			//console.log("결과 ", result);
+			//console.log("결과안의 개수 ", result.length);
 		
-	}
-	
-	
-	// db에 저장된 위치 데이터 불러오는 함수
-	function getGpsData(){
-		$.ajax({
-			url:"/rest/myrecord/today/gps",
-			typr:"GET",
-			success:function(result, status, xhr){
-				createPolyline(result);
+			let jsonList=[];
+			
+			for(let i=0; i<result.length; i++){
+				let dto=result[i];
+
+				let json={};
+				json['lat']=dto.lati;
+				json['lng']=dto.longi;
 				
-				console.log("결과안의 개수 ", result.length);
-				
-				let jsonList=[];
-				for(let i=0; i<result.length; i++){
-					let dto=result[i];
-					
-					let json={};
-					json['lat']=dto.lati;
-					json['lng']=dto.longi;
-					
-					jsonList.push(json);
-					
-				}
-				//console.log("가공된 제이슨 리스트는? ",jsonList);
-				createPolyline(jsonList);
+				//console.log("가공된 제이슨은? ",json);
+				jsonList.push(json);
 				
 			}
-		});
-	}
-	
-	
-	// 라인그리기
-	function createPolyline(jsonList){
-		//console.log("그림 그릴 제이슨리스트의 모습은? ", jsonList);
+			//console.log("가공된 제이슨 리스트는? ",jsonList);
+			createPolyline(jsonList);
+			
+		}
+	});
+}
 
-		 const flightPath = new google.maps.Polyline({
-			    path: jsonList,
-			    geodesic: true,
-			    strokeColor: "	#FF4500",
-			    strokeOpacity: 1.0,
-			    strokeWeight: 6,
-			  });
-			  flightPath.setMap(map);
-	}
-	
-	/*------------------------------------------------------------------------------*/
-	
-	
+
+// 라인그리기
+function createPolyline(jsonList){
+	//console.log("그림 그릴 제이슨리스트의 모습은? ", jsonList);
+
+	 const flightPath = new google.maps.Polyline({
+		    path: jsonList,
+		    geodesic: true,
+		    strokeColor: "	#FF4500",
+		    strokeOpacity: 1.0,
+		    strokeWeight: 6,
+		  });
+		  flightPath.setMap(map);
+}
+
+/*------------------------------------------------------------------------------*/
+
+
 /*** 시작할 때 로드될 메서드 ***/
 $(document).ready(function() {
     //초기화
     init();
-    //달력초기화
-	/*------------------*/
+	//달력초기화
+	calendarInit();
+	
+	/*구글맵 호출하는 부분*/
 	getGpsData();
 	initMap();
 	/*------------------*/
 	
-	//달력초기화
-	calendarInit();
-    
     //처음 보여주는 달력의 등록된 운동기록 보여주기
     getExrRecordForMonth();
     
@@ -514,7 +726,19 @@ $(document).ready(function() {
     	getRunningCalendar();
     });
     
-    
+    //왼쪽 사이드바 페이지 이동 이벤트
+    $("#bt_addRecord").click(function(){
+    	location.href="/myrecord/addrecord";
+    });
+    $("#bt_physicalRecord").click(function(){
+    	location.href="/myrecord/physical_record";
+    });
+    $("#bt_exrRecord").click(function(){
+    	location.href="/myrecord/exr_record";
+    });
+    $("#bt_dietRecord").click(function(){
+    	location.href="/myrecord/diet_record";
+    });
 });
 </script>
 <body class="animsition">
@@ -537,19 +761,20 @@ $(document).ready(function() {
     <!-- content start -->
     <div class="space-medium" id="app1">
         <div class="container">
+        	<!-- row 1 시작 -->
             <div class="row">
             	<!-- 왼쪽에 나의 기록 목록 나오는 영역 -->
             	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
 				    <div class = "btn-group-vertical">
-				        <button type = "button" class = "btn btn-primary">기록 추가</button>
-				        <button type = "button" class = "btn btn-primary">신체기록</button>
-				        <button type = "button" class = "btn btn-default">운동기록</button>
-				        <button type = "button" class = "btn btn-primary">식단기록</button>
+				        <button type = "button" class = "btn btn-primary" id="bt_addRecord">기록 추가</button>
+				        <button type = "button" class = "btn btn-primary" id="bt_physicalRecord">신체기록</button>
+				        <button type = "button" class = "btn btn-default" id="bt_exrRecord">운동기록</button>
+				        <button type = "button" class = "btn btn-primary" id="bt_dietRecord">식단기록</button>
 				    </div>
             	</div>
             	
             	<!-- 달력 나올 영역 -->
-            	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 calendar">
 					<div class="sec_cal">
 					<button type="button" id="bt_strengthExr" class="btn btn-success btn-sm">근력운동</button>
             		<button type="button" id="bt_running" class="btn btn-danger btn-sm">러닝</button>
@@ -591,19 +816,20 @@ $(document).ready(function() {
 
 
 			</div>
-			<!-- ./row -->
+			<!-- row 1 끝 -->
 			
 			<!-- 하단 상세정보 보여질 애니메이션 창 -->
+			<!-- row 2 시작 -->
 			<div class="row">
 				
 				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
 				</div>
   				
   				<!-- 운동기록 상세보기가 나올 창 -->
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
 				
-				<template v-for="exr in exrList">
-					<rowlist :key_idx="exr.exr_record_idx" :exr="exr"/>
+				<template v-for="exer in exrList">
+					<rowlist :key_idx="exer.exr_record_idx" :exr="exer"/>
 				</template>
 				
 					<!-- 
@@ -618,6 +844,7 @@ $(document).ready(function() {
 				</div>
 
 			</div>
+			<!-- row 2 끝 -->
 			
         </div>
     </div>

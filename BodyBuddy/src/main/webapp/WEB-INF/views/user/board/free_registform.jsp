@@ -17,7 +17,6 @@
 	<!-- 로그인체크 -->
 	<%@include file="../inc/loginCheck.jsp"%>
 	
-
 	<!-- hero section start -->
 	<div class="hero-section">
 		<!-- navigation-->
