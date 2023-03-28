@@ -26,9 +26,11 @@ public class LoginService implements UserDetailsService{
     
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    	log.info("여기 진입함");
     	Member emailCheck = new Member();
     	emailCheck.setEmail(email);
         Member member = memberDAO.selectByEmail(emailCheck);
+        log.info("받아온 멤버는 : "+member);
         if(member==null){
             throw new UsernameNotFoundException("userEmail" + email + " not found");
         }
