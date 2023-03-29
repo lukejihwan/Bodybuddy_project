@@ -84,7 +84,10 @@
 						<button type="button" class="btn btn-primary" id="bt_list">목록</button>
 						<button type="button" class="btn btn-outline-success" id="bt_edit">수정</button>
 						<button type="button" class="btn btn-outline-danger" id="bt_delete">삭제</button>
-						<button type="button" class="btn btn-outline-danger" id="bt_point" style="float:right">확인</button>
+														<!-- 어드민 -->
+						<sec:authorize access="hasRole('ADMIN')">
+							<button type="button" class="btn btn-secondary" id="bt_point" style="float:right">확인</button>
+						</sec:authorize>
 					</div>
 	
 					<div class="col-md-12 mt-5 mb-4 text-center">
@@ -97,7 +100,6 @@
 				
 				<div class="comment-area">
 					<div class="section">
-
 						<div class="col-sm-9">
 							<label class="control-label" for="textarea">Comments</label>
 							<form id="form1">
@@ -110,8 +112,7 @@
 									placeholder="댓글 입력 창"></textarea>
 								<input type="text" class="form-control" name="writer"
 									placeholder="작성자" />
-	
-								<button id="bt_comment" class="btn btn-default" type="button">등록</button>
+									<button id="bt_comment" class="btn btn-default" type="button">등록</button>
 							</form>
 						</div>
 	
@@ -124,9 +125,7 @@
 							<!-- reply-form -->
 							<hr>
 							<div id="replySection" class="col-sm-9 mt-3">
-
 								<label class="control-label" for="textarea">님에게 답변</label>
-	
 								<form id="form2">
 									<input type="hidden" name="exr_today_idx" value="<%=exrToday.getExr_today_idx()%>">
 									<textarea class="form-control" name="content" rows="6" placeholder="답변 작성"></textarea>
@@ -137,15 +136,8 @@
 							</div>
 							<!-- ./reply-form -->
 
-<!-- 어드민 -->
-		<sec:authorize access="hasRole('ADMIN')">
-			
-		</sec:authorize>
-
-
 					</div>
 				</div><!-- ./comment-area -->
-
 
 		</div>
 	</div>

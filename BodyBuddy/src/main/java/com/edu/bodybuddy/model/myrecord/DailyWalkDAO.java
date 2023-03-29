@@ -15,5 +15,5 @@ public interface DailyWalkDAO {
 	//사용자의 해당일에 뛴거리를 입력하는 메서드
 	public void insert(DailyWalk dailyWalk);
 	//사용자가 해당일에 뛴거리를 삭제하는 메서드
-	public void delete(DailyWalk dailyWalk);
+	public void delete(int member_idx);
 }
