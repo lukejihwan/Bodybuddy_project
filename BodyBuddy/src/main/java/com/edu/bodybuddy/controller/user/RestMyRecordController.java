@@ -29,8 +29,10 @@ import com.edu.bodybuddy.domain.myrecord.DietRecord;
 import com.edu.bodybuddy.domain.myrecord.ExrRecord;
 import com.edu.bodybuddy.domain.myrecord.GpsData;
 import com.edu.bodybuddy.domain.myrecord.PhysicalRecord;
+import com.edu.bodybuddy.exception.DietRecordException;
 import com.edu.bodybuddy.exception.ExrDetailRecordException;
 import com.edu.bodybuddy.exception.ExrRecordException;
+import com.edu.bodybuddy.exception.PhysicalRecordException;
 import com.edu.bodybuddy.model.myrecord.DailyWalkService;
 import com.edu.bodybuddy.model.myrecord.DietRecordService;
 import com.edu.bodybuddy.model.myrecord.ExrRecordService;
@@ -38,6 +40,7 @@ import com.edu.bodybuddy.model.myrecord.GpsDataService;
 import com.edu.bodybuddy.model.myrecord.MyRecordService;
 import com.edu.bodybuddy.model.myrecord.PhysicalRecordService;
 import com.edu.bodybuddy.util.Message;
+import com.edu.bodybuddy.util.WeatherAPIManager;
 
 @RestController
 @RequestMapping("/rest/myrecord")
@@ -177,7 +180,7 @@ public class RestMyRecordController {
 		logger.info("클라이언트로부터 받아온 getBodyFat :"+physicalRecord.getBodyFat());
 		logger.info("클라이언트로부터 받아온 getHeight 값은 :"+physicalRecord.getHeight());
 		logger.info("클라이언트로부터 받아온 getMusclemass 값은 :"+physicalRecord.getMusclemass());
-		logger.info("클라이언트로부터 받아온 getMusclemass 값은 :"+physicalRecord.getMusclemass());
+		logger.info("클라이언트로부터 받아온 체중 값은 :"+physicalRecord.getWeight());
 		
 		//service 일시키기
 		physicalRecordService.update(physicalRecord);
@@ -314,6 +317,38 @@ public class RestMyRecordController {
 		return dietRecordListMonth;
 	}
 	
+	@PutMapping("/dietRecord")
+	public ResponseEntity<Message> getDietRecordForDay(@RequestBody DietRecord dietRecord) {
+		logger.info("받아온 수정할 member_idx값은"+dietRecord.getMember_idx());
+		
+		//서비스 호출
+		dietRecordService.update(dietRecord);
+		
+		Message message=new Message();
+		message.setCode(200);
+		message.setMsg("식단기록 수정 성공");
+		
+		ResponseEntity<Message> entity=new ResponseEntity<Message>(message, HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	@DeleteMapping("/dietRecord")
+	public ResponseEntity<Message> deleteDietRecord(@RequestBody DietRecord dietRecord){
+		logger.info("삭제할 diet_idx값은"+dietRecord.getDiet_idx());
+		
+		//서비스 호출
+		dietRecordService.delete(dietRecord);
+		
+		Message message=new Message();
+		message.setCode(200);
+		message.setMsg("식단기록 삭제 성공");
+		
+		ResponseEntity<Message> entity=new ResponseEntity<Message>(message, HttpStatus.OK);
+		
+		return entity;
+	}
+	
 	
 	@PostMapping("/dietRecord")
 	public ResponseEntity<Message> registDietRecord(@RequestBody DietRecord dietRecord){
@@ -325,6 +360,19 @@ public class RestMyRecordController {
 		ResponseEntity<Message> entity=new ResponseEntity<Message>(message, HttpStatus.OK); 
 		
 		return entity;
+	}
+	
+	@GetMapping("/dietRecord/{regdate}/{member_idx}")
+	public List getDietRecord(@PathVariable("regdate") String regdate, @PathVariable("member_idx") int member_idx) {
+		logger.info("받아온 member_idx는"+member_idx);
+		
+		DietRecord dietRecord=new DietRecord();
+		dietRecord.setRegdate(regdate);
+		dietRecord.setMember_idx(member_idx);
+		//대체해서 반환
+		List dietRecordList=dietRecordService.select(dietRecord);
+		
+		return dietRecordList;
 	}
 	
 	/*=======================================
@@ -348,7 +396,7 @@ public class RestMyRecordController {
 	
 	//이 예외처리를 나중에 controllerAdvice로 처리해줄지 아니면 이렇게 처리해줄지는 나중에 보자
 	//예외를 처리하는 전역적 ExceptionHandler
-	@ExceptionHandler({ExrRecordException.class, ExrDetailRecordException.class})
+	@ExceptionHandler({ExrRecordException.class, ExrDetailRecordException.class, PhysicalRecordException.class, DietRecordException.class})
 	public ResponseEntity<Message> handle(RuntimeException e){
 		
 		Message message=new Message();

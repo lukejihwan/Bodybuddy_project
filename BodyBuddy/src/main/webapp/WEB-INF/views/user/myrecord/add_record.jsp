@@ -77,7 +77,7 @@
 .btn-group-vertical {
 	position: fixed;
 }
-#bt_add_record, #bt_regist {
+#bt_add_record, #bt_exrRegist {
 	border-radius:5px;
 	border: 1px solid white;
 }
@@ -347,11 +347,11 @@ function getDayforRegistExr(){
 
 
 //운동기록 등록하는 함수
-function regist(){
+function registExrRecord(){
 	getDayforRegistExr();
 	exrList.push(exrObject);
 	
-	if($("#exr_day2").val()=="" || $("input[name='t_exr_research']").val()==""){
+	if($("#exr_day2").val()=="" || app1.exerciseList.length<1){
 		alert("날짜또는 운동기록을 추가해주세요");
 		
 	}else{
@@ -672,6 +672,8 @@ function registPhysical(){
 			success:function(result, status, xhr){
 				console.log("신체기록 등록결과는",result);
 				alert("등록성공");
+				//getPhysicalRecordForMonth();
+				
 			},
 			error:function(xhr, status, error){
 				console.log("error", error);
@@ -836,8 +838,8 @@ $(function(){
 	$("#bt_add_set").click(function(){
 		app1.count+=1;
 	});
-	$("#bt_regist").click(function(){
-		regist();
+	$("#bt_exrRegist").click(function(){
+		registExrRecord();
 	});
 	$(".close").click(function(){
 		removeContent();
@@ -1002,7 +1004,7 @@ $(function(){
 						                	
 	                	<div class="form-group">
 			            	<button type="button" class="btn btn-success" id="bt_add_record" data-toggle="modal" data-target="#myModal">기록추가</button>
-			            	<button type="button" class="btn btn-success" id="bt_regist">기록 등록</button>
+			            	<button type="button" class="btn btn-success" id="bt_exrRegist">기록 등록</button>
 			            </div>
 		            </div>
 		            <!-- 오른쪽 영역 운동기록 끝 -->

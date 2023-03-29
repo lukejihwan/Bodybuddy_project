@@ -33,4 +33,23 @@ public class MybatisDietRecordDAO implements DietRecordDAO{
 		return dietRecordListMonth;
 	}
 
+	@Override
+	public List select(DietRecord dietRecord) throws DietRecordException{
+		List dietRecordList=sqlSessionTemplate.selectList("DietRecord.select", dietRecord);
+		if(dietRecordList.size()<1) throw new DietRecordException("식단기록 없음");
+		return dietRecordList;
+	}
+
+	@Override
+	public void update(DietRecord dietRecord) throws DietRecordException{
+		int result=sqlSessionTemplate.update("DietRecord.update", dietRecord);
+		if(result<1) throw new DietRecordException("식단기록 수정 실패");
+	}
+
+	@Override
+	public void delete(DietRecord dietRecord) throws DietRecordException{
+		int result=sqlSessionTemplate.delete("DietRecord.delete", dietRecord);
+		if(result<1)throw new DietRecordException("식단기록 삭제 실패");
+	}
+
 }
