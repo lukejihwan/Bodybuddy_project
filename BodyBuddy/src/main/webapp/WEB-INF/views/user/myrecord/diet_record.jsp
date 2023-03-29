@@ -4,6 +4,10 @@
 <head>
 <%@include file="../inc/header_link.jsp" %>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <style>
 .wrapper{
 	margin: 15px;
@@ -443,7 +447,7 @@ function setBackground(getDay){
 }
 
 //신체기록된 내용과 날짜 등을 불러올 메서드
-function getExrRecordForMonth(){
+function getDietRecordForMonth(){
 	//해당달의 첫날과 마지막날을 JSON형식으로 만듬
 	let json={};
 	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
@@ -459,7 +463,7 @@ function getExrRecordForMonth(){
 		data:dateData,
 		contentType:"application/json",
 		success:function(result, status, xhr){
-			renderExrRecord(result);
+			//renderExrRecord(result);
 			console.log("받아온 날짜는",result);
 			//alert("성공적으로 불러옴");
 		},
@@ -469,14 +473,51 @@ function getExrRecordForMonth(){
 	});
 }
 
+function chartInit() {
+	const DATA_COUNT = 5;
+	const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
+	let ctx=document.getElementById("myChart").getContext("2d");
+	const colors=['#fdeedc','#ffd8a9','#f1a661','#e38b29'];
+	
+	const data = {
+		  labels: ['칼로리', '탄수화물', '단백질', '지방'],
+		  datasets: [{
+		      label: 'Dataset 1',
+		      data: [1,2,3,4],
+		      backgroundColor: colors, //자동으로 배열형식 각각요소가 적용됨
+		    }]
+	};
+	
+	let myDoughnutChart=new Chart(ctx,{
+		type:'doughnut',
+		data:data,
+		options: {
+	        responsive: true,
+	        plugins: {
+	          legend: {
+	            position: 'top',
+	          },
+	          title: {
+	            display: true,
+	            text: 'Chart.js Doughnut Chart'
+	          }
+	        }
+	      }
+	});
+	
+}
+
 $(function(){
 	//초기화
     init();
 	//달력초기화
 	calendarInit();
 	
-	 //달력의 등록된 신체 기록 보여주기
-    getExrRecordForMonth();
+	//차트초기화
+	chartInit();
+	
+	 //달력의 등록된 식단 기록 보여주기
+    getDietRecordForMonth();
 	
 	//왼쪽 사이드바 페이지 이동 이벤트
     $("#bt_addRecord").click(function(){
@@ -527,7 +568,7 @@ $(function(){
             	</div>
             	
             	<!-- 달력 나올 영역 -->
-				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 calendar">
+				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 calendar">
 					<div class="sec_cal">
 						
 						<!-- 실제 달력이 나오는 영역 시작-->
@@ -554,6 +595,16 @@ $(function(){
 						
 					</div>
 				</div>
+				<!-- 달력나올 영역 끝 -->
+				
+				<!-- 식단차트 나올곳 -->
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				
+					<canvas id="myChart" height="250"></canvas>
+				
+				</div>
+				<!-- 식단차트 나올 곳 끝 -->
+				
 			</div>
             <!--1row 끝나는 곳  -->
             
@@ -564,7 +615,7 @@ $(function(){
 				</div>
   				
   				<!-- 운동기록 상세보기가 나올 창 -->
-				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" id="app1">
 				
 				<template v-for="exer in exrList">
 					<rowlist :key_idx="exer.exr_record_idx" :exr="exer"/>

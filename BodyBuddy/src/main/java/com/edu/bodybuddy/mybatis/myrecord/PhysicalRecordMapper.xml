@@ -7,19 +7,32 @@
 		values (24, #{height}, #{weight}, #{musclemass}, #{bodyFat}, #{BMI}, #{regdate})
 	</insert>
 	
-	<delete id="delete">
-	
-	</delete>
-	
 	<select id="selectForMonth" resultType="PhysicalRecord" parameterType="Map">
 		select * 
 		from physical_record
 		where regdate between #{firstDay} and #{lastDay}
+		and member_idx=24
 		order by regdate asc
 	</select>
 	
-	<update id="update">
+	<!-- 신체기록 한 건 가져오기위한 select -->
+	<select id="select" parameterType="PhysicalRecord" resultType="PhysicalRecord">
+		select * from physical_record
+		where member_idx=#{member_idx} and regdate=#{regdate}
+	</select>
 	
+	<update id="update" parameterType="PhysicalRecord">
+		update physical_record
+		set height=#{height}, weight=#{weight}, musclemass=#{musclemass}, bodyFat=#{bodyFat}, BMI=#{BMI}
+		where physical_idx=#{physical_idx} and member_idx=#{member_idx}
 	</update>
+	
+	<delete id="delete" parameterType="PhysicalRecord">
+		delete from physical_record
+		where member_idx=#{member_idx} and regdate=#{regdate}
+	</delete>	
 
 </mapper>
+
+
+
