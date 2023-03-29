@@ -25,7 +25,7 @@
 	
 	<insert id="insert" parameterType="DietTip">
 		insert into diet_tip(member_idx,title,writer, content)
-		values(#{member_idx},#{title},#{writer}, #{content})
+		values(#{member.member_idx},#{title},#{writer}, #{content})
 		
 		<selectKey 
 			keyColumn="diet_tip_idx"
