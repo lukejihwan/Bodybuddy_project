@@ -45,8 +45,8 @@ public class MybatisDailyWalkDAO implements DailyWalkDAO{
 	}
 
 	@Override //사용자의 해당일에 뛴거리를 삭제하는 메서드
-	public void delete(DailyWalk dailyWalk) throws DailyWalkException{
-		int result=sqlSessionTemplate.delete("DailyWalk.delete", dailyWalk);
+	public void delete(int member_idx) throws DailyWalkException{
+		int result=sqlSessionTemplate.delete("DailyWalk.delete", member_idx);
 		if(result<1)throw new DailyWalkException("러닝기록 삭제 실패");
 	}
 

@@ -41,8 +41,8 @@ public class DailyWalkServiceImpl implements DailyWalkService{
 	}
 
 	@Override
-	public void delete(DailyWalk dailyWalk) throws DailyWalkException{
-		dailyWalkDAO.delete(dailyWalk);
+	public void delete(int member_idx) throws DailyWalkException{
+		dailyWalkDAO.delete(member_idx);
 	}
 
 
