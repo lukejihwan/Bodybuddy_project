@@ -135,7 +135,7 @@
 			<tr @click="getDetail(dietTip)">
 				<td>{{dietTip.diet_tip_idx}}</td>
 				<td>{{dietTip.title}}</td>
-				<td>{{dietTip.title}}</td>
+				<td>{{dietTip.writer}}</td>
 				<td>{{dietTip.regdate.substring(0,10)}}</td>
 				<td>{{dietTip.recommend}}</td>
 				<td>{{dietTip.hit}}</td>
@@ -227,7 +227,16 @@
 		
 		//글쓰기 버튼
 		$("#bt_regist").click(function(){
-			location.href="/diet/tip_registform";
+			<sec:authorize access="isAnonymous()">
+			Swal.fire({
+				title:"로그인해야 사용할 수 있는 기능입니다",
+				icon:"warning",
+				confirmButtonText:"확인",
+				confirmButtonColor: '#c5f016'
+			});
+			return;
+		</sec:authorize>
+		location.href="/diet/tip_registform";
 		});
 		
 		//검색버튼 

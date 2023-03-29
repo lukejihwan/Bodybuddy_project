@@ -34,10 +34,11 @@
 				<div class="col-sm-12">
 					<form id="form">
 						<div class="form-group">
+							<input type="hidden" name="member_idx" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
 							<input type="text" class="form-control" name="title" placeholder="제목을 입력하세요" style="height:100px; font-size:30px">
 						</div>
 						<div class="form-group">
-							<!-- 작성자... -->
+							<input type="hidden" class="form-control" name="writer" placeholder="작성자..." value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>">
 						</div>
 						
 						<div class="form-group">
@@ -72,8 +73,9 @@
 	//글 등록하기
 	function regist(){
 		let formData=new FormData();
-		
+		formData.append("member.member_idx", $("#form *[name='member_idx']").val());
 		formData.append("title", $("#form input[name='title']").val());
+		formData.append("writer", $("#form input[name='writer']").val());
 		formData.append("content", $("#form textarea[name='content']").val());
 		
 		$.ajax({

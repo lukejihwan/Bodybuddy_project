@@ -764,6 +764,24 @@ function registDietRecord(){
 	}
 }
 
+function calculateBMI(){
+	let height=$("#t_height").val();
+	let weight=$("#t_weight").val();
+	height=height/100;
+	let BMI=weight/(height*height);
+	$("#t_bmi").val(BMI.toFixed(1));
+}
+
+function test(){
+	$.ajax({
+		url:"/rest/myrecord/dailyRecord",
+		type:"GET",
+		success:function(){
+			console.log("성공");
+		}
+	})
+}
+
 
 //onload될 때
 $(function(){
@@ -778,6 +796,8 @@ $(function(){
 	
 	//한달간의 식단기록을 불러오는 함수 호출
 	getDietRecordForMonth();
+	
+	test();
 	
 	//기본으로 오른쪽 영역을 운동으로
 	$("#right_sector1").show();
@@ -804,6 +824,12 @@ $(function(){
 	//신체기록 등록하는 이벤트
 	$("#bt_pysical_regist").click(function(){
 		registPhysical();
+	});
+	$("#t_height").keyup(function(){
+		calculateBMI();
+	});
+	$("#t_weight").keyup(function(){
+		calculateBMI();
 	});
 	
 	//모달창 세트추가 버튼 클릭시, 세트 추가
@@ -939,11 +965,11 @@ $(function(){
 						
 						<div class="row">
 							<label class="col-md-4">키:</label>
-							<input type="number" class="col-md-8 form-control physical" name="height" placeholder="키 작성...">
+							<input type="number" id="t_height" class="col-md-8 form-control physical" name="height" placeholder="키 작성...">
 						</div>
 						<div class="row">
 							<label class="col-md-4">체중:</label>
-							<input type="number" class="col-md-8 form-control physical" name="weight" placeholder="체중 작성...">
+							<input type="number" id="t_weight" class="col-md-8 form-control physical" name="weight" placeholder="체중 작성...">
 						</div>
 						<div class="row">
 							<label class="col-md-4">골격근량:</label>
@@ -955,7 +981,7 @@ $(function(){
 						</div>
 						<div class="row">
 							<label class="col-md-4">BMI:</label>
-							<input type="number" class="col-md-8 form-control physical" name="bmi">
+							<input type="number" id="t_bmi" class="col-md-8 form-control physical" name="bmi">
 						</div>
 						</form>
 						

@@ -51,11 +51,12 @@
                     <h1>식단 공유 게시판</h1>
                     <hr>
                     <input type="hidden" class="form-control" name="diet_share_idx"value="<%=dietShare.getDiet_share_idx()%>">
+                    
                     <h3><%=dietShare.getTitle() %></h3>
                     <span><%=dietShare.getDietCategory().getDiet_category_name() %></span>
                     <span class="float-right"><img src="/resources/user/images/diet/heart.png" style="width:20px; height:20px"> 찜하기</span>
                     <br/>
-                    <span>작성자 | <%=dietShare.getRegdate().substring(0,10) %></span>
+                    <span><%=dietShare.getWriter() %> | <%=dietShare.getRegdate().substring(0,10) %></span>
                     <span class="float-right">조회 <%=dietShare.getHit() %> | 추천 {{recommend}}</span>
                     <hr>
 				</div>
@@ -119,7 +120,12 @@
 			<div class="col-sm-12" id="">
 					<label class="control-label" for="textarea">Comments</label>
 					<form id="form">
-						<div class="col">
+						<div class="col-md-12">
+							<input type="hidden" name="member.member_idx"
+							value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
+							<input type="text" class="form-control" name="writer"
+							value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" />	
+								<textarea rows="3" class="form-control for-send" name="content" placeholder="댓글 작성..."></textarea>
 							<div class="col-md-12">
 								<textarea rows="3" class="form-control for-send" name="content" placeholder="댓글 작성..."></textarea>
 								<button type="button" class="btn btn-primary float-right" id="bt_comments">등록</button>
@@ -214,7 +220,7 @@
 			type:"delete",
 			success:function(result, status, xhr){
 				alert("글 삭제 완료");
-				location.href="/diet/share_list/1";
+				location.href="/diet/share_list";
 			}
 		});		
 	}
@@ -258,10 +264,20 @@
 
 	//댓글 등록 
 	function commentsRegist(){
+		<sec:authorize access="isAnonymous()">
+		Swal.fire({
+			title:"로그인해야 사용할 수 있는 기능입니다",
+			icon:"warning",
+			confirmButtonText:"확인",
+			confirmButtonColor: '#c5f016'
+		});
+		return;
+		</sec:authorize>
+		
 		let formData=new FormData();
 		formData.append("dietShare.diet_share_idx", $("input[name='diet_share_idx']").val());
 		formData.append("content", $("#form textarea[name='content']").val());
-		//formData.append("writer", $("#form input[name='writer']").val());
+		formData.append("writer", $("#form input[name='writer']").val());
 	
 		$.ajax({
 			url:"/rest/diet/share/comments/regist",
