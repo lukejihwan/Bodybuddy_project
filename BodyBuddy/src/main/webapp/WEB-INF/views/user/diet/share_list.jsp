@@ -229,6 +229,16 @@
 		
 		//글쓰기 버튼
 		$("#bt_regist").click(function(){
+			<sec:authorize access="isAnonymous()">
+			Swal.fire({
+				title:"로그인해야 사용할 수 있는 기능입니다",
+				icon:"warning",
+				confirmButtonText:"확인",
+				confirmButtonColor: '#c5f016'
+			});
+			return;
+			</sec:authorize>
+			
 			location.href="/diet/share_registform";
 		});
 		
