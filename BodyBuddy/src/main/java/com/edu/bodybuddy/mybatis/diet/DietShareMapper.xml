@@ -3,6 +3,7 @@
 <mapper namespace="DietShare">
 	<resultMap type="DietShare" id="shareMap">
 		<id column="diet_share_idx" property="diet_share_idx"/>
+		
 		<result column="title" property="title"/>
 		<result column="content" property="content"/>
 		<result column="preview" property="preview"/>
@@ -13,12 +14,17 @@
 		<result column="carbohydrate" property="carbohydrate"/>
 		<result column="protein" property="protein"/>
 		<result column="province" property="province"/>
+		<result column="member_idx" property="member.member_idx"/>
 		
 		<association 
 			column="diet_category_idx"
 			property="dietCategory" 
 			javaType="DietCategory"
 			select="DietCategory.select"/>
+			
+		<collection property="commentList" column="diet_share_idx" 
+		javaType="java.util.List" ofType="DietShareComments"
+		select="DietShareComments.selectByIdx"/>	
 	</resultMap>
 	
 	<select id="selectAll" resultMap="shareMap">
@@ -35,8 +41,8 @@
 	</select>
 	
 	<insert id="insert" parameterType="DietShare">
-		insert into diet_share(diet_category_idx, title, content, preview, kcal, carbohydrate, protein, province)
-		values(#{dietCategory.diet_category_idx}, #{title}, #{content}, #{preview}, #{kcal}, #{carbohydrate}, #{protein}, #{province})
+		insert into diet_share(diet_category_idx,member_idx, title, writer, content, preview, kcal, carbohydrate, protein, province)
+		values(#{dietCategory.diet_category_idx},#{member_idx}, #{title},#{writer}, #{content}, #{preview}, #{kcal}, #{carbohydrate}, #{protein}, #{province})
 		
 		<selectKey 
 			keyColumn="diet_share_idx"

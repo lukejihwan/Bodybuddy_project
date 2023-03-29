@@ -8,6 +8,11 @@
 		<result column="recommend" property="recommend"/>
 		<result column="regdate" property="regdate"/>
 		<result column="hit" property="hit"/>
+		
+		<collection property="commentList" column="diet_tip_idx" 
+		javaType="java.util.List" ofType="DietTipComments"
+		select="DietTipComments.selectByIdx"/>	
+		
 	</resultMap>
 	
 	<select id="selectAll" resultMap="tipMap">
@@ -19,8 +24,17 @@
 	</select>
 	
 	<insert id="insert" parameterType="DietTip">
-		insert into diet_tip(title, content)
-		values(#{title}, #{content})
+		insert into diet_tip(member_idx,title,writer, content)
+		values(#{member_idx},#{title},#{writer}, #{content})
+		
+		<selectKey 
+			keyColumn="diet_tip_idx"
+			keyProperty="diet_tip_idx"
+			order="AFTER"
+			resultType="int">
+			
+			select last_insert_id() as diet_tip_idx
+		</selectKey>
 	</insert>
 	
 	<update id="update" parameterType="DietTip">
