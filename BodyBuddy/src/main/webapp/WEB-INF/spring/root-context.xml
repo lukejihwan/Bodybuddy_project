@@ -89,6 +89,12 @@
 		<property name="dataType" 		value="json"/>
 	</bean>
 	
+	<!-- 식단게시판에서 사용하는 api bean 등록 -->
+	<bean id="dietAPI" class="com.edu.bodybuddy.util.DietAPI">
+		<property name="dietServiceKey" value="QjMliKoiQ9gSagmSAFaEQ3xJNMR8F1%2FpOcKLAhXvXFhWAVjqHaRjeYDlPw%2BQWJwmTD0ZMJF407DnUpER3k8o3g%3D%3D" />
+		<property name="dataType" value="json"/>
+	</bean>
+	
 	<!-- 네이버맵, 검색 api bean 등록 -->
 	<bean id="naverMapAPIManager" class="com.edu.bodybuddy.util.NaverMapAPIManager">
 		<property name="geocoding" value="https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode"></property>
