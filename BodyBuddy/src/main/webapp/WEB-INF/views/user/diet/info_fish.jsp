@@ -48,38 +48,18 @@
                                     <div class="mb30">
                                         <h1>지중해식(Mediterranean)</h1>
                                         <p></p>
-                                        <p>영양소의 질과 양을 제한없이 하루에 필요한 영양소로 이루어진 식사로서 사람의 영양상태를 균형있게 해주기 위한 목적으로 이루어져 있습니다.</p>                                       
-                                        <p>특정한 식품이나 질감상의 조정이 필요치 않은 사람에게 적용되며 영챵적 측면과 함께 균형식에 대한 효과를 거둘 수 있도록 합니다.</p>
-                                        <p>과일, 채소, 통곡물, 무지방 또는 저지방 우유 및 유제품을 강조합니다. 해산물, 살코기 및 가금류, 계란, 콩류, 견과류 및 씨앗과 같은 다양한 단백질 식품을 포함합니다. 첨가당, 나트륨, 포화 지방, 트랜스 지방 콜레스테롤이 적습니다.</p>
-                                      	<p>전분과 섬유질이 충분한 음식을 섭취할 수 있으며, 너무 많은 설탕과 나트륨은 피해야합니다. 되도록 하루 세 끼의 균형 잡힌 식사를 하며, 1회 섭취량을 확인하고 다양한 음식을 조금씩 먹습니다. </p>  
+                                        <p>식이섬유와 항산화 특성을 가지는 성분들을 많이, 그리고 자주 섭취하는 영양적으로 균형 잡힌 식단입니다.</p>                                       
+                                        <p>다량의 올레산, 폴리페놀, 불포화 지방산이 포함되어 있으므로 항염증 특성을 가지게 되며, 비만, 제2형 당뇨병, 염증성 질환과 심혈관계 질환의 예방이나 치료에 도움이 된다고 알려져 있습니다.</p>
+                                        <p>지중해식 식단은 장내 미생물의 다양성 증가, 유익한 대사산물인 짧은사슬지방산(Short Chain Fatty Acids, SCFAs) 생산, 밀착연접과 점액 분비 조절로 인한 장벽 상태 향상 등의 효과가 있습니다.</p> 
+                                    	<p></p>
+                                    	<p>하지만 일부 국가를 제외한 주민에게 낯설 수 있다는 점. 그리스, 스페인 등 지중해 연안국의 주민들은 제 땅에서 제철에 나는 로컬푸드지만 다른 나라 사람들은 똑같은 음식 재료를 구하기 어렵거나, 값이 비싸고, 입맛에 맞지 않을 수도 있습니다.</p>
+		                                <p>한국이라면 연어 스테이크는 고등어구이, 올리브유를 뿌린 샐러드는 들기름을 친 나물 무침으로 대체해도 비슷한 효과를 얻을 수 있습니다. 지중해식 식단의 핵심은 가공육, 붉은 살 육류를 생선이나 가금류로 대체하고, 무엇보다 채소를 많이 먹는 데에 있습니다.</p>
+                                    
                                     </div>
                                     </div>
                                 </div>
                                 
-                               <!-- 하루 영양소 -->
-                               <div class="container">  
-                               <h4>일반식의 영양기준</h4>        
-								  <table class="table table-dark">
-								    <thead>
-								      <tr>
-								        <th>열량(kcal)</th>
-								        <th>당질(g)</th>
-								        <th>단백질(g)</th>
-								        <th>지질(g)</th>
-								      </tr>
-								    </thead>
-								    <tbody>
-								      <tr>
-								        <td>2205</td>
-								        <td>338</td>
-								        <td>112</td>
-								        <td>46</td>
-								      </tr>
-								      </tr>
-								    </tbody>
-								  </table>
-								</div>
-                                
+                               
                                 <!-- 식단리스트 -->
                                 <div class="comments-area pinside40 outline mb40">
                                         <ul class="comment-list listnone">
@@ -120,7 +100,7 @@
                                                 <li> <a href="/diet/info_kito/2"><i class="icon-1 service-sidenav-icon"></i><span class="sidenav-text">키토제닉</span> </a></li>
                                                 <li class="active"> <a href="/diet/info_fish/3"><i class="icon-4 service-sidenav-icon"></i><span class="sidenav-text">지중해식</span> </a></li>
                                                 <li> <a href="/diet/info_vegan/4"><i class="icon-5 service-sidenav-icon"></i><span class="sidenav-text">비건식</span> </a></li>
-                                                <li> <a href="/diet/info_time"><i class="icon-6 service-sidenav-icon"></i><span class="sidenav-text">간헐적단식</span> </a></li>
+                                                <li> <a href="/diet/info_time/5"><i class="icon-6 service-sidenav-icon"></i><span class="sidenav-text">간헐적단식</span> </a></li>
                                             </ul>
                                         </div>
                                         

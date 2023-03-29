@@ -806,7 +806,7 @@ $(document).ready(function() {
 
 
 				<!-- 구글맵 나올 영역 -->
-				<div class="col-lg-4 top">
+				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 top">
 					<div class="mapArea top" style="background:red">
 						<div id="myMap">
 						</div>
@@ -826,21 +826,12 @@ $(document).ready(function() {
 				</div>
   				
   				<!-- 운동기록 상세보기가 나올 창 -->
-				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+				<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
 				
 				<template v-for="exer in exrList">
 					<rowlist :key_idx="exer.exr_record_idx" :exr="exer"/>
 				</template>
 				
-					<!-- 
-					<div id="exrCollapse" class="collapse">
-				 		<div class="card bg-success text-white">
-				 			<div class="card-body">
-				 				2023-03-20 운동목록 나올 곳	
-				 			</div>
-				 		</div>
-					</div>
-					 -->
 				</div>
 
 			</div>

@@ -27,11 +27,11 @@
 	
 	
 	<insert id="insert" parameterType="DietTipComments">
-		insert into diet_tip_comments(diet_tip_idx, content, post, step, depth)
-		values(#{dietTip.diet_tip_idx}, #{content}, #{post}, #{step}+1, #{depth}+1)
+		insert into diet_tip_comments(diet_tip_idx, member_idx, writer, content, post, step, depth)
+		values(#{dietTip.diet_tip_idx}, #{member.member_idx}, #{writer}, #{content}, #{post}, #{step}, #{depth})
 	
 		<selectKey keyColumn="diet_tip_comments_idx" keyProperty="diet_tip_comments_idx" resultType="int" order="AFTER">
-			select last_insert_id() as diet_tip_idx from dual
+			select last_insert_id() as diet_tip_comments_idx from dual
 		</selectKey>	
 	</insert>
 	

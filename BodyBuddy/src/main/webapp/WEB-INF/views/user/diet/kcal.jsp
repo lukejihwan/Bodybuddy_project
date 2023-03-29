@@ -1,3 +1,4 @@
+<%@page import="com.edu.bodybuddy.domain.diet.Food"%>
 <%@page import="org.json.simple.JSONObject"%>
 <%@page import="org.apache.ibatis.reflection.SystemMetaObject"%>
 <%@page import="java.util.List"%>
@@ -88,23 +89,19 @@
 					<table class="table table-hover">
 						<thead>
 							<tr>
-								<th>No</th>
 								<th>음식명</th>
-								<th>단위</th>
+								<th>1회 제공량(g)</th>
 								<th>칼로리</th>
+								<th>탄수화물</th>
+								<th>단백질</th>
+								<th>지방</th>
 								<th><input type="checkbox"></th>
 							</tr>
 						</thead>
 						<tbody>
-						<%for(int i=0; i<15; i++){ %>
-							<tr>
-								<th>No</th>
-								<th>제목</th>
-								<th>글쓴이</th>
-								<th>작성일</th>
-								<th><input type="checkbox"></th>
-							</tr>
-						<%} %>
+						<template v-for="food in searchList">
+							<row :obj="food" >
+						</template>
 						</tbody>
 					</table>
 				</div>
@@ -126,20 +123,115 @@
 
 </body>
 <script type="text/javascript">
-	function test(){
+	let app1;
+	
+	const row={
+		template:`
+			<tr>
+				<th>{{food.name}}</th>
+				<th>{{food.wt}}</th>
+				<th>{{food.kcal}}</th>
+				<th>{{food.car}}</th>
+				<th>{{food.tien}}</th>
+				<th>{{food.vince}}</th>
+				<th><input type="checkbox"></th>
+			</tr>	
+		`,
+		props:["obj"],
+		data:function(){
+			return{
+				food:this.obj,
+			}
+		}
+	}
+	
+	//API 불러오기
+	function getFoodList(){
 		$.ajax({
-			url:"/rest/diet/kcal/test",
-			type:"get",
+			url:"/rest/diet/kcal/list",
+			type:"post",
+			contentType:"application/json",
 			success:function(result, status, xhr){
-				console.log(result);
+				let jsonList=[];
+				for(let i=0; i<result.length; i++){
+					let obj=result[i];
+					//console.log("???????",obj);
+					
+					let json={};
+					json['name']=obj.desc_KOR;
+					json['wt']=obj.serving_WT;
+					json['kcal']=obj.nutr_CONT1;
+					json['car']=obj.nutr_CONT2;
+					json['tien']=obj.nutr_CONT3;
+					json['vince']=obj.nutr_CONT4;
+					
+					jsonList.push(json);
+					//console.log("???????",json);
+					
+				}
+				app1.foodList=jsonList;
+			}
+		});
+	}
+	
+	//API 검색기능
+	function getSearchAPI(foodName){
+		let json={};
+		let keyword=$("input[name='keyword']").val();
+		//console.log(keyword);
+		
+		json['foodName']=keyword;
+		
+		$.ajax({
+			url:"/rest/diet/kcal/search",
+			type:"post",
+			contentType:"application/json",
+			data: JSON.stringify(json),
+			success:function(result, status, xhr){
+				//console.log(result);
+				
+				let jsonList=[];
+				for(let i=0; i<result.length; i++){
+					let obj=result[i];
+					//console.log("???????",obj);
+					
+					let json={};
+					json['name']=obj.DESC_KOR;
+					json['wt']=obj.SERVING_WT;
+					json['kcal']=obj.NUTR_CONT1;
+					json['car']=obj.NUTR_CONT2;
+					json['tien']=obj.NUTR_CONT3;
+					json['vince']=obj.NUTR_CONT4;
+					
+					jsonList.push(json);
+				}
+				app1.searchList=jsonList;
 			}
 		});
 	}
 
 
+	function init(){
+		app1=new Vue({
+			el:"#app1",
+			data:{
+				foodList:[], //전체배열
+				searchList:[] //검색어 보여질 배열
+			},
+			components:{
+				row
+			}
+		});
+	}
 
 	$(function(){
-		test();	
+		init();
+		//getFoodList();	
+		
+		//검색버튼
+		$("#bt_search").click(function(){
+			getSearchAPI();
+		});
 	});
 
 </script>

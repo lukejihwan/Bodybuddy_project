@@ -33,7 +33,7 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
         log.info("로그인 시도한 이메일 : "+email);
 
         MemberDetail userDetails = (MemberDetail) userDetailsService.loadUserByUsername(email);
-        
+        log.info("받아온 멤버정보는 : "+userDetails);
         //일반가입 유저는 DB에서 로그인 정보와 일치하는 사용자 정보를 찾아 DTO에 담아 비교
         if (!passwordEncoder.matches(password, userDetails.getPassword())){
             throw new LoginException("로그인 실패, 정보를 확인하세요");

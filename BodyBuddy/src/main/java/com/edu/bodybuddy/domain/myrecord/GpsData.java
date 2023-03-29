@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.domain.myrecord;
 
+
 import lombok.Data;
 
 // gps 데이터를 받을 객체

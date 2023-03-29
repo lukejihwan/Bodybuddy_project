@@ -20,6 +20,7 @@ public class DietTipCommentsServiceImpl implements DietTipCommentsService{
 
 	@Override
 	public void insert(DietTipComments dietTipComments) throws DietTipCommentsException{
+		
 		dietTipCommentsDAO.insert(dietTipComments);
 	}
 
