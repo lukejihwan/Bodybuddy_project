@@ -5,6 +5,9 @@
   
 <configuration>
   <typeAliases>
+  	<!-- main Alias -->
+  	<typeAlias type="com.edu.bodybuddy.domain.main.Board" alias="Board"/>
+  
   	<!-- Member Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.member.Member" alias="Member"/>
  	<typeAlias type="com.edu.bodybuddy.domain.member.Address" alias="Address"/>
@@ -105,7 +108,8 @@
     <mapper resource="com/edu/bodybuddy/mybatis/board/QnaBoardCommentMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/board/CounsellingBoardCommentMapper.xml"/>
     
-
-
+	<!-- MainMapper -->
+    <mapper resource="com/edu/bodybuddy/mybatis/main/MainMapper.xml"/>
+	
   </mappers>
 </configuration>
