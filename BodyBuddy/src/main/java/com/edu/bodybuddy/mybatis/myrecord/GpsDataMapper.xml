@@ -12,8 +12,8 @@
 	
 	<!-- Member 나중에 추가 예정 -->
 	<insert id="insert" parameterType="GpsData">
-		insert into gpsdata(lati, longi, regdate)
-		values(#{lati}, #{longi}, #{regdate})
+		insert into gpsdata(member_idx, lati, longi, regdate)
+		values(#{member_idx}, #{lati}, #{longi}, #{regdate})
 	</insert>
 
 

@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class GpsData {
 	private int gpsdata_idx;
+	private int member_idx;
 	private double lati;
 	private double longi;
 	private String regdate;
