@@ -1,6 +1,5 @@
 package com.edu.bodybuddy.domain.myrecord;
 
-import com.edu.bodybuddy.domain.member.Member;
 
 import lombok.Data;
 
@@ -8,7 +7,7 @@ import lombok.Data;
 @Data
 public class GpsData {
 	private int gpsdata_idx;
-	private Member member;
+	private int member_idx;
 	private double lati;
 	private double longi;
 	private String regdate;

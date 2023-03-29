@@ -99,7 +99,7 @@
 							</tr>
 						</thead>
 						<tbody>
-						<template v-for="food in foodList">
+						<template v-for="food in searchList">
 							<row :obj="food" >
 						</template>
 						</tbody>
@@ -122,7 +122,6 @@
 	<%@include file="../inc/footer_link.jsp" %>
 
 </body>
-<script type="text/javascript" src="/resources/user/js/page/Pager3.js"></script>
 <script type="text/javascript">
 	let app1;
 	
@@ -138,20 +137,20 @@
 				<th><input type="checkbox"></th>
 			</tr>	
 		`,
-		props:["obj", "num"],
+		props:["obj"],
 		data:function(){
 			return{
 				food:this.obj,
-				n:this.num
 			}
 		}
 	}
-
-
+	
+	//API 불러오기
 	function getFoodList(){
 		$.ajax({
 			url:"/rest/diet/kcal/list",
-			type:"get",
+			type:"post",
+			contentType:"application/json",
 			success:function(result, status, xhr){
 				let jsonList=[];
 				for(let i=0; i<result.length; i++){
@@ -167,9 +166,46 @@
 					json['vince']=obj.nutr_CONT4;
 					
 					jsonList.push(json);
+					//console.log("???????",json);
+					
 				}
-					console.log("???????",jsonList);
-					app1.foodList=jsonList;
+				app1.foodList=jsonList;
+			}
+		});
+	}
+	
+	//API 검색기능
+	function getSearchAPI(foodName){
+		let json={};
+		let keyword=$("input[name='keyword']").val();
+		//console.log(keyword);
+		
+		json['foodName']=keyword;
+		
+		$.ajax({
+			url:"/rest/diet/kcal/search",
+			type:"post",
+			contentType:"application/json",
+			data: JSON.stringify(json),
+			success:function(result, status, xhr){
+				//console.log(result);
+				
+				let jsonList=[];
+				for(let i=0; i<result.length; i++){
+					let obj=result[i];
+					//console.log("???????",obj);
+					
+					let json={};
+					json['name']=obj.DESC_KOR;
+					json['wt']=obj.SERVING_WT;
+					json['kcal']=obj.NUTR_CONT1;
+					json['car']=obj.NUTR_CONT2;
+					json['tien']=obj.NUTR_CONT3;
+					json['vince']=obj.NUTR_CONT4;
+					
+					jsonList.push(json);
+				}
+				app1.searchList=jsonList;
 			}
 		});
 	}
@@ -179,7 +215,8 @@
 		app1=new Vue({
 			el:"#app1",
 			data:{
-				foodList:[]
+				foodList:[], //전체배열
+				searchList:[] //검색어 보여질 배열
 			},
 			components:{
 				row
@@ -189,8 +226,12 @@
 
 	$(function(){
 		init();
+		//getFoodList();	
 		
-		getFoodList();	
+		//검색버튼
+		$("#bt_search").click(function(){
+			getSearchAPI();
+		});
 	});
 
 </script>
