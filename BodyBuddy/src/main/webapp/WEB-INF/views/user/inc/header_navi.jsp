@@ -15,6 +15,7 @@
                         
                         <li><a href="/myrecord/main" title="record" class="animsition-link">나의 기록</a>
                             <ul>
+                                <li><a href="/myrecord/main" title="정보">오늘의 운동 지수</a></li>
                                 <li><a href="/myrecord/addrecord" title="정보">기록추가</a></li>
                                 <li><a href="/myrecord/physical_record" title="정보">신체기록</a></li>
                                 <li><a href="/myrecord/exr_record" title="정보">운동기록</a></li>

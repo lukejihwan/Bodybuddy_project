@@ -6,6 +6,12 @@
 </head>
 <!-- fontAwesome CDN icon 사용시 필요 -->
 <script src="https://kit.fontawesome.com/cfa2095821.js" crossorigin="anonymous"></script>
+<!-- adminLTE 사용할 때 
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+ -->
 <style>
 .dateHead div {
 	background: #dc3545;
@@ -251,7 +257,11 @@ function getDate(){
 	makeCalendar(date);
 	//오늘 날짜 그리기
 	//const today=new Date();
-	//console.log(today);	
+	//console.log(today);
+	
+	for(let i=0; i<$(".bt_days").length;i++){
+		$(".bt_days")[i].
+	}
 	
 	// 이전달 이동
 	document.querySelector('.prevDay').onclick = () => {
@@ -346,37 +356,7 @@ function getDayforRegistExr(){
 }
 
 
-//운동기록 등록하는 함수
-function registExrRecord(){
-	getDayforRegistExr();
-	exrList.push(exrObject);
-	
-	if($("#exr_day2").val()=="" || app1.exerciseList.length<1){
-		alert("날짜또는 운동기록을 추가해주세요");
-		
-	}else{
-		let result=confirm("운동기록을 등록하시겠어요?");
-		
-		let JsonData=JSON.stringify(exrList);
-		console.log(JsonData);
-	
-		if(result===true){
-			$.ajax({
-				url:"/rest/myrecord/exrList",
-				type:"POST",
-				processData:false,
-				contentType:"application/json",
-				data:JsonData,
-				success:function(result, status, xhr){
-					alert("입력되었습니다");
-				},
-				error:function(xhr, status, error){
-					alert("실패");
-				}
-			});
-		}
-	}
-}
+
 
 //운동등록버튼 활성 비활성화를 감지
 function btchange(){
@@ -436,9 +416,19 @@ function appendImageDays(registedDataForMonth){
 	
 }
 
+//모든 한달간의 요소를 불러오는 함수
+//하나로 처리
+function getAllRecordForMonth(){
+	$(".bt_days").empty();
+	getPhysicalRecordForMonth();
+	getExrRecordForMonth();
+	getdietRecordForMonth();
+}
+
 
 //신체기록 아이콘 붙이는 함수
 function appendPhysicalImage(getDay){
+	
 	//<br>태그를 임시로 적어두긴 했는데, 나중에 위치조정할 것
 	buttonRegdateList.add(getDay);
 	console.log("신체기록까지 담겨있는 버튼날짜들은",buttonRegdateList);
@@ -533,6 +523,68 @@ function refineDietDataForMonth(registedDietDataForMonth){
 	
 }
 
+
+//운동기록 페이지로 이동하는 메서드
+function moveToExrDetail(){
+	//운동기록 페이지로 이동할때, 날짜 데이터를 가지고 가서 바로 보여주는 것이 편하기는 하나...전달해서 보여주기가 애매함
+	//location.href 뒤에 ?를 붙여서 가면, detail을 보여줄수 있는데, 그러면 운동기록 페이지에서 각 날짜를 눌러 detail을 볼때,
+	//새로고침이 일어나야하는데, 내가 원했던것은 비동기로 보여주는 것이다. 동기방식으로 보여주는 거랑 비동기랑 섞이면 일관되지 않지 않은가?
+	let detailDate=currentYear+"-"+currentMonth;
+	//alert(detailDate);
+	location.href="/myrecord/exr_record?detailDate="+detailDate;
+}
+
+//신체, 운동, 식단 기록을 불러온 후 담겨진 Set배열을 통해 버튼 생성
+//주의: 비동기 통신에서 끝마치는 시점에 즉, Set배열에 다 담긴후 버튼을 생성해야하는 것 주의
+function appendButton(){
+	console.log("담겨있는 버튼List의 날짜들은",buttonRegdateList);
+	for(let item of buttonRegdateList.values()){
+		addButtononRecord(item);
+	}
+}
+
+//div에 상세버튼 추가하기를 따로 둠(다른 기록 기록할때, 또 생성하게 하지 않기 위해)
+function addButtononRecord(getDay){
+	$($(".bt_days")[getDay-1]).append("<button type='button' class='btn btn-block bg-gradient-primary btn-xs' onclick='putDetail("+getDay+")' data-toggle='modal' data-target='#detailModal'>상세</button>");	
+}
+
+function showDietDetail(dietList){
+	for(let i=0; i<dietList.length ;i++){
+		$("#suggestion_box").html(dietList[i].DESC_KOR);
+		$("#t_servings").val(dietList[0].SERVING_WT);
+		$("#t_kcal").val(dietList[0].NUTR_CONT1);
+		$("#t_carbs").val(dietList[0].NUTR_CONT2);
+		$("#t_protein").val(dietList[0].NUTR_CONT3);
+		$("#t_fat").val(dietList[0].NUTR_CONT4);
+	}
+}
+
+//식단기록 API를 불러올 함수
+function getDietAPIRecord(){
+	let json={};
+	let foodName=$("#t_diet_search").val();
+	//console.log("전송하기전 음식명은",foodName); 여기까지 음식명 가능
+	json['foodName']=foodName;
+	$.ajax({
+		url:"/rest/myrecord/dietAPIRecord",
+		type:"post",
+		contentType:"application/json",
+		data: JSON.stringify(json),
+		success:function(result, status, xhr){
+			console.log("식단API받아온 결과는",result);
+			if(result!=undefined){
+				showDietDetail(result);
+			}
+		},
+		error:function(xhr, status, error){
+			console.log(xhr);
+			console.log("에러" ,error);
+		}
+	});
+}
+
+/*카테고리별 한달간의 기록 불러오는 함수모음*/
+
 //해당월의 신체기록을 불러오는 함수
 function getPhysicalRecordForMonth(){
 	//해당달의 첫날과 마지막날을 JSON형식으로 만듬
@@ -624,34 +676,12 @@ function getDietRecordForMonth(){
 	});
 }
 
-//운동기록 페이지로 이동하는 메서드
-function moveToExrDetail(){
-	//운동기록 페이지로 이동할때, 날짜 데이터를 가지고 가서 바로 보여주는 것이 편하기는 하나...전달해서 보여주기가 애매함
-	//location.href 뒤에 ?를 붙여서 가면, detail을 보여줄수 있는데, 그러면 운동기록 페이지에서 각 날짜를 눌러 detail을 볼때,
-	//새로고침이 일어나야하는데, 내가 원했던것은 비동기로 보여주는 것이다. 동기방식으로 보여주는 거랑 비동기랑 섞이면 일관되지 않지 않은가?
-	let detailDate=currentYear+"-"+currentMonth;
-	//alert(detailDate);
-	location.href="/myrecord/exr_record?detailDate="+detailDate;
-}
-
-//오른쪽 영역 변경하는 메서드
-function changeRightSector(){
-	
-}
+/*각 카테고리별 등록하는 함수 모음*/
 
 //신체기록 등록하는 함수
 function registPhysical(){
 	if(confirm("신체기록을 등록하시겠습니까?")){
-		/*
-		let form=document.getElementById("form1");
-		console.log(form); //form태그 안의 모든 데이터가 찍힘
-		let formData=new FormData(form);
-		
-		//안의 내용물 확인하는데 안됨...name이 없어서 그랬음
-		for(let pair of formData.entries()){
-			console.log(pair[0]+","+pair[1]);
-		}*/
-		
+
 		//json형식으로 전송하자
 		let json={};
 		let obj=new Object();
@@ -672,7 +702,6 @@ function registPhysical(){
 			success:function(result, status, xhr){
 				console.log("신체기록 등록결과는",result);
 				alert("등록성공");
-				//getPhysicalRecordForMonth();
 				
 			},
 			error:function(xhr, status, error){
@@ -682,53 +711,36 @@ function registPhysical(){
 	}
 }
 
-//신체, 운동, 식단 기록을 불러온 후 담겨진 Set배열을 통해 버튼 생성
-//주의: 비동기 통신에서 끝마치는 시점에 즉, Set배열에 다 담긴후 버튼을 생성해야하는 것 주의
-function appendButton(){
-	console.log("담겨있는 버튼List의 날짜들은",buttonRegdateList);
-	for(let item of buttonRegdateList.values()){
-		addButtononRecord(item);
-	}
-}
-
-//div에 상세버튼 추가하기를 따로 둠(다른 기록 기록할때, 또 생성하게 하지 않기 위해)
-function addButtononRecord(getDay){
-	$($(".bt_days")[getDay-1]).append("<button type='button' class='btn btn-block bg-gradient-primary btn-xs' onclick='putDetail("+getDay+")' data-toggle='modal' data-target='#detailModal'>상세</button>");	
-}
-
-function showDietDetail(dietList){
-	for(let i=0; i<dietList.length ;i++){
-		$("#suggestion_box").html(dietList[i].DESC_KOR);
-		$("#t_servings").val(dietList[0].SERVING_WT);
-		$("#t_kcal").val(dietList[0].NUTR_CONT1);
-		$("#t_carbs").val(dietList[0].NUTR_CONT2);
-		$("#t_protein").val(dietList[0].NUTR_CONT3);
-		$("#t_fat").val(dietList[0].NUTR_CONT4);
-	}
-}
-
-//식단기록 API를 불러올 함수
-function getDietAPIRecord(){
-	let json={};
-	let foodName=$("#t_diet_search").val();
-	//console.log("전송하기전 음식명은",foodName); 여기까지 음식명 가능
-	json['foodName']=foodName;
-	$.ajax({
-		url:"/rest/myrecord/dietAPIRecord",
-		type:"post",
-		contentType:"application/json",
-		data: JSON.stringify(json),
-		success:function(result, status, xhr){
-			console.log("식단API받아온 결과는",result);
-			if(result!=undefined){
-				showDietDetail(result);
-			}
-		},
-		error:function(xhr, status, error){
-			console.log(xhr);
-			console.log("에러" ,error);
+//운동기록 등록하는 함수
+function registExrRecord(){
+	getDayforRegistExr();
+	exrList.push(exrObject);
+	
+	if($("#exr_day2").val()=="" || app1.exerciseList.length<1){
+		alert("날짜또는 운동기록을 추가해주세요");
+		
+	}else{
+		let result=confirm("운동기록을 등록하시겠어요?");
+		
+		let JsonData=JSON.stringify(exrList);
+		console.log(JsonData);
+	
+		if(result===true){
+			$.ajax({
+				url:"/rest/myrecord/exrList",
+				type:"POST",
+				processData:false,
+				contentType:"application/json",
+				data:JsonData,
+				success:function(result, status, xhr){
+					alert("입력되었습니다");
+				},
+				error:function(xhr, status, error){
+					alert("실패");
+				}
+			});
 		}
-	});
+	}
 }
 
 //식단기록 등록하는 함수
@@ -766,6 +778,7 @@ function registDietRecord(){
 	}
 }
 
+//BMI자동으로 계산하는 함수
 function calculateBMI(){
 	let height=$("#t_height").val();
 	let weight=$("#t_weight").val();
@@ -773,17 +786,6 @@ function calculateBMI(){
 	let BMI=weight/(height*height);
 	$("#t_bmi").val(BMI.toFixed(1));
 }
-
-function test(){
-	$.ajax({
-		url:"/rest/myrecord/dailyRecord",
-		type:"GET",
-		success:function(){
-			console.log("성공");
-		}
-	})
-}
-
 
 //onload될 때
 $(function(){
@@ -799,7 +801,7 @@ $(function(){
 	//한달간의 식단기록을 불러오는 함수 호출
 	getDietRecordForMonth();
 	
-	test();
+	//test();
 	
 	//기본으로 오른쪽 영역을 운동으로
 	$("#right_sector1").show();
@@ -1008,8 +1010,8 @@ $(function(){
 			            </div>
 		            </div>
 		            <!-- 오른쪽 영역 운동기록 끝 -->
-		            
-		            <!-- 오른쪽 영역중, 식단기록 div -->
+
+					<!-- 오른쪽 영역중, 식단기록 div -->
                 	<div id="right_sector3" class="h-auto">
 	                	<h3 class="">식단기록 추가</h3>
 						<input type="text" class="form-control text-field" id="exr_day3" disabled>
