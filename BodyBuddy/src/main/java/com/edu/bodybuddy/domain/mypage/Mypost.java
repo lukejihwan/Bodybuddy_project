@@ -9,3 +9,4 @@ public class Mypost {
 	private String title;
 	private String regdate;
 }
+

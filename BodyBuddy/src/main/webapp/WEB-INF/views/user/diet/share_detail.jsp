@@ -50,11 +50,11 @@
 				<div class="col">
                     <h1>식단 공유 게시판</h1>
                     <hr>
-                    <input type="hidden" class="form-control" name="diet_share_idx"value="<%=dietShare.getDiet_share_idx()%>">
+                    <input type="hidden" class="form-control" name="diet_share_idx" value="<%=dietShare.getDiet_share_idx()%>">
                     
-                    <h3><%=dietShare.getTitle() %></h3>
+                    <h3 id="title"><%=dietShare.getTitle() %></h3>
                     <span><%=dietShare.getDietCategory().getDiet_category_name() %></span>
-                    <span class="float-right"><img src="/resources/user/images/diet/heart.png" style="width:20px; height:20px"> 찜하기</span>
+                    <span class="float-right" onclick="interest()"><a href="#" id="interest"><img src="/resources/user/images/diet/heart.png" style="width:20px; height:20px"> 찜하기</a></span>
                     <br/>
                     <span><%=dietShare.getWriter() %> | <%=dietShare.getRegdate().substring(0,10) %></span>
                     <span class="float-right">조회 <%=dietShare.getHit() %> | 추천 {{recommend}}</span>
@@ -161,7 +161,7 @@
 </body>
 
 <script type="text/javascript">
-	
+
 	/*--------------------------------------
 					글 관련 
 	---------------------------------------*/
@@ -195,7 +195,7 @@
 				if(!confirm("댓글을 삭제하시겠습니까?")){
 					return;
 				}
-				
+
 				$.ajax({
 					url:"/rest/diet/share/comments/"+idx,
 					type:"delete",
@@ -207,14 +207,14 @@
 			}
 		}
 	}
-	
+
 
 	//글 삭제 
 	function del(){
 		if(!confirm("삭제하시겠습니까?")){
 			return;
-		}	
-		
+		}
+
 		$.ajax({
 			url:"/rest/diet/share_del/"+$("input[name='diet_share_idx']").val(),
 			type:"delete",
@@ -222,9 +222,9 @@
 				alert("글 삭제 완료");
 				location.href="/diet/share_list";
 			}
-		});		
+		});
 	}
-	
+
 	//디테일페이지 불러오기(추천수)
 	function getDetail(){
 		$.ajax({
@@ -238,12 +238,12 @@
 			}
 		});
 	}
-	
+
 	//글 추천 
 	function recommend(){
 		let json = {};
 		json["diet_share_idx"] = "<%= dietShare.getDiet_share_idx()%>";
-		
+
 		$.ajax({
 			url:"/rest/diet/share/recommend",
 			type:"put",
@@ -252,12 +252,12 @@
 			data:JSON.stringify(json),
 			success:(result, status, xhr)=>{
 				alert("추천완료");
-				getDetail();				
+				getDetail();
 			},
 		});
 	}
-	
-	
+
+
 	/*--------------------------------------
 					댓글 관련 
 	---------------------------------------*/
@@ -273,12 +273,12 @@
 		});
 		return;
 		</sec:authorize>
-		
+
 		let formData=new FormData();
 		formData.append("dietShare.diet_share_idx", $("input[name='diet_share_idx']").val());
 		formData.append("content", $("#form textarea[name='content']").val());
 		formData.append("writer", $("#form input[name='writer']").val());
-	
+
 		$.ajax({
 			url:"/rest/diet/share/comments/regist",
 			type:"post",
@@ -287,16 +287,16 @@
 			data:formData,
 			success:function(result, status, xhr){
 			alert(result.msg);
-			
+
 			getComments();
-			
+
 			// 내용 비워주기
 			$("#form textarea[name='content']").val("");
 			//$("#form input[name='writer']").val("");
 			}
 		});
 	}
-	
+
 	//댓글 목록 
 	function getComments(){
 		$.ajax({
@@ -311,6 +311,23 @@
 		});
 	}
 	
+	function interest(){
+		let data = {
+				idx: <%=dietShare.getDiet_share_idx()%>,
+				table_name: "식단공유",
+				title: "<%=dietShare.getTitle()%>"
+			}
+		$.ajax({
+			type: "post",
+			url: "/mypage/interest",
+			data: data,
+			success: (result)=>{
+				console.log(result);
+				alert(result.msg);
+			}
+		})
+	}
+
 	function init(){
 		app1=new Vue({
 			el:"#app1",
@@ -322,38 +339,39 @@
 				commentsList:[]
 			}
 		});
+
 	}
 
-	
+
 
 	$(function(){
 		init();
 		getDetail();
-		
+
 		//댓글 목록
 		getComments();
-		
+
 		//목록버튼 
 		$("#bt_list").click(function(){
-			location.href="/diet/share_list"; 
+			location.href="/diet/share_list";
 		});
-		
+
 		//수정페이지 버튼 
 		$("#bt_edit").click(function(){
 			location.href="/diet/share_edit/"+<%= dietShare.getDiet_share_idx()%>
 		});
-		
+
 		//삭제버튼 
 		$("#bt_del").click(function(){
 			del();
 		});
-		
+
 		//추천버튼
 		$("#bt_recommend").click(function(){
 			recommend();
-			
+
 		});
-		
+
 		//댓글등록 버튼 
 		$("#bt_comments").click(function() {
 			if (confirm("댓글을 등록하시겠습니까?")) {

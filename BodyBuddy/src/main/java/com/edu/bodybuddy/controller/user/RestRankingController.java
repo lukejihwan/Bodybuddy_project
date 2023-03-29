@@ -66,7 +66,7 @@ public class RestRankingController {
 	public ResponseEntity<Message> delete(HttpServletRequest request, @RequestBody DailyWalk dailyWalk){
 		
 		//3단계
-		dailyWalkService.delete(dailyWalk);
+		dailyWalkService.delete(dailyWalk.getMember().getMember_idx());
 		
 		Message message = new Message("일일 기록 삭제 성공", 200);
 		ResponseEntity<Message> entity = new ResponseEntity<Message>(message, HttpStatus.OK);

@@ -14,10 +14,12 @@ import com.edu.bodybuddy.domain.mypage.Ask;
 import com.edu.bodybuddy.domain.mypage.Interest;
 import com.edu.bodybuddy.exception.InterestException;
 
+import lombok.RequiredArgsConstructor;
+
 @Repository
 public class MybatisInterestDAO implements InterestDAO{
 	private Logger log = LoggerFactory.getLogger(getClass());
-    @Autowired
+	@Autowired
     private SqlSessionTemplate sqlSessionTemplate;
 
     @Override
@@ -31,7 +33,9 @@ public class MybatisInterestDAO implements InterestDAO{
     @Override
     public List<Interest> selectByMember(Map map) {
     	log.info("목록 조회를 위한 파라미터 map : " + map);
-        return sqlSessionTemplate.selectList("Interest.selectByMember", map);
+    	List<Interest> list = sqlSessionTemplate.selectList("Interest.selectInterest", map);
+    	log.info("받아온 리스트: "+list);
+        return list;
     }
 
     @Override

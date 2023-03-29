@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="InterestDietShare">
 	<insert id="insert" parameterType="Interest">
-		insert into interest_diet_share(diet_share_idx, member_idx) values(#{idx}, #{member_idx})
+		insert into interest_diet_share(diet_share_idx, member_idx, title) values(#{idx}, #{member_idx}, #{title})
 	</insert>
 	
 	<delete id="delete" parameterType="Interest">

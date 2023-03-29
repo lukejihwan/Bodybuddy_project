@@ -25,7 +25,7 @@ public class InterestServiceImpl implements InterestService{
     @Override
     public List<Interest> getInterestList(Map map) {
     	log.info("목록 조회를 위한 파라미터 map : " + map);
-        return null;
+        return interestDAO.selectByMember(map);
     }
 
     @Override

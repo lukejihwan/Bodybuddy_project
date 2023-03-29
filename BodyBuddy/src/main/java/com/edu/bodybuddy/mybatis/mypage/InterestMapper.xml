@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Interest">
+	<resultMap type="Interest" id="intMap">
+		<result column="idx" property="idx"/>
+		<result column="table_name" property="table_name"/>
+		<result column="title" property="title"/>
+		<result column="regdate" property="regdate"/>
+	</resultMap>
+
 	<select id="selectTotal" parameterType="Member" resultType="int">
 		select count(*) from (
 			select * from interest_exr_routine where member_idx = #{member_idx}
@@ -13,18 +20,17 @@
 		) test
 	</select>
 	
-	<select id="selectByMember" parameterType="Map" resultType="Interest">
+	<select id="selectInterest" parameterType="Map" resultType="Interest">
 		SELECT *  FROM (
-			SELECT ROW_NUMBER() OVER (ORDER BY regdate DESC) AS ROWNUM, table_name, idx, title, writer, regdate FROM (
-				select '운동루틴' as table_name, exr_routine_idx as idx, title, writer, regdate from exr_routine where member_idx = #{member.member_idx}
+			SELECT ROW_NUMBER() OVER (ORDER BY regdate DESC) AS ROWNUM, table_name, idx, title, regdate FROM (
+				select '운동루틴' as table_name, exr_routine_idx as idx, title, regdate from interest_exr_routine where member_idx = #{member.member_idx}
 				union
-				select '운동팁' as table_name, exr_tip_idx as idx, title, writer, regdate from exr_tip where member_idx = #{member.member_idx}
+				select '운동팁' as table_name, exr_tip_idx as idx, title, regdate from interest_exr_tip where member_idx = #{member.member_idx}
 				union
-				select '식단공유' as table_name, diet_share_idx as idx,  title, writer, regdate from diet_share where member_idx = #{member.member_idx}
+				select '식단공유' as table_name, diet_share_idx as idx, title, regdate from interest_diet_share where member_idx = #{member.member_idx}
  				union
- 				select '식단팁' as table_name, diet_tip_idx as idx, title, writer, regdate from diet_tip where member_idx = #{member.member_idx}
+ 				select '식단팁' as table_name, diet_tip_idx as idx, title, regdate from interest_diet_tip where member_idx = #{member.member_idx}
 			) result
-		)  interest WHERE ROWNUM BETWEEN #{start} AND #{end};
+		)  interest WHERE ROWNUM BETWEEN #{start} AND #{end}
 	</select>
-
 </mapper>
