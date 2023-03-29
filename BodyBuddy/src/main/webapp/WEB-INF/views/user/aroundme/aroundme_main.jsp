@@ -15,6 +15,9 @@
 	.card-primary:not(.card-outline)>.card-header{
 		background-color: #c5f016;
 	}
+	.card-primary:not(.card-outline)>.card-header, .card-primary:not(.card-outline)>.card-header a {
+	    color: #383838;
+	}
 	.btn-default {
 	    color: #1e1e1f;
 	    background-color: #c5f016;
