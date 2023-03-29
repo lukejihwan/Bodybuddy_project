@@ -5,8 +5,10 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.edu.bodybuddy.domain.member.Member;
 import com.edu.bodybuddy.domain.security.MemberDetail;
 import com.edu.bodybuddy.exception.AddressException;
 import com.edu.bodybuddy.exception.MemberException;
@@ -39,7 +42,8 @@ public class LoginController {
 	private final NaverLoginService naverLoginService;
 	private final GoogleLoginService googleLoginService;
 	private final KakaoLoginService kakaoLoginService;
-	
+	@Autowired
+	private AuthenticationProvider authenticationProvider;
 	
 	@GetMapping("/login")
 	public String getLoginPage() {
@@ -99,6 +103,17 @@ public class LoginController {
 		return mv;
 	}
 	
+	@PostMapping("/login")
+	@ResponseBody
+	public ResponseEntity<Msg> androidLogin(Member member){
+		MemberDetail memberDetail = new MemberDetail(member);
+		log.info("넘어온 member : " + member);
+		log.info("만든 디테일 : "+ memberDetail);
+		UsernamePasswordAuthenticationToken test = new UsernamePasswordAuthenticationToken(memberDetail, member.getPassword().getPass(), null);
+		SecurityContextHolder.getContext().setAuthentication(authenticationProvider.authenticate(test));
+		ResponseEntity entity=new ResponseEntity<Msg>(new Msg("로그인 성공"), HttpStatus.OK);
+		return entity;
+	}
 	
 	@ExceptionHandler({MemberException.class, AddressException.class, PasswordException.class, UsernameNotFoundException.class})
 	public ModelAndView handle(Exception e) {

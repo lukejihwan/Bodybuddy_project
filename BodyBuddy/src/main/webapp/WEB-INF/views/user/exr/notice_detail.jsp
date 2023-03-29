@@ -56,10 +56,8 @@
 										<div class="col-md-8 col-sm-12">
 											<div class="row">
 												<div class="col-md-12 col-sm-12">
-													<img src="/resources/data/exr/<%//=exrNotice.getExrNoticeImgList().get(0).getFilename() %>"
-														class="img-responsive mb30" alt="Fitness Website Template">
 													<div class="mb30">
-														<h1><%=exrNotice.getTitle() %></h1>
+														<p><h1><%=exrNotice.getTitle() %></h1></p>
 														<p>Donec eros turpissemper nenibh velultrices
 															pellentesque ristiam eu odio lionec consectetur nisi
 															egetlorem dapibus graviroin posuere eros eget purus
@@ -77,8 +75,6 @@
 															
 														<p>내용! : <%=exrNotice.getContent() %></p>
 														
-														<img src="/resources/data/exr/<%//=exrNotice.getExrNoticeImgList().get(1).getFilename() %>"
-															class="alignright img-responsive" alt="">
 														<p>Suscipell entesque efficitur sollicitudin magnaeu
 															vehicula libero luctus etonec odio velit, viverra ate
 															scelerisque id efficitur ullamcorper turpiusce etes enim
@@ -90,7 +86,6 @@
 															velultrices pellentesque ristiam eu odio lionec
 															consectetur.</P>
 															
-														<img src="/resources/data/exr/<%//=exrNotice.getExrNoticeImgList().get(2).getFilename() %>"
 														
 															class="alignleft img-responsive" alt="">
 														<p>Suscipell entesque efficitur sollicitudin magnaeu
@@ -111,8 +106,6 @@
 															sem lobortis miuis consectetur magna lorem vitae
 															lectuone. Nulla lobortis interdum suscipell entesque
 															efficitur sollicitudin magnaeu vehicula libero.</p>
-															
-														<p>내용2 : <%//=exrNotice.getContent() %></p>
 														
 													</div>
 												</div>
@@ -131,7 +124,7 @@
 																	}else{
 																		status="";
 																}%>
-																	<li class="<%=status%>"><a href="#"><iclass="icon-2 service-sidenav-icon "></i>
+																	<li class="<%=status%>"><a href="/exr/notice/<%=exrCategory.getExr_category_idx() %>"><iclass="icon-2 service-sidenav-icon "></i>
 																	<span class="sidenav-text"><%=exrCategory.getExr_category_name() %></span></a></li>
 															<%} %>
 														</ul>

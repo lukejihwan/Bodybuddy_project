@@ -12,6 +12,12 @@ tr {
 	margin: 0px 10px 0px 10px
 }
 
+.search .form-control:first-child {
+    height: 54px; 
+    background-color: #fff;
+    border: 3px solid #e3e3e3;
+}
+
 .pagination {
 	display: inline-block;
 	padding-left: 0;

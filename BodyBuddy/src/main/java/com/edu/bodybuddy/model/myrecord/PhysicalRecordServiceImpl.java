@@ -26,4 +26,20 @@ public class PhysicalRecordServiceImpl implements PhysicalRecordService{
 		return physicalRecordDAO.selectPhysicalForMonth(pysicalOneMonthPeriod);
 	}
 
+	@Override
+	public PhysicalRecord select(PhysicalRecord physicalRecord) {
+		physicalRecord=physicalRecordDAO.select(physicalRecord);
+		return physicalRecord;
+	}
+
+	@Override
+	public void update(PhysicalRecord physicalRecord) throws PhysicalRecordException{
+		physicalRecordDAO.update(physicalRecord);
+	}
+
+	@Override
+	public void delete(PhysicalRecord physicalRecord)  throws PhysicalRecordException{
+		physicalRecordDAO.delete(physicalRecord);
+	}
+
 }

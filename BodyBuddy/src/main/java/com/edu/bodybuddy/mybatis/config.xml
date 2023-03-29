@@ -16,6 +16,8 @@
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrDetailRecord" alias="ExrDetailRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.DietRecord" alias="DietRecord"/>
  	
+ 	<!-- gps 관련 DTO -->
+  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.DailyWalk" alias="DailyWalk" />
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.GpsData" alias="GpsData"/>
   
   	<!-- Exr Alias -->
@@ -26,6 +28,7 @@
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrTip" alias="ExrTip" />
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrToday" alias="ExrToday" />
   	<typeAlias type="com.edu.bodybuddy.domain.exr.ExrTodayComment" alias="ExrTodayComment" />
+	
  	
  	<!-- Diet Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietCategory" alias="DietCategory" />
@@ -36,6 +39,7 @@
  	<typeAlias type="com.edu.bodybuddy.domain.diet.DietShareComments" alias="DietShareComments" />
  
  	<!-- Mypage Alias -->
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.Mypost" alias="Mypost"/>
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Report" alias="Report"/>
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.ReportReply" alias="ReportReply"/>
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Ask" alias="Ask"/>
@@ -63,8 +67,9 @@
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/ExrRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/ExrDetailRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/DietRecordMapper.xml"/>
-    
+    <!-- gps 관련 Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/GpsDataMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/myrecord/DailyWalkMapper.xml"/>
 
     <!-- Exr Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/exr/ExrCategoryMapper.xml"/>
@@ -84,6 +89,7 @@
     <mapper resource="com/edu/bodybuddy/mybatis/diet/DietShareCommentsMapper.xml"/>
     
     <!-- Mypage Mapper -->
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/MypostMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskReplyMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/ReportMapper.xml"/>

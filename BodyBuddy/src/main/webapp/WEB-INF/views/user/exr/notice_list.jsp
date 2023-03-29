@@ -52,8 +52,8 @@
 	                            <i class="icon-default icon-<%=n%>"></i>
 	                        </div>
 	                        <div class="service-content pinside40">
-	                            <h2 class="service-title mb20"><a href="/exr/notice/<%=exrNotice.getExr_notice_idx() %>" class="title"><%=exrNotice.getTitle() %></a> </h2>
-	                            <p class="mb60"><%//=exrNotice.getContent1() %></p>
+	                            <h2 class="service-title mb20"><a href="/exr/notice/<%=exrNotice.getExrCategory().getExr_category_idx() %>" class="title"><%=exrNotice.getExrCategory().getExr_category_name() %></a> </h2>
+	                            <p class="mb60"></p>
 	                        </div>
 	                    </div>
 	                </div>

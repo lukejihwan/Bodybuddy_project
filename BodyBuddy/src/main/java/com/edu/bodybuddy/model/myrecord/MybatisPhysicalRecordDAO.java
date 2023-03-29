@@ -32,6 +32,28 @@ public class MybatisPhysicalRecordDAO implements PhysicalRecordDAO {
 		if(physicalList==null)throw new PhysicalRecordException("신체기록 조회 실패");
 		return physicalList;
 	}
+
+	@Override
+	public PhysicalRecord select(PhysicalRecord physicalRecord) {
+		physicalRecord=sqlSessionTemplate.selectOne("PhysicalRecord.select", physicalRecord);
+		return physicalRecord;
+	}
+
+	@Override
+	public void update(PhysicalRecord physicalRecord) throws PhysicalRecordException{
+		int result=sqlSessionTemplate.update("PhysicalRecord.update", physicalRecord);
+		if(result<1) {
+			throw new PhysicalRecordException("신체기록 수정 실패");
+		}
+	}
+
+	@Override
+	public void delete(PhysicalRecord physicalRecord) throws PhysicalRecordException {
+		int result=sqlSessionTemplate.delete("PhysicalRecord.delete", physicalRecord);
+		if(result<1) {
+			throw new PhysicalRecordException("신체기록 삭제 실패");
+		}
+	}
 	
 	
 
