@@ -772,6 +772,16 @@ function calculateBMI(){
 	$("#t_bmi").val(BMI.toFixed(1));
 }
 
+function test(){
+	$.ajax({
+		url:"/rest/myrecord/dailyRecord",
+		type:"GET",
+		success:function(){
+			console.log("성공");
+		}
+	})
+}
+
 
 //onload될 때
 $(function(){
@@ -786,6 +796,8 @@ $(function(){
 	
 	//한달간의 식단기록을 불러오는 함수 호출
 	getDietRecordForMonth();
+	
+	test();
 	
 	//기본으로 오른쪽 영역을 운동으로
 	$("#right_sector1").show();

@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,12 +24,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.edu.bodybuddy.domain.myrecord.DailyWalk;
 import com.edu.bodybuddy.domain.myrecord.DietRecord;
 import com.edu.bodybuddy.domain.myrecord.ExrRecord;
 import com.edu.bodybuddy.domain.myrecord.GpsData;
 import com.edu.bodybuddy.domain.myrecord.PhysicalRecord;
 import com.edu.bodybuddy.exception.ExrDetailRecordException;
 import com.edu.bodybuddy.exception.ExrRecordException;
+import com.edu.bodybuddy.model.myrecord.DailyWalkService;
 import com.edu.bodybuddy.model.myrecord.DietRecordService;
 import com.edu.bodybuddy.model.myrecord.ExrRecordService;
 import com.edu.bodybuddy.model.myrecord.GpsDataService;
@@ -58,6 +59,9 @@ public class RestMyRecordController {
 	
 	@Autowired
 	private GpsDataService gpsDataService;
+	
+	@Autowired
+	private DailyWalkService dailyWalkService;
 
 	/*================================================
 	 * =================안드로이드 google API영역=================
@@ -286,6 +290,8 @@ public class RestMyRecordController {
 	
 	
 	
+	
+	
 	/*=============================================
 	 * =====================식단기록 영역=================
 	 * */
@@ -320,6 +326,24 @@ public class RestMyRecordController {
 		
 		return entity;
 	}
+	
+	/*=======================================
+	 * ===============테스트영역 시작==================
+	 * */
+	//테스트용
+		@GetMapping("/dailyRecord")
+		public List select() {
+			
+			List<DailyWalk> list= dailyWalkService.selectAllDailyWalkForMonth();
+			logger.info("받아온 운동닉네임은"+list.get(0).getMember().getNickname());
+			
+			return null;
+		}
+		
+	/*=======================================
+	 * ===============테스트영역 끝==================
+	 * */
+	
 	
 	
 	//이 예외처리를 나중에 controllerAdvice로 처리해줄지 아니면 이렇게 처리해줄지는 나중에 보자

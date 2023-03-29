@@ -7,7 +7,7 @@
 	<!-- 하루를 기준으로 데이터 가져오기! -->
 	<select id="selectForDay" parameterType="String" resultType="GpsData">
 		select * from gpsdata
-		where regdate = #{regdate}
+		where regdate = #{regdate} and member_idx=24
 	</select>
 	
 	<!-- Member 나중에 추가 예정 -->
