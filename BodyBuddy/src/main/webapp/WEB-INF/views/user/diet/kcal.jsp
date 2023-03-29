@@ -140,38 +140,9 @@
 		props:["obj"],
 		data:function(){
 			return{
-				food:this.obj,
+				food:this.obj
 			}
 		}
-	}
-	
-	//API 불러오기
-	function getFoodList(){
-		$.ajax({
-			url:"/rest/diet/kcal/list",
-			type:"post",
-			contentType:"application/json",
-			success:function(result, status, xhr){
-				let jsonList=[];
-				for(let i=0; i<result.length; i++){
-					let obj=result[i];
-					//console.log("???????",obj);
-					
-					let json={};
-					json['name']=obj.desc_KOR;
-					json['wt']=obj.serving_WT;
-					json['kcal']=obj.nutr_CONT1;
-					json['car']=obj.nutr_CONT2;
-					json['tien']=obj.nutr_CONT3;
-					json['vince']=obj.nutr_CONT4;
-					
-					jsonList.push(json);
-					//console.log("???????",json);
-					
-				}
-				app1.foodList=jsonList;
-			}
-		});
 	}
 	
 	//API 검색기능
@@ -210,7 +181,6 @@
 		});
 	}
 
-
 	function init(){
 		app1=new Vue({
 			el:"#app1",
@@ -226,13 +196,47 @@
 
 	$(function(){
 		init();
-		//getFoodList();	
-		
+
 		//검색버튼
 		$("#bt_search").click(function(){
 			getSearchAPI();
 		});
 	});
+	
+	
+	/*
+	function getFoodList(){
+		$.ajax({
+			url:"/rest/diet/kcal/list",
+			type:"post",
+			contentType:"application/json",
+			success:function(result, status, xhr){
+				let jsonList=[];
+				for(let i=0; i<result.length; i++){
+					let obj=result[i];
+					//console.log("???????",obj);
+					
+					let json={};
+					json['name']=obj.desc_KOR;
+					json['wt']=obj.serving_WT;
+					json['kcal']=obj.nutr_CONT1;
+					json['car']=obj.nutr_CONT2;
+					json['tien']=obj.nutr_CONT3;
+					json['vince']=obj.nutr_CONT4;
+					
+					jsonList.push(json);
+					//console.log("???????",json);
+					
+				}
+				app1.foodList=jsonList;
+			}
+		});
+	}
+	*/
+
+	
 
 </script>
 </html>
+
+
