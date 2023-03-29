@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +29,15 @@ public class RestRankingController {
 	@Autowired
 	private DailyWalkService dailyWalkService;
 	
+	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
+	
 	@GetMapping("/walk/daily")
 	public List getDailyRanking(){
 		
-		List<HashMap<String, Object>> list = new ArrayList();
+//		List rankList = dailyWalkService.selectAllDailyWalkForDay();
+		List<HashMap<String, Object>> rankList = dailyWalkService.selectAllDailyWalkForDay();
+		
+		logger.info("rankList : ", rankList);
 		
 		for(int i =9;i>=0;i--) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
@@ -44,11 +50,29 @@ public class RestRankingController {
 			map.put("member", member);
 			map.put("distance", 500 * (i+1));
 			map.put("regdate", "2023-03-29 11:52:31");
-			list.add(map);
+			rankList.add(map);
 		}
 		
-		return list;
+		return rankList;
 	}
+	
+	@GetMapping("/walk/weekly")
+	public List getWeeklyRanking(){
+			
+			//3단계
+			List rankList = dailyWalkService.selectAllDailyWalkForWeek();
+			
+			return rankList;
+	}
+	
+	@GetMapping("/walk/monthly")
+	public List getMonthlyRanking(){
+		
+		//3단계
+		List rankList = dailyWalkService.selectAllDailyWalkForMonth();
+		
+		return rankList;
+}
 	
 	@PostMapping("/walk")
 	public ResponseEntity<Message> regist(HttpServletRequest request, @RequestBody DailyWalk dailyWalk){

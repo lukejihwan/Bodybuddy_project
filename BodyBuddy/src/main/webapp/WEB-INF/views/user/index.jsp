@@ -72,9 +72,9 @@
                     <h3 class="card-title">달리기 랭킹</h3>
                     <div class="card-tools">
                         <ul class="pagination pagination-sm float-right">
-                            <li class="page-item"><a class="page-link" href="#">일일</a></li>
-                            <li class="page-item"><a class="page-link" href="#">주간</a></li>
-                            <li class="page-item"><a class="page-link" href="#">월간</a></li>
+                            <li class="page-item"><a class="page-link" href="javascript:getRank('daily')">일일</a></li>
+                            <li class="page-item"><a class="page-link" href="javascript:getRank('weekly')">주간</a></li>
+                            <li class="page-item"><a class="page-link" href="javascript:getRank('monthly')">월간</a></li>
                         </ul>
                     </div>
                 </div>
@@ -83,10 +83,10 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>랭킹</th>
-                                <th>닉네임</th>
-                                <th>1위와의 차이</th>
-                                <th>거리</th>
+                                <th style="width: 10%;">랭킹</th>
+                                <th style="width: 20%;">닉네임</th>
+                                <th style="width: 60%;">1위와의 차이</th>
+                                <th style="width: 10%;">거리</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -103,7 +103,7 @@
 	                                        </div>
 	                                    </div>
 	                                </td>
-	                                <td>{{}}</td>
+	                                <td><b>{{handleDistance(rank.distance)}}</b></td>
 	                            </tr>
                             </template>
                         </tbody>
@@ -153,15 +153,21 @@
 					let distance;
 					distance = this.ranklist[0].distance-rank.distance;
 					
+					distance = this.handleDistance(distance);
+					
+					return distance;
+				},
+				handleDistance:function(distance){
 					if(distance >= 1000){
 						distance = (distance / 1000).toFixed(2);
 						distance += "Km";
 					}else{
 						distance += "M";
 					}
-					
 					return distance;
-				}
+				},
+				getRank:window.getRank,
+				
 			}
 	};
 	
