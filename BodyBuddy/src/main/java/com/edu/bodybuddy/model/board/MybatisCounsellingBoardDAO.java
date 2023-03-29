@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.model.board;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -54,6 +55,17 @@ public class MybatisCounsellingBoardDAO implements BoardDAO{
 	public void addRecommend(int counselling_board_idx) throws CounsellingBoardException{
 		int result = sqlSessionTemplate.update("CounsellingBoard.addRecommend", counselling_board_idx);
 		if(result < 1) throw new CounsellingBoardException("고민상담게시판 추천 추가 실패");
+	}
+
+	public List selectAllBySearch(String value, int page) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("value", value);
+		map.put("page", page);
+		return sqlSessionTemplate.selectList("CounsellingBoard.selectAllBySearch", map);
+	}
+
+	public int totalCountSearch(String value) {
+		return sqlSessionTemplate.selectOne("CounsellingBoard.totalCountSearch", value);
 	}
 	
 }

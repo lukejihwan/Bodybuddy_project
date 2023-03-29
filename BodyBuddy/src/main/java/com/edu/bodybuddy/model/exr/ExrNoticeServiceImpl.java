@@ -9,14 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.edu.bodybuddy.domain.exr.ExrNotice;
 import com.edu.bodybuddy.exception.ExrNoticeException;
-import com.edu.bodybuddy.util.FileManager;
 
 @Service
 public class ExrNoticeServiceImpl  implements ExrNoticeService{
 	@Autowired
 	private ExrNoticeDAO exrNoticeDAO;
-	@Autowired
-	private FileManager fileManager;
 	
 	@Override
 	public List selectAll() {
@@ -32,16 +29,6 @@ public class ExrNoticeServiceImpl  implements ExrNoticeService{
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void regist(ExrNotice exrNotice) throws ExrNoticeException{
 		exrNoticeDAO.insert(exrNotice);
-		
-		// 사진 파일 로컬 저장
-		//List<String> filenameList=fileManager.save(exrNotice.getPhoto(), dir);
-		
-		// 파일 수만큼 dto 세팅해서 저장하기
-		/*
-		 * for(String filename:filenameList) { ExrNoticeImg exrNoticeImg=new
-		 * ExrNoticeImg(); exrNoticeImg.setExrNotice(exrNotice);
-		 * exrNoticeImg.setFilename(filename); exrNoticeImgDAO.insert(exrNoticeImg); }
-		 */
 	}
 	
 	@Override

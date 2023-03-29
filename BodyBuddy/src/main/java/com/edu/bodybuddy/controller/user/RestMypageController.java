@@ -1,26 +1,38 @@
 package com.edu.bodybuddy.controller.user;
 
-import com.edu.bodybuddy.domain.member.Member;
-import com.edu.bodybuddy.domain.mypage.Report;
-import com.edu.bodybuddy.exception.*;
-import com.edu.bodybuddy.model.mypage.ReportService;
-import lombok.RequiredArgsConstructor;
+import java.util.HashMap;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.edu.bodybuddy.domain.member.Member;
 import com.edu.bodybuddy.domain.mypage.Ask;
+import com.edu.bodybuddy.domain.mypage.Mypost;
+import com.edu.bodybuddy.domain.mypage.Report;
 import com.edu.bodybuddy.domain.security.MemberDetail;
+import com.edu.bodybuddy.exception.AskException;
+import com.edu.bodybuddy.exception.MemberException;
+import com.edu.bodybuddy.exception.ReportException;
 import com.edu.bodybuddy.model.mypage.AskService;
+import com.edu.bodybuddy.model.mypage.MypostService;
+import com.edu.bodybuddy.model.mypage.ReportService;
 import com.edu.bodybuddy.util.Msg;
 import com.edu.bodybuddy.util.MypageManager;
 
-import java.util.HashMap;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/mypage")
@@ -29,6 +41,35 @@ public class RestMypageController {
     private Logger log = LoggerFactory.getLogger(getClass());
     private final AskService askService;
     private final ReportService reportService;
+    private final MypostService mypostService;
+    
+    /*===================================================
+    													내 글 모아보기
+	===================================================*/
+    @GetMapping("/mypost/list/{page}")
+    public HashMap<String, Object> selectAll(@PathVariable int page){
+    	//페이징처리를 위해 변수설정
+    	int pageSize = 5;
+    	int blockSize = 3;
+    	int member_idx = getMember().getMember_idx();
+    	int totalRecord = mypostService.selectTotal(getMember());
+    	MypageManager paging = new MypageManager(totalRecord, page, pageSize, blockSize);
+    	
+    	//불러올 데이터 범위를 정해 DAO까지 전달
+    	HashMap<String, Object> map = paging.getRange(page, pageSize); //조회에 사용할 범위와 멤버정보를 넣을 맵
+    	map.put("member", getMember());
+    	List<Mypost> list = mypostService.selectMypost(map);
+    	log.info("최종 리스트는" + list);
+    	
+    	//반환할 맵을 만들어준다
+    	HashMap<String, Object> resp = new HashMap();
+    	//맵에 리스트 추가
+    	resp.put("list", list);
+    	//페이징처리 변수들을 담은 객체도 추가
+    	resp.put("paging", paging);
+    	
+    	return resp;
+    }
 
     /*===================================================
                                                          문의글 관련

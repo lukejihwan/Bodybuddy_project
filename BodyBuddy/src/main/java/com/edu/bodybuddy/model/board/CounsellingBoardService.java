@@ -89,4 +89,13 @@ public class CounsellingBoardService implements BoardService{
 		boardDAO.addRecommend(board_idx);
 	}
 
+	public List selectAllBySearch(String value, int page) {
+		page = page - 1;
+		if(page <0) page = 0;
+		return boardDAO.selectAllBySearch(value, page * PAGE_SIZE);
+	}
+
+	public int totalCountSearch(String value) {
+		return boardDAO.totalCountSearch(value);
+	}
 }

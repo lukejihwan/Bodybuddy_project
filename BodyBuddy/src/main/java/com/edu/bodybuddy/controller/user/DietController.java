@@ -92,7 +92,7 @@ public class DietController {
 		return mav;
 	}
 	//비건식 페이지 
-	@GetMapping("/info_vegan")
+	@GetMapping("/info_vegan/{diet_category_idx}")
 	public ModelAndView getVegan(@PathVariable int diet_category_idx) {
 		List<DietInfo> dietInfoList=dietInfoService.selectByIdx(diet_category_idx);			
 			
@@ -101,7 +101,7 @@ public class DietController {
 		return mav;
 	}
 	//간헐적식단 페이지
-	@GetMapping("/info_time")
+	@GetMapping("/info_time/{diet_category_idx}")
 	public ModelAndView getTime() {
 		ModelAndView mav= new ModelAndView("diet/info_time");
 		return mav;

@@ -97,7 +97,7 @@ public class ExrAdminController {
 			exrNoticeService.delete(exr_notice_idx);
 		}
 
-		return new ModelAndView("redirect:/admin/exr/notice/notice_list");
+		return new ModelAndView("redirect:/admin/exr/notice/list");
 	}
 	
 	

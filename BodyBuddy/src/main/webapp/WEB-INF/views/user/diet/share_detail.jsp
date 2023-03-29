@@ -108,6 +108,34 @@
 			<button class="btn btn-primary " id="bt_list">목록</button>
 			<button type="button" class="btn btn-default pull-right" id="bt_del">삭제</button>
 			<button type="button" class="btn btn-default pull-right" id="bt_edit">수정</button>
+			
+			
+			<!-- 댓글영역 -->
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<div class="comment-area">
+			<div class="col-sm-12" id="">
+					<label class="control-label" for="textarea">Comments</label>
+					<form id="form">
+						<div class="col">
+							<div class="col-md-12">
+								<textarea rows="3" class="form-control for-send" name="content" placeholder="댓글 작성..."></textarea>
+								<button type="button" class="btn btn-primary float-right" id="bt_comments">등록</button>
+							</div>
+						</div>
+					</form>
+			</div>
+			<br/>
+			<br/>
+			<br/>
+			<template v-for="comment in commentsList">
+				<row :obj="comment" />
+			</template>
+			<!-- 댓글영역 끝-->
+			</div>
+			
 		</div>
 		<!-- end of container -->
 	</div>
@@ -127,6 +155,54 @@
 </body>
 
 <script type="text/javascript">
+	
+	/*--------------------------------------
+					글 관련 
+	---------------------------------------*/
+	let app1;
+
+	const row={
+		template:`
+			<div>
+			<hr>
+			<h4 class="user-title mb8">{{comment.content}}</h4>
+			<div>
+			<button type="button" class="btn-sm btn-danger float-right" @click="del(comment.diet_share_comments_idx)">삭제</button>
+			</div>
+			<div class="comment-meta">
+				<span class="comment-meta-date">{{comment.writer}}</span>
+				<span class="comment-meta-date">{{comment.regdate}}</span>
+			</div>
+			<div class="comment-content">
+				<p>{{comment.writer}}</p>
+			</div>
+			</div>
+		`,
+		props:["obj"],
+		data(){
+			return{
+				comment:this.obj
+			}
+		},
+		methods:{
+			del:function(idx){
+				if(!confirm("댓글을 삭제하시겠습니까?")){
+					return;
+				}
+				
+				$.ajax({
+					url:"/rest/diet/share/comments/"+idx,
+					type:"delete",
+					success:function(result, status, xhr){
+						alert(result.msg);
+						getComments();
+					}
+				});
+			}
+		}
+	}
+	
+
 	//글 삭제 
 	function del(){
 		if(!confirm("삭제하시겠습니까?")){
@@ -175,14 +251,59 @@
 		});
 	}
 	
+	
+	/*--------------------------------------
+					댓글 관련 
+	---------------------------------------*/
+
+	//댓글 등록 
+	function commentsRegist(){
+		let formData=new FormData();
+		formData.append("dietShare.diet_share_idx", $("input[name='diet_share_idx']").val());
+		formData.append("content", $("#form textarea[name='content']").val());
+		//formData.append("writer", $("#form input[name='writer']").val());
+	
+		$.ajax({
+			url:"/rest/diet/share/comments/regist",
+			type:"post",
+			contentType:false,
+			processData:false,
+			data:formData,
+			success:function(result, status, xhr){
+			alert(result.msg);
+			
+			getComments();
+			
+			// 내용 비워주기
+			$("#form textarea[name='content']").val("");
+			//$("#form input[name='writer']").val("");
+			}
+		});
+	}
+	
+	//댓글 목록 
+	function getComments(){
+		$.ajax({
+			url:"/rest/diet/share/comments/"+$("input[name='diet_share_idx']").val(),
+			type:"get",
+			success:function(result, status, xhr){
+			app1.commentsList=result;
+			},
+			error:function(xhr, status, err){
+			console.log(xhr.responseText);
+			}
+		});
+	}
+	
 	function init(){
 		app1=new Vue({
 			el:"#app1",
 			components:{
-				
+				row
 			},
 			data:{
-				recommend:[]
+				recommend:[],
+				commentsList:[]
 			}
 		});
 	}
@@ -192,6 +313,9 @@
 	$(function(){
 		init();
 		getDetail();
+		
+		//댓글 목록
+		getComments();
 		
 		//목록버튼 
 		$("#bt_list").click(function(){
@@ -212,6 +336,13 @@
 		$("#bt_recommend").click(function(){
 			recommend();
 			
+		});
+		
+		//댓글등록 버튼 
+		$("#bt_comments").click(function() {
+			if (confirm("댓글을 등록하시겠습니까?")) {
+				commentsRegist();
+			}
 		});
 	});
 </script>

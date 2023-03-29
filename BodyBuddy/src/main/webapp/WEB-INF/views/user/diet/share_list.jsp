@@ -108,7 +108,7 @@
 
 </body>
 
-<script type="text/javascript" src="/resources/user/js/page/Pager.js"></script>
+<script type="text/javascript" src="/resources/user/js/page/Pager2.js"></script>
 <script type="text/javascript">
 	let app1;
 	

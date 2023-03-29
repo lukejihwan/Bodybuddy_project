@@ -125,9 +125,12 @@ public class NaverLoginService implements SocialLoginService{
 		
 		MemberDetail existMember = null;
 		try {
+			log.info("기존유저 받아오는중");
 			existMember = (MemberDetail)userDetailsService.loadUserByUsername(email);
+			log.info("기존유저 받아옴");
 		} catch (UsernameNotFoundException e) {
 			//어플리케이션을 처음 이용하는 경우 사용자 정보 등록
+			log.info("기존유저 없음");
 			Member member = new Member();
 			member.setProvider("naver");
 			member.setPhone(mobile);

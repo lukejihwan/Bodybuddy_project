@@ -127,9 +127,9 @@
                                 </div>
 
                                 <!-- 수정버튼 -->
-                                <div class="form-group pt-3">
-                                    <button type="button" class="btn btn-default" id="bt_edit">
-                                        <span>수정하기</span>
+                                <div class="form-group pt-3 text-center">
+                                    <button type="button" class="btn btn-default pull-center" id="bt_edit">
+                                        <span>수정완료</span>
                                     </button>
                                 </div>
                             </form>

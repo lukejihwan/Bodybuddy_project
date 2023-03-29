@@ -12,4 +12,6 @@ public interface BoardDAO {
 	public void delete(int board_idx);
 	public void addHit(int board_idx);
 	public void addRecommend(int board_idx);
+	public List selectAllBySearch(String value, int page);
+	public int totalCountSearch(String value);
 }

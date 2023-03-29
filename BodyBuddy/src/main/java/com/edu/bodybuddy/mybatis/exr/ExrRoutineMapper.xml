@@ -60,8 +60,8 @@
 
 	<!-- Member 나중에 추가 예정 -->
 	<insert id="insert" parameterType="ExrRoutine">
-		insert into exr_routine(exr_category_idx, title, writer, content)
-		values(#{exrCategory.exr_category_idx}, #{title}, #{writer}, #{content})
+		insert into exr_routine(exr_category_idx, member_idx, title, writer, content)
+		values(#{exrCategory.exr_category_idx}, #{member.member_idx}, #{title}, #{writer}, #{content})
 	</insert>
 	
 	

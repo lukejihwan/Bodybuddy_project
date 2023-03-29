@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.edu.bodybuddy.domain.exr.ExrCategory;
 import com.edu.bodybuddy.domain.exr.ExrNotice;
 import com.edu.bodybuddy.exception.ExrCategoryException;
+import com.edu.bodybuddy.exception.ExrNoticeException;
 import com.edu.bodybuddy.model.exr.ExrCategoryService;
 import com.edu.bodybuddy.model.exr.ExrNoticeService;
 import com.edu.bodybuddy.util.Message;
@@ -38,6 +39,7 @@ public class RestExrAdminController {
 	private ExrCategoryService exrCategoryService;
 	@Autowired
 	private ExrNoticeService exrNoticeService;
+	
 	
 	/*-----------------------------
 		운동 카테고리와 관련된 메서드!
@@ -84,65 +86,38 @@ public class RestExrAdminController {
 	}
 	
 	
+	
 	/*-------------------------------------
 	  운동 정보 (ExrNotice) 와 관련된 메서드들
 	 --------------------------------------*/ 
 	
 	// 정보글 등록
 	@PostMapping("/notice")
-	public ResponseEntity<String> regsit(ExrNotice exrNotice, HttpServletRequest request){
-		//MultipartFile[] photoList=exrNotice.getPhoto();
-		//logger.info("사진 배열"+photoList.length);
-		
-		
-		// 사진 등록하기
-		//ServletContext context=request.getSession().getServletContext();
-		//String dir=context.getRealPath("/resources/data/exr/");		// 실제 디렉토리 폴더 만드는 것 잊지 말기!
-		//logger.info("가진 저장 경로 : "+dir);
-		
-		//logger.info("컨트롤러에서 노티스의 카테고리 확인 "+exrNotice);
+	public ResponseEntity<Message> regsit(ExrNotice exrNotice, HttpServletRequest request){
 		exrNoticeService.regist(exrNotice);
 		
-		ResponseEntity<String> entity=new ResponseEntity<String>("상품 등록 완료", HttpStatus.OK);
+		Message message=new Message();
+		message.setMsg("등록 완료");
+		ResponseEntity<Message> entity=new ResponseEntity<Message>(message, HttpStatus.OK);
 		return entity;
 	}
-	
 	
 	
 	// 정보글 수정
-	@PostMapping("/notice/edit")
-	public ResponseEntity<String> edit(ExrNotice exrNotice, HttpServletRequest request){
-		//MultipartFile[] photoList=exrNotice.getPhoto();
-		//logger.info("사진 배열"+photoList.length);
+	@PutMapping("/notice")
+	public ResponseEntity<Message> edit(@RequestBody ExrNotice exrNotice, HttpServletRequest request){
+		logger.info("넘어온 객체!의? "+exrNotice);
 		
-		
-		// 사진 등록하기
-		ServletContext context=request.getSession().getServletContext();
-		String dir=context.getRealPath("/resources/data/exr/");		// 실제 디렉토리 폴더 만드는 것 잊지 말기!
-		logger.info("가진 저장 경로 : "+dir);
-		
-		//exrNoticeService.regist(exrNotice, dir);
-		
-		ResponseEntity<String> entity=new ResponseEntity<String>("수정 완료", HttpStatus.OK);
+		exrNoticeService.update(exrNotice);
+		Message message=new Message();
+		message.setMsg("수정완료");
+		ResponseEntity<Message> entity=new ResponseEntity<Message>(message, HttpStatus.OK);
 		return entity;
 	}
 	
 	
 	
-	/*------------------------------------------
-	  운동 정보 이미지(ExrNoticeImg) 와 관련된 메서드
-	 --------------------------------------------*/ 
-	
-	// 이미지 삭제
-	@DeleteMapping("/notice_img/{exr_notice_idx}")
-	public ResponseEntity<Message> delImg(@PathVariable("exr_notice_idx") int exr_notice_idx) throws ExrCategoryException{
-		logger.info("넘어오드나 "+exr_notice_idx);
-		
-		Message message = new Message("사진 삭제 완료");
-		ResponseEntity<Message> entity = new ResponseEntity<Message>(message, HttpStatus.CREATED);
-		
-		return entity;
-	}
+
 	
 	
 	
@@ -151,6 +126,13 @@ public class RestExrAdminController {
 	 --------------------------------------------*/ 
 	@ExceptionHandler(ExrCategoryException.class)
 	public ResponseEntity<Msg> handle(ExrCategoryException e){
+		Msg msg=new Msg();
+		msg.setMsg(e.getMessage());
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.INTERNAL_SERVER_ERROR);
+		return entity;
+	}
+	@ExceptionHandler(ExrNoticeException.class)
+	public ResponseEntity<Msg> handle(ExrNoticeException e){
 		Msg msg=new Msg();
 		msg.setMsg(e.getMessage());
 		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.INTERNAL_SERVER_ERROR);

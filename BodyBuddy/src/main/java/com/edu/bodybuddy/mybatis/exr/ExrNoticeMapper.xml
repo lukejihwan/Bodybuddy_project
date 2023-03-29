@@ -16,19 +16,21 @@
 		select * from exr_notice
 	</select>
 
+
+	<!-- 카테고리를 기준으로 정보 글을 보여줄 것 -->
 	<select id="select" parameterType="int" resultMap="exrNoticeMap">
 		select * from exr_notice
-		where exr_notice_idx=#{exr_notice_idx}
+		where exr_category_idx=#{exrCategory.exr_category_idx}
 	</select>
+	
 	
 	<insert id="insert" parameterType="ExrNotice">
 		insert into exr_notice(exr_category_idx, title, content)
 		values(#{exrCategory.exr_category_idx}, #{title}, #{content})
-
 	</insert>
 	
 	<update id="update" parameterType="ExrNotice">
-		update exr_notice set title=#{title}, content1=#{content1}, content2=#{content2}
+		update exr_notice set title=#{title}, content=#{content}
 		where exr_notice_idx=#{exr_notice_idx}
 	</update>
 
