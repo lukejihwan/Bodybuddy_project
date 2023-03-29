@@ -6,18 +6,27 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.bodybuddy.domain.member.Member;
+import com.edu.bodybuddy.domain.myrecord.DailyWalk;
+import com.edu.bodybuddy.model.myrecord.DailyWalkService;
 import com.edu.bodybuddy.util.Message;
 
 @RestController
 @RequestMapping("/rest/ranking")
 public class RestRankingController {
+	
+	@Autowired
+	private DailyWalkService dailyWalkService;
 	
 	@GetMapping("/walk/daily")
 	public List getDailyRanking(){
@@ -42,7 +51,26 @@ public class RestRankingController {
 	}
 	
 	@PostMapping("/walk")
-	public ResponseEntity<Message> regist(HttpServletRequest request){
-		return null;
+	public ResponseEntity<Message> regist(HttpServletRequest request, @RequestBody DailyWalk dailyWalk){
+		
+		//3단계
+		dailyWalkService.regist(dailyWalk);
+		
+		Message message = new Message("일일 기록 등록 성공", 201);
+		ResponseEntity<Message> entity = new ResponseEntity<Message>(message, HttpStatus.CREATED);
+		
+		return entity;
+	}
+	
+	@DeleteMapping("/walk")
+	public ResponseEntity<Message> delete(HttpServletRequest request, @RequestBody DailyWalk dailyWalk){
+		
+		//3단계
+		dailyWalkService.delete(dailyWalk);
+		
+		Message message = new Message("일일 기록 삭제 성공", 200);
+		ResponseEntity<Message> entity = new ResponseEntity<Message>(message, HttpStatus.OK);
+		
+		return entity;
 	}
 }
