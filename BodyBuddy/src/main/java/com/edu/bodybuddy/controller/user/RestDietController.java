@@ -3,6 +3,7 @@ package com.edu.bodybuddy.controller.user;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,6 +38,7 @@ import com.edu.bodybuddy.domain.exr.ExrRoutineComment;
 import com.edu.bodybuddy.exception.DietInfoException;
 import com.edu.bodybuddy.exception.DietShareException;
 import com.edu.bodybuddy.exception.DietTipException;
+import com.edu.bodybuddy.model.diet.DietAPIService;
 import com.edu.bodybuddy.model.diet.DietCategoryService;
 import com.edu.bodybuddy.model.diet.DietInfoService;
 import com.edu.bodybuddy.model.diet.DietShareCommentsService;
@@ -76,7 +78,8 @@ public class RestDietController {
 	@Autowired
 	private DietShareCommentsService dietShareCommentsService;
 	
-	
+	@Autowired
+	private DietAPIService dietAPIService;
 	
 	/*--------------------------------
 			식단공유 페이지 관련 
@@ -321,79 +324,22 @@ public class RestDietController {
 	/*--------------------------------
 			칼로리계산기 페이지 관련 
 	--------------------------------*/
-	@GetMapping("/kcal/list")
-	public List<Food> getFoodList() throws IOException {
-        StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1471000/FoodNtrIrdntInfoService1/getFoodNtrItdntList1"); /*URL*/
-        
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=QjMliKoiQ9gSagmSAFaEQ3xJNMR8F1%2FpOcKLAhXvXFhWAVjqHaRjeYDlPw%2BQWJwmTD0ZMJF407DnUpER3k8o3g%3D%3D"); /*Service Key*/
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); //1~220
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("20", "UTF-8"));/*한 페이지 결과 수*/  
-        urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*응답데이터 형식(xml/json) Default: xml*/      
-        
-        URL url = new URL(urlBuilder.toString());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-type", "application/json");
-        System.out.println("Response code: " + conn.getResponseCode());
-        
-        BufferedReader rd;
-        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        } else {
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-        }
-        
-        StringBuilder sb = new StringBuilder();
-        String line;
-        
-        while ((line = rd.readLine()) != null) {
-            sb.append(line);
-        }
-        
-        rd.close();
-        conn.disconnect();
-        
-        String data=sb.toString();
+	//API리스트 목록 
+	@PostMapping("/kcal/list")
+	public List<Food> getFoodList() {
+		logger.info("작동??? ");
+		List<Food> foodList=dietAPIService.getFoodApi();
 		
-        //json 문자열을 대상으로 파싱해서 원하는 결과 가공하기
-        JSONParser jsonParser=new JSONParser();
-        List<Food> foodList=new ArrayList<Food>();
-        try {
-            JSONObject json=(JSONObject)jsonParser.parse(data);
-
-            JSONObject body = (JSONObject)json.get("body");
-            JSONArray items=(JSONArray)body.get("items");
-
-            for(int i=0; i<items.size(); i++) {
-                JSONObject itemLists=(JSONObject)items.get(i);
-
-                String name=(String)itemLists.get("DESC_KOR");
-                String wt=(String)itemLists.get("SERVING_WT");
-                String kcal=(String)itemLists.get("NUTR_CONT1");
-                String car=(String)itemLists.get("NUTR_CONT2");
-                String tien=(String)itemLists.get("NUTR_CONT3");
-                String vince=(String)itemLists.get("NUTR_CONT4");
-                
-                Food food=new Food();
-                food.setDESC_KOR(name);
-                food.setSERVING_WT(wt);
-                food.setNUTR_CONT1(kcal);
-                food.setNUTR_CONT2(car);
-                food.setNUTR_CONT3(tien);
-                food.setNUTR_CONT4(vince);
-                
-                foodList.add(food);
-            }
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return foodList;
-        
+		return foodList;  
     }
+	
+	//검색기능
+	@PostMapping("/kcal/search")
+	public List getFoodSerach(@RequestBody Map<String, String> foodName){
+		//logger.info("검색기능작동 ");
+
+		List searchList=dietAPIService.getSearchFood(foodName.get("foodName"));
 		
-	
-	
-	
-	
+		return searchList;
+	}
 }
