@@ -10,5 +10,5 @@ public interface DailyWalkService {
 	public List selectAllDailyWalkForWeek();
 	public List selectAllDailyWalkForMonth();
 	public void regist(DailyWalk dailyWalk);
-	public void delete(DailyWalk dailyWalk);
+	public void delete(int member_idx);
 }

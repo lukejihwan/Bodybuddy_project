@@ -20,14 +20,15 @@
 		select * 
 		from dailywalk
 		where date_format(regdate,'%y-%m-%d')=date_format(now(),'%y-%m-%d')
+		order by distance desc
 	</select>
 	
 	<!-- 메인페이지에 보여줄 러닝거리 주간랭킹 -->
 	<select id="selectAllWalkRecordForWeek" resultMap="DailyWalkMap">
 		select *
-		from gpsdata 
+		from dailywalk 
 		where month(regdate)=month(now()) and year(regdate)=year(now()) and week(regdate)=week(now())  
-		order by regdate desc
+		order by distance desc
 	</select>
 	
 	<!-- 메인페이지에 보여줄 러닝거리 월간 랭킹 -->
@@ -40,14 +41,14 @@
 	
 	<!-- 러닝기록 등록하는 쿼리 -->
 	<insert id="insert" parameterType="DailyWalk">
-		insert into dailywalk (dailywalk_idx, member_idx, distance, regdate)
-		values (#{dailywalk_idx}, #{member_idx}, #{distance}, #{regdate})
+		insert into dailywalk (member_idx, distance)
+		values (#{member.member_idx}, #{distance})
 	</insert>
 	
 	<!-- 러닝기록 삭제하는 쿼리 -->
-	<delete id="delete" parameterType="DailyWalk">
+	<delete id="delete" parameterType="int">
 		delete from dailywalk
-		where member_idx=#{member_idx} and regdate=#{regdate}
+		where member_idx=#{member_idx} and date_format(regdate,'%y-%m-%d')=date_format(now(),'%y-%m-%d')
 	</delete>
 
 </mapper>
