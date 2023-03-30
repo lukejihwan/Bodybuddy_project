@@ -47,11 +47,12 @@
 				<div class="col">
                     <h1>식단팁 게시판</h1>
                     <hr>
+                    <input type="hidden" class="form-control" name="diet_tip_idx"value="<%=dietTip.getDiet_tip_idx()%>">                    
                     <h3><%=dietTip.getTitle() %></h3>
-                    <input type="hidden" class="form-control" name="diet_tip_idx"value="<%=dietTip.getDiet_tip_idx()%>">
-                    <span class="float-right"><img src="/resources/user/images/diet/heart.png" style="width:20px; height:20px"> 찜하기</span>
+					<span class="float-right" onclick="interest()"><a href="#"><img src="/resources/user/images/diet/heart.png" style="width:20px; height:20px"> 찜하기</a></span>
+
                     <br/>
-                    <span>작성자 | <%=dietTip.getRegdate().substring(0,10) %></span>
+                    <span><%=dietTip.getWriter() %> | <%=dietTip.getRegdate().substring(0,10) %></span>
                     <span class="float-right">조회 <%=dietTip.getHit() %> | 추천 {{recommend}}</span>
                     <hr>
 				</div>
@@ -62,6 +63,7 @@
 				<div class="col-md-12">
 					<%=dietTip.getContent() %>
 				</div>
+				
 				<div class="col-md-12 mt-5 mb-4 text-center">
 					<button class="btn btn-default" id="bt_recommend"><i class="fa-solid fa-thumbs-up"></i> {{recommend}}</button>
 				</div>	
@@ -83,6 +85,10 @@
 					<form id="form">
 						<div class="col">
 							<div class="col-md-12">
+							<input type="hidden" name="member.member_idx"
+							value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
+							<input type="text" class="form-control" name="writer"
+							value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" />	
 								<textarea rows="3" class="form-control for-send" name="content" placeholder="댓글 작성..."></textarea>
 								<button type="button" class="btn btn-primary float-right" id="bt_comments">등록</button>
 							</div>
@@ -221,10 +227,20 @@
 	
 	//댓글 등록 
 	function commentsRegist(){
+		<sec:authorize access="isAnonymous()">
+		Swal.fire({
+			title:"로그인해야 사용할 수 있는 기능입니다",
+			icon:"warning",
+			confirmButtonText:"확인",
+			confirmButtonColor: '#c5f016'
+		});
+		return;
+		</sec:authorize>
+		
 		let formData=new FormData();
 		formData.append("dietTip.diet_tip_idx", $("input[name='diet_tip_idx']").val());
 		formData.append("content", $("#form textarea[name='content']").val());
-		//formData.append("writer", $("#form input[name='writer']").val());
+		formData.append("writer", $("#form input[name='writer']").val());
 	
 		$.ajax({
 			url:"/rest/diet/tip/comments/regist",
@@ -256,6 +272,24 @@
 				console.log(xhr.responseText);
 			}
 		});
+	}
+
+	//찜하기
+	function interest(){
+		let data = {
+			idx: <%=dietTip.getDiet_tip_idx()%>,
+			table_name: "식단팁",
+			title: "<%=dietTip.getTitle()%>"
+		}
+		$.ajax({
+			type: "post",
+			url: "/mypage/interest",
+			data: data,
+			success: (result)=>{
+				console.log(result);
+				alert(result.msg);
+			}
+		})
 	}
 	
 	

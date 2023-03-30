@@ -45,7 +45,7 @@ public class DietController {
 	--------------------------------*/
 	//식단정보 메인페이지
 	@GetMapping("/info")
-	public ModelAndView infoMain() {
+	public ModelAndView infoMain(HttpServletRequest request) {
 		List<DietCategory> dietCategoryList=dietCategoryService.selectAll();
 		
 		ModelAndView mav= new ModelAndView("diet/info");
@@ -55,7 +55,7 @@ public class DietController {
 	
 	//상세보기페이지
 	@GetMapping("/info_detail/{diet_info_idx}")
-	public ModelAndView getInfoDetail(@PathVariable int diet_info_idx) {
+	public ModelAndView getInfoDetail(@PathVariable int diet_info_idx, HttpServletRequest request) {
 		DietInfo dietInfo=dietInfoService.select(diet_info_idx);
 		
 		ModelAndView mav=new ModelAndView("diet/info_detail");
@@ -66,7 +66,7 @@ public class DietController {
 	
 	//일반식 페이지
 	@GetMapping("/info_general/{diet_category_idx}")
-	public ModelAndView getGeneral(@PathVariable int diet_category_idx) {
+	public ModelAndView getGeneral(@PathVariable int diet_category_idx, HttpServletRequest request) {
 		List<DietInfo> dietInfoList=dietInfoService.selectByIdx(diet_category_idx);
 		
 		ModelAndView mav= new ModelAndView("diet/info_general");
@@ -75,7 +75,7 @@ public class DietController {
 	}
 	//키토제닉 페이지
 	@GetMapping("/info_kito/{diet_category_idx}")
-	public ModelAndView getKito(@PathVariable int diet_category_idx) {
+	public ModelAndView getKito(@PathVariable int diet_category_idx, HttpServletRequest request) {
 		List<DietInfo> dietInfoList=dietInfoService.selectByIdx(diet_category_idx);			
 			
 		ModelAndView mav= new ModelAndView("diet/info_kito");
@@ -84,7 +84,7 @@ public class DietController {
 	}
 	//지중해식 페이지
 	@GetMapping("/info_fish/{diet_category_idx}")
-	public ModelAndView getFish(@PathVariable int diet_category_idx) {
+	public ModelAndView getFish(@PathVariable int diet_category_idx, HttpServletRequest request) {
 		List<DietInfo> dietInfoList=dietInfoService.selectByIdx(diet_category_idx);			
 			
 		ModelAndView mav= new ModelAndView("diet/info_fish");
@@ -93,7 +93,7 @@ public class DietController {
 	}
 	//비건식 페이지 
 	@GetMapping("/info_vegan/{diet_category_idx}")
-	public ModelAndView getVegan(@PathVariable int diet_category_idx) {
+	public ModelAndView getVegan(@PathVariable int diet_category_idx, HttpServletRequest request) {
 		List<DietInfo> dietInfoList=dietInfoService.selectByIdx(diet_category_idx);			
 			
 		ModelAndView mav= new ModelAndView("diet/info_vegan");
@@ -102,7 +102,7 @@ public class DietController {
 	}
 	//간헐적식단 페이지
 	@GetMapping("/info_time/{diet_category_idx}")
-	public ModelAndView getTime() {
+	public ModelAndView getTime(HttpServletRequest request) {
 		ModelAndView mav= new ModelAndView("diet/info_time");
 		return mav;
 	}
@@ -114,7 +114,7 @@ public class DietController {
 	--------------------------------*/	
 	//식단공유 메인페이지
 	@GetMapping("/share_list")
-	public ModelAndView shareMain() {
+	public ModelAndView shareMain(HttpServletRequest request) {
 		//카테고리 불러오기 
 		List<DietCategory> dietCategoryList=dietCategoryService.selectAll(); 
 		List<DietShare> dietShareList=dietShareService.selectAll();
@@ -128,7 +128,7 @@ public class DietController {
 	
 	//등록페이지
 	@GetMapping("/share_registform")
-	public ModelAndView getShareRegistform() {
+	public ModelAndView getShareRegistform(HttpServletRequest request) {
 		//카테고리 불러오기 
 		List<DietCategory> dietCategoryList=dietCategoryService.selectAll(); 
 		
@@ -140,7 +140,7 @@ public class DietController {
 	
 	//상세보기페이지
 	@GetMapping("/share_detail/{diet_share_idx}")
-	public ModelAndView getShareDetail(@PathVariable int diet_share_idx) {
+	public ModelAndView getShareDetail(@PathVariable int diet_share_idx, HttpServletRequest request) {
 		//조회수 증가
 		dietShareService.addHit(diet_share_idx);
 		
@@ -156,7 +156,7 @@ public class DietController {
 		
 	//글수정페이지
 	@GetMapping("/share_edit/{diet_share_idx}")
-	public ModelAndView getShareEdit(@PathVariable int diet_share_idx) {
+	public ModelAndView getShareEdit(@PathVariable int diet_share_idx, HttpServletRequest request) {
 		List<DietCategory> dietCategoryList=dietCategoryService.selectAll();
 		DietShare dietShare=dietShareService.select(diet_share_idx);
 					
@@ -171,7 +171,7 @@ public class DietController {
 	--------------------------------*/
 	//메인페이지
 	@GetMapping("/tip_list")
-	public ModelAndView tipList() { 
+	public ModelAndView tipList(HttpServletRequest request) { 
 		//logger.info("일반 작동");
 		List<DietTip> dietTipList=dietTipService.selectAll();
 			
@@ -183,14 +183,14 @@ public class DietController {
 	
 	//등록페이지
 	@GetMapping("/tip_registform")
-	public ModelAndView getTipRegistform() {
+	public ModelAndView getTipRegistform(HttpServletRequest request) {
 		ModelAndView mav= new ModelAndView("diet/tip_registform");
 		return mav;
 	}
 	
 	//상세보기페이지
 	@GetMapping("/tip_detail/{diet_tip_idx}")
-	public ModelAndView getTipDetail(@PathVariable int diet_tip_idx) {
+	public ModelAndView getTipDetail(@PathVariable int diet_tip_idx, HttpServletRequest request) {
 		//조회수 증가
 		dietTipService.addHit(diet_tip_idx);
 		DietTip dietTip=dietTipService.select(diet_tip_idx);
@@ -203,7 +203,7 @@ public class DietController {
 	
 	//글수정페이지
 	@GetMapping("/tip_edit/{diet_tip_idx}")
-	public ModelAndView getTipEdit(@PathVariable int diet_tip_idx) {
+	public ModelAndView getTipEdit(@PathVariable int diet_tip_idx, HttpServletRequest request) {
 		DietTip dietTip=dietTipService.select(diet_tip_idx);
 				
 		ModelAndView mav=new ModelAndView("diet/tip_edit");
@@ -217,7 +217,7 @@ public class DietController {
 	--------------------------------*/
 	//칼로리 메인페이지
 	@GetMapping("/kcal")
-	public ModelAndView kcalMain() {
+	public ModelAndView kcalMain(HttpServletRequest request) {
 		ModelAndView mav= new ModelAndView("diet/kcal");
 		return mav;
 	}
