@@ -243,12 +243,12 @@ public class RestMypageController {
     ===================================================*/
 
     public Member getMember(){
-//        MemberDetail memberDetail =(MemberDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        return memberDetail.getMember();
+        MemberDetail memberDetail =(MemberDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return memberDetail.getMember();
 //		아래는 디버깅 코드
-        Member member = new Member();
-        member.setMember_idx(32);
-        return member;
+//        Member member = new Member();
+//        member.setMember_idx(32);
+//        return member;
     }
 
 }

@@ -36,7 +36,12 @@
 	</select>
 
 	<insert id="insert" parameterType="Ask">
-		insert into ask(member_idx, title, content) values(#{member.member_idx}, #{title}, #{content})
+		<selectKey keyColumn="ask_idx" keyProperty="ask_idx" order="BEFORE" resultType="int"/>
+		insert into ask(member_idx, title, content, team) values(#{member.member_idx}, #{title}, #{content}, #{team})
+	</insert>
+	
+	<insert id="reply" parameterType="Ask">
+		insert into ask(member_idx, title, content, team, depth) values(#{member.member_idx}, #{title}, #{content}, #{team}, #{depth}+1)
 	</insert>
 
 	<update id="update" parameterType="Ask">
