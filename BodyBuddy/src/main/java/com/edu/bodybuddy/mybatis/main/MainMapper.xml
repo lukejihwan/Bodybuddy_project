@@ -12,7 +12,7 @@
 		<result column="recommend" property="recommend"/>	
 	</resultMap>
 	<sql id="all" >
-		${boardName}_idx as board_idx, member_idx, title, writer, content, regdate, hit, recommend
+		${boardName}_idx as board_idx, member_idx, title, writer, regdate, hit, recommend
 	</sql>
 	<select id="selectWeeklyRankByRecommend" resultMap="boardMap" parameterType="java.util.HashMap">
 		select <include refid="all" /> from ${boardName}

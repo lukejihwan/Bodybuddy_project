@@ -327,7 +327,7 @@
 	
 	function getWalkRank(period) {
 		$.ajax({
-			url:"/rest/ranking/walk/"+period,
+			url:"/main/rest/ranking/walk/"+period,
 			type:"GET",
 			success:(result, status, xhr)=>{
 				console.log(result);
@@ -341,7 +341,7 @@
 
 	function getBoardRank(period, boardName) {
 		$.ajax({
-			url:"/rest/ranking/board/"+period+"/"+boardName,
+			url:"/main/rest/ranking/board/"+period+"/"+boardName,
 			type:"GET",
 			success:(result, status, xhr)=>{
 				console.log("가져온 테이블 : ", boardName);
