@@ -39,10 +39,10 @@ public class MyBatisDietShareComments implements DietShareCommentsDAO{
 	}
 
 	@Override
-	public void delete(int diet_share_comments_idx) throws DietTipCommentsException{
-		int result=sqlSessionTemplate.delete("DietTipComments.delete", diet_share_comments_idx);
+	public void delete(int diet_share_comments_idx) throws DietShareCommentsException{
+		int result=sqlSessionTemplate.delete("DietShareComments.delete", diet_share_comments_idx);
 		if(result<1) {
-			throw new DietTipCommentsException("댓글 삭제 실패");
+			throw new DietShareCommentsException("댓글 삭제 실패");
 		}
 	}
 

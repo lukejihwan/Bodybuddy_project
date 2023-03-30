@@ -46,7 +46,7 @@
                                     
                                     <!-- 내용 -->
                                     <div class="mb30">
-                                        <h1>키토제닉(저탄고지)(Ketogenic)</h1>
+                                        <h1>키토제닉(Ketogenic)</h1>
                                         <p></p>
                                         <p>저탄수화물 고지방(저탄고지) 다이어트 또는 키토제닉(Ketogenic) 다이어트는 식이요법의 일종으로[1], 단순히 지방을 많이 먹는 것이 아니라 열량의 총 섭취량은 유지하면서 섭취 비중 가운데 탄수화물(당질)이 들어간 음식을 줄이고 지방이 들어간 음식을 늘려, 체내 인슐린 저항성을 낮추는 것을 목표로 합니다.</p>                                       
                                         <p>LCHF에서 제시하는 조건을 맞추려면 탄수화물처럼 보이는 것은 의식적으로 기피해야 합니다.</p>
@@ -93,7 +93,7 @@
                                                         <div class="comment-author"><img src="<%=dietInfo.getPreview() %>" alt="preview" style="width:100px;height:100px";> </div>
                                                         <div class="comment-info">
                                                             <div class="comment-header">
-                                                                <div class="reply"><a href="/diet/info_detail?diet_info_idx=<%=dietInfo.getDiet_info_idx() %>" class="title"><i class="fa fa-mail-reply"></i> 글 보기</a></div>
+                                                                <div class="reply"><a href="/diet/info_detail/<%=dietInfo.getDiet_info_idx() %>" class="title"><i class="fa fa-mail-reply"></i> 글 보기</a></div>
                                                                 <h4 class="user-title mb10"><%=dietInfo.getTitle() %></h4>
                                                                 <div class="comment-meta"><span class="comment-meta-date"><%=dietInfo.getRegdate().substring(0,10) %></span></div>
                                                             </div>

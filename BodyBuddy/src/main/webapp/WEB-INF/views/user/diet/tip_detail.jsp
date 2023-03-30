@@ -49,6 +49,7 @@
                     <hr>
                     <h3><%=dietTip.getTitle() %></h3>
                     <input type="hidden" class="form-control" name="diet_tip_idx"value="<%=dietTip.getDiet_tip_idx()%>">
+                                     
                     <span class="float-right"><img src="/resources/user/images/diet/heart.png" style="width:20px; height:20px"> 찜하기</span>
                     <br/>
                     <span><%=dietTip.getWriter() %> | <%=dietTip.getRegdate().substring(0,10) %></span>
@@ -62,6 +63,7 @@
 				<div class="col-md-12">
 					<%=dietTip.getContent() %>
 				</div>
+				
 				<div class="col-md-12 mt-5 mb-4 text-center">
 					<button class="btn btn-default" id="bt_recommend"><i class="fa-solid fa-thumbs-up"></i> {{recommend}}</button>
 				</div>	

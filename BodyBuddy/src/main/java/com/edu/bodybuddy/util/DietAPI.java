@@ -29,7 +29,7 @@ public class DietAPI {
 	private String dataType;
 	
 	//리스트 전부 조회
-	public List getDietAPIList() throws IOException{
+	public List getDietAPIList(String foodName) throws IOException{
 		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1471000/FoodNtrIrdntInfoService1/getFoodNtrItdntList1"); /*URL*/       
 	    urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "="+dietServiceKey); /*Service Key*/
 	    //urlBuilder.append("&" + URLEncoder.encode("desc_kor","UTF-8") + "=" + URLEncoder.encode(foodName, "UTF-8")); /*식품이름*/
@@ -105,7 +105,6 @@ public class DietAPI {
         urlBuilder.append("&" + URLEncoder.encode("desc_kor","UTF-8") + "=" + URLEncoder.encode(foodName, "UTF-8")); /*식품이름*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("20", "UTF-8")); /*한 페이지 결과 수*/
-        //urlBuilder.append("&" + URLEncoder.encode("animal_plant","UTF-8") + "=" + URLEncoder.encode("(유)돌코리아", "UTF-8")); /*가공업체*/
         urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + dataType); /*응답데이터 형식(xml/json) Default: xml*/
         
         URL url = new URL(urlBuilder.toString());
@@ -128,20 +127,18 @@ public class DietAPI {
         conn.disconnect();
         String data=sb.toString();
 		
-        //객체를 Map에 담자
+        //객체 담기
         ObjectMapper objectMapper=new ObjectMapper();
         Map<String,Object> dietMap=new HashMap<String, Object>();
         dietMap=objectMapper.readValue(sb.toString(),new TypeReference<Map<String, Object>>(){});
         
-        Map<String, Object> bodyMap=(Map<String, Object>) dietMap.get("body");
+        Map<String, Object> foodMap=(Map<String, Object>) dietMap.get("body");
         
-        System.out.println(bodyMap.get("items"));
+        System.out.println(foodMap.get("items"));
         
-        List list=(List)bodyMap.get("items");
+        List foodList=(List)foodMap.get("items");
         
-        //따로 배열에 담을 필요가 없는게 위쪽에서 범위를 설정해 주면됨
-        
-        return list;
+        return foodList;
 	}
 
 

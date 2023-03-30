@@ -4,6 +4,9 @@
 <%
 	List<DietShare> dietShareList=(List)request.getAttribute("dietShareList");
 	DietShare dietShare=(DietShare)request.getAttribute("dietShare");
+	
+	
+	int test=dietShare.getKcal();
 %>
 <!DOCTYPE html>
 <!-- content 부분만 비워둔 기본 템플릿 -->
@@ -51,6 +54,10 @@
                     <h1>식단 공유 게시판</h1>
                     <hr>
                     <input type="hidden" class="form-control" name="diet_share_idx"value="<%=dietShare.getDiet_share_idx()%>">
+                    <input type="hidden" name="member.member_idx"
+						value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
+					<input type="text" class="form-control" name="writer"
+						value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" />	
                     
                     <h3><%=dietShare.getTitle() %></h3>
                     <span><%=dietShare.getDietCategory().getDiet_category_name() %></span>
@@ -71,30 +78,33 @@
 					<div class="col-md-12">
 						<div class="progress-group">
 							<span class="progress-text" style="color:#4374D9"><b>열량</b></span>
-							<span class="progress-number" style="margin-left:980px"><b>160</b>/200</span>
+							<span class="progress-text float-right"><%=dietShare.getKcal() %></span>
 							<div class="progress sm">
-		  						<div class="progress-bar" style="width:60%"></div>
+		  						<div class="progress-bar" style="width:calc((<%=dietShare.getKcal()%>/2000)*100%)"></div>
 							</div>
 						</div>
 						<div class="progress-group">
 							<span class="progress-text" style="color:#3c8dbc"><b>탄수화물</b></span>
-							<span class="progress-number" style="margin-left:953px"><b>160</b>/200</span>
+							<span class="progress-text float-right"><%=dietShare.getCarbohydrate() %></span>
+							
 							<div class="progress sm">
-		  						<div class="progress-bar bg-info" style="width:20%"></div>
+		  						<div class="progress-bar bg-info" style="width:calc((<%=dietShare.getCarbohydrate()%>/1100)*100%)"></div>
 							</div>
 						</div>
 						<div class="progress-group">
 							<span class="progress-text" style="color:#CC3D3D"><b>단백질</b></span>
-							<span class="progress-number" style="margin-left:967px"><b>160</b>/200</span>
+							<span class="progress-text float-right"><%=dietShare.getProtein() %></span>
+
 							<div class="progress sm">
-		  						<div class="progress-bar bg-danger" style="width:20%"></div>
+		  						<div class="progress-bar bg-danger" style="width:calc((<%=dietShare.getProtein()%>/1500)*100%)"></div>
 							</div>
 						</div>
 						<div class="progress-group">
 							<span class="progress-text" style="color:#f39c12"><b>지방</b></span>
-							<span class="progress-number" style="margin-left:980px"><b>160</b>/200</span>
+							<span class="progress-text float-right"><%=dietShare.getProtein() %></span>
+			
 							<div class="progress sm">
-		  						<div class="progress-bar bg-warning" style="width:20%"></div>
+		  						<div class="progress-bar bg-warning" style="width:calc((<%=dietShare.getProtein()%>/600)*100%)"></div>
 							</div>
 						</div>
 					</div>
@@ -125,7 +135,6 @@
 							value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
 							<input type="text" class="form-control" name="writer"
 							value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" />	
-								<textarea rows="3" class="form-control for-send" name="content" placeholder="댓글 작성..."></textarea>
 							<div class="col-md-12">
 								<textarea rows="3" class="form-control for-send" name="content" placeholder="댓글 작성..."></textarea>
 								<button type="button" class="btn btn-primary float-right" id="bt_comments">등록</button>
@@ -177,10 +186,7 @@
 			</div>
 			<div class="comment-meta">
 				<span class="comment-meta-date">{{comment.writer}}</span>
-				<span class="comment-meta-date">{{comment.regdate}}</span>
-			</div>
-			<div class="comment-content">
-				<p>{{comment.writer}}</p>
+				<span class="comment-meta-date">{{comment.regdate.substring(0,10)}}</span>
 			</div>
 			</div>
 		`,
@@ -257,6 +263,16 @@
 		});
 	}
 	
+	function showHide(){
+		if('<sec:authentication property="principal.member.member_idx"/>'!= <%= dietShare.getMember().getMember_idx() %>){
+			$("#bt_edit").hide();
+			$("#bt_del").hide();
+		}else{
+			$("#bt_edit").show();
+			$("#bt_del").show();
+		}
+	}
+	
 	
 	/*--------------------------------------
 					댓글 관련 
@@ -329,6 +345,7 @@
 	$(function(){
 		init();
 		getDetail();
+		showHide();
 		
 		//댓글 목록
 		getComments();

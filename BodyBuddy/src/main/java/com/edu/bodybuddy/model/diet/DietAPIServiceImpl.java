@@ -15,10 +15,10 @@ public class DietAPIServiceImpl implements DietAPIService{
 	private DietAPI dietAPI;
 	
 	@Override
-	public List getFoodApi() {
+	public List getFoodApi(String foodName) {
 		List foodList=null;
 		try {
-			foodList=dietAPI.getDietAPIList();
+			foodList=dietAPI.getDietAPIList(foodName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	

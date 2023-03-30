@@ -50,13 +50,13 @@
                     <hr>
            <!-- 계산기 -->       
             <div class="row">
-            	<div class="col" style="background:#c5f016; width:500px; height:200px; margin-left:110px" >
+            	<textarea class="form-control" style="background:#c5f016; width:450px; height:200px; margin-left:110px; font-size:20px; text-align:center; font-weight:bold; border:none; color:#4C4C4C" name="data" ></textarea>
             	
-            	</div>
-            	<div class="col" style="font-size:40px; text-align:center; margin-top:70px; margin-left:70px">
-            		<div class="row">
-            			총 24444 kcal
-            		</div>
+            	<div class="col" style="font-size:50px; text-align:center; margin-top:70px; margin-left:50px;">
+            		<!-- 총 합 나올 곳  -->
+            		<div class="row" >
+            			<input name="kcal" class="form-control" style="width:250px; height:80px; font-size:50px; text-align:right; border:none; color:#CC3D3D" /> kcal
+                    </div>
             	</div>
             </div>  
             <br/>
@@ -91,11 +91,10 @@
 							<tr>
 								<th>음식명</th>
 								<th>1회 제공량(g)</th>
-								<th>칼로리</th>
-								<th>탄수화물</th>
-								<th>단백질</th>
-								<th>지방</th>
-								<th><input type="checkbox"></th>
+								<th>칼로리(kcal)</th>
+								<th>탄수화물(g)</th>
+								<th>단백질(g)</th>
+								<th>지방(g)</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -124,23 +123,33 @@
 </body>
 <script type="text/javascript">
 	let app1;
+	let str=""; //값을 주지않으면 undefinded가 출력됨
+	let kcal=0;
 	
 	const row={
 		template:`
 			<tr>
-				<th>{{food.name}}</th>
+				<th @click ="getData(food)">{{food.name}}</th>
 				<th>{{food.wt}}</th>
-				<th>{{food.kcal}}</th>
+				<th>{{Math.round(food.kcal)}}</th>
 				<th>{{food.car}}</th>
 				<th>{{food.tien}}</th>
 				<th>{{food.vince}}</th>
-				<th><input type="checkbox"></th>
 			</tr>	
 		`,
 		props:["obj"],
 		data:function(){
 			return{
 				food:this.obj
+			}
+		},
+		methods:{
+			getData:function(food){
+				//console.log(food);
+				//$("input[name='data']").val(food.name);
+				//$("input[name='kcalData']").val(Math.round(food.kcal));
+				dataPlus(food);
+				
 			}
 		}
 	}
@@ -175,17 +184,34 @@
 					json['vince']=obj.NUTR_CONT4;
 					
 					jsonList.push(json);
-				}
+				}		
 				app1.searchList=jsonList;
+				//console.log(jsonList);
 			}
 		});
+	}
+	
+	function dataPlus(food){
+		let st;
+		let k;
+		
+		st=food.name;
+		k=parseInt(food.kcal);
+
+		str+=st+"\n"; //줄바꿈
+		kcal+=k;
+		
+		console.log(kcal);
+		
+		$("textarea[name='data']").val(str);
+		$("input[name='kcal']").val(kcal);
+
 	}
 
 	function init(){
 		app1=new Vue({
 			el:"#app1",
 			data:{
-				foodList:[], //전체배열
 				searchList:[] //검색어 보여질 배열
 			},
 			components:{
@@ -193,13 +219,14 @@
 			}
 		});
 	}
-
+	
 	$(function(){
 		init();
 
 		//검색버튼
 		$("#bt_search").click(function(){
 			getSearchAPI();
+			app1.searchList.splice(0, app1.searchList.length);
 		});
 	});
 	
