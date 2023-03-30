@@ -267,7 +267,7 @@
 				<form class="row" id="form-comment-0">
 					<input type="hidden" name="<%= boardName+"."+boardIdxName %>" :value="idx"/>
 					<input type="hidden" class="for-send" name="member.member_idx" value='<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>'/>
-					<input type="hidden" class="for-send" name="writer" value='<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>'/>
+					<input type="hidden" class="for-send" name="writer" :value='htmlDecode("<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>")'/>
 					<div class="col-md-10">
 						<textarea rows="5" class="form-control" style="margin-top:10px;" name="comment" placeholder="댓글 작성..." maxlength="500"></textarea>
 					</div>
@@ -278,7 +278,8 @@
 			`,	
 			props:["idx"],
 			methods:{
-				registComment: window.registComment
+				registComment: window.registComment,
+				htmlDecode:window.htmlDecode
 			}
 	};
 	
@@ -561,6 +562,10 @@
 		    	$(item).hide();
 			});
 		</sec:authorize>
+	}
+	function htmlDecode(input) {
+	  let doc = new DOMParser().parseFromString(input, "text/html");
+	  return doc.documentElement.textContent;
 	}
 </script>
 </html>
