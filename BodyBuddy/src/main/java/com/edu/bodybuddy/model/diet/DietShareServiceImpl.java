@@ -5,14 +5,22 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.edu.bodybuddy.domain.diet.DietShare;
+import com.edu.bodybuddy.exception.DietShareException;
+import com.edu.bodybuddy.exception.FreeBoardCommentException;
+import com.edu.bodybuddy.exception.FreeBoardException;
 
 @Service
 public class DietShareServiceImpl implements DietShareService{
 
 	@Autowired
 	DietShareDAO dietShareDAO;
+	
+	@Autowired
+	DietShareCommentsDAO dietShareCommentsDAO;
 	
 	@Override
 	public List selectAll() {
@@ -40,7 +48,7 @@ public class DietShareServiceImpl implements DietShareService{
 	}
 
 	@Override
-	public void delete(int diet_share_idx) {
+	public void delete(int diet_share_idx){
 		dietShareDAO.delete(diet_share_idx);
 	}
 
