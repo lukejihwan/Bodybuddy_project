@@ -75,7 +75,7 @@
 								<!-- 검색 태그들이 올 곳 -->
 								<div class="col-5">
 								<%for(ExrCategory category:exrCategoryList){	%>
-								<span class="m-3">
+								<span class="m-3 mt-2">
 									<a href="javascript:getCategory(<%=category.getExr_category_idx() %>)" title="Beginners"><%=category.getExr_category_name() %></a>
 								</span>
 								<%} %>
@@ -171,17 +171,17 @@
 	
 	const row={
 		template:`
-			<tr>
-			    <td>{{exrRoutine.exr_routine_idx}}</td>
-			    <td>{{exrRoutine.exrCategory.exr_category_name}}</td>
-			    <td><a href="#" @click="getDetail(exrRoutine)">{{exrRoutine.title}}
-			    <span class="comment-count" style="color:red">[&nbsp{{this.num}}&nbsp]</span>
-			    </a></td>
-			    <td>{{exrRoutine.writer}}</td>
-			    <td>{{exrRoutine.regdate.substr(0, 10)}}</td>
-			    <td>{{exrRoutine.recommend}}</td>
-			    <td>{{exrRoutine.hit}}</td>
-			</tr>
+				<tr @click="getDetail(exrRoutine)">
+				    <td>{{exrRoutine.exr_routine_idx}}</td>
+				    <td>{{exrRoutine.exrCategory.exr_category_name}}</td>
+				    <td>{{exrRoutine.title}}
+				    	<span class="comment-count" style="color:red">[&nbsp{{this.num}}&nbsp]</span>
+				    </td>
+				    <td>{{exrRoutine.writer}}</td>
+				    <td>{{exrRoutine.regdate.substr(0, 10)}}</td>
+				    <td>{{exrRoutine.recommend}}</td>
+				    <td>{{exrRoutine.hit}}</td>
+				</tr>
 		`,
 		props:["dto", "num"],
 		data(){
@@ -208,8 +208,7 @@
 			type:"GET",
 			success:function(result, status, xhr){
 				app1.exrRoutineList=result;
-				console.log(app1.exrRoutineList);
-				
+				console.log("결과로 받은 리스트 값", app1.exrRoutineList);
 			},
 			error:function(xhr, status, err){
 				console.log(xhr.responseText);
@@ -242,7 +241,10 @@
 		
 		// 키워드 검색
 		$("#bt_search").click(function(){
+			console.log($("input[name='keyword']").val());
 			getExrRoutineList("/rest/exr/routine/search?keyword="+$("input[name='keyword']").val());
+			
+			
 		});
 		
 	});

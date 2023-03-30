@@ -94,11 +94,11 @@
 					<tbody>
 						<%for(int i=0; i<exrTodayList.size(); i++){ %>
 						<%ExrToday exrToday=exrTodayList.get(i); %>
-						<tr>
+						<tr onClick="getDetail(<%=exrToday.getExr_today_idx() %>)">
 							<td><%=exrToday.getExr_today_idx() %></td>
-							<td><a href="/exr/today_detail?exr_today_idx=<%=exrToday.getExr_today_idx() %>"><%=exrToday.getTitle() %>
+							<td><%=exrToday.getTitle() %>
 								<span class="comment-count">[&nbsp <%=exrToday.getCommentList().size() %> &nbsp]</span>
-							</a></td>
+							</td>
 							<td><%=exrToday.getWriter() %></td>
 							<td><%=exrToday.getRegdate() %></td>
 							<td><%=exrToday.getRecommend() %></td>
@@ -146,9 +146,12 @@
     
     <%@include file="../inc/footer_link.jsp" %>
 <script type="text/javascript">
-
+	function getDetail(idx){
+		location.href="/exr/today_detail?exr_today_idx="+idx;
+	}
 	
 	$(function(){
+		
 	});
 
 </script>

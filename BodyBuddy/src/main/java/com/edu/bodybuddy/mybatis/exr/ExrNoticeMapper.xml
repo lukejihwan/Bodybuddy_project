@@ -17,10 +17,17 @@
 	</select>
 
 
-	<!-- 카테고리를 기준으로 정보 글을 보여줄 것 -->
+	<!-- 게시물 1건 보기 -->
 	<select id="select" parameterType="int" resultMap="exrNoticeMap">
 		select * from exr_notice
-		where exr_category_idx=#{exrCategory.exr_category_idx}
+		where exr_notice_idx=#{exr_notice_idx}
+	</select>
+	
+	
+	<!-- 카테고리를 기준으로 정보 글을 보여줄 것 -->
+	<select id="selectByCategory" parameterType="int" resultMap="exrNoticeMap">
+		select * from exr_notice
+		where exr_category_idx=#{exr_category_idx}
 	</select>
 	
 	

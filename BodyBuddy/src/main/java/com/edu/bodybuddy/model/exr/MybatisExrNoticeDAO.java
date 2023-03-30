@@ -31,6 +31,17 @@ public class MybatisExrNoticeDAO implements ExrNoticeDAO{
 
 	
 	@Override
+	public ExrNotice selectByCategory(int exr_category_idx) {
+		logger.info("카테고리 수는?"+exr_category_idx);
+		ExrNotice exrNotice=sqlSessionTemplate.selectOne("ExrNotice.selectByCategory", exr_category_idx);
+		logger.info("디에이오에서 결과 확인"+exrNotice);
+		
+		return exrNotice;
+	}
+	
+	
+	
+	@Override
 	public void insert(ExrNotice exrNotice) throws ExrNoticeException{
 		int result=sqlSessionTemplate.insert("ExrNotice.insert", exrNotice);
 		if(result<1) {
@@ -57,6 +68,8 @@ public class MybatisExrNoticeDAO implements ExrNoticeDAO{
 			throw new ExrNoticeException("운동정보글 삭제 실패");
 		}
 	}
+
+
 	
 
 }
