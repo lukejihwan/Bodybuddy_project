@@ -73,22 +73,19 @@ public class LoginController {
 			case "google" : { url = googleLoginService.getGrantUrl(); break;}
 			case "kakao" : { url = kakaoLoginService.getGrantUrl(); break;}
 		}
+		
 		Msg msg = new Msg();
 		msg.setMsg(url);
-		session.setAttribute("emailCode", 102094);
 		ResponseEntity entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
 		return entity;
 	}
 	
 	
 	@GetMapping("/callback/{vendor}")
-	public ModelAndView getNaverToken(@PathVariable String vendor, HttpServletRequest req){
+	public ModelAndView getSocialToken(@PathVariable String vendor, HttpServletRequest req){
 		
 		String code = req.getParameter("code");
 		log.info("받아온 "+vendor+" code : " + code);
-		
-		int emailCode = (int)req.getSession().getAttribute("emailCode");
-		log.info("들어있나? " + emailCode);
 		
 		MemberDetail existMember = null; 
 		switch (vendor) {

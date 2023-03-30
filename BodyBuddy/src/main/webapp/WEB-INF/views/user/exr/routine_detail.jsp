@@ -58,8 +58,8 @@
 			<div class="row">
 				<div class="col">
                     <hr>
-                    <h1><%= exrRoutine.getTitle() %></h1>
-                    <span><a href="#"><i class="fa fa-twitter  float-right">찜하기</i></a></span>
+                    <h1 id="title"><%= exrRoutine.getTitle() %></h1>
+                    <span><a href="#"><i class="fa fa-twitter  float-right" onclick="interest()">찜하기</i></a></span>
                     <br/>
                     <span><%= exrRoutine.getWriter() %> | <%= exrRoutine.getRegdate().substring(0, 10) + " " + exrRoutine.getRegdate().substring(10, exrRoutine.getRegdate().length()-2) %></span>
                     <span class="float-right">조회 <%= exrRoutine.getHit() %> | 추천 {{recommend}}</span>
@@ -297,6 +297,23 @@
 				console.log(xhr.responseText);
 			}
 		});
+	}
+	
+	function interest(){
+		let data = {
+				idx: $("input[name='exr_routine_idx']").val(),
+				table_name: "운동루틴",
+				title: $("#title").text()
+		}
+		$.ajax({
+			type: "post",
+			url: "/mypage/interest",
+			data: data,
+			success: (result)=>{
+				console.log(result);
+				alert(result.msg);
+			}
+		})
 	}
 
 	

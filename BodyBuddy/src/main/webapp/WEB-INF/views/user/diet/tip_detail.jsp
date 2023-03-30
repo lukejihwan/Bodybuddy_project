@@ -49,8 +49,12 @@
                     <hr>
                     <h3><%=dietTip.getTitle() %></h3>
                     <input type="hidden" class="form-control" name="diet_tip_idx"value="<%=dietTip.getDiet_tip_idx()%>">
+
                                      
                     <span class="float-right"><img src="/resources/user/images/diet/heart.png" style="width:20px; height:20px"> 찜하기</span>
+
+					<span class="float-right" onclick="interest()"><a href="#"><img src="/resources/user/images/diet/heart.png" style="width:20px; height:20px"> 찜하기</a></span>
+
                     <br/>
                     <span><%=dietTip.getWriter() %> | <%=dietTip.getRegdate().substring(0,10) %></span>
                     <span class="float-right">조회 <%=dietTip.getHit() %> | 추천 {{recommend}}</span>
@@ -272,6 +276,24 @@
 				console.log(xhr.responseText);
 			}
 		});
+	}
+
+	//찜하기
+	function interest(){
+		let data = {
+			idx: <%=dietTip.getDiet_tip_idx()%>,
+			table_name: "식단팁",
+			title: "<%=dietTip.getTitle()%>"
+		}
+		$.ajax({
+			type: "post",
+			url: "/mypage/interest",
+			data: data,
+			success: (result)=>{
+				console.log(result);
+				alert(result.msg);
+			}
+		})
 	}
 	
 	
