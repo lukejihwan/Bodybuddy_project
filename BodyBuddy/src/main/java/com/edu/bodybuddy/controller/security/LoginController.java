@@ -73,22 +73,19 @@ public class LoginController {
 			case "google" : { url = googleLoginService.getGrantUrl(); break;}
 			case "kakao" : { url = kakaoLoginService.getGrantUrl(); break;}
 		}
+		
 		Msg msg = new Msg();
 		msg.setMsg(url);
-		session.setAttribute("emailCode", 102094);
 		ResponseEntity entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
 		return entity;
 	}
 	
 	
 	@GetMapping("/callback/{vendor}")
-	public ModelAndView getNaverToken(@PathVariable String vendor, HttpServletRequest req){
+	public ModelAndView getSocialToken(@PathVariable String vendor, HttpServletRequest req){
 		
 		String code = req.getParameter("code");
 		log.info("받아온 "+vendor+" code : " + code);
-		
-		int emailCode = (int)req.getSession().getAttribute("emailCode");
-		log.info("들어있나? " + emailCode);
 		
 		MemberDetail existMember = null; 
 		switch (vendor) {
@@ -103,17 +100,6 @@ public class LoginController {
 		return mv;
 	}
 	
-	@PostMapping("/login")
-	@ResponseBody
-	public ResponseEntity<Msg> androidLogin(Member member){
-		MemberDetail memberDetail = new MemberDetail(member);
-		log.info("넘어온 member : " + member);
-		log.info("만든 디테일 : "+ memberDetail);
-		UsernamePasswordAuthenticationToken test = new UsernamePasswordAuthenticationToken(memberDetail, member.getPassword().getPass(), null);
-		SecurityContextHolder.getContext().setAuthentication(authenticationProvider.authenticate(test));
-		ResponseEntity entity=new ResponseEntity<Msg>(new Msg("로그인 성공"), HttpStatus.OK);
-		return entity;
-	}
 	
 	@ExceptionHandler({MemberException.class, AddressException.class, PasswordException.class, UsernameNotFoundException.class})
 	public ModelAndView handle(Exception e) {

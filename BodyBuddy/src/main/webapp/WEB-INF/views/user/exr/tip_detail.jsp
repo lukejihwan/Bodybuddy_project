@@ -45,8 +45,8 @@
 			<div class="row">
 				<div class="col">
                     <hr>
-                    <h1><%= exrTip.getTitle() %></h1>
-                    <span><a href="#"><i class="fa fa-twitter  float-right">찜하기</i></a></span>
+                    <h1 id="title"><%= exrTip.getTitle() %></h1>
+                    <span><a href="#"><i class="fa fa-twitter  float-right" onclick="interest()">찜하기</i></a></span>
                     <br/>
                     <span><%= exrTip.getWriter() %> | <%= exrTip.getRegdate().substring(0, 10) + " " + exrTip.getRegdate().substring(10, exrTip.getRegdate().length()-2) %></span>
                     <span class="float-right">조회 <%= exrTip.getHit() %> | 추천 {{recommend}}</span>
@@ -125,6 +125,38 @@
 			}
 		});
 	}
+	
+	
+	// 작성자 본인에게만 수정삭제 버튼 권한
+	function showHide(){
+		if('<sec:authentication property="principal.member.member_idx"/>' != <%= exrTip.getMember().getMember_idx() %>){
+			$("#bt_edit").hide();
+			$("#bt_delete").hide();
+			
+		}else{
+			$("#bt_edit").show();
+			$("#bt_delete").show();
+		}
+	}
+	
+
+	function interest(){
+		let data = {
+			idx: $("input[name='exr_tip_idx']").val(),
+			member_idx: $("input[name='member.member_idx']").val(),
+			table_name: "운동팁",
+			title: $("#title").text()
+		}
+		$.ajax({
+			type: "post",
+			url: "/mypage/interest",
+			data: data,
+			success: (result)=>{
+				console.log(result);
+				alert(result.msg);
+			}
+		})
+	}
 
 	
 	function init(){
@@ -170,6 +202,10 @@
 		$("#bt_recommend").click(function() {
 			recommend();
 		});
+		
+		
+		showHide();
+		
 		
 		// 써머 노트 적용
 		$('#summernote').summernote({

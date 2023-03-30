@@ -10,4 +10,5 @@ public class DailyWalk {
 	private Member member;
 	private int distance;
 	private String regdate;
+	
 }

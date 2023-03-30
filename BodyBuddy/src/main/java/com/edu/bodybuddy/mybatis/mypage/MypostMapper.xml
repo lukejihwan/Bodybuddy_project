@@ -3,12 +3,12 @@
 <mapper namespace="Mypost">
 	<select id="selectTotal" parameterType="Member" resultType="int">
 		select count(*) from (
-			select 'free_board' as table_name, free_board_idx as idx, title, regdate from free_board where member_idx = #{member_idx}
+			select * from free_board where member_idx = #{member_idx}
 			union
-			select 'counselling_board' as table_name, counselling_board_idx as idx, title, regdate from counselling_board where member_idx = #{member_idx}
+			select * from counselling_board where member_idx = #{member_idx}
 			union
-			select 'QnA' as table_name, qna_board_idx as idx, title, regdate from qna_board where member_idx = #{member_idx}
-		) test
+			select * from qna_board where member_idx = #{member_idx}
+		) forcount
 	</select> 
 
 	<select id="selectMypost" parameterType="Map" resultType="Mypost">

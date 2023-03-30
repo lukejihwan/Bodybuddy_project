@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.edu.bodybuddy.domain.member.Member;
 import com.edu.bodybuddy.domain.security.MemberDetail;
 import com.edu.bodybuddy.model.member.MemberDAO;
+import com.edu.bodybuddy.model.member.MemberService;
 @RequestMapping("/auth/rest/login")
 @RestController
 public class RestLoginController {
@@ -24,7 +25,7 @@ public class RestLoginController {
 	@Autowired
 	private AuthenticationProvider authenticationProvider;
 	@Autowired
-	private MemberDAO memberDAO;
+	private MemberService memberService;
 	
 	
 	   @PostMapping("/android")
@@ -34,11 +35,13 @@ public class RestLoginController {
 	      MemberDetail memberDetail = new MemberDetail(member);
 	      log.info("넘어온 member : " + member);
 	      log.info("만든 디테일 : "+ memberDetail);
-	      UsernamePasswordAuthenticationToken test = new UsernamePasswordAuthenticationToken(memberDetail, member.getPassword().getPass(), null);
-	      SecurityContextHolder.getContext().setAuthentication(authenticationProvider.authenticate(test));
+	      UsernamePasswordAuthenticationToken memberCheck = new UsernamePasswordAuthenticationToken(memberDetail, member.getPassword().getPass(), null);
+	      SecurityContextHolder.getContext().setAuthentication(authenticationProvider.authenticate(memberCheck));
 	      
-	      Member result = memberDAO.selectByEmail(member);
+	      Member result = memberService.selectByEmail(member);
 	      
+	      String name = SecurityContextHolder.getContext().getAuthentication().getName();
+	      log.info("로그인한 안드로이드 멤버 이름 : " +name); 
 	      ResponseEntity entity=new ResponseEntity<Member>(result, HttpStatus.OK);
 	      
 	      return entity;

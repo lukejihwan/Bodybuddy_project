@@ -14,19 +14,17 @@
     <http pattern="/resources/**" security="none"/>
     <http auto-config="true" use-expressions="true">
     	<csrf disabled="true"/>
-    	<intercept-url pattern="/**" access="permitAll()"/>
-		<!-- <intercept-url pattern="/auth/**" access="permitAll()"/>
-    	<intercept-url pattern="/login_check" access="permitAll()"/>
-    	<intercept-url pattern="/member/**" access="permitAll()"/>
-    	<intercept-url pattern="/join" access="permitAll()"/>
-    	<intercept-url pattern="/rest/user/member" access="permitAll()"/>
+    	<intercept-url pattern="/" access="permitAll()"/>
+		<intercept-url pattern="/auth/**" access="permitAll()"/>
+		<intercept-url pattern="/main/**" access="permitAll()"/>
+		<intercept-url pattern="/rest/myrecord/today/gps" access="permitAll()"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/rest/admin/**" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/> -->
+        <intercept-url pattern="/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
         <form-login
         	login-page="/auth/login"
         	login-processing-url="/auth/login_check"
-        	default-target-url="/mypage"
+        	default-target-url="/"
         	username-parameter="email"
         	password-parameter="pass"
         	authentication-failure-forward-url="/auth/login_error"

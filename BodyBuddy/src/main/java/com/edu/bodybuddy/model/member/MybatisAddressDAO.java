@@ -29,13 +29,13 @@ public class MybatisAddressDAO implements AddressDAO{
 	@Override
 	public void update(Member member) {
 		int result = sqlSessionTemplate.update("Address.update", member);
-		if(result<1) throw new MemberException("회원 등록에 실패했습니다");
+		if(result<1) throw new MemberException("회원 정보 수정에 실패했습니다");
 	}
 
 	@Override
 	public void delete(int member_idx) {
 		int result = sqlSessionTemplate.delete("Address.delete", member_idx);
-		if(result<1) throw new MemberException("회원 등록에 실패했습니다");
+		if(result<1) throw new MemberException("회원 탈퇴에 실패했습니다");
 	}
 
 }

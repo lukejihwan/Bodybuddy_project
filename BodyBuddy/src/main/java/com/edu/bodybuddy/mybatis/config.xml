@@ -5,6 +5,9 @@
   
 <configuration>
   <typeAliases>
+  	<!-- main Alias -->
+  	<typeAlias type="com.edu.bodybuddy.domain.main.Board" alias="Board"/>
+  
   	<!-- Member Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.member.Member" alias="Member"/>
  	<typeAlias type="com.edu.bodybuddy.domain.member.Address" alias="Address"/>
@@ -40,6 +43,11 @@
  
  	<!-- Mypage Alias -->
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Mypost" alias="Mypost"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.Interest" alias="Interest"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.InterestExrRoutine" alias="InterestExrRoutine"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.InterestExrTip" alias="InterestExrTip"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.InterestDietShare" alias="InterestDietShare"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.mypage.InterestDietTip" alias="InterestDietTip"/>
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Report" alias="Report"/>
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.ReportReply" alias="ReportReply"/>
  	<typeAlias type="com.edu.bodybuddy.domain.mypage.Ask" alias="Ask"/>
@@ -90,6 +98,11 @@
     
     <!-- Mypage Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/MypostMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/InterestMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/InterestExrRoutineMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/InterestExrTipMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/InterestDietShareMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/mypage/InterestDietTipMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/AskReplyMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/mypage/ReportMapper.xml"/>
@@ -105,7 +118,8 @@
     <mapper resource="com/edu/bodybuddy/mybatis/board/QnaBoardCommentMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/board/CounsellingBoardCommentMapper.xml"/>
     
-
-
+	<!-- MainMapper -->
+    <mapper resource="com/edu/bodybuddy/mybatis/main/MainMapper.xml"/>
+	
   </mappers>
 </configuration>

@@ -7,6 +7,7 @@ import com.edu.bodybuddy.domain.exr.ExrNotice;
 public interface ExrNoticeDAO {
 	public List selectAll();
 	public ExrNotice select(int exr_notice_idx);
+	public ExrNotice selectByCategory(int exr_category_idx);
 	public void insert(ExrNotice exrNotice);
 	public void update(ExrNotice exrNotice);
 	public void delete(int exr_notice_idx);

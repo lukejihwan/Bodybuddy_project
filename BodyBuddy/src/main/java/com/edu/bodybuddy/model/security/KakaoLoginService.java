@@ -130,7 +130,6 @@ public class KakaoLoginService implements SocialLoginService{
 			member.setNickname(nickname);
 			memberService.regist(member);
 			existMember = (MemberDetail)userDetailsService.loadUserByUsername(email);
-			//닉네임 설정 페이지로 보내야한다
 		} 
 		
 		return existMember;

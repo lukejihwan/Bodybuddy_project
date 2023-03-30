@@ -100,7 +100,13 @@
     <%@include file="../inc/footer_tiny.jsp" %>
     
 	<%@include file="../inc/footer_link.jsp" %>
-
+    <sec:authorize access="hasRole('ADMIN')">
+        <script>
+            $(()=>{
+                location.href="/admin/main"
+            })
+        </script>
+    </sec:authorize>
 </body>
 
 </html>

@@ -14,7 +14,6 @@ import com.edu.bodybuddy.model.member.MemberDAO;
 import lombok.RequiredArgsConstructor;
 
 /*
- * 스프링 시큐리티 로그인 과정을 커스터마이징하여
  * DB에서 불러온 유저정보를 이용하기 위한 객체 
  * */
 @Service
@@ -26,17 +25,17 @@ public class LoginService implements UserDetailsService{
     
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    	log.info("여기 진입함");
+    	
+    	//이메일 조회하기 위한 멤버객체 생성
     	Member emailCheck = new Member();
     	emailCheck.setEmail(email);
+    	//조회
         Member member = memberDAO.selectByEmail(emailCheck);
-        log.info("받아온 멤버는 : "+member);
         if(member==null){
+        	//일치하는 멤버 없으면 예외처리
             throw new UsernameNotFoundException("userEmail" + email + " not found");
         }
-        log.info("=================found user===================");
-        log.info("email : "+member.getEmail());
-
+        
         return new MemberDetail(member);
     }
 

@@ -1,67 +1,79 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
-<!-- content 부분만 비워둔 기본 템플릿 -->
 <html lang="en">
 <head>
-<%@include file="../inc/header_link.jsp" %>
+    <%@include file="../inc/header_link.jsp"%>
 </head>
 
 <body class="animsition">
-	<!-- top-bar start-->
-	<%@include file="../inc/topbar.jsp" %>
-    <!-- /top-bar end-->
-
-    <!-- hero section start -->
-    <div class="hero-section">
-		<!-- navigation-->
-	   	<%@include file="../inc/header_navi.jsp" %>
-	    <!-- /navigation end -->
-   </div>
-    <!-- ./hero section end -->
-     
-  	<!-- content start -->
-    <div class="content">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="content-area">
-                        <div class="row">
-		                   <div class="col-md-4 col-sm-12 col-xs-12">
-                                <div class="row">
-                                    <div class="col-md-7 col-sm-7 col-xs-7">
-                                        <%@include file="./inc/side-navi.jsp"%>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<%@include file="../inc/topbar.jsp" %>
+<div class="page-header">
+    <%@include file="../inc/header_navi.jsp" %>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="page-caption pinside40">
+                    <h1 class="page-title">내가 쓴 댓글</h1>
+                    <p>내가 쓴 댓글을 모아볼 수 있는 곳입니다</p>
                 </div>
             </div>
         </div>
     </div>
- 
-    <!-- /content end -->
-    
-	<!-- black footer_space -->
-    <%@include file="../inc/footer_space.jsp" %>
-    
+</div>
 
-    
-    <!-- tiny footer -->
-    <%@include file="../inc/footer_tiny.jsp" %>
-    
-    <%@include file="../inc/footer_link.jsp" %>
-    <script>
-    
+<!-- content start -->
+<div class="content" id="askApp">
+    <div class="container mb-5">
+        <div class="row">
+            <div class="col-2 mt100">
+                <%@include file="./inc/side-navi.jsp"%>
+            </div>
+            <div class="col-10">
+                <div class="space-medium">
+                    <!-- 문의게시판 시작 -->
+                    <img src="/resources/user/images/under-construction.jpg" alt="">
+                    <!-- /문의게시판 끝 -->
+                </div>
+                <!-- end of space-medium -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /content end -->
+
+<!-- black footer_space -->
+<%@include file="../inc/footer_space.jsp"%>
+
+<!-- tiny footer -->
+<%@include file="../inc/footer_tiny.jsp"%>
+
+<%@include file="../inc/footer_link.jsp"%>
+<script src="/resources/user/js/vue/list_mypost.js"></script>
+<script>
+    let askApp;
+
     function init() {
-    	$("ul#sidenav li").removeClass();
-    	$($("ul#sidenav li")[MYCOMMENTS]).addClass('active');
-	}
-    
+        $("ul#sidenav li").removeClass();
+        $($("ul#sidenav li")[MYCOMMENTS]).addClass('active');
+
+        askApp = new Vue({
+            el: "#askApp",
+            data(){
+                return{
+                    postList: []
+                }
+            },
+            components: {
+                list: List,
+            },
+        })
+    }
+
     $(function() {
-    	init();
-	})
-    </script>
+        init();
+    })
+</script>
 </body>
 
 </html>

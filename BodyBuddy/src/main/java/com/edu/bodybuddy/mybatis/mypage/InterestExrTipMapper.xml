@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InterestExrTip">
+	
+	<insert id="insert" parameterType="Interest">
+		insert into interest_exr_tip(exr_tip_idx, member_idx, title) values(#{idx}, #{member_idx}, #{title})
+	</insert>
+	
+	<delete id="delete" parameterType="Interest">
+		delete from interest_exr_tip where member_idx = #{member_idx} and interest_exr_tip_idx = #{idx}
+	</delete>
+</mapper>

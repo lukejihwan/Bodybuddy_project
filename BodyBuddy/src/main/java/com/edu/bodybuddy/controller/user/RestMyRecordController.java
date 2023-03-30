@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,6 +75,9 @@ public class RestMyRecordController {
 	// 안드로이드에서 전송한 GPSData 정보를 받는 메서드
 	@PostMapping("/today/gps")
 	public void GPSDatafromAndroid(HttpServletRequest request,@RequestBody List<GpsData> gpsList){
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+	    logger.info("데이터 보내는 안드로이드 멤버 이름 : " +name); 
+		
 		logger.info("응답 받음");
 		logger.info("받은 데이터의 모습!"+gpsList);
 		

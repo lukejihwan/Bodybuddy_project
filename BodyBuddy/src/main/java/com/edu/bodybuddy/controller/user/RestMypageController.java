@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.bodybuddy.domain.member.Member;
 import com.edu.bodybuddy.domain.mypage.Ask;
+import com.edu.bodybuddy.domain.mypage.Interest;
 import com.edu.bodybuddy.domain.mypage.Mypost;
 import com.edu.bodybuddy.domain.mypage.Report;
 import com.edu.bodybuddy.domain.security.MemberDetail;
@@ -27,6 +28,7 @@ import com.edu.bodybuddy.exception.AskException;
 import com.edu.bodybuddy.exception.MemberException;
 import com.edu.bodybuddy.exception.ReportException;
 import com.edu.bodybuddy.model.mypage.AskService;
+import com.edu.bodybuddy.model.mypage.InterestService;
 import com.edu.bodybuddy.model.mypage.MypostService;
 import com.edu.bodybuddy.model.mypage.ReportService;
 import com.edu.bodybuddy.util.Msg;
@@ -42,9 +44,10 @@ public class RestMypageController {
     private final AskService askService;
     private final ReportService reportService;
     private final MypostService mypostService;
+    private final InterestService interestService;
     
     /*===================================================
-    													내 글 모아보기
+    													내 글 보기
 	===================================================*/
     @GetMapping("/mypost/list/{page}")
     public HashMap<String, Object> selectAll(@PathVariable int page){
@@ -70,6 +73,40 @@ public class RestMypageController {
     	
     	return resp;
     }
+    
+    /*===================================================
+	    													찜 기능
+	===================================================*/
+    
+    @PostMapping("/interest")
+    public ResponseEntity<Msg> registInterest(Interest interest){
+    	log.info("넘어온 객체 : "+interest);
+    	interest.setMember_idx(getMember().getMember_idx());
+    	interestService.regist(interest);
+    	
+    	Msg msg = new Msg("즐겨찾기 목록에 등록되었습니다");
+        return new ResponseEntity<Msg>(msg, HttpStatus.OK);
+    }
+
+    @GetMapping("/interest/{page}")
+    public HashMap<String, Object> getInterestList(@PathVariable int page){
+        //페이징처리를 위해 변수설정
+        int pageSize = 5;
+        int blockSize = 5;
+        int totalRecord = interestService.selectTotal(getMember());
+        MypageManager paging = new MypageManager(totalRecord, page, pageSize, blockSize);
+
+        //불러올 데이터 범위를 정해 DAO까지 전달
+        HashMap<String, Object> map = paging.getRange(page, pageSize);
+        map.put("member", getMember());
+        List<Interest> list = interestService.getInterestList(map);
+        //받아온 데이터와 총 레코드 수를 반환
+        HashMap<String, Object> resp = new HashMap();
+        resp.put("list", list);
+        resp.put("paging", paging);
+
+        return resp;
+    }
 
     /*===================================================
                                                          문의글 관련
@@ -88,7 +125,6 @@ public class RestMypageController {
     	HashMap<String, Object> map = paging.getRange(page, pageSize);
     	map.put("member", getMember());
     	List<Ask> list = askService.getList(map);
-    	log.info("최정 ask 리스트는" + list);
     	//받아온 데이터와 총 레코드 수를 반환
     	HashMap<String, Object> resp = new HashMap();
     	resp.put("list", list);
@@ -209,7 +245,7 @@ public class RestMypageController {
     public Member getMember(){
         MemberDetail memberDetail =(MemberDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return memberDetail.getMember();
-//		아래는 디버깅 코드        
+//		아래는 디버깅 코드
 //        Member member = new Member();
 //        member.setMember_idx(32);
 //        return member;
