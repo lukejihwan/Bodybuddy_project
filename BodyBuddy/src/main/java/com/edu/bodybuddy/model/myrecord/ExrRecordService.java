@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.model.myrecord;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,5 +20,5 @@ public interface ExrRecordService {
 	public void delete(int exr_record_idx);
 	
 	//해당 날짜의 운동기록 한건과 세부운동기록까지 같이 가져오는 메서드
-	public List<ExrRecord> selectForDay(String regdate);
+	public List<ExrRecord> selectForDay(HashMap map);
 }

@@ -551,6 +551,7 @@ function getDietRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
 	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
+	json['member_idx']=24; //테스트용
 	let dateData=JSON.stringify(json);
 	console.log(dateData);
 	
@@ -701,6 +702,7 @@ $(function(){
 				
 				<!-- 식단차트 나올곳 -->
 				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<input type="hidden" id="t_member_idx" class="form-control" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>" readonly>
 					<div style="text-align: center;">
 						<h4 style="display:inline;" id="h_chartTitle">3월 22일</h4><h5 style="display:inline"> 식단 총합</h5>
 					</div>

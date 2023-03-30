@@ -149,11 +149,13 @@ public class RestMyRecordController {
 	@PostMapping("/physicalRecord")
 	public ResponseEntity<Message> postPhysicalRecord(@RequestBody PhysicalRecord physicalRecord) {
 		
+		logger.info("받아온 키는"+physicalRecord.getHeight());
 		logger.info("받아온 몸무게는"+physicalRecord.getWeight());
 		logger.info("받아온 bmi는"+physicalRecord.getBmi());
 		logger.info("받아온 체지방은"+physicalRecord.getBodyFat());
 		logger.info("받아온 골격근량은"+physicalRecord.getMusclemass());
 		logger.info("받아온 날짜는"+physicalRecord.getRegdate());
+		logger.info("받아온 member_idx : "+physicalRecord.getMember_idx());
 		//service 일시키기
 		physicalRecordService.regist(physicalRecord);
 		
@@ -262,10 +264,15 @@ public class RestMyRecordController {
 	}
 	
 	//해당일의 운동 기록리스트를 가져오는 메서드
-	@GetMapping("/exrRecord/{regdate}")
-	public List<ExrRecord> getExrRecord(@PathVariable("regdate") String regdate){
+	@GetMapping("/exrRecord/{regdate}/{member_idx}")
+	public List<ExrRecord> getExrRecord(@PathVariable("regdate") String regdate, @PathVariable("member_idx") int member_idx){
 		logger.info("받아온 값은"+ regdate);
-		List<ExrRecord> exrList=exrRecordService.selectForDay(regdate);
+		logger.info("받아온 member_idx 값은 :"+ member_idx);
+		HashMap map=new HashMap<String, Object>();
+		map.put("regdate", regdate);
+		map.put("member_idx", member_idx);
+		
+		List<ExrRecord> exrList=exrRecordService.selectForDay(map);
 		return exrList;
 	}
 	

@@ -12,6 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
  -->
+
 <style>
 .exrbox{
 	border: 5px solid #dc3545!important;
@@ -347,6 +348,7 @@ function addexr(){
 		exrObject.regdate=currentYear+"-"+currentMonth+"-"+currentDay;
 		exrObject.exr_name=exrname;
 		exrObject.exrRecordDetailList=setList;
+		exrObject.member_idx=24;
 		
 		//기록추가 영역에 추가될 미리보기
 		app1.exerciseList.push(exrObject);
@@ -602,6 +604,7 @@ function getPhysicalRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+currentMonth+"-"+1;
 	json['lastDay']=currentYear+"-"+currentMonth+"-"+lastDay;
+	json['member_idx']=24;
 	let dateData=JSON.stringify(json);
 	console.log(dateData);
 	
@@ -636,6 +639,7 @@ function getExrRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+currentMonth+"-"+1;
 	json['lastDay']=currentYear+"-"+currentMonth+"-"+lastDay;
+	json['member_idx']=24;
 	let dateData=JSON.stringify(json);
 	console.log("운동기록에 보낼 첫날과 끝날은",dateData);
 	
@@ -664,6 +668,7 @@ function getDietRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+currentMonth+"-"+1;
 	json['lastDay']=currentYear+"-"+currentMonth+"-"+lastDay;
+	json['member_idx']=24;
 	let dateData=JSON.stringify(json);
 	console.log(dateData);
 	
@@ -794,6 +799,7 @@ function registPhysical(){
 				json['musclemass']=$("input[name='musclemass']").val();
 				json['bodyFat']=$("input[name='bodyFat']").val();
 				json['bmi']=$("input[name='bmi']").val();
+				json['member_idx']=24;
 				
 				console.log(json);
 				
@@ -805,7 +811,7 @@ function registPhysical(){
 					success:function(result, status, xhr){
 						console.log("신체기록 등록결과는",result);
 						alert("등록성공");
-						
+						location.href="/myrecord/addrecord";
 					},
 					error:function(xhr, status, error){
 						console.log("error", error);
@@ -830,12 +836,17 @@ function registExrRecord(){
 		alert("날짜또는 운동기록을 추가해주세요");
 		
 	}else{
-		let result=confirm("운동기록을 등록하시겠어요?");
+		let regdateForExr=currentYear+"-"+currentMonth+"-"+currentDay;
+		console.log("운동기록에 들어갈 날짜는", regdateForExr);
+		for(let i=0; i<app1.exerciseList.length; i++){
+			app1.exerciseList[i].regdate=regdateForExr;
+		}
 		
-		let JsonData=JSON.stringify(app1.exerciseList);
-		console.log(JsonData);
-		//return;
-		if(result===true){
+		if(confirm("운동기록을 등록하시겠습니까?")){
+		
+			let JsonData=JSON.stringify(app1.exerciseList);
+			console.log(JsonData);
+			//return;
 			$.ajax({
 				url:"/rest/myrecord/exrList",
 				type:"POST",
@@ -859,7 +870,6 @@ function registDietRecord(){
 	if( $("#exr_day3").val()!="" && $("#t_diet_search").val()!="" && $("#sel_dietTime").val()!="none"){
 		let json={};
 		json['regdate']=$("#t_dietRegdate").val();
-		//json['member_idx']=$("#t_dietRegdate").val(); 나중에 추가
 		json['time_category_name']=$("#sel_dietTime").val(); //값이 들어가는지 확인 필요
 		json['food_name']=$("#t_diet_search").val();
 		json['servings']=$("#t_servings").val();
@@ -867,6 +877,7 @@ function registDietRecord(){
 		json['carbs']=$("#t_carbs").val();
 		json['protein']=$("#t_protein").val();
 		json['fat']=$("#t_fat").val();
+		json['member_idx']=24; //테스트용
 		
 		console.log("식단기록 전송전 결과 확인",json);
 		
@@ -1062,9 +1073,10 @@ $(function(){
                     </div>
                 	-->
                 </div>
-                
+       			
                 <!-- 기록추가 화면 나올 곳 -->
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 right-area h-auto">
+                <input type="hidden" class="form-control" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>" readonly>
                 	<div class="empty">
                 	</div>
                 	<div>

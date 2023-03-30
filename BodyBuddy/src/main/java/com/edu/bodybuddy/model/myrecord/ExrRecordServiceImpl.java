@@ -1,6 +1,7 @@
 package com.edu.bodybuddy.model.myrecord;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -99,8 +100,8 @@ public class ExrRecordServiceImpl implements ExrRecordService{
 	}
 
 	@Override
-	public List<ExrRecord> selectForDay(String regdate) throws ExrRecordException{
-		List<ExrRecord> exrList=exrRecordDAO.selectForDay(regdate);
+	public List<ExrRecord> selectForDay(HashMap map) throws ExrRecordException{
+		List<ExrRecord> exrList=exrRecordDAO.selectForDay(map);
 		return exrList;
 	}
 
