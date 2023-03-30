@@ -4,7 +4,7 @@
 
 	<insert id="insert" parameterType="PhysicalRecord">
 		insert into physical_record (member_idx, height, weight, musclemass, bodyFat, BMI, regdate)
-		values (24, #{height}, #{weight}, #{musclemass}, #{bodyFat}, #{BMI}, #{regdate})
+		values (24, #{height}, #{weight}, #{musclemass}, #{bodyFat}, #{bmi}, #{regdate})
 	</insert>
 	
 	<select id="selectForMonth" resultType="PhysicalRecord" parameterType="Map">
@@ -23,8 +23,8 @@
 	
 	<update id="update" parameterType="PhysicalRecord">
 		update physical_record
-		set height=#{height}, weight=#{weight}, musclemass=#{musclemass}, bodyFat=#{bodyFat}, BMI=#{BMI}
-		where physical_idx=#{physical_idx} and member_idx=#{member_idx}
+		set height=#{height}, weight=#{weight}, musclemass=#{musclemass}, bodyFat=#{bodyFat}, BMI=#{bmi}
+		where regdate=#{regdate} and member_idx=#{member_idx}
 	</update>
 	
 	<delete id="delete" parameterType="PhysicalRecord">

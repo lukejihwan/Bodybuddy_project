@@ -259,6 +259,7 @@ const rowlist={
 }
 
 //운동기록 삭제하는 함수
+/*
 function deleteExrRecord(){
 	if(confirm("삭제하시겠습니까?")){
 		$.ajax({
@@ -276,6 +277,7 @@ function deleteExrRecord(){
 		});
 	}
 }
+*/
 
 //vue 초기화 함수
 function init(){
@@ -402,21 +404,13 @@ function makeDayFormat(clickedDay){
 	return refinedDay;
 }
 
-//해당일의 운동기록과 세부내용을 collapse에 rendering하는 함수
-function showExrRecordsOnCollapse(exrLists){
-	for(let i=0; i<exrLists.length; i++){
-		//console.log("운동명은",exrList[i].exr_name);
-		//하나의 운동명을 아래 영역에 보여줄 함수
-		
-		for(let a=0; a<exrLists[i].exrRecordDetailList.length; a++){
-			//console.log(exrList[i].exrRecordDetailList.length);
-			console.log("번쨰 세트의 detail_idx는 ", exrLists[i].exrRecordDetailList[a].exr_record_detail_idx );
-		}
-	}
-}
-
 //아래 신체기록에 보여주는 함수
 function setFormTable(physicalRecordForDay){
+	//디자인
+	$("#h_date").text(physicalRecordForDay.regdate.substr(0,10));
+	
+	
+	//실제값
 	$("#t_height").val(physicalRecordForDay.height);
 	$("#t_weight").val(physicalRecordForDay.weight);
 	$("#t_musclemass").val(physicalRecordForDay.musclemass);
@@ -428,6 +422,7 @@ function setFormTable(physicalRecordForDay){
 function showPhysicalRecord(clickedDay){
 	//전역변수에 오늘 날짜 넣어줌
 	currentDay=clickedDay;
+	
 	
 	let json={};
 	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
@@ -873,14 +868,14 @@ $(function(){
 						<div class="card-header border-0 ui-sortable-handle" style="cursor: move;">
 							<h3 class="card-title">
 								<i class="fas fa-map-marker-alt mr-1"></i>
-								<h4 style="display:inline;">  2023-03-27</h4>
-								nickname 나올 곳 
+								<h4 style="display:inline;" id="h_date">  2023-03-27</h4>
+								회원님의 
 								의 신체기록
 							</h3>
 							
 							<!-- card tools -->
 							<div class="card-tools">
-								<button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+								<button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse" id="bt_toggle">
 									<i class="fas fa-minus"></i>
 								</button>
 							</div>
@@ -895,26 +890,26 @@ $(function(){
 									<div class="col-md-6">
 										<div class="form-group">
 											<label>키:</label>
-											<input type="text" class="form-control" id="t_height">
+											<input type="number" class="form-control" id="t_height">
 										</div>
 										<div class="form-group">
 											<label>체중:</label>
-											<input type="text" class="form-control" id="t_weight">
+											<input type="number" class="form-control" id="t_weight">
 										</div>
 										<div class="form-group">
 											<label>골격근량:</label>
-											<input type="text" class="form-control" id="t_musclemass">
+											<input type="number" class="form-control" id="t_musclemass">
 										</div>
 									</div>
 
 									<div class="col-md-6">
 										<div class="form-group">
 											<label>체지방:</label>
-											<input type="text" class="form-control" id="t_bodyFat">
+											<input type="number" class="form-control" id="t_bodyFat">
 										</div>
 										<div class="form-group">
 											<label>BMI:</label>
-											<input type="text" class="form-control" id="t_bmi">
+											<input type="number" class="form-control" id="t_bmi">
 										</div>
 										<div class="form-group">
 											<button type="button" id="bt_update" class="btn btn-block bg-gradient-success btn-sm">수정</button>

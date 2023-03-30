@@ -110,6 +110,7 @@ public class RestRankingController {
 	public ResponseEntity<Message> delete(HttpServletRequest request, @RequestBody DailyWalk dailyWalk){
 		
 		//3단계
+		//dailyWalkService.delete(membver);
 
 		dailyWalkService.delete(dailyWalk.getMember().getMember_idx());
 		

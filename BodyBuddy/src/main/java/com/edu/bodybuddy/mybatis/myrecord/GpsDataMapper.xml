@@ -5,9 +5,9 @@
 	<!-- 예서영역 시작 -->
 
 	<!-- 하루를 기준으로 데이터 가져오기! -->
-	<select id="selectForDay" parameterType="String" resultType="GpsData">
+	<select id="selectForDay" parameterType="Map" resultType="GpsData">
 		select * from gpsdata
-		where regdate = #{regdate} and member_idx=24
+		where regdate = #{regdate} and member_idx=#{member_idx}
 	</select>
 	
 	<!-- Member 나중에 추가 예정 -->
@@ -28,7 +28,7 @@
 	<!-- 지환 영역 시작-->
 	<select id="selectForMonth" parameterType="java.util.Map" resultType="GpsData">
 		select * from gpsdata
-		where regdate between #{firstDay} and #{lastDay}
+		where regdate between #{firstDay} and #{lastDay} and member_idx=#{member_idx}
 		order by regdate asc
 	</select>
 	<!-- 지환 영역 끝 -->

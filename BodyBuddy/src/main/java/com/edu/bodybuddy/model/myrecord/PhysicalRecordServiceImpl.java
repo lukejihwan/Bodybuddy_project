@@ -27,7 +27,7 @@ public class PhysicalRecordServiceImpl implements PhysicalRecordService{
 	}
 
 	@Override
-	public PhysicalRecord select(PhysicalRecord physicalRecord) {
+	public PhysicalRecord select(PhysicalRecord physicalRecord) throws PhysicalRecordException  {
 		physicalRecord=physicalRecordDAO.select(physicalRecord);
 		return physicalRecord;
 	}
