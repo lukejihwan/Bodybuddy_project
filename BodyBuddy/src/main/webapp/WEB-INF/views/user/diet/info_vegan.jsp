@@ -83,7 +83,7 @@
                                                         <div class="comment-author"><img src="<%=dietInfo.getPreview() %>" alt="preview" style="width:100px;height:100px";> </div>
                                                         <div class="comment-info">
                                                             <div class="comment-header">
-                                                                <div class="reply"><a href="/diet/info_detail?diet_info_idx=<%=dietInfo.getDiet_info_idx() %>" class="title"><i class="fa fa-mail-reply"></i> 글 보기</a></div>
+                                                                <div class="reply"><a href="/diet/info_detail/<%=dietInfo.getDiet_info_idx() %>" class="title"><i class="fa fa-mail-reply"></i> 글 보기</a></div>
                                                                 <h4 class="user-title mb10"><%=dietInfo.getTitle() %></h4>
                                                                 <div class="comment-meta"><span class="comment-meta-date"><%=dietInfo.getRegdate().substring(0,10) %></span></div>
                                                             </div>
