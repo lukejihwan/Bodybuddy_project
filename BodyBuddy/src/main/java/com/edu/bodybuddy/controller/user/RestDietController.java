@@ -193,7 +193,7 @@ public class RestDietController {
 		
 	//댓글삭제 
 	@DeleteMapping("/share/comments/{diet_share_comments_idx}")
-	public ResponseEntity<Msg> delShareComments(@PathVariable int diet_share_comments_idx, HttpServletRequest request){
+	public ResponseEntity<Msg> delShareComments(@PathVariable int diet_share_comments_idx){
 		dietShareCommentsService.delete(diet_share_comments_idx);
 			
 		Msg msg=new Msg();
@@ -204,13 +204,12 @@ public class RestDietController {
 	}
 	
 	
-	
 	/*--------------------------------
 			식단팁 페이지 관련 
 	--------------------------------*/
 	//글 목록 가져오기 
 	@GetMapping("/tip_list")
-	public List<DietTip> getTipList(){ //int page
+	public List<DietTip> getTipList(HttpServletRequest request){ //int page
 		//logger.info("rest작동");
 		//List<DietTip> dietTipList=dietTipService.selectAllPage(page);
 		
@@ -311,7 +310,7 @@ public class RestDietController {
 	
 	//댓글삭제 
 	@DeleteMapping("/tip/comments/{diet_tip_comments_idx}")
-	public ResponseEntity<Msg> delTipComments(@PathVariable int diet_tip_comments_idx, HttpServletRequest request){
+	public ResponseEntity<Msg> delTipComments(@PathVariable int diet_tip_comments_idx){
 		dietTipCommentsService.delete(diet_tip_comments_idx);
 		
 		Msg msg=new Msg();
@@ -324,15 +323,6 @@ public class RestDietController {
 	/*--------------------------------
 			칼로리계산기 페이지 관련 
 	--------------------------------*/
-	//API리스트 목록 
-	@PostMapping("/kcal/list")
-	public List<Food> getFoodList() {
-		logger.info("작동??? ");
-		List<Food> foodList=dietAPIService.getFoodApi();
-		
-		return foodList;  
-    }
-	
 	//검색기능
 	@PostMapping("/kcal/search")
 	public List getFoodSerach(@RequestBody Map<String, String> foodName){

@@ -30,9 +30,8 @@
               <div class="col-lg-6 col-md-6 col-sm-12  col-xs-12">
                   <div class="hero-caption pinside50">
                       <h1 class="hero-title">식단 정보 게시판</h1>
-                      <p class="small-caps mb30 text-white">페이지 소제목 올 곳</p>
-                      <p class="hero-text">페이지 간단한 설명이 올 곳. 이 탬플릿 페이지마다 써먹어도 괜찮을듯</p>
-                      <a href="classes-list.html" class="btn btn-default">링크 필요하면 사용할 버튼</a>
+                      <p class="small-caps mb30 text-white"></p>
+                      <p class="hero-text">식단에 대한 모든 것이 존재합니다!</p>
                   </div>
               </div>
           </div>

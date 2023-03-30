@@ -2,15 +2,17 @@ package com.edu.bodybuddy.model.exr;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edu.bodybuddy.domain.exr.ExrTip;
-import com.edu.bodybuddy.exception.ExrRoutineException;
 import com.edu.bodybuddy.exception.ExrTipException;
 
 @Service
 public class ExrTipServiceImpl implements ExrTipService{
+	private Logger logger=LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private ExrTipDAO exrTipDAO;
 	
@@ -31,6 +33,7 @@ public class ExrTipServiceImpl implements ExrTipService{
 
 	@Override
 	public void update(ExrTip exrTip) throws ExrTipException{
+		logger.info("팁 확인 "+exrTip);
 		exrTipDAO.update(exrTip);
 	}
 

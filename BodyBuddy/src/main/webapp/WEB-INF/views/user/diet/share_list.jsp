@@ -34,8 +34,7 @@
               <div class="col-lg-6 col-md-6 col-sm-12  col-xs-12">
                   <div class="hero-caption pinside50">
                       <h1 class="hero-title">식단 공유 게시판</h1>
-                      <p class="small-caps mb30 text-white">페이지 소제목 올 곳</p>
-                      <p class="hero-text">페이지 간단한 설명이 올 곳. 이 탬플릿 페이지마다 써먹어도 괜찮을듯</p>
+                      <p class="hero-text">자신만의 식단을 공유하세요!</p>
                   </div>
               </div>
           </div>
@@ -50,7 +49,7 @@
         <div class="container">
         	<div class="row">
         		<h1 style="margin-left:15px; margin-right:320px">식단공유 게시판</h1>
-				<h3><a href="/diet/share_list/1">전체보기</a></h3>
+				<h3><a href="/diet/share_list">전체보기</a></h3>
         		<%for(DietCategory dietCategory:dietCategoryList){ %>
 	            	<h3 style="margin-left:30px"><a href="javascript:getCategoryList(<%=dietCategory.getDiet_category_idx() %>)"><%=dietCategory.getDiet_category_name()%></a></h3> 
 	            <%} %> 
@@ -68,7 +67,7 @@
     
     <!-- 페이징 처리 -->
 			<div class="row">
-				<div class="col" style="margin-left:460px">
+				<div class="col" style="margin-left:600px">
 					<div class="st-pagination">
 						<ul class="pagination">
 							<li id="paging-area"></li>

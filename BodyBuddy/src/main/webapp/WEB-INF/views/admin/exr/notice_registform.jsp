@@ -279,8 +279,8 @@
 					// 1-1)수정을 하기 위해서 특정 줄을 선택한다
 					//console.log("이것의 정체는 > ", this);
 					// 1-2) 그 줄을 저장해놓는다.
-					selectRow=this;
-					console.log("선택한 로우! ", this);
+					selectRow=category;
+					console.log("선택한 로우! ", selectRow);
 				},
 				
 				updateData:function(){
@@ -342,11 +342,11 @@
 				
 				console.log("제이슨? ",json);
 				// 수정시 선택된 줄을 반영한다.
-				//selectRow.category=json;
+				selectRow=json;
 				
-				//selectRow=category.exr_category_name;
+				selectRow.exr_category_name=json.exr_category_name;
 				
-				//getCategoryList();
+				getCategoryList();
 			},
 			error:function(xhr, status, err){
 				console.log(xhr.responseText);

@@ -31,7 +31,7 @@
 					<div class="hero-caption pinside50">
 						<h1 class="hero-title">식단 팁 게시판</h1>
 						<p class="small-caps mb30 text-white"></p>
-						<p class="hero-text">식단에 대한 팁 공유 게시판</p>
+						<p class="hero-text">자신만의 식단팁을 공유해보세요!</p>
 					</div>
 				</div>
 			</div>

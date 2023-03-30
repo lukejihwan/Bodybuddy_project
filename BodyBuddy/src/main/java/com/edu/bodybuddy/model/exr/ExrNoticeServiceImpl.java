@@ -24,6 +24,11 @@ public class ExrNoticeServiceImpl  implements ExrNoticeService{
 	public ExrNotice select(int exr_notice_idx) {
 		return exrNoticeDAO.select(exr_notice_idx);
 	}
+	
+	@Override
+	public ExrNotice selectByCategory(int exr_category_idx) {
+		return exrNoticeDAO.selectByCategory(exr_category_idx);
+	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -40,5 +45,7 @@ public class ExrNoticeServiceImpl  implements ExrNoticeService{
 	public void delete(int exr_notice_idx) throws ExrNoticeException{
 		exrNoticeDAO.delete(exr_notice_idx);
 	}
+
+
 
 }

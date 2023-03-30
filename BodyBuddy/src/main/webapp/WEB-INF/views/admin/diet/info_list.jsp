@@ -58,7 +58,7 @@
 						<div class="col-sm-6">
 							<ol class="breadcrumb float-sm-right">
 								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item active">상품관리> 상품리스트</li>
+								<li class="breadcrumb-item active">식단관리> 식단리스트</li>
 							</ol>
 						</div>
 						<!-- /.col -->

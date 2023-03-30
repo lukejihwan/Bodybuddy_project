@@ -86,9 +86,10 @@ public class RestExrController {
 	}
 	
 	
-	// 공유 게시판 글 수정
+	// 수정
 	@RequestMapping(value = "/routine", method = RequestMethod.PUT)
 	public ResponseEntity<Msg> update(@RequestBody ExrRoutine exrRoutine) throws ExrCategoryException{
+		logger.info("수정될 루틴 확인"+exrRoutine);
 		exrRoutineService.update(exrRoutine);
 		
 		Msg msg=new Msg();
@@ -101,6 +102,7 @@ public class RestExrController {
 	// 검색 기능
 	@GetMapping("/routine/search")
 	public List<ExrRoutine> getSearch(String keyword, HttpServletRequest request) {
+		logger.info("검색 테스트 중 "+keyword);
 		HashMap<String, String> map=new HashMap<String, String>();
 		map.put("keyword", keyword);
 		
@@ -198,6 +200,19 @@ public class RestExrController {
 	}
 	
 	
+	// 수정
+	@RequestMapping(value = "/tip", method = RequestMethod.PUT)
+	public ResponseEntity<Msg> updateTip(@RequestBody ExrTip exrTip) throws ExrCategoryException{
+		logger.info("수정될 팁 확인"+exrTip);
+		exrTipService.update(exrTip);
+		
+		Msg msg=new Msg();
+		msg.setMsg("루틴공유글 수정 완료");
+		ResponseEntity<Msg> entity=new ResponseEntity<Msg>(msg, HttpStatus.OK);
+		return entity;
+	}
+	
+	
 	// 리스트 조회
 	@GetMapping("/tip_list")
 	public List<ExrRoutine> getTipList(HttpServletRequest request){
@@ -218,6 +233,8 @@ public class RestExrController {
 		ResponseEntity<Integer> entity=new ResponseEntity<Integer>(recommend, HttpStatus.OK);
 		return entity;
 	}
+
+	
 	
 	
 	/*------------------------------------
