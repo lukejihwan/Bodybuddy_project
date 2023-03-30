@@ -442,7 +442,7 @@ function showExrAndRunningRecord(clickedDay){
 	//근력운동이 눌렸을때, 러닝이 눌렸을때에 따라 다르게 동작하게 하기 위해
 	if(condition){ //근력운동이 눌렸을 때
 		let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
-		let member_idx=24;
+		let member_idx=$("#t_member_idx").val();
 		console.log("registedDate", registedDate);
 		
 		$.ajax({
@@ -581,7 +581,7 @@ function getExrRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
 	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
-	json['member_idx']=24;
+	json['member_idx']=$("#t_member_idx").val();
 	let dateData=JSON.stringify(json);
 	console.log(dateData);
 	
@@ -607,7 +607,7 @@ function getExrRecordForMonth(){
 function getRunningRecordForMonth(){
 	//해당달의 첫날과 마지막날을 JSON형식으로 만듬
 	let json={};
-	json['member_idx']=24;
+	json['member_idx']=$("#t_member_idx").val();
 	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
 	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
 	let dateData=JSON.stringify(json);
@@ -671,7 +671,7 @@ let flightPath;
 function getGpsData(clickedDay){
 	
 	
-	let member_idx=24;
+	let member_idx=$("#t_member_idx").val();
 	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
 	console.log("registedDate", registedDate);
 	

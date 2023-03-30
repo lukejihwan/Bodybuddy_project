@@ -348,7 +348,7 @@ function addexr(){
 		exrObject.regdate=currentYear+"-"+currentMonth+"-"+currentDay;
 		exrObject.exr_name=exrname;
 		exrObject.exrRecordDetailList=setList;
-		exrObject.member_idx=24;
+		exrObject.member_idx=$("#t_member_idx").val();
 		
 		//기록추가 영역에 추가될 미리보기
 		app1.exerciseList.push(exrObject);
@@ -604,7 +604,7 @@ function getPhysicalRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+currentMonth+"-"+1;
 	json['lastDay']=currentYear+"-"+currentMonth+"-"+lastDay;
-	json['member_idx']=24;
+	json['member_idx']=$("#t_member_idx").val();
 	let dateData=JSON.stringify(json);
 	console.log(dateData);
 	
@@ -639,7 +639,7 @@ function getExrRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+currentMonth+"-"+1;
 	json['lastDay']=currentYear+"-"+currentMonth+"-"+lastDay;
-	json['member_idx']=24;
+	json['member_idx']=$("#t_member_idx").val();
 	let dateData=JSON.stringify(json);
 	console.log("운동기록에 보낼 첫날과 끝날은",dateData);
 	
@@ -668,7 +668,7 @@ function getDietRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+currentMonth+"-"+1;
 	json['lastDay']=currentYear+"-"+currentMonth+"-"+lastDay;
-	json['member_idx']=24;
+	json['member_idx']=$("#t_member_idx").val();
 	let dateData=JSON.stringify(json);
 	console.log(dateData);
 	
@@ -702,7 +702,7 @@ function checkPhysicalRecord(callback){
 	let registedDate=currentYear+"-"+currentMonth+"-"+currentDay;
 	console.log("클릭한 날짜는 ", registedDate);
 	json['regdate']=registedDate;
-	json['member_idx']=24;
+	json['member_idx']=$("#t_member_idx").val();
 	
 	$.ajax({
 		url:"/rest/myrecord/physicalRecord",
@@ -731,7 +731,7 @@ function checkPhysicalRecord(callback){
 function physicalDelete(){
 		let json={};
 		json['regdate']=currentYear+"-"+currentMonth+"-"+currentDay;
-		json['member_idx']=24;
+		json['member_idx']=$("#t_member_idx").val();
 		
 		console.log(json);
 		$.ajax({
@@ -757,11 +757,11 @@ function registPhysical(){
 		let registedDate=currentYear+"-"+currentMonth+"-"+currentDay;
 		console.log("클릭한 날짜는 ", registedDate);
 		json['regdate']=registedDate;
-		json['member_idx']=24;
+		json['member_idx']=$("#t_member_idx").val();
 		
 		console.log(json);
 		
-		let url="/rest/myrecord/physicalRecord?regdate="+registedDate+"&member_idx="+24;
+		let url="/rest/myrecord/physicalRecord?regdate="+registedDate+"&member_idx="+$("#t_member_idx").val();
 		fetch(url,{
 			method:"GET",
 			headers:{
@@ -799,7 +799,7 @@ function registPhysical(){
 				json['musclemass']=$("input[name='musclemass']").val();
 				json['bodyFat']=$("input[name='bodyFat']").val();
 				json['bmi']=$("input[name='bmi']").val();
-				json['member_idx']=24;
+				json['member_idx']=$("#t_member_idx").val();
 				
 				console.log(json);
 				
@@ -877,7 +877,7 @@ function registDietRecord(){
 		json['carbs']=$("#t_carbs").val();
 		json['protein']=$("#t_protein").val();
 		json['fat']=$("#t_fat").val();
-		json['member_idx']=24; //테스트용
+		json['member_idx']=$("#t_member_idx").val(); //테스트용
 		
 		console.log("식단기록 전송전 결과 확인",json);
 		
@@ -1076,7 +1076,7 @@ $(function(){
        			
                 <!-- 기록추가 화면 나올 곳 -->
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 right-area h-auto">
-                <input type="hidden" class="form-control" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>" readonly>
+                <input type="hidden" id="t_member_idx" class="form-control" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>" readonly>
                 	<div class="empty">
                 	</div>
                 	<div>
