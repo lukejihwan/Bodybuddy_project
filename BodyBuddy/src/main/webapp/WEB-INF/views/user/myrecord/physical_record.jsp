@@ -483,6 +483,7 @@ function renderPhysicalRecord(registedPysicalDataForMonth){
 	
 	//차트의 x열에 넣기 위한 리스트 대입
 	chart.data.labels=x_dateLabelList;
+	//console.log(x_dateLabelList);
 	chart.update();
 }
 
@@ -503,10 +504,10 @@ function renderChartjs(registedPysicalDataForMonth){
 		heightList.push(oneDayPhysicalRecord.height);
 		//체중대입
 		weightList.push(oneDayPhysicalRecord.weight);
-		//체지방 대입
-		bodyFatList.push(oneDayPhysicalRecord.bodyFat);
 		//골격근량 대입
 		musclemassList.push(oneDayPhysicalRecord.musclemass);
+		//체지방 대입
+		bodyFatList.push(oneDayPhysicalRecord.bodyFat);
 		//BMI 대입
 		bmiList.push(oneDayPhysicalRecord.bmi);
 	}
@@ -514,7 +515,7 @@ function renderChartjs(registedPysicalDataForMonth){
 	chart.data.datasets[0].data=heightList;
 	chart.data.datasets[1].data=weightList;
 	chart.data.datasets[2].data=musclemassList;
-	chart.data.datasets[3].data=musclemassList;
+	chart.data.datasets[3].data=bodyFatList;
 	chart.data.datasets[4].data=bmiList;
 	//업데이트 해주기
 	chart.update();
@@ -528,6 +529,7 @@ function getPhysicalRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
 	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
+	json['member_idx']=24;
 	let dateData=JSON.stringify(json);
 	console.log(dateData);
 	
@@ -644,31 +646,42 @@ function chartInit(){
 
 //신체기록 수정하는 함수
 function physicalUpdate(){
-	let json={};
-	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+currentDay;
-	
-	json['height']=$("#t_height").val();
-	json['weight']=$("#t_weight").val();
-	json['bodyFat']=$("#t_bodyFat").val();
-	json['musclemass']=$("#t_musclemass").val();
-	json['bmi']=$("#t_bmi").val();
-	json['member_idx']=24;
-	json['regdate']=registedDate;
-	
-	console.log(json);
-	
-	$.ajax({
-		url:"/rest/myrecord/physicalRecord",
-		type:"PUT",
-		contentType:"application/json",
-		data:JSON.stringify(json),
-		success:function(result, status, xhr){
-			console.log("수정성공", result);
-		},
-		error:function(xhr, status, error){
-			console.log("수정실패", error);
-		}
-	});
+	if(confirm("신체기록을 수정하시겠습니까?")){
+		let json={};
+		let registedDate=currentYear+"-"+(currentMonth+1)+"-"+currentDay;
+		
+		json['height']=$("#t_height").val();
+		json['weight']=$("#t_weight").val();
+		json['bodyFat']=$("#t_bodyFat").val();
+		json['musclemass']=$("#t_musclemass").val();
+		json['bmi']=$("#t_bmi").val();
+		json['member_idx']=24;
+		json['regdate']=registedDate;
+		
+		console.log(json);
+		
+		$.ajax({
+			url:"/rest/myrecord/physicalRecord",
+			type:"PUT",
+			contentType:"application/json",
+			data:JSON.stringify(json),
+			success:function(result, status, xhr){
+				console.log("수정성공", result);
+				alert("신체기록이 수정되었습니다");
+			},
+			error:function(xhr, status, error){
+				console.log("수정실패", error);
+			}
+		});
+	}
+}
+
+function setTableClear(){
+	$("#t_height").val("");
+	$("#t_weight").val("");
+	$("#t_musclemass").val("");
+	$("#t_bodyFat").val("");
+	$("#t_bmi").val("");
 }
 
 //신체기록 삭제하는 함수
@@ -686,6 +699,8 @@ function physicalDelete(){
 			data:JSON.stringify(json),
 			success:function(result, status, xhr){
 				console.log("삭제성공", result);
+				alert("신체기록이 삭제되었습니다");
+				setTableClear();
 				getPhysicalRecordForMonth();
 			},
 			error:function(xhr, status, error){
@@ -695,10 +710,20 @@ function physicalDelete(){
 	}
 }
 
+
+function renderPage(){
+	let nickname=$("#t_hiddenNickname").val();
+	console.log("회원님의 닉네임은", nickname);
+	$("#t_nickname").text(nickname);
+}
+
 $(function(){
 	 //초기화
     init();
-	
+	 
+	 //화면 초기화 (nickname)
+	renderPage();
+	 
 	 //달력초기화
 	calendarInit();
 	
@@ -869,8 +894,9 @@ $(function(){
 							<h3 class="card-title">
 								<i class="fas fa-map-marker-alt mr-1"></i>
 								<h4 style="display:inline;" id="h_date">  2023-03-27</h4>
-								회원님의 
-								의 신체기록
+								<input type="hidden" id="t_hiddenNickname" class="form-control" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" readonly>
+								<input type="hidden" id="t_member_idx" class="form-control" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>" readonly>
+								<h5 id="t_nickname" style="display:inline"></h5>  회원님의 신체기록
 							</h3>
 							
 							<!-- card tools -->
