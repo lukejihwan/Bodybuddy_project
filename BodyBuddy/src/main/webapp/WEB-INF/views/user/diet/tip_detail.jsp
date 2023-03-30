@@ -47,12 +47,8 @@
 				<div class="col">
                     <h1>식단팁 게시판</h1>
                     <hr>
+                    <input type="hidden" class="form-control" name="diet_tip_idx"value="<%=dietTip.getDiet_tip_idx()%>">                    
                     <h3><%=dietTip.getTitle() %></h3>
-                    <input type="hidden" class="form-control" name="diet_tip_idx"value="<%=dietTip.getDiet_tip_idx()%>">
-
-                                     
-                    <span class="float-right"><img src="/resources/user/images/diet/heart.png" style="width:20px; height:20px"> 찜하기</span>
-
 					<span class="float-right" onclick="interest()"><a href="#"><img src="/resources/user/images/diet/heart.png" style="width:20px; height:20px"> 찜하기</a></span>
 
                     <br/>

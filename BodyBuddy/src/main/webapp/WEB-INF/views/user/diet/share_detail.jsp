@@ -57,7 +57,7 @@
                     <input type="hidden" class="form-control" name="diet_share_idx"value="<%=dietShare.getDiet_share_idx()%>">
                     <input type="hidden" name="member.member_idx"
 						value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
-					<input type="text" class="form-control" name="writer"
+					<input type="hidden" class="form-control" name="writer"
 						value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" />	
 
                     <h3 id="title"><%=dietShare.getTitle() %></h3>
