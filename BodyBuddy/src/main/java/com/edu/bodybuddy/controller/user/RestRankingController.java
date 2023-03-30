@@ -25,7 +25,7 @@ import com.edu.bodybuddy.model.myrecord.DailyWalkService;
 import com.edu.bodybuddy.util.Message;
 
 @RestController
-@RequestMapping("/rest/ranking")
+@RequestMapping("/main/rest/ranking")
 public class RestRankingController {
 	
 	@Autowired
