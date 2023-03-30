@@ -32,6 +32,7 @@
 	<%@include file="../inc/topbar.jsp" %>
     <!-- /top-bar end-->
 
+
     <!-- hero section start -->
     <div class="hero-section" style="background:#E57373">
 		<!-- navigation-->
@@ -170,10 +171,10 @@
 	
 	const row={
 			template:`
- 				<tr>
+ 				<tr @click="getDetail(exrTip)">
 				    <td>{{exrTip.exr_tip_idx}}</td>
 				    <td>{{exrTip.exrCategory.exr_category_name}}</td>
-				    <td><a href="#" @click="getDetail(exrTip)">{{exrTip.title}}</a></td>
+				    <td>{{exrTip.title}}</td>
 				    <td>{{exrTip.regdate.substr(0, 10)}}</td>
 				</tr> 
 			`,
@@ -185,12 +186,28 @@
 			},
 			methods:{
 				getDetail:function(exrTip){
+					loginCheck();
+					
 					//alert(exrTip.exr_tip_idx);
 					location.href="/exr/tip_detail/"+exrTip.exr_tip_idx;
 				}
 			}
-			
 	}
+	
+	
+	function loginCheck() {
+		<sec:authorize access="isAnonymous()">
+			Swal.fire({
+				title:"로그인해야 사용할 수 있는 기능입니다",
+				icon:"warning",
+				confirmButtonText:"확인",
+				confirmButtonColor: '#c5f016'
+			}).then(()=>{
+				location.href="/exr/tip_list";
+			});
+		</sec:authorize>
+	}
+	
 	
 	
 	function init(){
@@ -215,8 +232,9 @@
 		// 동영상 크롤링
 		$("#bt_search").click(function(){
 			searchVideo();
-			
 		});
+		
+		
 	});
 </script>
 </body>

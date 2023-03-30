@@ -125,6 +125,20 @@
 			}
 		});
 	}
+	
+	
+	// 작성자 본인에게만 수정삭제 버튼 권한
+	function showHide(){
+		if('<sec:authentication property="principal.member.member_idx"/>' != <%= exrTip.getMember().getMember_idx() %>){
+			$("#bt_edit").hide();
+			$("#bt_delete").hide();
+			
+		}else{
+			$("#bt_edit").show();
+			$("#bt_delete").show();
+		}
+	}
+	
 
 	
 	function init(){
@@ -170,6 +184,10 @@
 		$("#bt_recommend").click(function() {
 			recommend();
 		});
+		
+		
+		showHide();
+		
 		
 		// 써머 노트 적용
 		$('#summernote').summernote({

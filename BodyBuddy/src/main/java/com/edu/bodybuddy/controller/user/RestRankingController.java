@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import com.edu.bodybuddy.util.Message;
 @RestController
 @RequestMapping("/rest/ranking")
 public class RestRankingController {
+	private Logger logger=LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private DailyWalkService dailyWalkService;
@@ -53,6 +56,8 @@ public class RestRankingController {
 	@PostMapping("/walk")
 	public ResponseEntity<Message> regist(HttpServletRequest request, @RequestBody DailyWalk dailyWalk){
 		
+		logger.info("서버가 전달받은 객체 "+dailyWalk);
+		
 		//3단계
 		dailyWalkService.regist(dailyWalk);
 		
@@ -62,11 +67,12 @@ public class RestRankingController {
 		return entity;
 	}
 	
+	
 	@DeleteMapping("/walk")
 	public ResponseEntity<Message> delete(HttpServletRequest request, @RequestBody DailyWalk dailyWalk){
 		
 		//3단계
-		dailyWalkService.delete(dailyWalk);
+		dailyWalkService.delete(dailyWalk.getDailywalk_idx());
 		
 		Message message = new Message("일일 기록 삭제 성공", 200);
 		ResponseEntity<Message> entity = new ResponseEntity<Message>(message, HttpStatus.OK);

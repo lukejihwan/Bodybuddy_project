@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import com.edu.bodybuddy.domain.exr.ExrCategory;
@@ -63,10 +64,11 @@ public class ExcerciseController {
 	// 상세페이지
 	@GetMapping("/notice/{exr_category_idx}")
 	public ModelAndView getdetail(@PathVariable("exr_category_idx") int exr_category_idx, HttpServletRequest request) {
-		logger.info("유저 페이지 작동");
 		
-		ExrNotice exrNotice=exrNoticeService.select(exr_category_idx);
+		ExrNotice exrNotice=exrNoticeService.selectByCategory(exr_category_idx);
 		List<ExrNotice> exrCategoryList=exrCategoryService.selectAll();
+		
+		logger.info("유저 페이지 작동 : "+exrNotice);
 		
 		ModelAndView mv= new ModelAndView("exr/notice_detail");
 		mv.addObject("exrNotice", exrNotice);
@@ -143,7 +145,7 @@ public class ExcerciseController {
 	public ModelAndView delete(int exr_routine_idx, HttpServletRequest request) {
 		exrRoutineService.delete(exr_routine_idx);
 		
-		ModelAndView mv= new ModelAndView("redirect:/exr/routine_list");
+		ModelAndView mv= new ModelAndView("redirect:/exr/routine_list/1");
 		return mv;
 	}
 	
@@ -152,7 +154,7 @@ public class ExcerciseController {
 	/*-----------------------
 	  	팁 게시판
 	 -------------------------*/ 
-	@GetMapping("/tip_list")
+	@GetMapping("/tip_list")  
 	public ModelAndView getRegistForm(HttpServletRequest request) {
 		ModelAndView mv= new ModelAndView("/exr/tip_main");
 		return mv;

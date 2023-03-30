@@ -75,7 +75,10 @@
 
 				<div class="form-group">
 					<button type="button" class="btn btn-primary" id="bt_list">목록</button>
+					
 					<button type="button" class="btn btn-outline-success" id="bt_edit">수정</button>
+					<button type="button" class="btn btn-outline-danger" id="bt_delete">삭제</button>
+
 				</div>
 
 				<div class="col-md-12 mt-5 mb-4 text-center">
@@ -92,16 +95,12 @@
 					<div class="col-sm-9">
 						<label class="control-label" for="textarea">Comments</label>
 						<form id="form1">
-							<input type="hidden" name="member.member_idx"
-								value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
-							<input type="hidden" name="recommend"
-								value="<%=exrRoutine.getRecommend()%>"> <input
-								type="hidden" name="exr_routine_idx"
-								value="<%=exrRoutine.getExr_routine_idx()%>">
-							<textarea class="form-control" name="content" rows="6"
-								placeholder="댓글 입력 창"></textarea>
-							<input type="text" class="form-control" name="writer"
-								value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" />
+							<input type="hidden" name="member.member_idx" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>">
+							<input type="hidden" name="recommend" value="<%=exrRoutine.getRecommend()%>">
+							<input type="hidden" name="exr_routine_idx" value="<%=exrRoutine.getExr_routine_idx()%>">
+							
+							<textarea class="form-control" name="content" rows="6" placeholder="댓글 입력 창"></textarea>
+							<input type="text" class="form-control" name="writer" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" />
 							<button id="bt_comment" class="btn btn-default" type="button">등록</button>
 						</form>
 					</div>
@@ -314,6 +313,17 @@
 	}
 	
 	
+	function showHide(){
+		if('<sec:authentication property="principal.member.member_idx"/>' != <%= exrRoutine.getMember().getMember_idx() %>){
+			$("#bt_edit").hide();
+			$("#bt_delete").hide();
+			
+		}else{
+			$("#bt_edit").show();
+			$("#bt_delete").show();
+		}
+	}
+	
 	
 	/***onLoad***/
 	$(function() {
@@ -335,6 +345,13 @@
 				location.href = "/exr/routine/edit/"+$("input[name='exr_routine_idx']").val();
 			}
 		});
+
+		// 삭제
+		$("#bt_delete").click(function() {
+			if (confirm("삭제하시겠습니까?")) {
+				location.href = "/exr/routine/delete?exr_routine_idx="+$("input[name='exr_routine_idx']").val();
+			}
+		});
 		
 		// 댓글
 		$("#bt_comment").click(function() {
@@ -348,6 +365,9 @@
 		$("#bt_recommend").click(function() {
 			recommend();
 		});
+		
+		
+		showHide();
 
 	});
 </script>

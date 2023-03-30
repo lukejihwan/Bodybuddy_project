@@ -26,13 +26,11 @@ public class ExrRoutineCommentServiceImpl implements ExrRoutineCommentService{
 
 	@Override
 	public void insert(ExrRoutineComment exrRoutineComment) throws ExrRoutineCommentException{
-		
 		// 댓글이 최초 입력이라면 그대로 넣고
 		// 최초입력이 아니라면 스텝을 증가시킨다. (뎁스는 유지)
 		// 그러기 위해선? 해당 글에 대한 댓글이 있는지 "조사" 	--> 그 수가 0이 아니라면,,,
 		int idx=exrRoutineComment.getExrRoutine().getExr_routine_idx();	// 해당 글에 대한 번호
 		int count=exrRoutineCommentDAO.totalCount(idx);
-		
 		
 		// 스텝 증가 여부 따지기
 		if(count==0) {

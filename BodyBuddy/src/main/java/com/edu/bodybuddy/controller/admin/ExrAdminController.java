@@ -62,6 +62,7 @@ public class ExrAdminController {
 	@GetMapping("/notice/detail")
 	public ModelAndView getDetail(HttpServletRequest request, int exr_notice_idx) {	
 		ExrNotice exrNotice=exrNoticeService.select(exr_notice_idx);
+		logger.info("지금 노티스 확인"+exrNotice);
 		
 		ModelAndView mv=new ModelAndView("admin/exr/notice_detail");
 		mv.addObject("exrNotice", exrNotice);

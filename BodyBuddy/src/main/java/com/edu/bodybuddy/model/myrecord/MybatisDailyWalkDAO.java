@@ -40,7 +40,7 @@ public class MybatisDailyWalkDAO implements DailyWalkDAO{
 
 	@Override //사용자의 해당일에 뛴거리를 입력하는 메서드
 	public void insert(DailyWalk dailyWalk) throws DailyWalkException{
-		int result=sqlSessionTemplate.insert("DailyWalkd.insert", dailyWalk);
+		int result=sqlSessionTemplate.insert("DailyWalk.insert", dailyWalk);
 		if(result<1) throw new DailyWalkException("러닝기록 등록 실패");
 	}
 
