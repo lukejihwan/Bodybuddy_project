@@ -2,6 +2,7 @@ package com.edu.bodybuddy.controller.user;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -94,10 +95,15 @@ public class RestMyRecordController {
 	
 	
 	// 해당 날짜에 대한 위도 경도 값을 가져오는 함수!
-	@GetMapping("/today/gps")
-	public List getGPSData() {
-		logger.info("여기까지 왔니");
-		List<GpsData>gpsList=gpsDataService.selectForDay("2023-03-24 00:00:00");
+	@GetMapping("/today/gps/{regdate}/{member_idx}")
+	public List getGPSData(@PathVariable(name="regdate") String regdate, @PathVariable(name="member_idx") int member_idx) {
+		HashMap map=new HashMap<String, Object>();
+		logger.info("gps 요청에 받아올 member_idx :"+member_idx);
+		logger.info("gps 요청에 받아올 값은 : "+regdate);
+		map.put("regdate", regdate);
+		map.put("member_idx", member_idx);
+		
+		List<GpsData>gpsList=gpsDataService.selectForDay(map);
 		return gpsList;
 	}
 	
@@ -162,11 +168,13 @@ public class RestMyRecordController {
 	
 	@GetMapping("/physicalRecord")
 	public PhysicalRecord getPhysicalRecord(@RequestParam("regdate") String regdate, @RequestParam("member_idx") int member_idx) {
+		logger.info("신체기록 조회에 받아온 결과는"+regdate+";;"+member_idx);
 		PhysicalRecord physicalRecord=new PhysicalRecord();
 		physicalRecord.setRegdate(regdate);
 		physicalRecord.setMember_idx(member_idx);
 		//서비스 호출하기
 		physicalRecord= physicalRecordService.select(physicalRecord);
+		logger.info("받아온 값은"+physicalRecord);
 		
 		return physicalRecord;
 	}

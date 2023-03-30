@@ -259,6 +259,7 @@ const rowlist={
 }
 
 //운동기록 삭제하는 함수
+/*
 function deleteExrRecord(){
 	if(confirm("삭제하시겠습니까?")){
 		$.ajax({
@@ -276,6 +277,7 @@ function deleteExrRecord(){
 		});
 	}
 }
+*/
 
 //vue 초기화 함수
 function init(){

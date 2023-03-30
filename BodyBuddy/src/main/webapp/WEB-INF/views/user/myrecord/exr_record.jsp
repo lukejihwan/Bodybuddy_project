@@ -461,10 +461,22 @@ function showExrAndRunningRecord(clickedDay){
 			}
 		});
 	}else{ //러닝버튼이 눌리고, 각날짜를 불러올 영역
+		getGpsData(clickedDay);
+	
+		/*
 		$.ajax({
-			url:"",
-			type:"GET"
+			url:"/rest/myrecord/today/gps/"+registedDate,
+			type:"GET",
+			success:function(result, status, xhr){
+				
+				console.log("러닝기록 결과", result);
+			},
+			error:function(xhr, status, error){
+				console.log("러닝기록 호출중 error", error);
+			}
 		});
+		*/
+		
 	}
 }
 
@@ -593,6 +605,7 @@ function getExrRecordForMonth(){
 function getRunningRecordForMonth(){
 	//해당달의 첫날과 마지막날을 JSON형식으로 만듬
 	let json={};
+	json['member_idx']=24;
 	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
 	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
 	let dateData=JSON.stringify(json);
@@ -610,7 +623,6 @@ function getRunningRecordForMonth(){
 		success:function(result, status, xhr){
 			console.log("받아온 한달간의 러닝기록 결과는",  result);
 			renderRunningRecord(result);
-			/*
 			createPolyline(result);
 			
 			console.log("받아온 날짜는",result);
@@ -630,7 +642,6 @@ function getRunningRecordForMonth(){
 			}
 			//console.log("가공된 제이슨 리스트는? ",jsonList);
 			createPolyline(jsonList);
-			*/
 		},
 		error:function(xhr, status, error){
 			console.log(error, "기록불러오던 중 에러발생");
@@ -655,15 +666,20 @@ function initMap() {
 }
 
 // db에 저장된 위치 데이터 불러오는 함수
-function getGpsData(){
+function getGpsData(clickedDay){
+	
+	let member_idx=24;
+	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
+	console.log("registedDate", registedDate);
+	
 	$.ajax({
-		url:"/rest/myrecord/today/gps",
+		url:"/rest/myrecord/today/gps/"+registedDate+"/"+member_idx,
 		typr:"GET",
 		success:function(result, status, xhr){
 			createPolyline(result);
 			
-			//console.log("결과 ", result);
-			//console.log("결과안의 개수 ", result.length);
+			console.log("결과 ", result);
+			console.log("해당 날짜의 위도경도 개수 ", result.length);
 		
 			let jsonList=[];
 			
@@ -678,7 +694,7 @@ function getGpsData(){
 				jsonList.push(json);
 				
 			}
-			//console.log("가공된 제이슨 리스트는? ",jsonList);
+			console.log("가공된 제이슨 리스트는? ",jsonList);
 			createPolyline(jsonList);
 			
 		}
@@ -711,7 +727,7 @@ $(document).ready(function() {
 	calendarInit();
 	
 	/*구글맵 호출하는 부분*/
-	getGpsData();
+	getGpsData(today.getDate());
 	initMap();
 	/*------------------*/
 	
