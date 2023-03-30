@@ -15,4 +15,9 @@ public class MainController {
 	public String getUserMain() {
 		return "index";
 	}
+
+	@GetMapping("/index2")
+	public String getUserMain2() {
+		return "index_back";
+	}
 }

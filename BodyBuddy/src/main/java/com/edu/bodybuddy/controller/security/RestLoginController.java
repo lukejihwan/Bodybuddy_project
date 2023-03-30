@@ -39,6 +39,8 @@ public class RestLoginController {
 	      
 	      Member result = memberDAO.selectByEmail(member);
 	      
+	      String name = SecurityContextHolder.getContext().getAuthentication().getName();
+	      log.info("로그인한 안드로이드 멤버 이름 : " +name); 
 	      ResponseEntity entity=new ResponseEntity<Member>(result, HttpStatus.OK);
 	      
 	      return entity;

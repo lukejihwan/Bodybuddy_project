@@ -49,7 +49,7 @@
 				<!-- PW1 -->
 					<h3 class="join_title"><label for="pswd1">비밀번호</label></h3>
 					<span class="box int_pass">
-						<input type="password" id="pswd1" name="password.pass" class="int" maxlength="20">
+						<input type="password" id="pswd1" name="password.pass" class="int" maxlength="20" placeholder="비밀번호 입력">
 						<span id="alertTxt">사용불가</span>
 						<img src="/resources/user/images/join/m_icon_pass.png" id="pswd1_img1" class="pswdImg">
 					</span>
@@ -57,14 +57,14 @@
 				<!-- PW2 -->
 					<h3 class="join_title"><label for="pswd2">비밀번호 재확인</label></h3>
 					<span class="box int_pass_check">
-						<input type="password" id="pswd2" class="int" maxlength="20">
+						<input type="password" id="pswd2" class="int" maxlength="20" placeholder="비밀번호 재입력">
 						<img src="/resources/user/images/join/m_icon_check_disable.png" id="pswd2_img1" class="pswdImg">
 					</span>
 					<span class="error_next_box"></span>
 				<!-- NICKNAME -->
 					<h3 class="join_title"><label for="name">닉네임</label></h3>
 					<span class="box int_name">
-						<input type="text" id="nickname" name="nickname" class="int" maxlength="20">
+						<input type="text" id="nickname" name="nickname" class="int" maxlength="20" placeholder="닉네임 입력">
 					</span>
 					<span class="error_next_box"></span>
 				<!-- phone -->

@@ -18,21 +18,21 @@
             </div>
             <div class="col-md-3 hidden-sm hidden-xs bdr">
                 <div class="time-info">
-                    <p class="time-text">~~님 현재 기록 등등</p>
+                    <sec:authorize access="isAuthenticated()"><p class="time-text"><sec:authentication property="principal.member.nickname"/> 님</p></sec:authorize>
                 </div>
             </div>
             <div class="col-md-3 col-sm-4 hidden-xs bdr">
                 <div class="call-info">
                     <!-- call-info -->
-                    <sec:authorize access="isAnonymous()"><p class="call-no">환영합니다</p></sec:authorize>
-                    <sec:authorize access="isAuthenticated()"><p class="call-no">알림같은거 넣으면 좋을듯</p></sec:authorize>
+                    <sec:authorize access="isAnonymous()"><p class="call-no">로그인하세요</p></sec:authorize>
+                    <sec:authorize access="isAuthenticated()"><p class="call-no"><sec:authentication property="principal.member.point"/> POINT</p></sec:authorize>
                 </div>
                 <!-- /.call-info -->
             </div>
             <div class="col-md-3 col-sm-4 hidden-xs bdr">
                 <div class="mail-info">
                     <sec:authorize access="isAnonymous()"><p class="mail-text"><a href="/auth/login">로그인</a>  /  <a href="/auth/join">회원가입</a></p></sec:authorize>
-                    <sec:authorize access="isAuthenticated()"><p class="mail-text"><a href="/mypage"><sec:authentication property="principal.member.nickname"/>  님 </a>  /  <a href="/logout">로그아웃</a></p></sec:authorize>
+                    <sec:authorize access="isAuthenticated()"><p class="mail-text"><a href="/mypage"><a href="/logout">로그아웃</a></p></sec:authorize>
                 </div>
             </div>
         </div>

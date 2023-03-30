@@ -53,34 +53,27 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	@Transactional
 	public void regist(Member member) throws MemberException, AddressException, PasswordException {
-		log.info("회원가입 진입지점 1");
 		//email 중복검사
 		Member byEmail = memberDAO.selectByEmail(member);
-		log.info("회원가입 진입지점 2");
 		if(byEmail != null) throw new MemberException("이미 가입된 메일주소입니다");
 		
 		//nickname 중복검사
 		Member byNickname = memberDAO.selectByNickname(member);
-		log.info("회원가입 진입지점 3");
 		if(byNickname != null) throw new MemberException("이미 사용중인 닉네임입니다");
 		
 		//중복 없을 경우 등록 진행
 		//가입시 유저 권한 부여
 		member.setRole(Role.ROLE_USER);
-		log.info("회원가입 진입지점 4");
 		//홈페이지 회원만 비밀번호를 기입하므로 암호화를 해준다
 		if(member.getProvider().equals("home")) {
 			String encodedPass = passwordEncoder.encode(member.getPassword().getPass());
 			member.getPassword().setPass(encodedPass);
-			log.info("회원가입 진입지점 5, 멤버객체는 :" + member);
 			memberDAO.insert(member);
 			passwordDAO.insert(member);
 		} else {
-			log.info("회원가입 진입지점 5, 멤버객체는 :" + member);
 			memberDAO.insert(member);
 		}
 
-		log.info("회원가입 진입지점 6, 주소객체는 :" + member.getAddress());
 		//회원가입이 모두 완료되었을 경우 축하 메시지 발송
 		emailManager.send(member);
 	}
