@@ -483,6 +483,7 @@ function renderPhysicalRecord(registedPysicalDataForMonth){
 	
 	//차트의 x열에 넣기 위한 리스트 대입
 	chart.data.labels=x_dateLabelList;
+	//console.log(x_dateLabelList);
 	chart.update();
 }
 
@@ -503,10 +504,10 @@ function renderChartjs(registedPysicalDataForMonth){
 		heightList.push(oneDayPhysicalRecord.height);
 		//체중대입
 		weightList.push(oneDayPhysicalRecord.weight);
-		//체지방 대입
-		bodyFatList.push(oneDayPhysicalRecord.bodyFat);
 		//골격근량 대입
 		musclemassList.push(oneDayPhysicalRecord.musclemass);
+		//체지방 대입
+		bodyFatList.push(oneDayPhysicalRecord.bodyFat);
 		//BMI 대입
 		bmiList.push(oneDayPhysicalRecord.bmi);
 	}
@@ -514,7 +515,7 @@ function renderChartjs(registedPysicalDataForMonth){
 	chart.data.datasets[0].data=heightList;
 	chart.data.datasets[1].data=weightList;
 	chart.data.datasets[2].data=musclemassList;
-	chart.data.datasets[3].data=musclemassList;
+	chart.data.datasets[3].data=bodyFatList;
 	chart.data.datasets[4].data=bmiList;
 	//업데이트 해주기
 	chart.update();
