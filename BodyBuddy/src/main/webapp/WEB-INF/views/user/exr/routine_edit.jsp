@@ -62,7 +62,7 @@
 						
 						<div class="form-group">
 							<select class="form-control" name="exrCategory" id="exrCategory">
-								<option value="0"><%=exrRoutine.getExrCategory().getExr_category_name() %></option>
+								<option value="0">카테고리 선택</option>
 								<% for(ExrCategory exrCategory:exrCategoryList){ %>
 									<option value="<%=exrCategory.getExr_category_idx()%>"><%=exrCategory.getExr_category_name() %></option>
 								<% } %>
@@ -120,7 +120,7 @@
 		json['writer'] = $("#form1 input[name='writer']").val();
 		json['content'] = $("#form1 textarea[name='content']").val();
 
-		console.log(JSON.stringify(json));
+		console.log("이것은 뭐고?", JSON.stringify(json));
 
 		$.ajax({
 			url : "/rest/exr/routine",
@@ -132,6 +132,8 @@
 			success : function(result, status, xhr) {
 				alert(result.msg);
 				console.log("성공시 출력 ", result);
+				
+				location.href = "/exr/routine_detail/"+$("input[name='exr_routine_idx']").val();
 			},
 			error : function(xhr, status, err) {
 				console.log("에러시 출력 ", xhr.responseText);
@@ -148,6 +150,7 @@
 			location.href = "/exr/routine_list/1";
 		});
 
+		
 		// 수정
 		$("#bt_edit").click(function() {
 			if (confirm("수정하시겠습니까?")) {
@@ -155,6 +158,7 @@
 			}
 		});
 
+		
 		// 삭제
 
 

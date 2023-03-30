@@ -33,8 +33,7 @@
 	
 	<!-- 메인페이지에 보여줄 러닝거리 월간 랭킹 -->
 	<select id="selectAllWalkRecordForMonth" resultMap="DailyWalkMap">
-		select *
-		from dailywalk 
+		select * from dailywalk 
 		where month(regdate)=month(now()) and year(regdate)=year(now())
 		order by distance desc
 	</select>

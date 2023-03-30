@@ -75,6 +75,7 @@
 						</div>
 						
 						<div class="form-group">
+						
 							<button type="button" class="btn btn-primary" id="bt_list">목록</button>
 							<button type="button" class="btn btn-outline-success" id="bt_edit">재등록</button>
 							<button type="button" class="btn btn-outline-danger" id="bt_delete">삭제</button>
@@ -116,7 +117,7 @@
 
 		json['exrCategory'] = obj;
 
-		json['exr_routine_idx'] = $("#form1 input[name='exr_routine_idx']").val();
+		json['exr_tip_idx'] = $("#form1 input[name='exr_tip_idx']").val();
 		json['title'] = $("#form1 input[name='title']").val();
 		json['writer'] = $("#form1 input[name='writer']").val();
 		json['content'] = $("#form1 textarea[name='content']").val();
@@ -124,7 +125,7 @@
 		console.log(JSON.stringify(json));
 
 		$.ajax({
-			url : "/rest/exr/routine",
+			url : "/rest/exr/tip",
 			type : "PUT",
 			contentType : "application/json;charset=utf-8",
 			processData : false,
@@ -146,7 +147,7 @@
 
 		// 목록 페이지 이동
 		$("#bt_list").click(function() {
-			location.href = "/exr/routine_list/1";
+			location.href =  "/exr/tip_list";
 		});
 
 		// 수정

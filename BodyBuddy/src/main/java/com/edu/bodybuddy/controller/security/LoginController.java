@@ -100,17 +100,6 @@ public class LoginController {
 		return mv;
 	}
 	
-	@PostMapping("/login")
-	@ResponseBody
-	public ResponseEntity<Msg> androidLogin(Member member){
-		MemberDetail memberDetail = new MemberDetail(member);
-		log.info("넘어온 member : " + member);
-		log.info("만든 디테일 : "+ memberDetail);
-		UsernamePasswordAuthenticationToken test = new UsernamePasswordAuthenticationToken(memberDetail, member.getPassword().getPass(), null);
-		SecurityContextHolder.getContext().setAuthentication(authenticationProvider.authenticate(test));
-		ResponseEntity entity=new ResponseEntity<Msg>(new Msg("로그인 성공"), HttpStatus.OK);
-		return entity;
-	}
 	
 	@ExceptionHandler({MemberException.class, AddressException.class, PasswordException.class, UsernameNotFoundException.class})
 	public ModelAndView handle(Exception e) {

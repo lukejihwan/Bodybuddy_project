@@ -19,12 +19,12 @@
 	<!-- 글 상세보기 -->
 	<select id="select" parameterType="int" resultMap="resultMap">
 		select * from exr_tip
-		where exr_tip_idx=#{exr_tip_idx}	
+		where exr_tip_idx=#{exr_tip_idx}
 	</select>
 	
 
 	<select id="selectAll" resultMap="resultMap">
-		select * from exr_tip
+		select * from exr_tip order by exr_tip_idx desc
 	</select>
 
 
@@ -36,7 +36,7 @@
 	
 	
 	<update id="update" parameterType="ExrRoutine">
-		update exr_tip set exr_category_idx=#{exrCategory.exr_category_idx}, title=#{title}, writer=#{writer}, content=#{content}
+		update exr_tip set exr_category_idx=#{exrCategory.exr_category_idx}, title=#{title}, content=#{content}
 		where exr_tip_idx=#{exr_tip_idx}
 	</update>
 

@@ -5,6 +5,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%
 	ExrNotice exrNotice=(ExrNotice)request.getAttribute("exrNotice");
+	System.out.println("노티스 디테일 페이지에서 확인"+exrNotice);
 %>
 <!DOCTYPE html>
 <html lang="en">

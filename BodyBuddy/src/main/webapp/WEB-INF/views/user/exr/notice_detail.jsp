@@ -5,8 +5,6 @@
 <%
 	ExrNotice exrNotice=(ExrNotice)request.getAttribute("exrNotice");
 	List<ExrCategory> exrCategoryList=(List<ExrCategory>)request.getAttribute("exrCategoryList");
-	System.out.println("디테일페이지 "+exrCategoryList);
-
 %>
 <!DOCTYPE html>
 <html lang="en">
