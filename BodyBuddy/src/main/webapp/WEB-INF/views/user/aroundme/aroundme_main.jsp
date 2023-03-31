@@ -1,4 +1,12 @@
+<%@page import="com.edu.bodybuddy.domain.member.Address"%>
+<%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
+<%@page import="com.edu.bodybuddy.domain.security.MemberDetail"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%
+	MemberDetail memberDetail = (MemberDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	Address address = memberDetail.getMember().getAddress();
+	
+%>
 <!DOCTYPE html>
 <!-- content 부분만 비워둔 기본 템플릿 -->
 <!-- hero섹션이 포함되어있음 -->
@@ -504,7 +512,7 @@
 	//상활별 GPS 처리
 	function authCheck() {
 		<sec:authorize access="isAuthenticated()">
-			if('<sec:authentication property="principal.member.address"/>'!='null'){
+			if('<%= address != null ? address.getMember_address() : "null" %>'!='null'){
 				askMemberAddress();
 			}else{
 				getGPS();
@@ -517,7 +525,7 @@
 	
 	function askMemberAddress() {
 		Swal.fire({
-			  title: '회원님이 기입하신 주소('+htmlDecode('<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.address.member_address"/></sec:authorize>')+')로 검색하시겠습니까?',
+			  title: '회원님이 기입하신 주소('+htmlDecode('<%= address != null ? address.getMember_address() : "null" %>'!='null')+')로 검색하시겠습니까?',
 			  text:"아니오를 누르실 경우 gps로 현재 위치를 기반으로 알려드립니다",
 			  showCancelButton: true,
 			  confirmButtonText: '네',
@@ -527,7 +535,7 @@
 			  cancelButtonColor: '#d33',
 			}).then((result) => {
 			  if (result.isConfirmed) {
-				  app1.myaddr = htmlDecode('<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.address.member_address"/></sec:authorize>');
+				  app1.myaddr = htmlDecode('<%= address != null ? address.getMember_address() : "null" %>'!='null');
 				  getGPSByAddr();
 			  }else{
 				  getGPS();
