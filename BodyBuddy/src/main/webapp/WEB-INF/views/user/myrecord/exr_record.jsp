@@ -442,10 +442,11 @@ function showExrAndRunningRecord(clickedDay){
 	//근력운동이 눌렸을때, 러닝이 눌렸을때에 따라 다르게 동작하게 하기 위해
 	if(condition){ //근력운동이 눌렸을 때
 		let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
+		let member_idx=$("#t_member_idx").val();
 		console.log("registedDate", registedDate);
 		
 		$.ajax({
-			url:"/rest/myrecord/exrRecord/"+registedDate,
+			url:"/rest/myrecord/exrRecord/"+registedDate+"/"+member_idx,
 			type:"GET",
 			data: registedDate,
 			success:function(result, status, xhr){
@@ -580,6 +581,7 @@ function getExrRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
 	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
+	json['member_idx']=$("#t_member_idx").val();
 	let dateData=JSON.stringify(json);
 	console.log(dateData);
 	
@@ -605,7 +607,7 @@ function getExrRecordForMonth(){
 function getRunningRecordForMonth(){
 	//해당달의 첫날과 마지막날을 JSON형식으로 만듬
 	let json={};
-	json['member_idx']=24;
+	json['member_idx']=$("#t_member_idx").val();
 	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
 	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
 	let dateData=JSON.stringify(json);
@@ -623,9 +625,9 @@ function getRunningRecordForMonth(){
 		success:function(result, status, xhr){
 			console.log("받아온 한달간의 러닝기록 결과는",  result);
 			renderRunningRecord(result);
-			createPolyline(result);
+			//createPolyline(result);
 			
-			console.log("받아온 날짜는",result);
+			console.log("받아온 날짜의 러닝기록은",result);
 			
 			let jsonList=[];
 			
@@ -656,7 +658,7 @@ function getRunningRecordForMonth(){
 // 1) 맵 초기 콜백 함수 
 function initMap() {
 	let mapProp= {
-	  center:new google.maps.LatLng(37.556436, 126.945207),
+	  center:new google.maps.LatLng({lat:37.556436, lng:126.945207}),
 	  zoom:16,
 	};
 	map = new google.maps.Map(document.getElementById("myMap"),mapProp);
@@ -664,11 +666,12 @@ function initMap() {
 	//console.log("잘 호출 되는 거지? ", map);
 	
 }
-
+let flightPath;
 // db에 저장된 위치 데이터 불러오는 함수
 function getGpsData(clickedDay){
 	
-	let member_idx=24;
+	
+	let member_idx=$("#t_member_idx").val();
 	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
 	console.log("registedDate", registedDate);
 	
@@ -705,15 +708,22 @@ function getGpsData(clickedDay){
 // 라인그리기
 function createPolyline(jsonList){
 	//console.log("그림 그릴 제이슨리스트의 모습은? ", jsonList);
-
-	 const flightPath = new google.maps.Polyline({
-		    path: jsonList,
-		    geodesic: true,
-		    strokeColor: "	#FF4500",
-		    strokeOpacity: 1.0,
-		    strokeWeight: 6,
-		  });
-		  flightPath.setMap(map);
+	let lines=[]; //이전경로를 지우기 위한 배열
+	
+	 flightPath = new google.maps.Polyline({
+	    path: jsonList,
+	    geodesic: true,
+	    strokeColor: "	#FF4500",
+	    strokeOpacity: 1.0,
+	    strokeWeight: 6,
+	});
+	lines.push(flightPath);
+	//flightPath.setMap(null);
+	for(let i=0; i<lines.length; i++){
+		lines[i].setMap(null);
+	}
+	
+	flightPath.setMap(map);
 }
 
 /*------------------------------------------------------------------------------*/
@@ -839,6 +849,7 @@ $(document).ready(function() {
 			<div class="row">
 				
 				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+				<input type="hidden" id="t_member_idx" class="form-control" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>" readonly>
 				</div>
   				
   				<!-- 운동기록 상세보기가 나올 창 -->

@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.model.myrecord;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,9 +57,10 @@ public class MybatisExrRecordDAO implements ExrRecordDAO {
 	}
 
 	@Override
-	public List<ExrRecord> selectForDay(String regdate) throws ExrRecordException{
-		logger.info("하루동안의 기록을 조회하기 위해 받아온 regdate :"+regdate);
-		List<ExrRecord> exrList=sqlSessionTemplate.selectList("ExrRecord.selectForDay", regdate);
+	public List<ExrRecord> selectForDay(HashMap map) throws ExrRecordException{
+		logger.info("하루동안의 기록을 조회하기 위해 받아온 regdate :"+map.get("regdate"));
+		logger.info("하루동안의 기록을 조회하기 위해 받아온 member_idx :"+map.get("member_idx"));
+		List<ExrRecord> exrList=sqlSessionTemplate.selectList("ExrRecord.selectForDay", map);
 		logger.info("ExrRecordMapper에서 반환받은 운동의 갯수는 :"+exrList.size());
 		if(exrList.size()<1) {
 			throw new ExrRecordException("해당일 운동기록 조회 실패");
