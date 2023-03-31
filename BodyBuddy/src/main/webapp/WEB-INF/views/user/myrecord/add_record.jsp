@@ -363,6 +363,7 @@ function getDayforRegistExr(){
 	let exr_day=$("#exr_day2").val();
 	let regdate=currentYear+"-"+currentMonth+"-"+currentDay;
 	console.log(regdate);
+	
 	//exrObject.regdate=regdate;
 }
 
