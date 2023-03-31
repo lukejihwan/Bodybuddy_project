@@ -607,7 +607,7 @@ function getExrRecordForMonth(){
 function getRunningRecordForMonth(){
 	//해당달의 첫날과 마지막날을 JSON형식으로 만듬
 	let json={};
-	json['member_idx']=$("#t_member_idx").val();
+	json['member_idx']=24;
 	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
 	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
 	let dateData=JSON.stringify(json);
@@ -655,9 +655,10 @@ function getRunningRecordForMonth(){
 /*------------------------------------------------------------------------------
 		구글맵과 관련된 영역
 	-----------------------------------------------------------------------------*/
-// 1) 맵 초기 콜백 함수 
+// 1) 맵 초기 콜백 함수
+let mapProp;
 function initMap() {
-	let mapProp= {
+	mapProp= {
 	  center:new google.maps.LatLng({lat:37.556436, lng:126.945207}),
 	  zoom:16,
 	};
@@ -670,8 +671,8 @@ let flightPath;
 // db에 저장된 위치 데이터 불러오는 함수
 function getGpsData(clickedDay){
 	
-	
-	let member_idx=$("#t_member_idx").val();
+	//let member_idx=$("#t_member_idx").val();
+	let member_idx=24; //테스트용
 	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
 	console.log("registedDate", registedDate);
 	
@@ -704,24 +705,19 @@ function getGpsData(clickedDay){
 	});
 }
 
-
 // 라인그리기
 function createPolyline(jsonList){
-	//console.log("그림 그릴 제이슨리스트의 모습은? ", jsonList);
-	let lines=[]; //이전경로를 지우기 위한 배열
+	if(flightPath != undefined){
+		flightPath.setMap(null);
+	}
 	
 	 flightPath = new google.maps.Polyline({
 	    path: jsonList,
 	    geodesic: true,
 	    strokeColor: "	#FF4500",
 	    strokeOpacity: 1.0,
-	    strokeWeight: 6,
+	    strokeWeight: 3,
 	});
-	lines.push(flightPath);
-	//flightPath.setMap(null);
-	for(let i=0; i<lines.length; i++){
-		lines[i].setMap(null);
-	}
 	
 	flightPath.setMap(map);
 }
@@ -737,7 +733,7 @@ $(document).ready(function() {
 	calendarInit();
 	
 	/*구글맵 호출하는 부분*/
-	getGpsData(today.getDate());
+	//getGpsData(today.getDate());
 	initMap();
 	/*------------------*/
 	
