@@ -525,7 +525,7 @@
 	
 	function askMemberAddress() {
 		Swal.fire({
-			  title: '회원님이 기입하신 주소('+htmlDecode('<%= address != null ? address.getMember_address() : "null" %>'!='null')+')로 검색하시겠습니까?',
+			  title: '회원님이 기입하신 주소('+htmlDecode('<%= address != null ? address.getMember_address() : "null" %>')+')로 검색하시겠습니까?',
 			  text:"아니오를 누르실 경우 gps로 현재 위치를 기반으로 알려드립니다",
 			  showCancelButton: true,
 			  confirmButtonText: '네',
@@ -535,7 +535,7 @@
 			  cancelButtonColor: '#d33',
 			}).then((result) => {
 			  if (result.isConfirmed) {
-				  app1.myaddr = htmlDecode('<%= address != null ? address.getMember_address() : "null" %>'!='null');
+				  app1.myaddr = htmlDecode('<%= address != null ? address.getMember_address() : "null" %>');
 				  getGPSByAddr();
 			  }else{
 				  getGPS();
