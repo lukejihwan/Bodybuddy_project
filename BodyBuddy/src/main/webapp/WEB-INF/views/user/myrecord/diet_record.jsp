@@ -471,7 +471,7 @@ function setChartTitle(currentDay){
 //각 날짜 클릭시 동작할 함수
 function showDietRecord(clickedDay){
 	let regdate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
-	let member_idx=24;
+	let member_idx=$("#t_member_idx").val();
 	
 	$.ajax({
 		url:"/rest/myrecord/dietRecord/"+regdate+"/"+member_idx,
@@ -551,7 +551,7 @@ function getDietRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
 	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
-	json['member_idx']=24; //테스트용
+	json['member_idx']=$("#t_member_idx").val(); //테스트용
 	let dateData=JSON.stringify(json);
 	console.log(dateData);
 	

@@ -428,7 +428,7 @@ function showPhysicalRecord(clickedDay){
 	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
 	console.log("클릭한 날짜는 ", registedDate);
 	json['regdate']=registedDate;
-	json['member_idx']=24;
+	json['member_idx']=$("#t_member_idx").val();
 	
 	$.ajax({
 		url:"/rest/myrecord/physicalRecord",
@@ -529,7 +529,7 @@ function getPhysicalRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
 	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
-	json['member_idx']=24;
+	json['member_idx']=$("#t_member_idx").val();
 	let dateData=JSON.stringify(json);
 	console.log(dateData);
 	
@@ -655,7 +655,7 @@ function physicalUpdate(){
 		json['bodyFat']=$("#t_bodyFat").val();
 		json['musclemass']=$("#t_musclemass").val();
 		json['bmi']=$("#t_bmi").val();
-		json['member_idx']=24;
+		json['member_idx']=$("#t_member_idx").val();
 		json['regdate']=registedDate;
 		
 		console.log(json);
@@ -689,7 +689,7 @@ function physicalDelete(){
 	if(confirm("삭제하시겠습니까?")){
 		let json={};
 		json['regdate']=currentYear+"-"+(currentMonth+1)+"-"+currentDay;
-		json['member_idx']=24;
+		json['member_idx']=$("#t_member_idx").val();
 		
 		console.log(json);
 		$.ajax({
