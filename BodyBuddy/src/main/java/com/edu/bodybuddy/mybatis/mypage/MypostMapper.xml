@@ -18,7 +18,15 @@
 				union
 				select '익명게시판' as table_name, counselling_board_idx as idx, title, regdate from counselling_board where member_idx = #{member.member_idx}
 				union
-				select 'QnA' as table_name, qna_board_idx as idx, title, regdate from qna_board where member_idx = #{member.member_idx} 
+				select 'QnA' as table_name, qna_board_idx as idx, title, regdate from qna_board where member_idx = #{member.member_idx}
+				union 
+				select '운동루틴' as table_name, exr_routine_idx as idx, title, regdate from exr_routine where member_idx = #{member.member_idx}
+				union 
+				select '운동팁' as table_name, exr_tip_idx as idx, title, regdate from exr_tip where member_idx = #{member.member_idx}
+				union 
+				select '식단공유' as table_name, diet_share_idx as idx, title, regdate from diet_share where member_idx = #{member.member_idx}
+				union 
+				select '식단팁' as table_name, diet_tip_idx as idx, title, regdate from diet_tip where member_idx = #{member.member_idx}
 			) result
 		)  mypost WHERE ROWNUM BETWEEN #{start} AND #{end};
 	</select>
