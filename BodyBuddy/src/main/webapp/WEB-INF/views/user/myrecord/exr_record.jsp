@@ -464,20 +464,6 @@ function showExrAndRunningRecord(clickedDay){
 	}else{ //러닝버튼이 눌리고, 각날짜를 불러올 영역
 		getGpsData(clickedDay);
 	
-		/*
-		$.ajax({
-			url:"/rest/myrecord/today/gps/"+registedDate,
-			type:"GET",
-			success:function(result, status, xhr){
-				
-				console.log("러닝기록 결과", result);
-			},
-			error:function(xhr, status, error){
-				console.log("러닝기록 호출중 error", error);
-			}
-		});
-		*/
-		
 	}
 }
 
@@ -666,6 +652,16 @@ function initMap() {
 
 	//console.log("잘 호출 되는 거지? ", map);
 	
+	//각 날짜 클릭시, 구글맵 초기화 하고, 해당 날짜 그림 그리고, 그 위치로 이동 하게
+	
+	//1) 구글맵 초기화 
+	//window.initMap();
+	
+	//2) 해당날짜 그림 그리기
+	//createPolyline() 호출
+	
+	//3) 그 위치로 이동하게
+	//window.initMap();
 }
 let flightPath;
 // db에 저장된 위치 데이터 불러오는 함수
