@@ -1,0 +1,35 @@
+
+            httpCon.setRequestMethod("POST");
+            httpCon.setDoOutput(true);
+            httpCon.setRequestProperty("Content-Type", "application/json");
+
+            String email=t_id.getText().toString();
+            String password=t_pass.getText().toString();
+
+
+            // 5-3) 파라미터 보낼 폼 데이터 만들기   -- 쿼리스트링화!
+            String postData="{\"email\":\""+email+"\",\"password\":{\"pass\":\""+password+"\"}}";
+
+            Log.d(TAG, "보낼 데이터 모습 ddd"+postData);
+
+
+
+로그인시 필요한 객체
+LoginAuthenticationProvider
+
+로그인을 하면 해당 멤버의 정보를 가져와야 함
+
+
+멤버 idx 추출하기
+서버로 부터 받은 응답을 제이슨 객체화 한다!
+	1)제이슨 생성자 매개변수에 sb.toString() 넣어주기
+	2) 가져오고 싶은 key값 get 하기
+	     int members_idx = (Integer) jsonObj.get("member_idx");
+
+
+//
+멤버 idx 가져오기 (Login --> Main)
+
+가져오고 싶은 액티비티에 context 변수 추가하여 접근!
+
+

@@ -1,0 +1,98 @@
+mysql -u bb -p -h k927.asuscomm.com --port 8700
+use bodybuddy;
+
+
+// 검색기능!
+
+
+기준은? 제목!
+방식은? 동기!
+
+
+select * from exr_routine where title like '%가%';
+
+1-1) Mapper에 Map 객체 전달
+
+
+map 구성은 get 방식으로 파라미터 표시
+파라미터 받아서 -- 맵 형성
+
+map은 컨트롤러에서 받아서 서비스 객체에게 전달
+
+
+반환값은?
+	xrRoutine로 구성된 리스트!
+
+
+검색 반영 은 비동기 처리이다!
+
+비동기로 데이터 받아와서 getList를 다시 호출하는 것이었음...
+
+
+<안드로이드로 데이터 전송하기>
+        // 이제 해야할 일 : 제이슨 리스트로 담아서 보내기
+        // 보내거나 db에 저장하거나...
+	  // 디비작업은? 스프링에서 하기
+
+
+DTO 준비 -> 안드로이드 -> 
+
+
+
+
+2. 페이징 처리
+
+init에 설정해주기
+토탈레코드와, 현제 페이지
+
+PageManager는 현재 페이지를 보여주는 컨트롤러에서 세팅해서 넘긴다.
+init에 필요한 파라미터
+
+1) 전체 레코드 수
+2) 현재 페이지 - 이를 통해서 공식을 작성하기 때문이다.
+
+
+1-1)
+전체 레코드 수를 int로 반환하는 함수 필요!
+수를 세고 alias로 담기!
+
+- 이 Alias를 id로 지정한다! Mapper의 select 태그 의 id
+
+
+
+DB에서 데이터를 제한하여 조회하기 -- 
+Mysql 에서는 Limit 과 offset 을 제공하여 
+훨씬 빠르게 원하는 위치에서 원하는 만큼의 데이터를 가져올 수 있다.
+
+
+
+
+3. 댓글 처리!
+
+
+댓글 테이블 만들기!
+
+create table exr_routine_comment(
+	exr_routine_comment_idx int primary key auto_increment
+	, exr_routine_idx int
+	, member_idx int
+	, title varchar(100)
+	, writer varchar(30)
+	, content mediumtext
+	, regdate timestamp default now()
+	, post int default 0
+	, step int default 0
+	, depth int default 0
+	, constraint fk_exr_routine_comment foreign key (exr_routine_idx) references exr_routine (exr_routine_idx)
+	, constraint fk_exr_member_routine_comment foreign key (member_idx) references member (member_idx)
+)default character set utf8;
+
+
+
+
+매핑이 안된다?
+@Data를 빼먹었다는 것을...후
+
+
+
+

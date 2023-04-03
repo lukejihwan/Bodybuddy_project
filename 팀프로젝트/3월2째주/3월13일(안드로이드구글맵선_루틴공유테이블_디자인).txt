@@ -1,0 +1,102 @@
+mysql -u bb -p -h k927.asuscomm.com --port 8700
+use bodybuddy;
+지오코딩 이용하기
+
+
+위도 경도를 얻어내기 위해서는 브라우저에 접속을 해야하는데,
+접속 결과로 반환되는 제이슨 리스트를 프로그래밍적으로 변환하여 가져오려면?
+
+
+
+
+< 안드로이드 >
+
+구글맵 선 그리는 것을 직접 해볼까?
+
+검색어
+how to draw polyline on google map in android programming
+
+
+
+플러그인 설치 그러나 인식을 못함
+  id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+
+
+
+플러그인 태그 안에 이 아이디 일단 지우기
+id 'com.android.application'
+
+
+
+bodybuddy 
+
+
+api배포하기!!!!!
+api프로젝트 가서 android 앱 추가하였음!!
+
+
+./gradlew signingReport   SHA 코드 알아내기
+
+
+-- 아무래도 구글 맵 연동 자체에 문제가 있었다!
+GoogleMapApp2 라인 그리기 성공!!
+
+
+이거를 이제 어떻게 사용할지 모르겠다.
+
+//
+안드로이드로 리스트를 전송하면 웹에서 받아서 처리하기
+
+
+안드로이드
+GPS 받아오기
+
+=================================================
+
+루틴공유게시판
+
+
+create table exr_routine(
+	exr_routine_idx int primary key auto_increment
+	, exr_category_idx int
+	, member_idx int
+	, title varchar(100)
+	, writer varchar(30)
+	, content mediumtext
+	, recommend int default 0
+	, hit int default 0
+	, regdate timestamp default now()
+	, constraint fk_exr_category_routine foreign key (exr_category_idx) references exr_category (exr_category_idx)
+	, constraint fk_exr_member_routine foreign key (member_idx) references member (member_idx)
+)default character set utf8;
+
+
+
+=======================================
+You have an error in your SQL syntax;
+content를 mediumtext 로 바꾸었다?
+
+---> 원인을 알았다.
+	컬럼명이 like 라는 예약어였다!!!
+
+int default 0 맞지않나
+
+
+**테이블 컬럼 추가!**
+
+alter table exr_routine add content mediumtext;
+alter table exr_routine add recommend int default 0;
+=======================================
+
+! 주의점 ! 멤버가 참조해야함
+alter table exr_routine add member_idx int
+
+
+디자인
+
+부트스트랩의 컬럼은 12조각 나있음
+div가 전체 row를 차지하려면  class="col-sm-12" 추가!
+
+
+
+

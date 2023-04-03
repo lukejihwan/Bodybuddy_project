@@ -1,0 +1,105 @@
+mysql -u bb -p -h bodybuddy.caffkbaukwhx.ap-northeast-2.rds.amazonaws.com --port 3306
+use bodybuddy;
+
+
+댓글 렌더링 해결하기
+대댓글 표시하기
+
+댓글의 댓글까지만..
+// 스텝 수가 꼬이는 게 문제일 수 있겠다
+
+
+지금의 쿼리문은 카운트를 매번 증가ㅏ시킨다
+post가 같을 때만 올려야 되는 데
+
+post가 다른데 step이 올라가면 안 되잖아
+
+
+
+-아예 첫 댓글
+
+
+-그렇지 않은 경우
+
+
+select count(*) from exr_today_comment
+where post=51 and exr_today_idx=4;
+
+// 그냥 redirect로 해결하였음.. 너무 어렵다
+
+
+float left 해결하기
+왠지 바깥 div의 크기가 명시되어 있지 않아서 그런 것 같은데..
+
+
+
+
+<뷰 바인딩>
+
+- v-model="변수명"
+  app1의 data 변수와 엮인다
+
+- v-on:조건="함수명()"
+
+
+
+부트스트랩 마진 주기
+ml  :margin-left
+
+
+
+@ResponseBody
+ jsp 와 바인딩을 하지 않는다!
+
+@RequestBody 를 DTO 앞에 붙이면 json과 매핑된다!
+
+
+
+style="margin-left:50px"
+
+
+//
+-- 스타일 바인딩이 안 되고 있었음!!!
+   또 : 빼먹었어..
+
+:style="'margin-left:'+c_depth+'px;'"
+
+
+
+
+--
+<운동 정보 게시판>
+
+* 카테고리 순서
+1 홈트레이닝
+2 스트레칭
+3 달리기
+4 요가
+5 핼스
+6 명상수련
+
+
+update exr_notice set title='ㅇㅇ', content='ㅇㅇㅇ'
+where exr_notice_idx=53;
+
+
+
+
+
+
+    <com.example.googlemapapp2.PhotoView
+        android:id="@+id/photoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"/>
+
+
+//
+뷰가 얹혀져 있는지 확인하려면?
+
+Latout validation으로 확인하자!
+
+
+
+
+

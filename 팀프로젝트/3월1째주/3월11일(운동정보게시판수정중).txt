@@ -1,0 +1,64 @@
+mysql -u bb -p -h k927.asuscomm.com --port 8700
+use bodybuddy;
+★깃허브 올리기 전에 백업 필수★
+
+
+git merge
+
+<운동정보게시판 CRUD + 이미지 업로드!>
+- web.xml에 MultipartResolver, TransacsionManager 추가
+- ExrNotice, ExrNoticeImg 모델 객체 추가
+- AdminController 패키지에서 ExrController 추가
+- 뷰에서 user/exr 디렉토리에 jsp 페이지들 추가
+
+==================
+
+
+
+
+# 사진 저장 경로가 바뀌는 것 같은 건 뭘까?
+
+C:\SpringProject\BodyBuddy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\BodyBuddy\resources\data\exr\
+
+
+-- 스프링 샵
+C:\spring_workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\SpringShop\resources\data\
+
+
+
+사진 등록하는 데 있어서
+webapp/resources/admin
+분명 같은 경로에 저장하는 데 문제 없는데
+
+로컬파일에 저장되었던 사진들이 다 사라지게 되는 건 왜 그런 걸까요?
+
+
+
+getRealPath로 경로 지정해서 사진 등록하는데는 문제 없는데
+시간 지나서 다시 확인해보면 저장되었던 사진들이 다 사라져 있어요.
+
+등록하고 바로 재부팅해서 확인했을 때는 있는데, 며칠째 같은 현상 일어나여..
+
+
+근데 저 경로로 사진 올리면 제 로컬에만 있는 게 아니라,
+이 서버를 가동한 모든 사람이 볼 수 있게 해야 하지 않나요?
+
+-- 근데 그러면 결국 사진 공유가 안되는 건가요?
+
+
+
+
+* 계획이 중요한 이유
+계속 돈다..
+
+
+
+사진 수정 이거 꼭 하고 만다!!!!!!!!
+
+
+
+
+
+
+
+
