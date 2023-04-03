@@ -1,0 +1,62 @@
+디비 주소 바뀜!
+mysql -u bb -p -h bodybuddy.caffkbaukwhx.ap-northeast-2.rds.amazonaws.com --port 3306
+use bodybuddy;
+
+server.xml 수정!
+- url과 port
+
+> url="jdbc:mysql://bodybuddy.caffkbaukwhx.ap-northeast-2.rds.amazonaws.com:3306/bodybuddy?  
+  characterEncoding=utf8"
+
+
+
+//
+-- ! 참고 작성자 수정은 안 됨!
+	(어차피 회원 닉네임이 들어갈 것이기 때문)
+
+
+create table exr_today_comment(
+	exr_today_comment_idx int primary key auto_increment
+	, exr_today_idx int
+	, member_idx int
+	, writer varchar(30)
+	, content text
+	, regdate timestamp default now()
+	, post int default 0
+	, step int default 0
+	, depth int default 0
+	, constraint fk_exr_today_comment foreign key (exr_today_idx) references exr_today (exr_today_idx)
+	, constraint fk_member_exr_today_comment foreign key (member_idx) references member (member_idx)
+)default character set utf8;
+
+
+alter table exr_today_comment drop column title;
+
+
+
+--
+코멘트 매퍼의 함수명 변경
+selectByFk --> selectAllByToday
+
+Fk가 여러개이므로 의미가 명확하지 않음.
+그리고 여러건이 선택되어지므로 All 명시하기
+
+* 함수명 하나를 짓더라도 의미를 더 생각하는 연습 필요! (추추는 그러했다)
+
+
+
+★댓글 테이블의 update는 내용 수정이 아니라,
+  post값을 수정하기 위해서 필요함!
+
+
+
+댓글 테이블은 service와 DAO의 메서드가 다르다!
+
+
+--
+대댓글은 여러 DAO의 메서드가 쓰이므로 트랜잭션 상황임!
+
+@Transactional(propagation = Propagation.REQUIRED)
+명시하기
+
+

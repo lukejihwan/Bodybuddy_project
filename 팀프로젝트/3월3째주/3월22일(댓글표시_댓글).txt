@@ -1,0 +1,134 @@
+mysql -u bb -p -h k927.asuscomm.com --port 8700
+use bodybuddy;
+
+
+//
+카테고리 나열하기
+- 댓글 표시하기!
+
+
+association 이 있더라도 collection으로 담아 놓아야 개수 세기 좋겠지?
+
+내가 필요한 건, 댓글의 개수일 뿐이니까
+카운트를 애초에 반환하는 sql문을 작성하고
+이를 반영할까?
+
+
+
+댓글 매퍼에서 개수 세기 -> int로 반환 -> 이 수를 뽑아서 props로 넘기기!
+
+근데 이것은 매개변수를 따로따로 넘길 수 없기 때문에 List를 가지고 있는 게 나을 수 도 있다!
+
+
+
+> 3항 연산자로 표현하기!
+
+<%= board.getCommentList().size()>0?"&nbsp&nbsp["+board.getCommentList().size()+"]":"" %>
+
+[&nbsp{{this.num}}&nbsp]
+
+
+{{this.num}}>0?"[&nbsp{{this.num}}&nbsp]":""
+
+
+정리하자면, exrRoutine 이 이미 댓글 리스트를 가지고 있으니까
+length를 넣어주면 됨!!
+
+
+
+댓글 게시판!! 재밌겠다
+=================================
+추추의 댓글 매퍼의 함수 목록들!
+
+
+=================================
+
+
+
+1. 스텝 올리기
+
+- 댓글 매퍼가 이미 포스트를 fk로 지정하고,
+	스텝과 뎁스를 1씩 증가하여 insert하고 있다
+
+
+만약에, 댓글이 최초 입력이라면 그대로 가고,
+	대댓글이라면 스텝과 뎁스를 수정할 것이다.
+
+
+그러기 위해서 해당 글에 대한 댓글의 수를 가져와야 함!
+
+
+
+2. 스텝을 수정하여 자리 마련하기 && 깊이를 1 증가시키기!
+그러면, 내가 들어갈 곳의 
+
+
+
+- insert랑 reply를 분리하기!
+
+
+문제는 각각의 글의 post가 같다는 점이다
+
+- 포스트가 달라야 한다!!!
+  포스트 수정 들어가기!
+
+그러면 update하자 어차피 post는 이미 가지고 있는 수이다.
+
+
+//
+update exr_routine_comment set post=post+1
+where exr_routine_idx=15;
+
+
+post에도  totalCount를 적용시켜서 다르게 두기 성공!
+
+
+그러면 이제, 같은 post로 넣어보자!
+
+포스트 지정을 comment_idx 로 고유값을 사용한다!
+
+
+	 boardCommentDAO.insert(freeBoardComment);
+			 freeBoardComment.setPost(freeBoardComment.getFree_board_comment_idx());
+			 boardCommentDAO.update(freeBoardComment);
+
+
+insert 후에 값이 존재하니까
+그 것을 post로 update시킴
+
+굿굿..
+
+
+
+//
+좋아 이제 대댓글 들어가자
+
+넣으려는 댓글 post에 대한
+	 max step 구해오기
+
+그 수가 해당 스텝과 같다면? 
+
+
+select max(step) from exr_routine_comment
+		where post=85;
+
+		update exr_routine_comment set step=#{step}+1
+		where post=#{post} and step>#{step}
+
+
+애초에 설계가 잘못됨
+해당 글에 대한 폼이 새롭게 나와야 함
+
+
+select * from exr_routine_comment where exr_routine_idx=15
+order by post desc, step asc;
+
+
+
+// 뷰 화면 반영 해결하기
+
+
+
+
+
+

@@ -1,0 +1,527 @@
+{
+   "plus_code" : {
+      "compound_code" : "HW4W+H3G 대한민국 서울특별시",
+      "global_code" : "8Q98HW4W+H3G"
+   },
+   "results" : [
+      {
+         "address_components" : [
+            {
+               "long_name" : "73-45",
+               "short_name" : "73-45",
+               "types" : [ "premise" ]
+            },
+            {
+               "long_name" : "대흥동",
+               "short_name" : "대흥동",
+               "types" : [ "political", "sublocality", "sublocality_level_2" ]
+            },
+            {
+               "long_name" : "마포구",
+               "short_name" : "마포구",
+               "types" : [ "political", "sublocality", "sublocality_level_1" ]
+            },
+            {
+               "long_name" : "서울특별시",
+               "short_name" : "서울특별시",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "대한민국",
+               "short_name" : "KR",
+               "types" : [ "country", "political" ]
+            },
+            {
+               "long_name" : "121-080",
+               "short_name" : "121-080",
+               "types" : [ "postal_code" ]
+            }
+         ],
+         "formatted_address" : "대한민국 서울특별시 마포구 대흥동 73-45",
+         "geometry" : {
+            "location" : {
+               "lat" : 37.556358,
+               "lng" : 126.9452079
+            },
+            "location_type" : "ROOFTOP",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 37.5577069802915,
+                  "lng" : 126.9465568802915
+               },
+               "southwest" : {
+                  "lat" : 37.5550090197085,
+                  "lng" : 126.9438589197085
+               }
+            }
+         },
+         "place_id" : "ChIJB4RfOJqYfDURBf4IqjJmjcE",
+         "plus_code" : {
+            "compound_code" : "HW4W+G3 대한민국 서울특별시",
+            "global_code" : "8Q98HW4W+G3"
+         },
+         "types" : [ "street_address" ]
+      },
+      {
+         "address_components" : [
+            {
+               "long_name" : "HW4W+H3",
+               "short_name" : "HW4W+H3",
+               "types" : [ "plus_code" ]
+            },
+            {
+               "long_name" : "서울특별시",
+               "short_name" : "서울특별시",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "대한민국",
+               "short_name" : "KR",
+               "types" : [ "country", "political" ]
+            }
+         ],
+         "formatted_address" : "HW4W+H3 대한민국 서울특별시",
+         "geometry" : {
+            "bounds" : {
+               "northeast" : {
+                  "lat" : 37.5565,
+                  "lng" : 126.94525
+               },
+               "southwest" : {
+                  "lat" : 37.556375,
+                  "lng" : 126.945125
+               }
+            },
+            "location" : {
+               "lat" : 37.556436,
+               "lng" : 126.945207
+            },
+            "location_type" : "GEOMETRIC_CENTER",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 37.5577864802915,
+                  "lng" : 126.9465364802915
+               },
+               "southwest" : {
+                  "lat" : 37.55508851970851,
+                  "lng" : 126.9438385197085
+               }
+            }
+         },
+         "place_id" : "GhIJlSh7SznHQkAR0TyARX68X0A",
+         "plus_code" : {
+            "compound_code" : "HW4W+H3 대한민국 서울특별시",
+            "global_code" : "8Q98HW4W+H3"
+         },
+         "types" : [ "plus_code" ]
+      },
+      {
+         "address_components" : [
+            {
+               "long_name" : "121-080",
+               "short_name" : "121-080",
+               "types" : [ "postal_code" ]
+            },
+            {
+               "long_name" : "대흥동",
+               "short_name" : "대흥동",
+               "types" : [ "political", "sublocality", "sublocality_level_2" ]
+            },
+            {
+               "long_name" : "마포구",
+               "short_name" : "마포구",
+               "types" : [ "political", "sublocality", "sublocality_level_1" ]
+            },
+            {
+               "long_name" : "서울특별시",
+               "short_name" : "서울특별시",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "대한민국",
+               "short_name" : "KR",
+               "types" : [ "country", "political" ]
+            }
+         ],
+         "formatted_address" : "대한민국 서울특별시 마포구 대흥동",
+         "geometry" : {
+            "bounds" : {
+               "northeast" : {
+                  "lat" : 37.5568739,
+                  "lng" : 126.9469698
+               },
+               "southwest" : {
+                  "lat" : 37.5428234,
+                  "lng" : 126.9325981
+               }
+            },
+            "location" : {
+               "lat" : 37.546055,
+               "lng" : 126.9420155
+            },
+            "location_type" : "APPROXIMATE",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 37.5568739,
+                  "lng" : 126.9469698
+               },
+               "southwest" : {
+                  "lat" : 37.5428234,
+                  "lng" : 126.9325981
+               }
+            }
+         },
+         "place_id" : "ChIJh8XQL72YfDURe5tkgVWvZgQ",
+         "types" : [ "postal_code" ]
+      },
+      {
+         "address_components" : [
+            {
+               "long_name" : "대흥동",
+               "short_name" : "대흥동",
+               "types" : [ "political", "sublocality", "sublocality_level_2" ]
+            },
+            {
+               "long_name" : "마포구",
+               "short_name" : "마포구",
+               "types" : [ "political", "sublocality", "sublocality_level_1" ]
+            },
+            {
+               "long_name" : "서울특별시",
+               "short_name" : "서울특별시",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "대한민국",
+               "short_name" : "KR",
+               "types" : [ "country", "political" ]
+            },
+            {
+               "long_name" : "121-080",
+               "short_name" : "121-080",
+               "types" : [ "postal_code" ]
+            }
+         ],
+         "formatted_address" : "대한민국 서울특별시 마포구 대흥동",
+         "geometry" : {
+            "bounds" : {
+               "northeast" : {
+                  "lat" : 37.5568739,
+                  "lng" : 126.9469698
+               },
+               "southwest" : {
+                  "lat" : 37.5428234,
+                  "lng" : 126.9325981
+               }
+            },
+            "location" : {
+               "lat" : 37.5498977,
+               "lng" : 126.9427769
+            },
+            "location_type" : "APPROXIMATE",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 37.5568739,
+                  "lng" : 126.9469698
+               },
+               "southwest" : {
+                  "lat" : 37.5428234,
+                  "lng" : 126.9325981
+               }
+            }
+         },
+         "place_id" : "ChIJR2bpL72YfDURu_ZJO8N8LR0",
+         "types" : [ "political", "sublocality", "sublocality_level_2" ]
+      },
+      {
+         "address_components" : [
+            {
+               "long_name" : "신촌로",
+               "short_name" : "신촌로",
+               "types" : [ "political", "sublocality", "sublocality_level_4" ]
+            },
+            {
+               "long_name" : "마포구",
+               "short_name" : "마포구",
+               "types" : [ "political", "sublocality", "sublocality_level_1" ]
+            },
+            {
+               "long_name" : "서울특별시",
+               "short_name" : "서울특별시",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "대한민국",
+               "short_name" : "KR",
+               "types" : [ "country", "political" ]
+            }
+         ],
+         "formatted_address" : "대한민국 서울특별시 마포구 신촌로",
+         "geometry" : {
+            "bounds" : {
+               "northeast" : {
+                  "lat" : 37.5582143,
+                  "lng" : 126.9557044
+               },
+               "southwest" : {
+                  "lat" : 37.5545559,
+                  "lng" : 126.9268656
+               }
+            },
+            "location" : {
+               "lat" : 37.5561674,
+               "lng" : 126.9392701
+            },
+            "location_type" : "APPROXIMATE",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 37.5582143,
+                  "lng" : 126.9557044
+               },
+               "southwest" : {
+                  "lat" : 37.5545559,
+                  "lng" : 126.9268656
+               }
+            }
+         },
+         "place_id" : "ChIJQx4OLpeYfDURlFald55DK70",
+         "types" : [ "political", "sublocality", "sublocality_level_4" ]
+      },
+      {
+         "address_components" : [
+            {
+               "long_name" : "대흥동",
+               "short_name" : "대흥동",
+               "types" : [ "political", "sublocality", "sublocality_level_2" ]
+            },
+            {
+               "long_name" : "마포구",
+               "short_name" : "마포구",
+               "types" : [ "political", "sublocality", "sublocality_level_1" ]
+            },
+            {
+               "long_name" : "서울특별시",
+               "short_name" : "서울특별시",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "대한민국",
+               "short_name" : "KR",
+               "types" : [ "country", "political" ]
+            }
+         ],
+         "formatted_address" : "대한민국 서울특별시 마포구 대흥동",
+         "geometry" : {
+            "bounds" : {
+               "northeast" : {
+                  "lat" : 37.5568739,
+                  "lng" : 126.9469698
+               },
+               "southwest" : {
+                  "lat" : 37.5451313,
+                  "lng" : 126.9325981
+               }
+            },
+            "location" : {
+               "lat" : 37.5559517,
+               "lng" : 126.9426399
+            },
+            "location_type" : "APPROXIMATE",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 37.5568739,
+                  "lng" : 126.9469698
+               },
+               "southwest" : {
+                  "lat" : 37.5451313,
+                  "lng" : 126.9325981
+               }
+            }
+         },
+         "place_id" : "ChIJn-xZpL2YfDURRQ0p1lUPVNc",
+         "types" : [ "political", "sublocality", "sublocality_level_2" ]
+      },
+      {
+         "address_components" : [
+            {
+               "long_name" : "마포구",
+               "short_name" : "마포구",
+               "types" : [ "political", "sublocality", "sublocality_level_1" ]
+            },
+            {
+               "long_name" : "서울특별시",
+               "short_name" : "서울특별시",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "대한민국",
+               "short_name" : "KR",
+               "types" : [ "country", "political" ]
+            }
+         ],
+         "formatted_address" : "대한민국 서울특별시 마포구",
+         "geometry" : {
+            "bounds" : {
+               "northeast" : {
+                  "lat" : 37.5907832,
+                  "lng" : 126.9639466
+               },
+               "southwest" : {
+                  "lat" : 37.5324094,
+                  "lng" : 126.8533395
+               }
+            },
+            "location" : {
+               "lat" : 37.5637561,
+               "lng" : 126.9084211
+            },
+            "location_type" : "APPROXIMATE",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 37.5907832,
+                  "lng" : 126.9639466
+               },
+               "southwest" : {
+                  "lat" : 37.5324094,
+                  "lng" : 126.8533395
+               }
+            }
+         },
+         "place_id" : "ChIJIWguayCZfDURBR0f-llT68I",
+         "types" : [ "political", "sublocality", "sublocality_level_1" ]
+      },
+      {
+         "address_components" : [
+            {
+               "long_name" : "서울특별시",
+               "short_name" : "서울특별시",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "대한민국",
+               "short_name" : "KR",
+               "types" : [ "country", "political" ]
+            }
+         ],
+         "formatted_address" : "대한민국 서울특별시",
+         "geometry" : {
+            "bounds" : {
+               "northeast" : {
+                  "lat" : 37.7017495,
+                  "lng" : 127.1835899
+               },
+               "southwest" : {
+                  "lat" : 37.4259627,
+                  "lng" : 126.7645827
+               }
+            },
+            "location" : {
+               "lat" : 37.566535,
+               "lng" : 126.9779692
+            },
+            "location_type" : "APPROXIMATE",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 37.7017495,
+                  "lng" : 127.1835899
+               },
+               "southwest" : {
+                  "lat" : 37.4259627,
+                  "lng" : 126.7645827
+               }
+            }
+         },
+         "place_id" : "ChIJzzlcLQGifDURm_JbQKHsEX4",
+         "types" : [ "administrative_area_level_1", "political" ]
+      },
+      {
+         "address_components" : [
+            {
+               "long_name" : "서울특별시",
+               "short_name" : "서울특별시",
+               "types" : [ "locality", "political" ]
+            },
+            {
+               "long_name" : "서울특별시",
+               "short_name" : "서울특별시",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "대한민국",
+               "short_name" : "KR",
+               "types" : [ "country", "political" ]
+            }
+         ],
+         "formatted_address" : "대한민국 서울특별시",
+         "geometry" : {
+            "bounds" : {
+               "northeast" : {
+                  "lat" : 37.7017495,
+                  "lng" : 127.1835899
+               },
+               "southwest" : {
+                  "lat" : 37.4259627,
+                  "lng" : 126.7645827
+               }
+            },
+            "location" : {
+               "lat" : 37.566535,
+               "lng" : 126.9779692
+            },
+            "location_type" : "APPROXIMATE",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 37.7017495,
+                  "lng" : 127.1835899
+               },
+               "southwest" : {
+                  "lat" : 37.4259627,
+                  "lng" : 126.7645827
+               }
+            }
+         },
+         "place_id" : "ChIJzWXFYYuifDUR64Pq5LTtioU",
+         "types" : [ "locality", "political" ]
+      },
+      {
+         "address_components" : [
+            {
+               "long_name" : "대한민국",
+               "short_name" : "KR",
+               "types" : [ "country", "political" ]
+            }
+         ],
+         "formatted_address" : "대한민국",
+         "geometry" : {
+            "bounds" : {
+               "northeast" : {
+                  "lat" : 38.63400000000001,
+                  "lng" : 131.1603
+               },
+               "southwest" : {
+                  "lat" : 33.0041,
+                  "lng" : 124.5863
+               }
+            },
+            "location" : {
+               "lat" : 35.907757,
+               "lng" : 127.766922
+            },
+            "location_type" : "APPROXIMATE",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 38.63400000000001,
+                  "lng" : 131.1603
+               },
+               "southwest" : {
+                  "lat" : 33.0041,
+                  "lng" : 124.5863
+               }
+            }
+         },
+         "place_id" : "ChIJm7oRy-tVZDURS9uIugCbJJE",
+         "types" : [ "country", "political" ]
+      }
+   ],
+   "status" : "OK"
+}
