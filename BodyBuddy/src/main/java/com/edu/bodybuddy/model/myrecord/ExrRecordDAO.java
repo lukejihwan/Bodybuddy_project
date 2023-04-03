@@ -1,5 +1,6 @@
 package com.edu.bodybuddy.model.myrecord;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,5 +21,5 @@ public interface ExrRecordDAO {
 	public void delete(int exr_record_idx);
 	
 	//하루간의 데이터를 불러오는 메서드
-	public List<ExrRecord> selectForDay(String regdate);
+	public List<ExrRecord> selectForDay(HashMap map);
 }

@@ -26,7 +26,6 @@ public class DietRecordServiceImpl implements DietRecordService{
 		try {
 			dietAPIRecord = dietAPIManager.getDietAPIContent(foodName);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return dietAPIRecord;
@@ -41,6 +40,22 @@ public class DietRecordServiceImpl implements DietRecordService{
 	public List selectForMonth(Map<String, String> oneMonthPeriod) throws DietRecordException{
 		List<DietRecord> dietRecordListMonth=dietRecordDAO.selectForMonth(oneMonthPeriod);
 		return dietRecordListMonth;
+	}
+
+	@Override
+	public List select(DietRecord dietRecord) {
+		List dietRecordList= dietRecordDAO.select(dietRecord);
+		return dietRecordList;
+	}
+
+	@Override
+	public void update(DietRecord dietRecord) throws DietRecordException {
+		dietRecordDAO.update(dietRecord);
+	}
+
+	@Override
+	public void delete(DietRecord dietRecord) throws DietRecordException {
+		dietRecordDAO.delete(dietRecord);
 	}
 
 }

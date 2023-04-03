@@ -259,6 +259,7 @@ const rowlist={
 }
 
 //운동기록 삭제하는 함수
+/*
 function deleteExrRecord(){
 	if(confirm("삭제하시겠습니까?")){
 		$.ajax({
@@ -276,6 +277,7 @@ function deleteExrRecord(){
 		});
 	}
 }
+*/
 
 //vue 초기화 함수
 function init(){
@@ -402,21 +404,13 @@ function makeDayFormat(clickedDay){
 	return refinedDay;
 }
 
-//해당일의 운동기록과 세부내용을 collapse에 rendering하는 함수
-function showExrRecordsOnCollapse(exrLists){
-	for(let i=0; i<exrLists.length; i++){
-		//console.log("운동명은",exrList[i].exr_name);
-		//하나의 운동명을 아래 영역에 보여줄 함수
-		
-		for(let a=0; a<exrLists[i].exrRecordDetailList.length; a++){
-			//console.log(exrList[i].exrRecordDetailList.length);
-			console.log("번쨰 세트의 detail_idx는 ", exrLists[i].exrRecordDetailList[a].exr_record_detail_idx );
-		}
-	}
-}
-
 //아래 신체기록에 보여주는 함수
 function setFormTable(physicalRecordForDay){
+	//디자인
+	$("#h_date").text(physicalRecordForDay.regdate.substr(0,10));
+	
+	
+	//실제값
 	$("#t_height").val(physicalRecordForDay.height);
 	$("#t_weight").val(physicalRecordForDay.weight);
 	$("#t_musclemass").val(physicalRecordForDay.musclemass);
@@ -429,11 +423,12 @@ function showPhysicalRecord(clickedDay){
 	//전역변수에 오늘 날짜 넣어줌
 	currentDay=clickedDay;
 	
+	
 	let json={};
 	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
 	console.log("클릭한 날짜는 ", registedDate);
 	json['regdate']=registedDate;
-	json['member_idx']=24;
+	json['member_idx']=$("#t_member_idx").val();
 	
 	$.ajax({
 		url:"/rest/myrecord/physicalRecord",
@@ -488,6 +483,7 @@ function renderPhysicalRecord(registedPysicalDataForMonth){
 	
 	//차트의 x열에 넣기 위한 리스트 대입
 	chart.data.labels=x_dateLabelList;
+	//console.log(x_dateLabelList);
 	chart.update();
 }
 
@@ -508,10 +504,10 @@ function renderChartjs(registedPysicalDataForMonth){
 		heightList.push(oneDayPhysicalRecord.height);
 		//체중대입
 		weightList.push(oneDayPhysicalRecord.weight);
-		//체지방 대입
-		bodyFatList.push(oneDayPhysicalRecord.bodyFat);
 		//골격근량 대입
 		musclemassList.push(oneDayPhysicalRecord.musclemass);
+		//체지방 대입
+		bodyFatList.push(oneDayPhysicalRecord.bodyFat);
 		//BMI 대입
 		bmiList.push(oneDayPhysicalRecord.bmi);
 	}
@@ -519,7 +515,7 @@ function renderChartjs(registedPysicalDataForMonth){
 	chart.data.datasets[0].data=heightList;
 	chart.data.datasets[1].data=weightList;
 	chart.data.datasets[2].data=musclemassList;
-	chart.data.datasets[3].data=musclemassList;
+	chart.data.datasets[3].data=bodyFatList;
 	chart.data.datasets[4].data=bmiList;
 	//업데이트 해주기
 	chart.update();
@@ -533,6 +529,7 @@ function getPhysicalRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
 	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
+	json['member_idx']=$("#t_member_idx").val();
 	let dateData=JSON.stringify(json);
 	console.log(dateData);
 	
@@ -649,31 +646,42 @@ function chartInit(){
 
 //신체기록 수정하는 함수
 function physicalUpdate(){
-	let json={};
-	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+currentDay;
-	
-	json['height']=$("#t_height").val();
-	json['weight']=$("#t_weight").val();
-	json['bodyFat']=$("#t_bodyFat").val();
-	json['musclemass']=$("#t_musclemass").val();
-	json['bmi']=$("#t_bmi").val();
-	json['member_idx']=24;
-	json['regdate']=registedDate;
-	
-	console.log(json);
-	
-	$.ajax({
-		url:"/rest/myrecord/physicalRecord",
-		type:"PUT",
-		contentType:"application/json",
-		data:JSON.stringify(json),
-		success:function(result, status, xhr){
-			console.log("수정성공", result);
-		},
-		error:function(xhr, status, error){
-			console.log("수정실패", error);
-		}
-	});
+	if(confirm("신체기록을 수정하시겠습니까?")){
+		let json={};
+		let registedDate=currentYear+"-"+(currentMonth+1)+"-"+currentDay;
+		
+		json['height']=$("#t_height").val();
+		json['weight']=$("#t_weight").val();
+		json['bodyFat']=$("#t_bodyFat").val();
+		json['musclemass']=$("#t_musclemass").val();
+		json['bmi']=$("#t_bmi").val();
+		json['member_idx']=$("#t_member_idx").val();
+		json['regdate']=registedDate;
+		
+		console.log(json);
+		
+		$.ajax({
+			url:"/rest/myrecord/physicalRecord",
+			type:"PUT",
+			contentType:"application/json",
+			data:JSON.stringify(json),
+			success:function(result, status, xhr){
+				console.log("수정성공", result);
+				alert("신체기록이 수정되었습니다");
+			},
+			error:function(xhr, status, error){
+				console.log("수정실패", error);
+			}
+		});
+	}
+}
+
+function setTableClear(){
+	$("#t_height").val("");
+	$("#t_weight").val("");
+	$("#t_musclemass").val("");
+	$("#t_bodyFat").val("");
+	$("#t_bmi").val("");
 }
 
 //신체기록 삭제하는 함수
@@ -681,7 +689,7 @@ function physicalDelete(){
 	if(confirm("삭제하시겠습니까?")){
 		let json={};
 		json['regdate']=currentYear+"-"+(currentMonth+1)+"-"+currentDay;
-		json['member_idx']=24;
+		json['member_idx']=$("#t_member_idx").val();
 		
 		console.log(json);
 		$.ajax({
@@ -691,6 +699,8 @@ function physicalDelete(){
 			data:JSON.stringify(json),
 			success:function(result, status, xhr){
 				console.log("삭제성공", result);
+				alert("신체기록이 삭제되었습니다");
+				setTableClear();
 				getPhysicalRecordForMonth();
 			},
 			error:function(xhr, status, error){
@@ -700,10 +710,20 @@ function physicalDelete(){
 	}
 }
 
+
+function renderPage(){
+	let nickname=$("#t_hiddenNickname").val();
+	console.log("회원님의 닉네임은", nickname);
+	$("#t_nickname").text(nickname);
+}
+
 $(function(){
 	 //초기화
     init();
-	
+	 
+	 //화면 초기화 (nickname)
+	renderPage();
+	 
 	 //달력초기화
 	calendarInit();
 	
@@ -873,14 +893,15 @@ $(function(){
 						<div class="card-header border-0 ui-sortable-handle" style="cursor: move;">
 							<h3 class="card-title">
 								<i class="fas fa-map-marker-alt mr-1"></i>
-								<h4 style="display:inline;">  2023-03-27</h4>
-								nickname 나올 곳 
-								의 신체기록
+								<h4 style="display:inline;" id="h_date">  2023-03-27</h4>
+								<input type="hidden" id="t_hiddenNickname" class="form-control" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.nickname"/></sec:authorize>" readonly>
+								<input type="hidden" id="t_member_idx" class="form-control" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>" readonly>
+								<h5 id="t_nickname" style="display:inline"></h5>  회원님의 신체기록
 							</h3>
 							
 							<!-- card tools -->
 							<div class="card-tools">
-								<button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+								<button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse" id="bt_toggle">
 									<i class="fas fa-minus"></i>
 								</button>
 							</div>
@@ -895,26 +916,26 @@ $(function(){
 									<div class="col-md-6">
 										<div class="form-group">
 											<label>키:</label>
-											<input type="text" class="form-control" id="t_height">
+											<input type="number" class="form-control" id="t_height">
 										</div>
 										<div class="form-group">
 											<label>체중:</label>
-											<input type="text" class="form-control" id="t_weight">
+											<input type="number" class="form-control" id="t_weight">
 										</div>
 										<div class="form-group">
 											<label>골격근량:</label>
-											<input type="text" class="form-control" id="t_musclemass">
+											<input type="number" class="form-control" id="t_musclemass">
 										</div>
 									</div>
 
 									<div class="col-md-6">
 										<div class="form-group">
 											<label>체지방:</label>
-											<input type="text" class="form-control" id="t_bodyFat">
+											<input type="number" class="form-control" id="t_bodyFat">
 										</div>
 										<div class="form-group">
 											<label>BMI:</label>
-											<input type="text" class="form-control" id="t_bmi">
+											<input type="number" class="form-control" id="t_bmi">
 										</div>
 										<div class="form-group">
 											<button type="button" id="bt_update" class="btn btn-block bg-gradient-success btn-sm">수정</button>

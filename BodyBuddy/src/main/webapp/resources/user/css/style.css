@@ -343,7 +343,7 @@ img { width: auto; max-width: 100%; height: auto; margin: 0; padding: 0; border:
 /*--------------------------
      5.2 Navigations Regular
     ----------------------------*/
-.hero-section { background: linear-gradient(rgba(19, 19, 18, 0.3), rgba(19, 19, 18, 0.3), rgba(19, 19, 18, 0.3)), url(../images/hero-img.jpg) no-repeat center; background-size: cover; }
+.hero-section { background: linear-gradient(rgba(19, 19, 18, 0.3), rgba(19, 19, 18, 0.3), rgba(19, 19, 18, 0.3)), url(../images/hero1.png) no-repeat center; background-size: cover; }
 .hero-caption { margin-top: 125px; margin-bottom: 125px; background-color: #262626; }
 .hero-title { font-size: 32px; color: #fff; line-height: 24px; font-weight: 600; text-transform: uppercase; }
 .hero-text { font-size: 16px; color: #acacac; margin-bottom: 50px; line-height: 26px; }

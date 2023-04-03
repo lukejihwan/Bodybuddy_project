@@ -15,6 +15,7 @@
                         
                         <li><a href="/myrecord/main" title="record" class="animsition-link">나의 기록</a>
                             <ul>
+                                <li><a href="/myrecord/main" title="정보">오늘의 운동 지수</a></li>
                                 <li><a href="/myrecord/addrecord" title="정보">기록추가</a></li>
                                 <li><a href="/myrecord/physical_record" title="정보">신체기록</a></li>
                                 <li><a href="/myrecord/exr_record" title="정보">운동기록</a></li>
@@ -27,8 +28,8 @@
                                 <li><a href="/exr/routine_list/1">루틴 공유</a></li>
                                 <li><a href="/exr/tip_list" title="Classes Detail">팁</a></li>
                                 <li><a href="/exr/today_list" title="Classes Detail">오운완</a></li>
-                                <li><a href="classes-detail.html" title="Classes Detail">크루</a></li>
-                                <li><a href="classes-detail.html" title="Classes Detail">칼로리 소모 계산기</a></li>
+                                <%--<li><a href="classes-detail.html" title="Classes Detail">크루</a></li>
+                                <li><a href="classes-detail.html" title="Classes Detail">칼로리 소모 계산기</a></li>--%>
                             </ul>
                         </li>
                         <li><a href="/diet/info" title="diet" class="animsition-link">식단</a>

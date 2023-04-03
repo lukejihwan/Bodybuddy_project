@@ -1,6 +1,5 @@
 package com.edu.bodybuddy.domain.myrecord;
 
-
 import lombok.Data;
 
 @Data

@@ -9,4 +9,7 @@ public interface DietRecordService {
 	public List getDietAPIRecord(String foodName);
 	public void regist(DietRecord dietRecord);
 	public List selectForMonth(Map<String, String> oneMonthPeriod);
+	public List select(DietRecord dietRecord);
+	public void update(DietRecord dietRecord);
+	public void delete(DietRecord dietRecord);
 }

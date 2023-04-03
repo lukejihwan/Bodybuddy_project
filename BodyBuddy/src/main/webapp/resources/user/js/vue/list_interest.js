@@ -45,7 +45,7 @@ const List = {
             if(post.table_name == "운동루틴"){
                 location.href="/exr/routine_detail/"+post.idx;
             } else if(post.table_name == "운동팁"){
-                location.href="/exr/tip_detail//"+post.idx;
+                location.href="/exr/tip_detail/"+post.idx;
             } else if(post.table_name == "식단공유"){
                 location.href="/diet/share_detail/"+post.idx;
             } else if(post.table_name == "식단팁"){

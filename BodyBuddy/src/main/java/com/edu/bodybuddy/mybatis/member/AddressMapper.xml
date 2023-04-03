@@ -11,7 +11,7 @@
 	</insert>
 	
 	<update id="update" parameterType="Member">
-		update address set member_address = #{address.member_address}, where member_idx = #{member_idx}
+		update address set member_address = #{address.member_address} where member_idx = #{member_idx}
 	</update>
 	
 	<delete id="delete" parameterType="int">

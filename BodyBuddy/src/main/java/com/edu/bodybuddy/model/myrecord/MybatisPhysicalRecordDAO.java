@@ -34,8 +34,11 @@ public class MybatisPhysicalRecordDAO implements PhysicalRecordDAO {
 	}
 
 	@Override
-	public PhysicalRecord select(PhysicalRecord physicalRecord) {
+	public PhysicalRecord select(PhysicalRecord physicalRecord) throws PhysicalRecordException {
 		physicalRecord=sqlSessionTemplate.selectOne("PhysicalRecord.select", physicalRecord);
+		if(physicalRecord==null) {
+			throw new PhysicalRecordException("신체기록이 존재하지 않습니다");
+		}
 		return physicalRecord;
 	}
 

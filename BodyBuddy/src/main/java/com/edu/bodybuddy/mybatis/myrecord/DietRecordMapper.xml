@@ -4,14 +4,30 @@
 
 	<insert id="insert" parameterType="DietRecord">
 		insert into diet_record (member_idx, time_category_name, food_name, servings, kcal, carbs, protein, fat, regdate)
-		values (24, #{time_category_name}, #{food_name}, #{servings}, #{kcal}, #{carbs}, #{protein}, #{fat}, #{regdate})
+		values (#{member_idx}, #{time_category_name}, #{food_name}, #{servings}, #{kcal}, #{carbs}, #{protein}, #{fat}, #{regdate})
 	</insert>
 	
 	<select id="selectForMonth" parameterType="Map" resultType="DietRecord">
 		select * 
 		from diet_record
-		where regdate between #{firstDay} and #{lastDay}
+		where regdate between #{firstDay} and #{lastDay} and member_idx=#{member_idx}
 		order by regdate asc
 	</select>
+	
+	<select id="select" parameterType="DietRecord" resultType="DietRecord">
+		select * from diet_record
+		where regdate=#{regdate} and member_idx=#{member_idx}
+	</select>
+	
+	<update id="update" parameterType="DietRecord">
+		update diet_record set food_name=#{food_name}, time_category_name=#{time_category_name},
+		servings=#{servings}, kcal=#{kcal}, carbs=#{carbs}, protein=#{protein}, fat=#{fat}
+		where diet_idx=#{diet_idx}
+	</update>
+	
+	<delete id="delete" parameterType="DietRecord">
+		delete from diet_record
+		where diet_idx=#{diet_idx}
+	</delete>
 	
 </mapper>

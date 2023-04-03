@@ -13,8 +13,8 @@
 		<div class="row">
 			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 				<div class="page-caption pinside40">
-					<h1 class="page-title">1:1문의 / 신고내역</h1>
-					<p>사이트 이용에 관한 문의 또는 불량게시물을 신고해주세요</p>
+					<h1 class="page-title">찜</h1>
+					<p>내가 찜한 정보들이 모여있는 곳입니다</p>
 				</div>
 			</div>
 		</div>

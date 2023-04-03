@@ -89,13 +89,6 @@ public class WeatherAPIManager {
 		ObjectMapper objectMapper=new ObjectMapper();
 		Map<String, String> dataForResponseMap=null;
 		try {
-			//readValue로 자바객체로 만들어주면 더이상 json이 아님
-			/*
-			HashMap<String, JsonObject> map=objectMapper.readValue(rawData, HashMap.class); 
-			JsonObject responseData=map.get("response");
-			
-			System.out.println(responseData.toString());
-			*/
 			JsonNode jsonNode=objectMapper.readTree(rawData);
 			JsonNode response=jsonNode.get("response");
 			WeatherAPIObject weatherAPIObject =objectMapper.readValue(response.toString(), WeatherAPIObject.class);
@@ -105,7 +98,6 @@ public class WeatherAPIManager {
 				logger.info("정상적인 결과입니다.");
 				
 				dataForResponseMap=successResultCode(weatherAPIObject);
-				logger.info("ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ최종온도는 "+dataForResponseMap.get("tempData"));
 			}else {
 				logger.warn("잘못된 결과입니다. 결과코드는 :"+resultCode);
 			}

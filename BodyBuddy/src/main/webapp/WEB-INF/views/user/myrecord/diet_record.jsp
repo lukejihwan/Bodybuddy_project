@@ -9,6 +9,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <style>
+.btn-primary{
+	background-color: #383838;
+	border: none;
+}
+.card-warning{
+	margin-top: 10px;
+}
+.btn-default{
+	background-color: #c5f016;
+}
 .wrapper{
 	margin: 15px;
 	padding: 10px;
@@ -144,89 +154,140 @@ let today;
 let app1;
 // 현재 위치에 포커스 맞추기
 let map;
+//chartjs 제어를 위한 객체
+let data;
+let myDoughnutChart;
+
+//$("#sel_dietCategory")[0][3].selected=true;
 
 
 const rowlist={
 	template:`
-		<div class="card bg-dark text-white wrapper">
-		<!--form id값 동적으로 할당-->
-			<form :id="'form'+exr.exr_record_idx">
-			<div class="row card-body">
-				운동명: <input type="text" class="form-control input-sm" v-model="exr.exr_name" name="exrname">
-				<input type="hidden" v-model="exr.exr_record_idx" name="exr_idx">
+		<div class="card card-warning">
+			<div class="card-header">
+				<h3 class="card-title">{{diet.regdate.substr(0,10)}} 식단기록</h3>
+				<div class="card-tools">
+					<button type="button" class="btn btn-tool" data-card-widget="collapse">
+						<i class="fas fa-minus"></i>
+					</button>
+				</div>
+				<!-- /.card-tools -->
 			</div>
-			<div div class="row">
-				<div class="col-md-10 card-body">
-					<div class="form-group">
-						<template v-for="(detail_exr,i) in exr.exrRecordDetailList">
-							<div class="row">
-								<div class="col-md-2">
-									{{i+1}}세트
-								</div>
-								<div class="col-md-3">
-									<input type="number" min="1" max="700" class="form-control input-sm" v-model="detail_exr.kg" name="kgs[]">
-								</div>
-								<div class="col-md-2">
-									kg
-								</div>
-								<div class="col-md-3">
-									<input type="number" min="1" max="700" class="form-control input-sm" v-model="detail_exr.times" name="times[]">
-								</div>
-								<div class="col-md-2">
-									개
+			<!-- /.card-header -->
+			<!--form id값 동적으로 할당-->
+			<form :id="'form'+diet.diet_idx">
+				<div class="card-body">
+					<div class="row">
+						
+						<div class="col-md-6">
+							<div>
+								<div class="form-group">
+									<label>음식명 :</label>
+									<input type="text" class="form-control" v-model="diet.food_name" name="food_name">
+									<input type="hidden" v-model="diet.member_idx" name="member_idx">
+									<input type="hidden" v-model="diet.diet_idx" name="diet_idx">
 								</div>
 							</div>
-						</template>
+							<div>
+								<div class="form-group">
+									<label>1회 제공량 :</label>
+									<input type="number" class="form-control" v-model="diet.servings" name="servings">
+								</div>
+							</div>
+							<div>
+								<div class="form-group">
+									<label>탄수화물 :</label>
+									<input type="number" class="form-control" v-model="diet.carbs" name="carbs">
+								</div>
+							</div>
+							<div>
+								<div class="form-group">
+									<label>지방 :</label>
+									<input type="number" class="form-control" v-model="diet.fat" name="fat">
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<div>
+								<div class="form-group">
+									<label>섭취시간 선택:</label>
+									<select class="form-control" id="sel_dietCategory" name="time_category_name">
+										<option value="none">===섭취시간===</option>
+										<option value="아침">아침</option>
+										<option value="점심">점심</option>
+										<option value="저녁">저녁</option>
+										<option value="간식">간식</option>
+									</select>
+								</div>
+							</div>
+							<div>
+								<div class="form-group">
+									<label>칼로리 :</label> 
+									<input type="number" class="form-control" v-model="diet.kcal" name="kcal">
+								</div>
+							</div>
+							<div>
+								<div class="form-group">
+									<label>단백질 :</label> 
+									<input type="number" class="form-control" v-model="diet.protein" name="protein">
+								</div>
+							</div>
+							<div>
+								<div class="form-group" style="text-align: center;">
+									<button type="button" class="btn btn-warning btn-lg" v-on:click="update(diet)">수정</button>
+									<button type="button" class="btn btn-danger btn-lg" v-on:click="del(diet.diet_idx)">삭제</button>
+								</div>
+							</div>
+						</div>
+						
 					</div>
 				</div>
-					<!--
-					<input type="hidden" value="{{exr.exr_record_idx}}" name="exr_idx">
-					-->
-					<div class="col-md-2 card-body">
-						<div class="form-group">
-							<button type="button" class="btn btn-warning" v-on:click="update(exr)">수정</button>
-						</div>
-						<div class="form-group">
-							<button type="button" class="btn btn-danger" v-on:click="del(exr.exr_record_idx)">삭제</button>
-						</div>
-					</div>
-			</div>
 			</form>
-		</div>
+			<!-- /.card-body -->
+		</div>	
 		`,
-		props:['exr'],
+		props:['diet'],
 		data(){
 			return{
-				exr:this.exr
+				diet:this.diet
 			};
 		},
 		methods:{
-			update:function(exr){
+			update:function(dietRecord){
 				if(confirm("수정하시겠습니까?")){
+					let json={};
 					//form 요소 선택(백틱사용)
-					console.log("여기는 왔다");
-					let form=document.getElementById('form'+exr.exr_record_idx);
-					console.log(form);
+					console.log("여기는 왔다1");
+					let form=document.getElementById('form'+dietRecord.diet_idx);
+					console.log(form); //진짜 form태그 안에 들어있는 모든 태그를 다 끌어옴
 					//form 데이터를 FormData 객체로 변환
 					let formData = new FormData(form);
 					
+					console.log("formData의 형태",formData);
 					//formData안의 내용물을 확인하는 법
 					for(let pair of formData.entries()){
 						console.log(pair[0]+", "+pair[1]);
+						json[pair[0]]=pair[1];
 					}
+					
+					console.log("보낼json형태는",json);
 					// fetch요청을 보낼 url
-					let url="/rest/myrecord/exrRecord"
-					console.log("어디까지 왔다.");
+					let url="/rest/myrecord/dietRecord"
+					console.log("여기는 왔다2");
 					fetch(url,{
-						method:"POST",
-						body:formData
+						method:"PUT",
+						headers:{
+							'Content-Type':"application/json"
+						},
+						body:JSON.stringify(json),
 					})
 					.then(response=>{
 						if(response.ok){
 							//요청 성공적으로 처리시
 							console.log("수정 완료");
 							alert("수정이 완료되었습니다");
-							location.href="/myrecord/exr_record";
+							//location.href="/myrecord/diet_record";
 						}else{
 							//요청 실패시
 							console.log("수정 실패");
@@ -237,30 +298,11 @@ const rowlist={
 					});
 				}
 			},
-			del:function(exr_record_idx){
-				deleteExrRecord(exr_record_idx);
+			del:function(diet_idx){
+				deleteDietRecord(diet_idx);
 			}
 		}
 		
-}
-
-//운동기록 삭제하는 함수
-function deleteExrRecord(){
-	if(confirm("삭제하시겠습니까?")){
-		$.ajax({
-			url:"/rest/myrecord/exrRecord/"+exr_record_idx,
-			type:"delete",
-			success:function(result, status, xhr){
-				console.log("result는",result);
-				console.log("삭제성공");
-				alert("삭제되었습니다");
-				location.href="/myrecord/exr_record";
-			},
-			error:function(xhr, status, error){
-				console.log("에러", error);
-			}
-		});
-	}
 }
 
 //vue 초기화 함수
@@ -268,7 +310,7 @@ function init(){
 	app1=new Vue({
 		el:"#app1",
 		data:{
-			exrList:[],
+			dietList:[],
 			count:10
 		},
 		components:{
@@ -319,7 +361,7 @@ function renderCalender(thisMonth) {
     }
     // 이번달
     for (let i = 1; i <= nextDate; i++) {
-        calendar.innerHTML = calendar.innerHTML + "<div class='day current' onclick='showExrRecord("+i+")' data-toggle='collapse' data-target='#exrCollapse'>" + i + "</div>"
+        calendar.innerHTML = calendar.innerHTML + "<div class='day current' onclick='showDietRecord("+i+")' data-toggle='collapse' data-target='#exrCollapse'>" + i + "</div>"
     }
     // 다음달
     for (let i = 1; i <= (7 - nextDay == 7 ? 0 : 7 - nextDay); i++) {
@@ -361,14 +403,14 @@ function calendarInit() {
     $(".go-prev").on("click", function() {
         thisMonth = new Date(currentYear, currentMonth - 1, 1);//년, 월, 일
         renderCalender(thisMonth);
-        getExrRecordForMonth();
+        getDietRecordForMonth();
     });
 
     // 다음달로 이동
     $(".go-next").on("click", function() {
         thisMonth = new Date(currentYear, currentMonth + 1, 1);
         renderCalender(thisMonth); 
-        getExrRecordForMonth();
+        getDietRecordForMonth();
     });
 }
 
@@ -393,31 +435,88 @@ function showExrRecordsOnCollapse(exrLists){
 	}
 }
 
+//선택한 하루 칼로리의 총합을 구하는 함수
+function getSumOfDietForDay(dietListForDay){
+let sumOfDietList=[];
+let sumOfKcal=0;
+let sumOfCarbs=0;
+let sumOfProtein=0;
+let sumOfFat=0;
+	
+	for(let i=0; i<dietListForDay.length; i++){
+		let dietRecord=dietListForDay[i];
+		sumOfKcal+=dietRecord.kcal;
+		sumOfCarbs+=dietRecord.carbs;
+		sumOfProtein+=dietRecord.protein;
+		sumOfFat+=dietRecord.fat;
+	}
+	
+	sumOfDietList.push(sumOfKcal);
+	sumOfDietList.push(sumOfCarbs);
+	sumOfDietList.push(sumOfProtein);
+	sumOfDietList.push(sumOfFat);
+	
+	//계산이 되면 chart.js데이터에 넣어줌.
+	data.datasets[0].data=sumOfDietList;
+
+	console.log("이날의 탄단지 총합은",sumOfDietList);
+	//console.log("kcal총합은", sumOfKcal);
+	myDoughnutChart.update();
+}
+
+function setChartTitle(currentDay){
+	$("#h_chartTitle").text((currentMonth+1)+"월 "+currentDay+"일");
+}
+
 //각 날짜 클릭시 동작할 함수
-function showExrRecord(clickedDay){
-	let registedDate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
-	console.log("registedDate", registedDate);
+function showDietRecord(clickedDay){
+	let regdate=currentYear+"-"+(currentMonth+1)+"-"+clickedDay;
+	let member_idx=$("#t_member_idx").val();
 	
 	$.ajax({
-		url:"/rest/myrecord/exrRecord/"+registedDate,
+		url:"/rest/myrecord/dietRecord/"+regdate+"/"+member_idx,
 		type:"GET",
-		data: registedDate,
 		success:function(result, status, xhr){
-			//console.log(typeof result); object형
 			console.log("받아온 결과는 ", result);
-			app1.exrList=result;
-			console.log("exrList의 길이는 ",app1.exrList.length);
-			showExrRecordsOnCollapse(result);
+			setChartTitle(clickedDay);
+			getSumOfDietForDay(result);
+			app1.dietList=result;
+			//showExrRecordsOnCollapse(result);
 		},
 		error:function(xhr, status, error){
 			console.log("error",error);
-			app1.exrList=[];
+	
 		}
 	});
 		
 }
 
-function renderExrRecord(registedDataForMonth){
+//식단기록 삭제하는 함수
+function deleteDietRecord(diet_idx){
+	let json={};
+	json['diet_idx']=diet_idx;
+	console.log("전달할 diet_idx", diet_idx);
+	
+	if(confirm("삭제하시겠습니까?")){
+		$.ajax({
+			url:"/rest/myrecord/dietRecord",
+			contentType:"application/json",
+			type:"delete",
+			data: JSON.stringify(json),
+			success:function(result, status, xhr){
+				console.log("result는",result);
+				console.log("삭제성공");
+				alert("삭제되었습니다");
+				location.href="/myrecord/diet_record";
+			},
+			error:function(xhr, status, error){
+				console.log("에러", error);
+			}
+		});
+	}
+}
+
+function renderDietRecord(registedDataForMonth){
 	let divdays=document.getElementsByClassName("current");
 	let selectedDays=[];
 	
@@ -452,18 +551,19 @@ function getDietRecordForMonth(){
 	let json={};
 	json['firstDay']=currentYear+"-"+(currentMonth+1)+"-"+1;
 	json['lastDay']=currentYear+"-"+(currentMonth+1)+"-"+nextDate;
+	json['member_idx']=$("#t_member_idx").val(); //테스트용
 	let dateData=JSON.stringify(json);
 	console.log(dateData);
 	
 	//비동기로 해당달의 첫날과 마지막날을 전송
 	$.ajax({
-		url:"/rest/myrecord/exrListForMonth",
+		url:"/rest/myrecord/dietListForMonth",
 		type:"POST",
 		processData:false,
 		data:dateData,
 		contentType:"application/json",
 		success:function(result, status, xhr){
-			//renderExrRecord(result);
+			renderDietRecord(result);
 			console.log("받아온 날짜는",result);
 			//alert("성공적으로 불러옴");
 		},
@@ -473,13 +573,16 @@ function getDietRecordForMonth(){
 	});
 }
 
+
 function chartInit() {
 	const DATA_COUNT = 5;
-	const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
+	//const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
 	let ctx=document.getElementById("myChart").getContext("2d");
 	const colors=['#fdeedc','#ffd8a9','#f1a661','#e38b29'];
 	
-	const data = {
+	//data.datasets[0].data[0]=100;
+	
+	data = {
 		  labels: ['칼로리', '탄수화물', '단백질', '지방'],
 		  datasets: [{
 		      label: 'Dataset 1',
@@ -488,7 +591,7 @@ function chartInit() {
 		    }]
 	};
 	
-	let myDoughnutChart=new Chart(ctx,{
+	myDoughnutChart=new Chart(ctx,{
 		type:'doughnut',
 		data:data,
 		options: {
@@ -599,7 +702,10 @@ $(function(){
 				
 				<!-- 식단차트 나올곳 -->
 				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-				
+				<input type="hidden" id="t_member_idx" class="form-control" value="<sec:authorize access="isAuthenticated()"><sec:authentication property="principal.member.member_idx"/></sec:authorize>" readonly>
+					<div style="text-align: center;">
+						<h4 style="display:inline;" id="h_chartTitle">3월 22일</h4><h5 style="display:inline"> 식단 총합</h5>
+					</div>
 					<canvas id="myChart" height="250"></canvas>
 				
 				</div>
@@ -614,12 +720,15 @@ $(function(){
 				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
 				</div>
   				
-  				<!-- 운동기록 상세보기가 나올 창 -->
-				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" id="app1">
-				
-				<template v-for="exer in exrList">
-					<rowlist :key_idx="exer.exr_record_idx" :exr="exer"/>
+  				<!-- 식단기록 상세보기가 나올 창 -->
+				<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" id="app1">
+
+					
+					
+				<template v-for="(diet, index) in dietList">
+					<rowlist :key_idx="index" :diet="diet"/>
 				</template>
+				
 				
 				</div>
 				
