@@ -1,0 +1,162 @@
+gitmysql -u bb -p -h k927.asuscomm.com --port 8700
+use bodybuddy;
+
+
+최신 버전 가져오기
+깃 머지하기
+
+1. 내 원본 코드 올리기 -->(fork 저장소)
+2. sync 하기
+3. pull 하기
+
+-
+4. conflict 해결하기
+-
+
+5. merge하기 명령어
+
+> git add *
+> git status
+
+> git merge --continue
+	메세지 입력창 뜨면 메시지 입력하고 저장 후 나오기 :wq
+	:wq
+
+> git log
+> git status
+> git push
+
+
+
+ type="button"
+
+타입을 버튼으로 명시하지 않으면,
+  자동 submit으로 되고 get방식으로 날라간다! 주의할 것!
+
+
+질문 하기 전에 정리를 먼저 했어야지
+카테고리를 선택하고 
+
+
+
+** 일단 오늘 해야 할 일 : 상품 등록 (카테고리 선택 & 사진)
+
+
+
+1
+============= 매핑이 안되고 있을 때================
+
+form 태그 감싸지 말고, 폼 데이터 객체를 이용하기
+
+
+드디어 성공!!!!!!!!!
+
+폼태그를 따로 감싸고 serialize() 하기
+이는 쿼리스트링화 하는 작업이기 때문에, contentType이나 processData 등을 명시하지 않아도 됨!!
+오히려 하면 값 안 넘어옴..
+
+
+해결법 !
+폼 태그를 쿼리스트링화(serialize)하여 보내주었다!
+================================================
+
+이제부터 시작이야 생각할 것 많다!!
+
+
+
+//
+2
+상품 등록하기
+
+** fk 안 넘어옴
+-1- 파라미터 잘 주었나?
+꼭 dataForm 객체 따로 안 만들어도
+  select 의 name 자체를 컬럼과 명시될 수 있게 하기
+
+"exrCategory.exr_category_idx"
+
+
+-- 해결!
+   알고 보니 mapper에서 값을 안 넣어주고 있었다
+		insert into exr_notice(exr_category_idx, title, content)
+		values(#{exrCategory.exr_category_idx}, #{title}, #{content})
+
+
+
+
+//
+3
+파일 등록하기!
+
+3-1) multipartResolver 빈등록
+  maxUploadSizePerFile  value=3145728
+
+  *물론, pom에 등록도 되어있어야 함
+
+
+3-2) MultipartFile 멤버변수 가지고 있기
+
+jsp 페이지에서 보내기
+이미지 리스트를 가져오기! 이미지 리스트가 어디있지?
+app1 이 보유 중이다!!
+
+** 주의!
+	app1의 이미지리스트 안에는 json 자체가 들어가 있기 때문에,
+	file을 꺼내주어야 함!
+
+		let file=app1.imageList[i].file;
+		formData.append("photo", file);
+---
+
+
+
+파일 여러개를 담아서 보내야 하기 때문에 formData 객체에 append 해주기!
+
+일단 이미지 담는 디렉토리명
+getRealPath("/resources/data/exr/"); 이렇게 명시!
+     ** 끝까지 / 표시 잊지마!
+
+
+
+//
+4
+DB 등록하기!
+
+4-1) 이미지 db 생성
+create table exr_notice_img(
+	exr_notice_img_idx int primary key auto_increment
+	,exr_notice_idx int
+	, filename varchar(50)
+	, constraint fk_exr_notice_img foreign key(exr_notice_idx) references exr_notice(exr_notice_idx)
+);
+
+
+
+4-2) Mapper 에서 필요한 것은?
+
+- 부모키 참조한 select
+			// 이는 곧 resultMap의 대상 (collection)
+			   부모 ExrNoticeMapper 에 resultMap 작성
+
+- insert
+		// insert 하기 위해 fk 존재해야함! --> selectKey
+
+- 부모키 참조한 delete
+
+
+4-3) 업무 단위가 여러개이므로 트랜잭션 처리!
+
+java.lang.ClassCastException
+스트링으로 반환받는 이미지 리스트 때문에 난 오류
+일단 캐스팅 해보았음!
+
+ㄴㄴㄴㄴ
+FileManager를 중립적으로 사용하기~!!!!
+
+
+
+
+
+
+
+

@@ -1,0 +1,137 @@
+워크스페이스가 리셋될 때
+import - General - existing project - select root directory
+설정하기
+
+
+//
+git
+수정된 리파지토리 가져와서 작업하기
+
+
+pull로 당겨오기 전에 작업 절대 금지!!!
+
+
+같은 디렉토리 접근 했으면, (main)
+git pull
+
+
+
+git stash
+: 커밋하기 전에 임시로 하던 작업을 저장하는 명령어
+
+
+
+=================
+오류사항!! 
+pull 하기 전에 수정사항을 추가한 것
+
+해결 코드
+//
+- git pull origin main
+ From https://github.com/dolchvita/BodyBuddy
+ * branch            main       -> FETCH_HEAD
+ Already up to date.
+
+
+- git fetch origin main
+ From https://github.com/dolchvita/BodyBuddy
+ * branch            main       -> FETCH_HEAD
+
+- git checkout main
+
+- git merge FETCH_HEAD
+
+- git status
+
+- git pull
+=================
+
+
+
+1. 운동 카테고리
+
+
+create table exr_category(
+	exr_category_idx int primary key auto_increment
+	, exr_category_name varchar(30)
+)default character set utf8;
+
+
+
+
+1-1) 운동카테고리 조회 및 등록
+작업은? 비동기로!
+
+// 비동기로 운동카테고리를 가져와서 셀렉트 박스에 출력하기
+
+
+// 마이바티스 설정하기!
+
+작성한 모델 객체가 인식이 되려면 컴포넌트 스캔의 대상이 되어야 함!
+
+
+====================================
+-- jdbc 연결 안됨 오류
+org.springframework.jdbc.CannotGetJdbcConnectionException: Could not get JDBC Connection;
+
+dbc 사용 시 db연결이 제대로 이루어지 않았기 때문이다 그럼으로 인하여 커넥션 풀이 제대로 만들어 지지 않았기 때문이다.
+====================================
+
+
+//
+mysql에서 user와 database의 차이는?
+user가 database를 만들고 제어할 수 있는 권한을 갖는 것이다!
+
+root 로부터 권한을 받았고, 처음 접근 시  -u 뒤에 오는 것이 유저 이름
+
+
+
+* undifind 이 날라오는 이유는?
+
+
+
+==
+2. 카테고리 입력시 자동 매핑이 안되는 이유는?
+
+2-1)
+파라미터명을 매칭해주지 않았기 때문이다!
+DTO에 있는 property와 parameter명이 매칭되어야 매핑된다!!
+
+
+2-2)
+그리고 data 보낼 시에
+** 비동기 데이터 보내는 방법 크게 3가지! **
+1/. data:{
+	보낼 데이터 나열,
+   }
+
+2/. FormData 객체 생성해서 append 하기
+
+3/. #form 태그로 묶어서 serialize 하기
+
+
+
+
+
+==
+3. 모델 작업후 팝업으로 반환되는 글이 undefind 로 뜨는 이유는?
+
+
+
+
+4. 모달창에 카테고리 출력하기
+
+- 뷰를 이용할 예정!
+  
+뷰를 이용하여 실시간으로 props를 넘길 것이다!
+ props를 넘기는 곳은?	-- 적용될 태그 안에서!
+
+
+
+5. 입력시 바로 뷰 컴포넌트에 반영하기
+
+
+
+
+
+

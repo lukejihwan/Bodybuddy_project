@@ -1,0 +1,97 @@
+안드로이드
+
+
+일단 보내는 것 먼저 해보기
+
+1-1)
+위치 정보 한 쌍 (위도, 경도)을 담을 DTO 선언
+	--> 이 DTO를 담은 리스트를 보낼 것!
+
+넘길 GPS 리스트는~?
+ [
+	GPSData(lati=37.5565879, longi=126.9452373),
+	GPSData(lati=37.5565879, longi=126.9452373), 
+	GPSData(lati=37.5566106, longi=126.9452425), 
+	GPSData(lati=37.5566106, longi=126.9452425)
+]
+
+
+-! 같은 객체가 2개씩 중복 들어감.
+
+
+
+1-2)
+> 중지버튼을 누르면?
+
+DTO으로 가공한 리스트가 있잖아 그거를
+	--> 마커그리기
+	--> 서버에 보내기
+
+이 두가지 업무를 수행하기 위해 JSON화 한다!
+
+
+- 보낼 리스트 : toJsonList
+[
+	{"lati":37.5564204,"longi":126.9452597},
+	{"lati":37.5565246,"longi":126.945239},
+	{"lati":37.5565246,"longi":126.945239}
+]
+
+
+-! 오류
+org.json.JSONObject cannot be cast to com.google.android.gms.maps.model.LatLng
+
+제이슨 객체를 위도경도객체로 변환하지 못한다는 뜻 같음!
+
+그러면 멤버변수로 선언되어 있는 GPSData를 LatLng로 변환하면 되지 않을까?
+
+Polyline을 그리는 옵션이 필요한 건 LatLng 객체이므로,
+
+
+
+// 제이슨 데이터를 서버 아작스로 사용하려면 어떻게 할까?
+how to send json data to server using ajax
+
+Sending Json from Android to Spring Controller
+
+
+
+가공을 마치고 최종적으로 보낼 리스트의 모습!
+[
+	{"lati":37.5564787,"longi":126.9452468},
+ 	{"lati":37.5564987,"longi":126.9452484},
+ 	{"lati":37.5564987,"longi":126.9452484}
+]
+
+
+
+-! Cleartext HTTP traffic to 172.30.1.60 not permitted
+
+트래픽 오류!
+권한 태그 뿐만이 아니라
+
+
+
+자바에서 리스트로 받더라도 보낼 때는 스트링으로 보내야 함
+
+
+
+           Gson gson=new Gson();
+           String jsonString=gson.toJson(toJsonList);
+           Log.d(TAG,"변환된 제이슨!! : "+jsonString);
+-- 결과
+
+{"values"
+:
+[{"nameValuePairs":{"lati":37.5566846,"longi":126.9452444}},{"nameValuePairs":{"lati":37.5564848,"longi":126.9452423}}]}
+
+
+필요없고 그냥 리스트 보내기 ㅋ
+List<GPSData>
+
+
+
+curl -X POST 'http://localhost:7777/rest/exr/today/gps' -H 'Content-Type:application/json' -d "{'lati':46512, 'longi':1576}"
+
+
+double

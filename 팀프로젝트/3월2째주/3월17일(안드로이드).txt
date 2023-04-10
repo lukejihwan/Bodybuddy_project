@@ -1,0 +1,60 @@
+// 안드로이드 클릭 이벤트 생성!!
+
+mysql -u bb -p -h k927.asuscomm.com --port 8700
+use bodybuddy;
+
+
+이제 해야할 일
+
+1. 버튼을 누르면 반환하는 위도, 경도를 리스트로 담는다
+
+
+
+2. 그 리스트를 컨트롤러에게 보낸다!!!!
+
+레코드를 담아서 보낼 DTO가 존재해야함
+-- 즉 DB 존재가 필요함
+
+
+
+//
+<운동기록에 들어갈 레코드>
+
+exr_record_loc_idx
+member_idx
+idx
+regdate
+lat  (varchar)
+lng  (varchar)
+
+
+
+
+
+1. gps 가져오기
+
+// 권한 승인 받기
+
+
+
+update exr_routine set hit=hit+1
+		where exr_routine_idx=15;
+
+css div 왼쪽 정렬
+class =  float-right
+
+
+
+> 테이블 조회
+show tables;
+
+
+
+// 페이징 처리
+
+selectBy\Page 라고 디비에서 처리를 하고 있음
+그,렇다면 리스트를 조회하는 컨트롤러가 이 메서드를 사용해야 한다.
+
+int 값은 어떻게 넘기고 있나?
+
+

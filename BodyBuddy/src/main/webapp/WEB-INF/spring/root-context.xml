@@ -91,6 +91,10 @@
 		<property name="dataType" value="json"/>
 	</bean>
 	
+	<bean>
+		
+	</bean>
+	
 	<!-- 네이버맵, 검색 api bean 등록 -->
 	<bean id="naverMapAPIManager" class="com.edu.bodybuddy.util.NaverMapAPIManager">
 		<property name="geocoding" value="https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode"></property>
