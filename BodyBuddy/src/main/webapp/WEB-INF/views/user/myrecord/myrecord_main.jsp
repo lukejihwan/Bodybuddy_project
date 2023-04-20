@@ -75,6 +75,9 @@ function changeAddress(rawnx,rawny){
 	console.log("dkdk",rawnx,rawny);
 	//switch문에서 두개의 값이 다 일치할때 실행하지 않고, 맨마지막 값인 rawny만 인식하는 것으로 보임
 	//그래서rawny만 인식함. 
+	
+	//이 부분 DB에서 저장된 후 값을 가져올 예정
+	//다시 고칠것
 	switch(rawnx,rawny){
 		case (60,127):$("#t_address").text("서울특별시 중구");break;
 		case (60,120):$("#t_address").text("경기도 수원");break;
