@@ -231,6 +231,8 @@ $(document).ready(function(){
                 
             </div>
             
+            <div>
+            </div>
             <!-- 그래픽 구현할 아래 영역 -->
             <!-- 나중에 부가 기능으로 1시간 단위로 볼수 있게 차트 구현 
 	            <div class="row">
