@@ -70,79 +70,6 @@
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
  -->
 <script type="text/javascript">
-/* 차트 구현 javascript
-function init(){
-console.log("초기화됨");
-let chart=document.getElementById("myChart");
-
-const DATA_COUNT = 12;
-const labels = [];
-for (let i = 0; i < DATA_COUNT; ++i) {
-    labels.push(i.toString());
-}
-const datapoints = [0, 20, 20, 60, 60, 120, NaN, 180, 120, 125, 105, 110, 170];
-let data = {
-    labels: labels,
-    datasets: [
-        {
-            label: 'Cubic interpolation (monotone)',
-            data: datapoints,
-            //borderColor: Utils.CHART_COLORS.red,
-            fill: false,
-            cubicInterpolationMode: 'monotone',
-            tension: 0.4
-        }, {
-            label: 'Cubic interpolation',
-            data: datapoints,
-            //borderColor: Utils.CHART_COLORS.blue,
-            fill: false,
-            tension: 0.4
-        }, {
-            label: 'Linear interpolation (default)',
-            data: datapoints,
-            //borderColor: Utils.CHART_COLORS.green,
-            fill: false
-        }
-    ]
-};
-
-const config = new Chart(chart,{
-    type: 'line',
-    data: data,
-    options: {
-        responsive: true,
-        plugins: {
-            title: {
-                display: true,
-                text: 'Chart.js Line Chart - Cubic interpolation mode'
-            },
-        },
-        interaction: {
-            intersect: false,
-        },
-        scales: {
-            x: {
-                display: true,
-                title: {
-                    display: true
-                }
-            },
-            y: {
-                display: true,
-                title: {
-                    display: true,
-                    text: 'Value'
-                },
-                suggestedMin: -10,
-                suggestedMax: 200
-            }
-        }
-    },
-});
-
-}
-*/
-
 //왼쪽영역의 주소를 바꿔주는 함수
 function changeAddress(rawnx,rawny){
 	console.log("dkdk",rawnx,rawny);
@@ -226,17 +153,6 @@ $(document).ready(function(){
     <div class="space-medium">
         <div class="container">
             <div class="row">
-            	<!-- 왼쪽에 나의 기록 목록 나오는 영역 -->
-            	<!-- 
-            	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-				    <div class = "btn-group-vertical">
-				        <button type = "button" class = "btn btn-primary">기록 추가</button>
-				        <button type = "button" class = "btn btn-default">신체기록</button>
-				        <button type = "button" class = "btn btn-primary">운동기록</button>
-				        <button type = "button" class = "btn btn-primary">식단기록</button>
-				    </div>
-            	</div>
-            	 -->
             	
             	<!-- 오늘의 날씨 정보 나오는 곳 -->
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="wrapper">
