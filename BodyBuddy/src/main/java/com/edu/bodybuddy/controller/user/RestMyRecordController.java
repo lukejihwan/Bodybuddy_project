@@ -1,7 +1,9 @@
 package com.edu.bodybuddy.controller.user;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -133,12 +136,24 @@ public class RestMyRecordController {
 	
 	@GetMapping("/weatherAPI/{nx}/{ny}")
 	public Map<String, String> getWeather(@PathVariable(name="nx") int nx, @PathVariable(name="ny") int ny) {
+		long startTime=System.currentTimeMillis();
 		
 		logger.info("받아온 nx값은 : "+nx);
 		logger.info("받아온 ny값은 : "+ny);
 		
 		Map<String, String> dataForResponseMap=myRecordService.getWeather(nx, ny);
+		
+		long finishTime=System.currentTimeMillis();
+		logger.info("날씨API불러오는데 걸린 시간은 :"+(finishTime-startTime)+"ms");
 		return dataForResponseMap;
+	}
+	
+	//날씨 스케줄러 등록!!!
+	@Scheduled(cron = "0/10 * * * * *")
+	public void timeScheduled() {
+		SimpleDateFormat currentTime=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		String lastestDate = currentTime.format(new Date()).toString();
+		System.out.println("현재시간 : "+lastestDate+" 호출 합니다");
 	}
 	
 	/*==============================================
