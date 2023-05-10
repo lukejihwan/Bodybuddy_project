@@ -151,9 +151,17 @@ public class RestMyRecordController {
 	//날씨 스케줄러 등록!!!
 	@Scheduled(cron = "0/10 * * * * *")
 	public void timeScheduled() {
+		int[][] nxny= {{60,127},{60,120},{73,134},{91,77},{89,91},{52,38},{63,89},{51,67},{68,100},{69,107},{127,128}};
+		
 		SimpleDateFormat currentTime=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String lastestDate = currentTime.format(new Date()).toString();
 		System.out.println("현재시간 : "+lastestDate+" 호출 합니다");
+		/*
+		for(int i=0; i<nxny.length; i++) {
+			myRecordService.getWeather(nxny[i][0],nxny[i][1]);
+		}
+		*/
+		
 	}
 	
 	/*==============================================

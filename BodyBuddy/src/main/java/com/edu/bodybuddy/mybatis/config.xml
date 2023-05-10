@@ -18,6 +18,7 @@
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrRecord" alias="ExrRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.ExrDetailRecord" alias="ExrDetailRecord"/>
  	<typeAlias type="com.edu.bodybuddy.domain.myrecord.DietRecord" alias="DietRecord"/>
+ 	<typeAlias type="com.edu.bodybuddy.domain.myrecord.WeatherEntity" alias="WeatherRecord"/>
  	
  	<!-- gps 관련 DTO -->
   	<typeAlias type="com.edu.bodybuddy.domain.myrecord.DailyWalk" alias="DailyWalk" />
@@ -75,6 +76,8 @@
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/ExrRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/ExrDetailRecordMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/DietRecordMapper.xml"/>
+    <mapper resource="com/edu/bodybuddy/mybatis/myrecord/WeatherRecordMapper.xml"/>
+    
     <!-- gps 관련 Mapper -->
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/GpsDataMapper.xml"/>
     <mapper resource="com/edu/bodybuddy/mybatis/myrecord/DailyWalkMapper.xml"/>

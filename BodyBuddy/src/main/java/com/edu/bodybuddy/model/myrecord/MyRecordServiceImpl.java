@@ -24,7 +24,8 @@ public class MyRecordServiceImpl implements MyRecordService{
 		Map<String, String> dataForResponseMap=null;
 		try {
 			dataForResponseMap=weatherAPIManager.getWeatherResponse(nx, ny);
-			logger.info("받아온 최종 온도는 "+dataForResponseMap.get("tempData")); 
+			logger.info("받아온 최종 온도는 "+dataForResponseMap.get("tempData"));
+		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
