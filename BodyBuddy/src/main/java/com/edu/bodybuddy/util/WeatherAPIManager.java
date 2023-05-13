@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import com.edu.bodybuddy.domain.myrecord.Item;
 import com.edu.bodybuddy.domain.myrecord.WeatherAPIObject;
+import com.edu.bodybuddy.domain.myrecord.WeatherEntity;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -36,8 +37,8 @@ public class WeatherAPIManager {
 	private String ny;
 
 	//예외처리 할것이 많은데, 하나로 IOException처리....이게 맞나? 나중에 세분화할 필요가 있으면 세분화하겠음
-	public Map<String, String> getWeatherResponse(int nx,int ny) throws IOException {
-		Map<String, String> dataForResponseMap=null;
+	public WeatherEntity getWeatherResponse(WeatherEntity weatherEntity) throws IOException {
+		//Map<String, String> dataForResponseMap=null;
 		System.out.println(this.getWeatherServiceKey());
 		//아래부분은 거의 고정값
         StringBuilder urlBuilder = new StringBuilder("https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"); /*URL*/
@@ -54,8 +55,8 @@ public class WeatherAPIManager {
         //아래는 변수로 받아주어야 함 (URLEncoder꼭 써야할까?)
         urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode(yesterday, "UTF-8")); /*‘21년 6월 28일 발표*/
         urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode("2300", "UTF-8")); /*06시 발표(정시단위) */
-        urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode(Integer.toString(nx), "UTF-8")); /*예보지점의 X 좌표값*/
-        urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode(Integer.toString(ny), "UTF-8")); /*예보지점의 Y 좌표값*/
+        urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode(Integer.toString(weatherEntity.getNx()), "UTF-8")); /*예보지점의 X 좌표값*/
+        urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode(Integer.toString(weatherEntity.getNy()), "UTF-8")); /*예보지점의 Y 좌표값*/
         System.out.println(urlBuilder.toString());
         
         URL url = new URL(urlBuilder.toString());
@@ -78,16 +79,16 @@ public class WeatherAPIManager {
         conn.disconnect();
 
         //데이터 가공 메서드를 따로 빼자
-        dataForResponseMap=refinedata(sb.toString());
+        weatherEntity=refinedata(sb.toString(), weatherEntity);
         
         //System.out.println(sb.toString());
-        return dataForResponseMap;
+        return weatherEntity;
 	}
 	
 	//강제되는 예외처리는 어떻게 처리해야하나..
-	public Map<String, String> refinedata(String rawData) {
+	public WeatherEntity refinedata(String rawData, WeatherEntity weatherEntity) {
 		ObjectMapper objectMapper=new ObjectMapper();
-		Map<String, String> dataForResponseMap=null;
+		//Map<String, String> dataForResponseMap=null;
 		try {
 			JsonNode jsonNode=objectMapper.readTree(rawData);
 			JsonNode response=jsonNode.get("response");
@@ -97,7 +98,7 @@ public class WeatherAPIManager {
 			if(Integer.parseInt(resultCode)==00) {
 				logger.info("정상적인 결과입니다.");
 				
-				dataForResponseMap=successResultCode(weatherAPIObject);
+				weatherEntity=successResultCode(weatherAPIObject, weatherEntity);
 			}else {
 				logger.warn("잘못된 결과입니다. 결과코드는 :"+resultCode);
 			}
@@ -107,10 +108,10 @@ public class WeatherAPIManager {
 			e.printStackTrace();
 		}
 		
-		return dataForResponseMap;
+		return weatherEntity;
 	}
 	
-	public Map<String, String> successResultCode(WeatherAPIObject weatherAPIObject) {
+	public WeatherEntity successResultCode(WeatherAPIObject weatherAPIObject, WeatherEntity weatherEntity) {
 		 //최종데이터를 모으는 List
 		//List<Map<String, String>> finalDataForResponseList=null;
 		//맵만 보내면되나, 맵을 담은 리스트를 보낼 필요는 없는거 맞겠지?
@@ -241,16 +242,24 @@ public class WeatherAPIManager {
 		//평균강수확률 구하는 공식=======================================
 		averagePrecipitationPercent=totalPercentForPrecipitaion/numforAverage;
 		
+		//객체에 데이터 저장하기
+		weatherEntity.setTemperature(String.format("%.1f", averageTemp));
+		weatherEntity.setHumidity(Integer.toString(averageHumidity));
+		weatherEntity.setPrecipitation(Integer.toString(averagePrecipitationPercent));
+		weatherEntity.setWindSpeed(String.format("%.1f",averageWindSpeed));
+		
+		/*
 		dataForResponseMap.put("skyData", Integer.toString(averageSkyData));
 		dataForResponseMap.put("tempData", String.format("%.1f", averageTemp));
 		dataForResponseMap.put("humidityData", Integer.toString(averageHumidity));
 		dataForResponseMap.put("windSpeedData", String.format("%.1f",averageWindSpeed));
 		dataForResponseMap.put("precipitaionData", Integer.toString(averagePrecipitationPercent));
+		*/
 		
-		logger.info("바깥 날씨의 최종결과는 : "+dataForResponseMap.get("skyData"));
+		logger.info("오늘 날씨의 온도는 : "+weatherEntity.getTemperature());
 		
 		//finalDataForResponseList.add();
-		return dataForResponseMap;
+		return weatherEntity;
 		
 	}
 	

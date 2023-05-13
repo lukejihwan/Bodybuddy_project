@@ -8,8 +8,8 @@
 	</select>
 	
 	<insert id="insert" parameterType="WeatherRecord">
-		insert into weather
-		values (#{nx}, #{ny}, #{temperature}, #{humidity}, #{windSpeed}, #{precipitation}, #{regdate})
+		insert into weather (nx, ny, temperature, humidity, windSpeed, precipitation, regdate)
+		values (#{nx}, #{ny}, #{temperature}, #{humidity}, #{windSpeed}, #{precipitation}, now())
 	</insert>
 	
 	<!-- 업데이트 할 때 regdate가 최신상태를 유지하게 해야함 -->

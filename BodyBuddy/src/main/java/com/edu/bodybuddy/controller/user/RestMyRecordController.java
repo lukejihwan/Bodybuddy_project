@@ -34,6 +34,7 @@ import com.edu.bodybuddy.domain.myrecord.DietRecord;
 import com.edu.bodybuddy.domain.myrecord.ExrRecord;
 import com.edu.bodybuddy.domain.myrecord.GpsData;
 import com.edu.bodybuddy.domain.myrecord.PhysicalRecord;
+import com.edu.bodybuddy.domain.myrecord.WeatherEntity;
 import com.edu.bodybuddy.exception.DietRecordException;
 import com.edu.bodybuddy.exception.ExrDetailRecordException;
 import com.edu.bodybuddy.exception.ExrRecordException;
@@ -141,7 +142,7 @@ public class RestMyRecordController {
 		logger.info("받아온 nx값은 : "+nx);
 		logger.info("받아온 ny값은 : "+ny);
 		
-		Map<String, String> dataForResponseMap=myRecordService.getWeather(nx, ny);
+		Map<String, String> dataForResponseMap=myRecordService.selectWeather(nx, ny);
 		
 		long finishTime=System.currentTimeMillis();
 		logger.info("날씨API불러오는데 걸린 시간은 :"+(finishTime-startTime)+"ms");
@@ -149,18 +150,20 @@ public class RestMyRecordController {
 	}
 	
 	//날씨 스케줄러 등록!!!
-	@Scheduled(cron = "0/10 * * * * *")
+	@Scheduled(cron = "10 * 2 * * *")
 	public void timeScheduled() {
 		int[][] nxny= {{60,127},{60,120},{73,134},{91,77},{89,91},{52,38},{63,89},{51,67},{68,100},{69,107},{127,128}};
 		
 		SimpleDateFormat currentTime=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String lastestDate = currentTime.format(new Date()).toString();
 		System.out.println("현재시간 : "+lastestDate+" 호출 합니다");
-		/*
+
 		for(int i=0; i<nxny.length; i++) {
-			myRecordService.getWeather(nxny[i][0],nxny[i][1]);
+			WeatherEntity weatherEntity=new WeatherEntity();
+			weatherEntity.setNx(nxny[i][0]);
+			weatherEntity.setNy(nxny[i][1]);
+			myRecordService.getWeather(weatherEntity);
 		}
-		*/
 		
 	}
 	
