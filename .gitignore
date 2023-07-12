@@ -9,3 +9,6 @@
 *.iml
 *.iws
 target\
+
+# API key 보안
+/팀프로젝트/
