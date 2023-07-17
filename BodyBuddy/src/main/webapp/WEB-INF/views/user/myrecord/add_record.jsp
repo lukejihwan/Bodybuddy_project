@@ -847,7 +847,6 @@ function registExrRecord(){
 		
 			let JsonData=JSON.stringify(app1.exerciseList);
 			console.log(JsonData);
-			//return;
 			$.ajax({
 				url:"/rest/myrecord/exrList",
 				type:"POST",
