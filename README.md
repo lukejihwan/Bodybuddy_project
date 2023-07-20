@@ -43,11 +43,13 @@
 
 ## 6. 주요기능 소개
 - 달력에 선택한 날짜에 <strong>근력운동기록(운동명, kg수, 갯수, 세트수)</strong>을 등록하는 기능
-<details>
-<summary><b>주요기능 설명 펼치기</b></summary>
+<!--
+<summary><b>근력운동기록 전체 설명도 펼치기</b></summary>
+-->
 
-### 6.1. 전체흐름
+### 6.1. 근력운동기록 전체 흐름도
 ![운동기능전체그림](https://github.com/lukejihwan/Bodybuddy_project/assets/111648451/1b1548e4-a2ba-410b-b35b-8c87e227d7bf)
 
 
-</details>
+
+
