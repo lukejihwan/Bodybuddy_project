@@ -1,5 +1,5 @@
 # 📌BodyBuddy
->오픈 API를 활용한 건강관리 커뮤니티 <br>
+>오픈 API를 활용한 건강관리 커뮤니티🖥️ <br>
 >http://bodybuddy.kro.kr
 
 <br>
