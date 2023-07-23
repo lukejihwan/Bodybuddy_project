@@ -43,12 +43,31 @@
 
 ## 6. 주요기능 소개
 - 달력에 선택한 날짜에 <strong>근력운동기록(운동명, kg수, 갯수, 세트수)</strong>을 등록하는 기능
-<!--
-<summary><b>근력운동기록 전체 설명도 펼치기</b></summary>
--->
 
-### 6.1. 근력운동기록 전체 흐름도
+<details>
+<summary><b>근력운동기록 전체 설명도 펼치기</b></summary>
+  
+### 6.1.1 근력운동기록 전체 흐름도
 ![운동기능전체그림](https://github.com/lukejihwan/Bodybuddy_project/assets/111648451/1b1548e4-a2ba-410b-b35b-8c87e227d7bf)
+
+### 6.1.2 근력운동기록 Front-end 설계
+![근력운동기록Front-end편집후](https://github.com/lukejihwan/Bodybuddy_project/assets/111648451/ab7b1562-7494-43bd-ba2f-657db6571e58)
+
+### 6.1.3 근력운동기록 Controller 설계
+![근력운동기록Controller편집후](https://github.com/lukejihwan/Bodybuddy_project/assets/111648451/e3efd0e1-24bc-424e-9134-c51b7f73437f)
+
+### 6.1.4 근력운동기록 Service 설계
+![근력운동기록Service편집후](https://github.com/lukejihwan/Bodybuddy_project/assets/111648451/6b12cc9e-9ded-4341-9464-3bf4e439438c)
+
+### 6.1.5 근력운동기록 DAO 설계
+![운동기록DAO편집후](https://github.com/lukejihwan/Bodybuddy_project/assets/111648451/d9005572-81f7-4485-97e2-0ab028b215a1)
+</details>
+
+
+
+
+
+
 
 
 
